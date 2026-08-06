@@ -50,7 +50,8 @@ for (const behaviour of [
   'buildPostcards',
   'buildCorridor',
   'normalizeHistory',
-  'slice(-8)'
+  'slice(-8)',
+  "replace(/[&<>]/g, '')"
 ]) {
   if (!core.includes(behaviour)) fail(`after-dark-core.js is missing expected behaviour: ${behaviour}`);
 }
@@ -122,4 +123,4 @@ for (const boundary of [
 }
 
 if (failed) process.exit(1);
-console.log('Museum After Dark contract passed: seven local features, bounded storage, local photographs, accessibility markers and offline coverage are present.');
+console.log('Museum After Dark contract passed: seven local features, bounded and sanitised storage, local photographs, accessibility markers and offline coverage are present.');
