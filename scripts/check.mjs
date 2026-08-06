@@ -1,46 +1,110 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
+import { extname, join } from 'node:path';
 
-const required = ['index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'service-worker.js', 'icon.svg', 'PRIVACY.md'];
-const runtimeFiles = ['index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'service-worker.js', 'icon.svg'];
-const forbidden = [
-  { label: 'external URL', pattern: /https?:\/\//i },
-  { label: 'XMLHttpRequest', pattern: /XMLHttpRequest/ },
-  { label: 'WebSocket', pattern: /\bWebSocket\b/ },
-  { label: 'EventSource', pattern: /\bEventSource\b/ },
-  { label: 'Google Analytics', pattern: /google-analytics|googletagmanager|gtag\s*\(/i },
-  { label: 'common private key marker', pattern: /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/ },
-  { label: 'GitHub token', pattern: /gh[pousr]_[A-Za-z0-9]{20,}/ },
-  { label: 'generic API key assignment', pattern: /(?:api[_-]?key|secret|token)\s*[:=]\s*['"][^'"]{12,}['"]/i }
+const required = [
+  'index.html',
+  'styles.css',
+  'app.js',
+  'manifest.webmanifest',
+  'service-worker.js',
+  'icon.svg',
+  'README.md',
+  'PRIVACY.md'
+];
+
+const runtimeFiles = [
+  'index.html',
+  'styles.css',
+  'app.js',
+  'manifest.webmanifest',
+  'service-worker.js',
+  'icon.svg'
+];
+
+const secretRules = [
+  ['private key marker', /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/],
+  ['GitHub token', /gh[pousr]_[A-Za-z0-9]{20,}/],
+  ['generic secret assignment', /(?:api[_-]?key|client[_-]?secret|access[_-]?token|password)\s*[:=]\s*['"][^'"]{10,}['"]/i],
+  ['email address', /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i],
+  ['international phone number', /(?:\+|00)\d[\d\s().-]{8,}\d/]
 ];
 
 let failed = false;
+
+function fail(message) {
+  console.error(`FAIL: ${message}`);
+  failed = true;
+}
+
+async function collectFiles(directory = '.') {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    if (entry.name === '.git' || entry.name === 'node_modules') continue;
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...await collectFiles(path));
+    else if (['.html', '.css', '.js', '.mjs', '.md', '.json', '.webmanifest', '.svg', '.yml', '.yaml'].includes(extname(entry.name))) files.push(path);
+  }
+  return files;
+}
 
 for (const file of required) {
   try {
     await readFile(file);
   } catch {
-    console.error(`Missing required file: ${file}`);
-    failed = true;
+    fail(`missing required file: ${file}`);
+  }
+}
+
+const allFiles = await collectFiles();
+for (const file of allFiles) {
+  const content = await readFile(file, 'utf8');
+  for (const [label, pattern] of secretRules) {
+    if (pattern.test(content)) fail(`${file} contains a possible ${label}`);
   }
 }
 
 for (const file of runtimeFiles) {
-  const content = (await readFile(file, 'utf8')).replace('http://www.w3.org/2000/svg', '');
-  for (const rule of forbidden) {
-    if (rule.pattern.test(content)) {
-      console.error(`${file}: forbidden ${rule.label}`);
-      failed = true;
-    }
-  }
+  const content = (await readFile(file, 'utf8'))
+    .replaceAll('http://www.w3.org/2000/svg', '')
+    .replaceAll('data:image/svg+xml', '');
+
+  if (/https?:\/\//i.test(content)) fail(`${file} contains an external URL`);
+  if (/\b(?:XMLHttpRequest|WebSocket|EventSource|sendBeacon)\b/.test(content)) fail(`${file} contains a runtime network API`);
+  if (/google-analytics|googletagmanager|gtag\s*\(|segment\.com|mixpanel/i.test(content)) fail(`${file} contains analytics code`);
+  if (file === 'styles.css' && /@import\s/i.test(content)) fail('styles.css imports an external stylesheet');
 }
 
 const html = await readFile('index.html', 'utf8');
-for (const asset of ['styles.css', 'app.js', 'manifest.webmanifest', 'icon.svg']) {
-  if (!html.includes(asset)) {
-    console.error(`index.html does not reference ${asset}`);
-    failed = true;
-  }
+for (const asset of ['styles.css', 'app.js', 'manifest.webmanifest', 'icon.svg', 'PRIVACY.md']) {
+  if (!html.includes(asset)) fail(`index.html does not reference ${asset}`);
+}
+
+for (const landmark of ['<header', '<main', '<footer', 'aria-live=', 'Skip to the museum']) {
+  if (!html.includes(landmark)) fail(`index.html is missing accessibility structure: ${landmark}`);
+}
+
+if (/<input\b|<textarea\b|contenteditable=/i.test(html)) {
+  fail('index.html accepts free-form visitor input');
+}
+
+const manifest = JSON.parse(await readFile('manifest.webmanifest', 'utf8'));
+if (manifest.name !== 'The Museum of Almost') fail('manifest name is unexpected');
+if (manifest.start_url !== './') fail('manifest start_url must remain local');
+
+const serviceWorker = await readFile('service-worker.js', 'utf8');
+for (const asset of ['./index.html', './styles.css', './app.js', './manifest.webmanifest', './icon.svg', './PRIVACY.md']) {
+  if (!serviceWorker.includes(asset)) fail(`service worker does not cache ${asset}`);
+}
+if (!serviceWorker.includes('requestUrl.origin !== self.location.origin')) {
+  fail('service worker is missing its same-origin request guard');
+}
+
+const app = await readFile('app.js', 'utf8');
+for (const behaviour of ['MAX_FRAGMENTS = 6', 'localStorage', 'prefers-reduced-motion', 'showModal', 'toBlob']) {
+  if (!app.includes(behaviour)) fail(`app.js is missing expected behaviour: ${behaviour}`);
 }
 
 if (failed) process.exit(1);
-console.log('Curiosity Lab checks passed. No external runtime dependencies or obvious secrets found.');
+console.log(`Museum checks passed across ${allFiles.length} source files.`);
+console.log('No external runtime dependencies, obvious secrets, free-form visitor input, or third-party network references found.');
