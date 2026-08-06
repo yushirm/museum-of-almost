@@ -37,8 +37,12 @@
     selectSignal(activeIndex, false);
     openDialog(signalDialog);
   });
-  previousButton.addEventListener('click', () => selectSignal((activeIndex + signals.length - 1) % signals.length));
-  nextButton.addEventListener('click', () => selectSignal((activeIndex + 1) % signals.length));
+  previousButton.addEventListener('click', () => {
+    selectSignal((activeIndex + signals.length - 1) % signals.length, false);
+  });
+  nextButton.addEventListener('click', () => {
+    selectSignal((activeIndex + 1) % signals.length, false);
+  });
   window.addEventListener('storage', refreshLocalEcho);
 
   if (fragmentCount && typeof MutationObserver === 'function') {
@@ -470,9 +474,7 @@
     if (typeof dialog.showModal === 'function') dialog.showModal();
     else dialog.setAttribute('open', '');
 
-    if (!prefersReducedMotion) {
-      const selectedNode = nodeHost.children[activeIndex];
-      window.setTimeout(() => selectedNode?.focus(), 40);
-    }
+    const selectedNode = nodeHost.children[activeIndex];
+    window.setTimeout(() => selectedNode?.focus(), prefersReducedMotion ? 0 : 40);
   }
 })();
