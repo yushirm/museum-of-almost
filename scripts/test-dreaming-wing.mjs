@@ -63,6 +63,7 @@ class FakeElement {
     this.listeners = new Map();
     this.attributes = new Map();
     this.descendantsById = new Map();
+    this.dataset = {};
     this.style = { setProperty() {} };
     this.textContent = '';
     this.title = '';
