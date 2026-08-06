@@ -61,13 +61,17 @@ jobs:
           test -s assets/dreaming-wing/moon.webp
           du -h assets/dreaming-wing/*.webp
 
-      - name: Commit local photo assets to the feature branch
+      - name: Commit missing local photo assets to the feature branch
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           for path in assets/dreaming-wing/atrium.webp assets/dreaming-wing/clouds.webp assets/dreaming-wing/moon.webp; do
+            if gh api "repos/${GITHUB_REPOSITORY}/contents/${path}?ref=${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+              echo "Already present: ${path}"
+              continue
+            fi
             python - "$path" <<'PY'
           import base64
           import json
