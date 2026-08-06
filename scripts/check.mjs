@@ -124,6 +124,9 @@ for (const asset of ['./index.html', './styles.css', './app.js', './manifest.web
 if (!serviceWorker.includes('requestUrl.origin !== self.location.origin')) {
   fail('service worker is missing its same-origin request guard');
 }
+for (const behaviour of ["cache: 'no-cache'", "event.request.mode === 'navigate'", 'event.waitUntil(network.catch']) {
+  if (!serviceWorker.includes(behaviour)) fail(`service worker is missing update behaviour: ${behaviour}`);
+}
 
 const app = await readFile('app.js', 'utf8');
 for (const behaviour of ['MAX_FRAGMENTS = 6', 'localStorage', 'prefers-reduced-motion', 'showModal', 'toBlob']) {

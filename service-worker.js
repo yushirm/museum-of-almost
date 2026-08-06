@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-v1';
+const CACHE_NAME = 'museum-of-almost-v2';
 const STATIC_FILES = [
   './',
   './index.html',
@@ -10,6 +10,15 @@ const STATIC_FILES = [
   './icon.svg',
   './PRIVACY.md'
 ];
+
+async function fetchFresh(request) {
+  const response = await fetch(request, { cache: 'no-cache' });
+  if (!response || response.status !== 200 || response.type !== 'basic') return response;
+
+  const cache = await caches.open(CACHE_NAME);
+  await cache.put(request, response.clone());
+  return response;
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_FILES)));
@@ -28,15 +37,19 @@ self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url);
   if (event.request.method !== 'GET' || requestUrl.origin !== self.location.origin) return;
 
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (!response || response.status !== 200 || response.type !== 'basic') return response;
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-        return response;
-      });
-    })
-  );
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetchFresh(event.request).catch(async () => (
+        await caches.match(event.request)
+        || await caches.match('./index.html')
+        || await caches.match('./')
+        || Response.error()
+      ))
+    );
+    return;
+  }
+
+  const network = fetchFresh(event.request);
+  event.waitUntil(network.catch(() => undefined));
+  event.respondWith(caches.match(event.request).then((cached) => cached || network));
 });
