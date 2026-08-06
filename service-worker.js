@@ -1,11 +1,13 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-v4';
+const CACHE_NAME = 'museum-of-almost-v5';
 const STATIC_FILES = [
   './',
   './index.html',
   './styles.css',
   './app.js',
+  './tomorrow-room-core.js',
+  './tomorrow-room.js',
   './signal-vault-core.js',
   './signal-vault.js',
   './dreaming-wing.js',
