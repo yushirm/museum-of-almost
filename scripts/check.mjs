@@ -11,7 +11,8 @@ const required = [
   'README.md',
   'PRIVACY.md',
   'RIGHTS.md',
-  'CONTRIBUTING.md'
+  'CONTRIBUTING.md',
+  'scripts/test-service-worker.mjs'
 ];
 
 const runtimeFiles = [

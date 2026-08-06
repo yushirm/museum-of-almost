@@ -15,14 +15,22 @@ async function fetchFresh(request) {
   const response = await fetch(request, { cache: 'no-cache' });
   if (!response || response.status !== 200 || response.type !== 'basic') return response;
 
-  const cache = await caches.open(CACHE_NAME);
-  await cache.put(request, response.clone());
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put(request, response.clone());
+  } catch {
+    // Cache storage is best-effort. A valid network response must still be returned.
+  }
+
   return response;
 }
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_FILES)));
-  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(STATIC_FILES))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', (event) => {
