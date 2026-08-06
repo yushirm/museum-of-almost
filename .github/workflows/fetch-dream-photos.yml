@@ -25,6 +25,13 @@ jobs:
           persist-credentials: false
           fetch-depth: 1
 
+      - name: Install metadata-stripping image encoder
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y webp
+
       - name: Download and optimise public-domain photographs
         shell: bash
         run: |
@@ -42,15 +49,12 @@ jobs:
             'https://upload.wikimedia.org/wikipedia/commons/d/d4/Apollo15_Moon_photo.jpg' \
             --output /tmp/museum-photos/moon.jpg
 
-          ffmpeg -y -loglevel error -i /tmp/museum-photos/atrium.jpg \
-            -vf "scale='min(720,iw)':-2" -map_metadata -1 -c:v libwebp -quality 78 \
-            assets/dreaming-wing/atrium.webp
-          ffmpeg -y -loglevel error -i /tmp/museum-photos/clouds.jpg \
-            -vf "scale='min(720,iw)':-2" -map_metadata -1 -c:v libwebp -quality 76 \
-            assets/dreaming-wing/clouds.webp
-          ffmpeg -y -loglevel error -i /tmp/museum-photos/moon.jpg \
-            -vf "scale='min(1100,iw)':-2" -map_metadata -1 -c:v libwebp -quality 78 \
-            assets/dreaming-wing/moon.webp
+          cwebp -quiet -q 78 -resize 514 776 /tmp/museum-photos/atrium.jpg \
+            -o assets/dreaming-wing/atrium.webp
+          cwebp -quiet -q 76 -resize 640 1306 /tmp/museum-photos/clouds.jpg \
+            -o assets/dreaming-wing/clouds.webp
+          cwebp -quiet -q 78 -resize 1100 1107 /tmp/museum-photos/moon.jpg \
+            -o assets/dreaming-wing/moon.webp
 
           test -s assets/dreaming-wing/atrium.webp
           test -s assets/dreaming-wing/clouds.webp
