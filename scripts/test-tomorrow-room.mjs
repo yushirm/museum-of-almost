@@ -20,6 +20,7 @@ const state = {
     { text: 'a map of the room after it leaves', source: 'The Patient Gallery' }
   ]
 };
+const originalState = JSON.stringify(state);
 
 const observedAt = '2026-08-06T12:00:00';
 const first = core.buildTomorrows(observedAt, state);
@@ -32,6 +33,10 @@ assert.equal(
   JSON.stringify(repeated),
   'the same date and local museum state produce the same futures'
 );
+assert.equal(JSON.stringify(state), originalState, 'observing tomorrow does not mutate the stored museum state');
+assert.ok(Object.isFrozen(first), 'the observatory result is immutable');
+assert.ok(Object.isFrozen(first.tomorrows), 'the future collection is immutable');
+assert.ok(first.tomorrows.every((tomorrow) => Object.isFrozen(tomorrow)), 'each future is immutable');
 assert.equal(new Set(first.tomorrows.map((tomorrow) => tomorrow.designation)).size, 7, 'future designations are unique');
 assert.equal(new Set(first.tomorrows.map((tomorrow) => tomorrow.title)).size, 7, 'future titles are unique');
 
@@ -50,6 +55,9 @@ for (const [index, tomorrow] of first.tomorrows.entries()) {
 const nextDay = core.buildTomorrows('2026-08-07T12:00:00', state);
 assert.equal(nextDay.targetKey, '2026-08-08', 'the observatory advances after the local date changes');
 assert.notEqual(JSON.stringify(nextDay.tomorrows), JSON.stringify(first.tomorrows), 'a new date produces a new sky');
+
+const yearBoundary = core.buildTomorrows('2026-12-31T23:59:59', state);
+assert.equal(yearBoundary.targetKey, '2027-01-01', 'the local calendar rolls into a new year correctly');
 
 const changedState = core.buildTomorrows(observedAt, {
   ...state,
@@ -73,6 +81,20 @@ assert.equal(normalized.completedCollections, 2, 'completed collections are norm
 assert.equal(normalized.fragments.length, 6, 'catalogue influence remains bounded to six fragments');
 assert.equal(normalized.fragments[0].text, 'fragment 0', 'fragment labels are trimmed');
 
+const malformed = core.normalizeState({
+  fragments: [
+    null,
+    {},
+    { text: '' },
+    { text: '   ' },
+    { text: 42 },
+    { text: ' a valid fragment ', source: 17 }
+  ]
+});
+assert.equal(malformed.fragments.length, 1, 'malformed local catalogue entries are ignored');
+assert.equal(malformed.fragments[0].text, 'a valid fragment', 'valid recovered fragment text is trimmed');
+assert.equal(malformed.fragments[0].source, '', 'non-text fragment sources are discarded');
+
 const empty = core.buildTomorrows(observedAt, {});
 assert.equal(empty.tomorrows.length, 7, 'an empty catalogue can still observe tomorrow');
 assert.ok(
@@ -82,4 +104,4 @@ assert.ok(
 assert.match(core.observatoryNote(state), /finished collection/, 'completed collections affect the room note');
 assert.match(core.observatoryNote({}), /empty catalogue/, 'empty state has an explicit local-only note');
 
-console.log('Almost Tomorrow deterministic generation, daily rollover and catalogue influence tests passed.');
+console.log('Almost Tomorrow deterministic generation, calendar rollover, immutability and catalogue-boundary tests passed.');
