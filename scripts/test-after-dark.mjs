@@ -83,11 +83,21 @@ const normalizedHistory = core.normalizeHistory([
   null,
   { title: '', room: 'ROOM 000' },
   { title: '  A Room  ', room: '  ROOM 001  ' },
-  { title: 'x'.repeat(200), room: 'y'.repeat(200) }
+  { title: 'x'.repeat(200), room: 'y'.repeat(200) },
+  { title: '<img src=x onerror=alert(1)>The Room & Door', room: '<ROOM 009>' }
 ]);
-assert.equal(normalizedHistory.length, 2, 'invalid history entries are removed');
+assert.equal(normalizedHistory.length, 3, 'invalid history entries are removed');
 assert.equal(normalizedHistory[0].title, 'A Room', 'history text is trimmed');
 assert.equal(normalizedHistory[1].title.length, 120, 'history titles are length-bounded');
 assert.equal(normalizedHistory[1].room.length, 80, 'history labels are length-bounded');
+assert.doesNotMatch(normalizedHistory[2].title, /[&<>]/, 'history markup characters are removed');
+assert.doesNotMatch(normalizedHistory[2].room, /[&<>]/, 'room label markup characters are removed');
 
-console.log('Museum After Dark deterministic generation, daily rollover, local-photo use and bounded memory tests passed.');
+const sanitizedState = core.normalizeState({
+  fragments: [{ text: '<script>alert(1)</script>& maybe', source: '<gallery>' }]
+});
+assert.equal(sanitizedState.fragments.length, 1, 'sanitisation preserves a bounded fictional fragment');
+assert.doesNotMatch(sanitizedState.fragments[0].text, /[&<>]/, 'fragment markup characters are removed');
+assert.doesNotMatch(sanitizedState.fragments[0].source, /[&<>]/, 'fragment source markup characters are removed');
+
+console.log('Museum After Dark deterministic generation, daily rollover, local-photo use, bounded memory and local-state sanitisation tests passed.');
