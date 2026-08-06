@@ -133,6 +133,13 @@ const app = await readFile('app.js', 'utf8');
 for (const behaviour of ['MAX_FRAGMENTS = 6', 'localStorage', 'prefers-reduced-motion', 'showModal', 'toBlob']) {
   if (!app.includes(behaviour)) fail(`app.js is missing expected behaviour: ${behaviour}`);
 }
+for (const guard of [
+  'const shiftX = prefersReducedMotion ? 0',
+  'const x = prefersReducedMotion',
+  "stage.addEventListener('pointermove', (event) => {\n    if (prefersReducedMotion) return;"
+]) {
+  if (!app.includes(guard)) fail(`app.js is missing reduced-motion protection: ${guard}`);
+}
 
 if (failed) process.exit(1);
 console.log(`Museum checks passed across ${allFiles.length} source files.`);
