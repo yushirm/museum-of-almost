@@ -6,12 +6,19 @@ A dependency-free, offline-first interactive fiction and generative art experien
 
 [Visit The Museum of Almost](https://yushirm.github.io/museum-of-almost/)
 
-The museum procedurally creates gallery rooms filled with impossible unfinished artifacts. Visitors can examine objects, keep one fictional fragment from each room, observe seven daily futures in **The Observatory of Almost Tomorrow**, tune ten impossible transmissions in **The Listening Room**, enter **The Dreaming Wing** after keeping three fragments, and unlock **The Room That Was Finished** after completing a six-fragment collection.
+The museum procedurally creates gallery rooms filled with impossible unfinished artifacts. Visitors can examine objects, keep one fictional fragment from each room, explore seven local experiences through **The Unfinished Map**, observe seven daily futures in **The Observatory of Almost Tomorrow**, tune ten impossible transmissions in **The Listening Room**, enter **The Dreaming Wing** after keeping three fragments, and unlock **The Room That Was Finished** after completing a six-fragment collection.
 
 ## What is inside
 
 - Deterministic procedural rooms and exhibit writing.
 - Canvas-rendered galleries with responsive mobile and desktop layouts.
+- The Unfinished Map, a keyboard-accessible hub for the Museum’s special rooms.
+- The Cabinet of Almost Names, with nine daily titles generated from fictional catalogue state.
+- The Bureau of Interior Weather, with four fictional conditions for unfinished plans.
+- The Archive of Unsent Postcards, with six local compositions using the Museum’s public-domain photographs.
+- The Corridor That Remembers, a bounded history of the last eight fictional gallery titles.
+- The Cabinet of Small Permissions, with seven local daily permissions.
+- The Night Watch, an optional local display mode that dims and quiets the galleries.
 - The Observatory of Almost Tomorrow, a daily local orrery of seven possible futures.
 - The Listening Room, a keyboard-accessible constellation of ten local fictional signals.
 - The Dreaming Wing, generated locally from the visitor's kept fragments.
@@ -19,7 +26,7 @@ The museum procedurally creates gallery rooms filled with impossible unfinished 
 - Keyboard-accessible exhibit hotspots and native dialogs.
 - A local pocket catalogue with finite collection cycles.
 - Optional browser-synthesised ambient sound.
-- Local PNG room, tomorrow and dream postcard export.
+- Local PNG room, tomorrow, dream and unsent-postcard export.
 - A same-origin service worker for offline use.
 - No framework, package install, build step or external runtime dependency.
 
@@ -43,19 +50,25 @@ node --check signal-vault-core.js
 node --check signal-vault.js
 node --check dreaming-wing.js
 node --check dreaming-photos.js
+node --check after-dark-core.js
+node --check after-dark.js
 node --check service-worker.js
 node scripts/test-tomorrow-room.mjs
 node scripts/test-signal-vault.mjs
 node scripts/test-dreaming-wing.mjs
+node scripts/test-after-dark.mjs
 node scripts/test-service-worker.mjs
 node scripts/check.mjs
+node scripts/check-after-dark.mjs
 ```
 
-The repository check verifies required assets, local-only runtime references, service-worker coverage, basic accessibility structure, Almost Tomorrow daily generation and storage boundaries, Listening Room entropy boundaries, Dreaming Wing behavior and common secret patterns.
+The repository checks verify required assets, local-only runtime references, service-worker coverage, accessibility structure, bounded Museum After Dark storage, Almost Tomorrow daily generation, Listening Room entropy boundaries, Dreaming Wing behavior and common secret patterns.
 
 ## Privacy boundary
 
 The Museum application contains no personal or identifying sample data and does not accept visitor text. Progress is limited to generated fictional labels, counters and a random seed stored in local browser storage.
+
+Museum After Dark stores only bounded fictional state: up to eight recent room titles, a daily Almost Name index from zero to eight, and a single boolean Night Watch preference. The Bureau of Interior Weather is generated fiction about unfinished plans; it does not infer the visitor’s mood, health or identity. Unsent postcards are rendered locally from photographs already stored in the repository.
 
 The Observatory of Almost Tomorrow uses the browser's local calendar date and the existing fictional catalogue to generate seven alternatives. It stores only the selected alternative number and its target date when a visitor seals a tomorrow. It does not store the visitor's location, timezone or free-form text, and it does not transmit the choice.
 
