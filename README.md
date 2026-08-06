@@ -6,12 +6,13 @@ A dependency-free, offline-first interactive fiction and generative art experien
 
 [Visit The Museum of Almost](https://yushirm.github.io/museum-of-almost/)
 
-The museum procedurally creates gallery rooms filled with impossible unfinished artifacts. Visitors can examine objects, keep one fictional fragment from each room, explore seven local experiences through **The Unfinished Map**, observe seven daily futures in **The Observatory of Almost Tomorrow**, tune ten impossible transmissions in **The Listening Room**, enter **The Dreaming Wing** after keeping three fragments, and unlock **The Room That Was Finished** after completing a six-fragment collection.
+The museum procedurally creates gallery rooms filled with impossible unfinished artifacts. Visitors can examine objects, keep one fictional fragment from each room, reassemble an impossible artifact in **The Conservation Lab for Impossible Objects**, explore seven local experiences through **The Unfinished Map**, observe seven daily futures in **The Observatory of Almost Tomorrow**, tune ten impossible transmissions in **The Listening Room**, enter **The Dreaming Wing** after keeping three fragments, and unlock **The Room That Was Finished** after completing a six-fragment collection.
 
 ## What is inside
 
 - Deterministic procedural rooms and exhibit writing.
 - Canvas-rendered galleries with responsive mobile and desktop layouts.
+- The Conservation Lab for Impossible Objects, a pointer and keyboard workbench for three procedural artifact fragments.
 - The Unfinished Map, a keyboard-accessible hub for the Museum’s special rooms.
 - The Cabinet of Almost Names, with nine daily titles generated from fictional catalogue state.
 - The Bureau of Interior Weather, with four fictional conditions for unfinished plans.
@@ -26,7 +27,7 @@ The museum procedurally creates gallery rooms filled with impossible unfinished 
 - Keyboard-accessible exhibit hotspots and native dialogs.
 - A local pocket catalogue with finite collection cycles.
 - Optional browser-synthesised ambient sound.
-- Local PNG room, tomorrow, dream and unsent-postcard export.
+- Local PNG room, conservation, tomorrow, dream and unsent-postcard export.
 - A same-origin service worker for offline use.
 - No framework, package install, build step or external runtime dependency.
 
@@ -44,6 +45,8 @@ A local server is recommended because browsers restrict service workers when a p
 
 ```bash
 node --check app.js
+node --check conservation-core.js
+node --check conservation-lab.js
 node --check tomorrow-room-core.js
 node --check tomorrow-room.js
 node --check signal-vault-core.js
@@ -53,6 +56,7 @@ node --check dreaming-photos.js
 node --check after-dark-core.js
 node --check after-dark.js
 node --check service-worker.js
+node scripts/test-conservation.mjs
 node scripts/test-tomorrow-room.mjs
 node scripts/test-signal-vault.mjs
 node scripts/test-dreaming-wing.mjs
@@ -60,13 +64,16 @@ node scripts/test-after-dark.mjs
 node scripts/test-service-worker.mjs
 node scripts/check.mjs
 node scripts/check-after-dark.mjs
+node scripts/check-conservation.mjs
 ```
 
-The repository checks verify required assets, local-only runtime references, service-worker coverage, accessibility structure, bounded Museum After Dark storage, Almost Tomorrow daily generation, Listening Room entropy boundaries, Dreaming Wing behavior and common secret patterns.
+The repository checks verify required assets, local-only runtime references, service-worker coverage, accessibility structure, Conservation Lab movement and no-storage boundaries, bounded Museum After Dark storage, Almost Tomorrow daily generation, Listening Room entropy boundaries, Dreaming Wing behavior and common secret patterns.
 
 ## Privacy boundary
 
 The Museum application contains no personal or identifying sample data and does not accept visitor text. Progress is limited to generated fictional labels, counters and a random seed stored in local browser storage.
+
+The Conservation Lab reads only the existing fictional catalogue to shape a procedural object. It stores no restoration state, pointer path, completed case or postcard. Movement stays in memory until the page is closed or another case is opened.
 
 Museum After Dark stores only bounded fictional state: up to eight recent room titles, a daily Almost Name index from zero to eight, and a single boolean Night Watch preference. The Bureau of Interior Weather is generated fiction about unfinished plans; it does not infer the visitor’s mood, health or identity. Unsent postcards are rendered locally from photographs already stored in the repository.
 
