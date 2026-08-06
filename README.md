@@ -36,11 +36,12 @@ node --check app.js
 node --check dreaming-wing.js
 node --check dreaming-photos.js
 node --check service-worker.js
+node scripts/test-dreaming-wing.mjs
 node scripts/test-service-worker.mjs
 node scripts/check.mjs
 ```
 
-The repository check verifies required assets, local-only runtime references, service-worker coverage, basic accessibility structure, Dreaming Wing boundaries and common secret patterns.
+The repository check verifies required assets, local-only runtime references, service-worker coverage, basic accessibility structure, Dreaming Wing behavior and common secret patterns.
 
 ## Privacy boundary
 
