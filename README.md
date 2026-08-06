@@ -2,6 +2,8 @@
 
 A dependency-free, offline-first interactive fiction and generative art experience for the browser.
 
+Visit the live museum: https://yushirm.github.io/museum-of-almost/
+
 The museum procedurally creates gallery rooms filled with impossible unfinished artifacts. Visitors can examine objects, keep one fictional fragment from each room, save local postcards, and unlock **The Room That Was Finished** after completing a six-fragment collection.
 
 ## What is inside
@@ -39,7 +41,7 @@ The repository check verifies required assets, local-only runtime references, se
 
 The Museum application contains no personal or identifying sample data and does not accept visitor text. Progress is limited to generated fictional labels, counters and a random seed stored in local browser storage.
 
-When GitHub Pages is enabled, GitHub provides the public hosting and may process technical connection information under its own privacy terms.
+On the GitHub Pages site, GitHub provides the public hosting and may process technical connection information under its own privacy terms.
 
 See [PRIVACY.md](PRIVACY.md) for the full boundary.
 
