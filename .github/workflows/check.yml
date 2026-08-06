@@ -28,7 +28,9 @@ jobs:
         with:
           node-version: 22
       - name: Check JavaScript syntax
-        run: node --check app.js && node --check dreaming-wing.js && node --check dreaming-photos.js && node --check service-worker.js && node --check scripts/check.mjs && node --check scripts/test-service-worker.mjs
+        run: node --check app.js && node --check dreaming-wing.js && node --check dreaming-photos.js && node --check service-worker.js && node --check scripts/check.mjs && node --check scripts/test-service-worker.mjs && node --check scripts/test-dreaming-wing.mjs
+      - name: Test Dreaming Wing behavior
+        run: node scripts/test-dreaming-wing.mjs
       - name: Test service worker lifecycle and fallback
         run: node scripts/test-service-worker.mjs
       - name: Check privacy and application contract
