@@ -5,12 +5,13 @@ import vm from 'node:vm';
 const source = await readFile(new URL('../service-worker.js', import.meta.url), 'utf8');
 const listeners = new Map();
 const stores = new Map();
+const fetchCalls = [];
 let fetchImplementation = async () => {
   throw new Error('fetch implementation not configured');
 };
-let failCacheWrites = false;
 let skipWaitingCalls = 0;
 let claimCalls = 0;
+let cachePutFailure = false;
 
 function keyFor(request) {
   return typeof request === 'string' ? request : request.url;
@@ -35,7 +36,7 @@ function cacheFor(name) {
       for (const path of paths) entries.set(path, createResponse(`precache:${path}`));
     },
     async put(request, response) {
-      if (failCacheWrites) throw new Error('cache storage unavailable');
+      if (cachePutFailure) throw new Error('cache unavailable');
       entries.set(keyFor(request), response);
     }
   };
@@ -65,7 +66,10 @@ const sandbox = {
   Promise,
   Response: { error: () => createResponse('', { status: 0, type: 'error' }) },
   caches,
-  fetch: (...args) => fetchImplementation(...args),
+  fetch: (request, options) => {
+    fetchCalls.push({ request, options });
+    return fetchImplementation(request, options);
+  },
   self: {
     location: { origin: 'https://example.test' },
     clients: {
@@ -76,7 +80,7 @@ const sandbox = {
     addEventListener(type, listener) {
       listeners.set(type, listener);
     },
-    async skipWaiting() {
+    skipWaiting() {
       skipWaitingCalls += 1;
     }
   }
@@ -113,12 +117,14 @@ function createFetchEvent(request) {
   });
 }
 
-await dispatch('install', createExtendableEvent());
+const installEvent = createExtendableEvent();
+await dispatch('install', installEvent);
 assert.equal(skipWaitingCalls, 1, 'installation activates the new worker promptly');
 assert.ok(await caches.match('./index.html'), 'installation precaches the app shell');
 
 stores.set('museum-of-almost-v1', new Map([['old', createResponse('old')]]));
-await dispatch('activate', createExtendableEvent());
+const activateEvent = createExtendableEvent();
+await dispatch('activate', activateEvent);
 assert.equal(stores.has('museum-of-almost-v1'), false, 'activation removes obsolete caches');
 assert.equal(claimCalls, 1, 'activation claims open clients');
 
@@ -129,53 +135,75 @@ const assetRequest = {
 };
 await cacheFor('museum-of-almost-v2').put(assetRequest, createResponse('stale'));
 fetchImplementation = async () => createResponse('fresh');
-const cachedAssetEvent = createFetchEvent(assetRequest);
-listeners.get('fetch')(cachedAssetEvent);
-assert.equal((await cachedAssetEvent.responsePromise).body, 'stale', 'cached assets remain immediately available');
-await cachedAssetEvent.settled();
-assert.equal((await caches.match(assetRequest)).body, 'fresh', 'background revalidation refreshes cached assets');
+const revalidationEvent = createFetchEvent(assetRequest);
+listeners.get('fetch')(revalidationEvent);
+assert.equal((await revalidationEvent.responsePromise).body, 'stale', 'cached assets remain immediately available');
+await revalidationEvent.settled();
+assert.equal((await caches.match(assetRequest)).body, 'fresh', 'background revalidation refreshes the cached asset');
+assert.equal(fetchCalls.at(-1).options.cache, 'no-cache', 'revalidation bypasses the browser HTTP cache');
 
 const uncachedRequest = {
-  url: 'https://example.test/museum/new.js',
+  url: 'https://example.test/museum/styles.css',
   method: 'GET',
   mode: 'same-origin'
 };
-fetchImplementation = async () => createResponse('network-only');
+fetchImplementation = async () => createResponse('network asset');
 const uncachedEvent = createFetchEvent(uncachedRequest);
 listeners.get('fetch')(uncachedEvent);
-assert.equal((await uncachedEvent.responsePromise).body, 'network-only', 'uncached assets use the network');
+assert.equal((await uncachedEvent.responsePromise).body, 'network asset', 'uncached assets use the network response');
 await uncachedEvent.settled();
-assert.equal((await caches.match(uncachedRequest)).body, 'network-only', 'uncached assets are stored for offline use');
+assert.equal((await caches.match(uncachedRequest)).body, 'network asset', 'uncached assets are stored for offline use');
 
-failCacheWrites = true;
-const noStorageRequest = {
-  url: 'https://example.test/museum/no-storage.js',
+const navigationRequest = {
+  url: 'https://example.test/museum/',
   method: 'GET',
-  mode: 'same-origin'
+  mode: 'navigate'
 };
-fetchImplementation = async () => createResponse('still-usable');
-const noStorageEvent = createFetchEvent(noStorageRequest);
-listeners.get('fetch')(noStorageEvent);
-assert.equal((await noStorageEvent.responsePromise).body, 'still-usable', 'cache write failures do not discard valid network responses');
-await noStorageEvent.settled();
-failCacheWrites = false;
+fetchImplementation = async () => createResponse('current page');
+const navigationEvent = createFetchEvent(navigationRequest);
+listeners.get('fetch')(navigationEvent);
+assert.equal((await navigationEvent.responsePromise).body, 'current page', 'online navigation prefers the current page');
+assert.equal((await caches.match(navigationRequest)).body, 'current page', 'successful navigation refreshes its cached response');
+
+cachePutFailure = true;
+fetchImplementation = async () => createResponse('current page without cache');
+const cacheFailureNavigation = createFetchEvent({
+  url: 'https://example.test/museum/cache-unavailable',
+  method: 'GET',
+  mode: 'navigate'
+});
+listeners.get('fetch')(cacheFailureNavigation);
+assert.equal(
+  (await cacheFailureNavigation.responsePromise).body,
+  'current page without cache',
+  'a cache write failure does not hide a valid online navigation response'
+);
+cachePutFailure = false;
 
 fetchImplementation = async () => {
   throw new Error('offline');
 };
-const offlineAssetEvent = createFetchEvent(assetRequest);
-listeners.get('fetch')(offlineAssetEvent);
-assert.equal((await offlineAssetEvent.responsePromise).body, 'fresh', 'offline assets fall back to the current cache');
-await offlineAssetEvent.settled();
-
-const navigationRequest = {
+const offlineNavigation = createFetchEvent({
   url: 'https://example.test/museum/missing-route',
   method: 'GET',
   mode: 'navigate'
-};
-const navigationEvent = createFetchEvent(navigationRequest);
-listeners.get('fetch')(navigationEvent);
-assert.equal((await navigationEvent.responsePromise).body, 'precache:./index.html', 'offline navigation falls back to the app shell');
+});
+listeners.get('fetch')(offlineNavigation);
+assert.equal((await offlineNavigation.responsePromise).body, 'precache:./index.html', 'offline navigation falls back to the app shell');
+
+const offlineAsset = createFetchEvent(assetRequest);
+listeners.get('fetch')(offlineAsset);
+assert.equal((await offlineAsset.responsePromise).body, 'fresh', 'offline assets use the latest cached response');
+await offlineAsset.settled();
+
+const missingAsset = createFetchEvent({
+  url: 'https://example.test/museum/not-cached.js',
+  method: 'GET',
+  mode: 'same-origin'
+});
+listeners.get('fetch')(missingAsset);
+await assert.rejects(missingAsset.responsePromise, /offline/, 'uncached offline assets fail rather than inventing content');
+await missingAsset.settled();
 
 const crossOriginEvent = createFetchEvent({
   url: 'https://outside.test/file.js',
@@ -193,4 +221,4 @@ const postEvent = createFetchEvent({
 listeners.get('fetch')(postEvent);
 assert.equal(postEvent.responsePromise, undefined, 'non-GET requests are not intercepted');
 
-console.log('Service worker lifecycle, refresh, and offline fallback tests passed.');
+console.log('Service worker cache revalidation and offline fallback tests passed.');
