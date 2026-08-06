@@ -16,6 +16,8 @@ The Museum itself:
 
 The pocket catalogue stores only generated fictional fragment labels, progress counters and a random seed in the visitor's browser storage.
 
+The Listening Room stores no additional visitor state. It retains ten fixed numeric entropy values in the application source; the source seed identifiers are not stored. Its receiver reads the existing fictional catalogue locally to choose an echo and does not transmit that catalogue.
+
 Optional ambient sound is synthesised locally by the browser and remains silent until explicitly enabled.
 
 The **Save postcard** feature generates an image locally. The image leaves the visitor's device only when the visitor deliberately moves, uploads or shares it.
