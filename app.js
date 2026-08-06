@@ -404,8 +404,8 @@
 
   function drawScene(time) {
     const [gold, cool, warm, paper] = room.palette;
-    const shiftX = (pointer.x - 0.5) * 14;
-    const shiftY = (pointer.y - 0.5) * 6;
+    const shiftX = prefersReducedMotion ? 0 : (pointer.x - 0.5) * 14;
+    const shiftY = prefersReducedMotion ? 0 : (pointer.y - 0.5) * 6;
 
     const wall = context.createLinearGradient(0, 0, 0, height);
     wall.addColorStop(0, '#24201b');
@@ -449,7 +449,9 @@
       const y = prefersReducedMotion
         ? particle.y
         : (particle.y - time * particle.speed + height * 10) % height;
-      const x = particle.x + Math.sin(time * 0.0004 + particle.phase) * 8;
+      const x = prefersReducedMotion
+        ? particle.x
+        : particle.x + Math.sin(time * 0.0004 + particle.phase) * 8;
       context.beginPath();
       context.arc(x, y, particle.r, 0, Math.PI * 2);
       context.fillStyle = `rgba(242, 226, 196, ${particle.alpha})`;
@@ -819,15 +821,16 @@
   }
 
   stage.addEventListener('pointermove', (event) => {
+    if (prefersReducedMotion) return;
     const rect = stage.getBoundingClientRect();
     pointer = {
       x: Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
       y: Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height))
     };
-    if (prefersReducedMotion) drawScene(performance.now());
   }, { passive: true });
 
   stage.addEventListener('pointerleave', () => {
+    if (prefersReducedMotion) return;
     pointer = { x: 0.5, y: 0.5 };
   });
 
