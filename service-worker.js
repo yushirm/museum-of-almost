@@ -19,14 +19,18 @@ async function fetchFresh(request) {
     const cache = await caches.open(CACHE_NAME);
     await cache.put(request, response.clone());
   } catch {
-    // A cache write failure must not hide a valid network response.
+    // Cache storage is best-effort. A valid network response must still be returned.
   }
+
   return response;
 }
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_FILES)));
-  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(STATIC_FILES))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', (event) => {
