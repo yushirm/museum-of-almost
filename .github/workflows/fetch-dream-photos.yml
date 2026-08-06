@@ -68,9 +68,22 @@ jobs:
         run: |
           set -euo pipefail
           for path in assets/dreaming-wing/atrium.webp assets/dreaming-wing/clouds.webp assets/dreaming-wing/moon.webp; do
-            content="$(base64 -w0 "$path")"
+            python - "$path" <<'PY'
+          import base64
+          import json
+          import os
+          import sys
+
+          path = sys.argv[1]
+          with open(path, 'rb') as source:
+              content = base64.b64encode(source.read()).decode('ascii')
+          with open('/tmp/photo-payload.json', 'w', encoding='utf-8') as payload:
+              json.dump({
+                  'message': 'Add local Dreaming Wing photograph',
+                  'content': content,
+                  'branch': os.environ['GITHUB_REF_NAME']
+              }, payload)
+          PY
             gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/${path}" \
-              -f message="Add local Dreaming Wing photograph" \
-              -f content="$content" \
-              -f branch="$GITHUB_REF_NAME" >/dev/null
+              --input /tmp/photo-payload.json >/dev/null
           done
