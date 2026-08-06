@@ -141,7 +141,9 @@ globalThis.MuseumAfterDarkCore = (() => {
   }
 
   function cleanText(value, maximum = 120) {
-    return typeof value === 'string' ? value.trim().slice(0, maximum) : '';
+    return typeof value === 'string'
+      ? value.replace(/[&<>]/g, '').trim().slice(0, maximum)
+      : '';
   }
 
   function normalizeState(rawState) {
