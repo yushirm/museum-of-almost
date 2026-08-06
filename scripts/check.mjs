@@ -9,7 +9,9 @@ const required = [
   'service-worker.js',
   'icon.svg',
   'README.md',
-  'PRIVACY.md'
+  'PRIVACY.md',
+  'COPYRIGHT.md',
+  'CONTRIBUTING.md'
 ];
 
 const runtimeFiles = [
@@ -88,6 +90,29 @@ if (/<input\b|<textarea\b|contenteditable=/i.test(html)) {
   fail('index.html accepts free-form visitor input');
 }
 
+const readme = await readFile('README.md', 'utf8');
+for (const policyLink of ['PRIVACY.md', 'COPYRIGHT.md', 'CONTRIBUTING.md']) {
+  if (!readme.includes(policyLink)) fail(`README.md does not reference ${policyLink}`);
+}
+if (!readme.includes('Public visibility does not make it an open-source project')) {
+  fail('README.md is missing the public-visibility boundary');
+}
+
+const privacy = await readFile('PRIVACY.md', 'utf8');
+for (const privacyBoundary of ['GitHub Pages', 'IP addresses', 'personal information about any person']) {
+  if (!privacy.includes(privacyBoundary)) fail(`PRIVACY.md is missing its ${privacyBoundary} boundary`);
+}
+
+const copyright = await readFile('COPYRIGHT.md', 'utf8');
+for (const copyrightBoundary of ['All rights reserved', 'absence of an open-source licence is intentional']) {
+  if (!copyright.includes(copyrightBoundary)) fail(`COPYRIGHT.md is missing: ${copyrightBoundary}`);
+}
+
+const contributing = await readFile('CONTRIBUTING.md', 'utf8');
+if (!contributing.includes('External contributions are not accepted')) {
+  fail('CONTRIBUTING.md is missing the external-contribution boundary');
+}
+
 const manifest = JSON.parse(await readFile('manifest.webmanifest', 'utf8'));
 if (manifest.name !== 'The Museum of Almost') fail('manifest name is unexpected');
 if (manifest.start_url !== './') fail('manifest start_url must remain local');
@@ -108,3 +133,4 @@ for (const behaviour of ['MAX_FRAGMENTS = 6', 'localStorage', 'prefers-reduced-m
 if (failed) process.exit(1);
 console.log(`Museum checks passed across ${allFiles.length} source files.`);
 console.log('No external runtime dependencies, obvious secrets, free-form visitor input, or third-party network references found.');
+console.log('Public-hosting privacy, copyright, and contribution boundaries are present.');
