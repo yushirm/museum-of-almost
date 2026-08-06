@@ -121,16 +121,18 @@ const installEvent = createExtendableEvent();
 await dispatch('install', installEvent);
 assert.equal(skipWaitingCalls, 1, 'installation activates the new worker promptly');
 assert.ok(await caches.match('./index.html'), 'installation precaches the app shell');
+assert.ok(await caches.match('./signal-vault-core.js'), 'installation precaches the Listening Room signal core');
+assert.ok(await caches.match('./signal-vault.js'), 'installation precaches the Listening Room controller');
 assert.ok(await caches.match('./dreaming-wing.js'), 'installation precaches the Dreaming Wing');
 assert.ok(await caches.match('./dreaming-photos.js'), 'installation precaches the photographic evidence controller');
 assert.ok(await caches.match('./assets/dreaming-wing/atrium.webp'), 'installation precaches the atrium photograph');
 assert.ok(await caches.match('./assets/dreaming-wing/clouds.webp'), 'installation precaches the cloud photograph');
 assert.ok(await caches.match('./assets/dreaming-wing/moon.webp'), 'installation precaches the lunar photograph');
 
-stores.set('museum-of-almost-v2', new Map([['old', createResponse('old')]]));
+stores.set('museum-of-almost-v3', new Map([['old', createResponse('old')]]));
 const activateEvent = createExtendableEvent();
 await dispatch('activate', activateEvent);
-assert.equal(stores.has('museum-of-almost-v2'), false, 'activation removes obsolete caches');
+assert.equal(stores.has('museum-of-almost-v3'), false, 'activation removes obsolete caches');
 assert.equal(claimCalls, 1, 'activation claims open clients');
 
 const assetRequest = {
@@ -138,7 +140,7 @@ const assetRequest = {
   method: 'GET',
   mode: 'same-origin'
 };
-await cacheFor('museum-of-almost-v3').put(assetRequest, createResponse('stale'));
+await cacheFor('museum-of-almost-v4').put(assetRequest, createResponse('stale'));
 fetchImplementation = async () => createResponse('fresh');
 const revalidationEvent = createFetchEvent(assetRequest);
 listeners.get('fetch')(revalidationEvent);
@@ -226,4 +228,4 @@ const postEvent = createFetchEvent({
 listeners.get('fetch')(postEvent);
 assert.equal(postEvent.responsePromise, undefined, 'non-GET requests are not intercepted');
 
-console.log('Service worker cache revalidation and Dreaming Wing offline fallback tests passed.');
+console.log('Service worker cache revalidation, Listening Room coverage and offline fallback tests passed.');

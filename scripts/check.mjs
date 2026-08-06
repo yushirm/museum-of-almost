@@ -12,6 +12,8 @@ const required = [
   'index.html',
   'styles.css',
   'app.js',
+  'signal-vault-core.js',
+  'signal-vault.js',
   'dreaming-wing.js',
   'dreaming-photos.js',
   'manifest.webmanifest',
@@ -22,7 +24,9 @@ const required = [
   'RIGHTS.md',
   'PHOTO_CREDITS.md',
   'CONTRIBUTING.md',
+  'scripts/test-signal-vault.mjs',
   'scripts/test-service-worker.mjs',
+  'scripts/test-dreaming-wing.mjs',
   ...dreamPhotos
 ];
 
@@ -30,6 +34,8 @@ const runtimeFiles = [
   'index.html',
   'styles.css',
   'app.js',
+  'signal-vault-core.js',
+  'signal-vault.js',
   'dreaming-wing.js',
   'dreaming-photos.js',
   'manifest.webmanifest',
@@ -91,13 +97,23 @@ for (const file of runtimeFiles) {
   if (file === 'styles.css' && /@import\s/i.test(content)) fail('styles.css imports an external stylesheet');
 }
 
-for (const file of ['app.js', 'dreaming-wing.js', 'dreaming-photos.js']) {
+for (const file of ['app.js', 'signal-vault-core.js', 'signal-vault.js', 'dreaming-wing.js', 'dreaming-photos.js']) {
   const content = await readFile(file, 'utf8');
   if (/\bfetch\s*\(/.test(content)) fail(`${file} performs a runtime fetch`);
 }
 
 const html = await readFile('index.html', 'utf8');
-for (const asset of ['styles.css', 'app.js', 'dreaming-wing.js', 'dreaming-photos.js', 'manifest.webmanifest', 'icon.svg', 'PRIVACY.md']) {
+for (const asset of [
+  'styles.css',
+  'app.js',
+  'signal-vault-core.js',
+  'signal-vault.js',
+  'dreaming-wing.js',
+  'dreaming-photos.js',
+  'manifest.webmanifest',
+  'icon.svg',
+  'PRIVACY.md'
+]) {
   if (!html.includes(asset)) fail(`index.html does not reference ${asset}`);
 }
 
@@ -117,7 +133,9 @@ if (!readme.includes('Public visibility does not make it an open-source project'
   fail('README.md is missing the public-visibility boundary');
 }
 if (!readme.includes('The Dreaming Wing')) fail('README.md does not document the Dreaming Wing');
+if (!readme.includes('The Listening Room')) fail('README.md does not document the Listening Room');
 if (!readme.includes('does not request remote images')) fail('README.md does not document the local-image boundary');
+if (!readme.includes('source seed strings are not stored')) fail('README.md does not document the Listening Room seed boundary');
 
 const privacy = await readFile('PRIVACY.md', 'utf8');
 for (const privacyBoundary of ['GitHub Pages', 'IP addresses', 'personal information about any person']) {
@@ -167,6 +185,8 @@ for (const asset of [
   './index.html',
   './styles.css',
   './app.js',
+  './signal-vault-core.js',
+  './signal-vault.js',
   './dreaming-wing.js',
   './dreaming-photos.js',
   './manifest.webmanifest',
@@ -194,6 +214,31 @@ for (const guard of [
   "stage.addEventListener('pointermove', (event) => {\n    if (prefersReducedMotion) return;"
 ]) {
   if (!app.includes(guard)) fail(`app.js is missing reduced-motion protection: ${guard}`);
+}
+
+const signalCore = await readFile('signal-vault-core.js', 'utf8');
+for (const behaviour of ['SIGNAL_ENTROPY', 'buildSignals', 'echoForSignal', 'normalizeState', 'roomNote']) {
+  if (!signalCore.includes(behaviour)) fail(`signal-vault-core.js is missing expected behaviour: ${behaviour}`);
+}
+if (/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/i.test(signalCore)) {
+  fail('signal-vault-core.js retains source seed identifiers');
+}
+
+const signalController = await readFile('signal-vault.js', 'utf8');
+for (const behaviour of [
+  'The Listening Room',
+  'TEN RECEIVED TRANSMISSIONS',
+  'aria-live="polite"',
+  "node.setAttribute('aria-pressed', 'false')",
+  'prefers-reduced-motion',
+  'localStorage.getItem(STORAGE_KEY)',
+  'Previous signal',
+  'Next signal'
+]) {
+  if (!signalController.includes(behaviour)) fail(`signal-vault.js is missing expected behaviour: ${behaviour}`);
+}
+if (/<input\b|<textarea\b|contenteditable=/i.test(signalController)) {
+  fail('signal-vault.js accepts free-form visitor input');
 }
 
 const dreamingWing = await readFile('dreaming-wing.js', 'utf8');
@@ -226,5 +271,6 @@ for (const behaviour of [
 if (failed) process.exit(1);
 console.log(`Museum checks passed across ${allFiles.length} source files.`);
 console.log(`Dreaming Wing photographs are local WebP assets totalling ${totalPhotoBytes} bytes with no EXIF, XMP, or ICC chunks.`);
+console.log('The Listening Room retains ten anonymous numeric entropy values and no source seed identifiers.');
 console.log('No external runtime dependencies, obvious secrets, free-form visitor input, or third-party network references found.');
 console.log('Public-hosting privacy, rights, photograph provenance, and contribution boundaries are present.');
