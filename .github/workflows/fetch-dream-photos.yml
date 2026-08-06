@@ -1,0 +1,72 @@
+name: Fetch Dreaming Wing photos
+
+on:
+  push:
+    branches:
+      - feature/dreaming-wing
+    paths:
+      - .github/workflows/fetch-dream-photos.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-dream-photos-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Download and optimise public-domain photographs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/dreaming-wing /tmp/museum-photos
+          agent='Museum of Almost static asset preparation'
+
+          curl --fail --location --retry 3 --user-agent "$agent" \
+            'https://upload.wikimedia.org/wikipedia/commons/6/64/Interior-museo.jpg' \
+            --output /tmp/museum-photos/atrium.jpg
+          curl --fail --location --retry 3 --user-agent "$agent" \
+            'https://upload.wikimedia.org/wikipedia/commons/2/26/Clouds_image.jpg' \
+            --output /tmp/museum-photos/clouds.jpg
+          curl --fail --location --retry 3 --user-agent "$agent" \
+            'https://upload.wikimedia.org/wikipedia/commons/d/d4/Apollo15_Moon_photo.jpg' \
+            --output /tmp/museum-photos/moon.jpg
+
+          ffmpeg -y -loglevel error -i /tmp/museum-photos/atrium.jpg \
+            -vf "scale='min(720,iw)':-2" -map_metadata -1 -c:v libwebp -quality 78 \
+            assets/dreaming-wing/atrium.webp
+          ffmpeg -y -loglevel error -i /tmp/museum-photos/clouds.jpg \
+            -vf "scale='min(720,iw)':-2" -map_metadata -1 -c:v libwebp -quality 76 \
+            assets/dreaming-wing/clouds.webp
+          ffmpeg -y -loglevel error -i /tmp/museum-photos/moon.jpg \
+            -vf "scale='min(1100,iw)':-2" -map_metadata -1 -c:v libwebp -quality 78 \
+            assets/dreaming-wing/moon.webp
+
+          test -s assets/dreaming-wing/atrium.webp
+          test -s assets/dreaming-wing/clouds.webp
+          test -s assets/dreaming-wing/moon.webp
+          du -h assets/dreaming-wing/*.webp
+
+      - name: Commit local photo assets to the feature branch
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for path in assets/dreaming-wing/atrium.webp assets/dreaming-wing/clouds.webp assets/dreaming-wing/moon.webp; do
+            content="$(base64 -w0 "$path")"
+            gh api --method PUT "repos/${GITHUB_REPOSITORY}/contents/${path}" \
+              -f message="Add local Dreaming Wing photograph" \
+              -f content="$content" \
+              -f branch="$GITHUB_REF_NAME" >/dev/null
+          done
