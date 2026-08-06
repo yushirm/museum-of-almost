@@ -6,6 +6,7 @@ const STATIC_FILES = [
   './index.html',
   './styles.css',
   './app.js',
+  './dreaming-wing.js',
   './manifest.webmanifest',
   './icon.svg',
   './PRIVACY.md'
