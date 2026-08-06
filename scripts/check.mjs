@@ -2,6 +2,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 
 const required = [
+  '.nojekyll',
   'index.html',
   'styles.css',
   'app.js',
