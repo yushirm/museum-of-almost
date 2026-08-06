@@ -10,7 +10,7 @@ const required = [
   'icon.svg',
   'README.md',
   'PRIVACY.md',
-  'COPYRIGHT.md',
+  'RIGHTS.md',
   'CONTRIBUTING.md'
 ];
 
@@ -91,7 +91,7 @@ if (/<input\b|<textarea\b|contenteditable=/i.test(html)) {
 }
 
 const readme = await readFile('README.md', 'utf8');
-for (const policyLink of ['PRIVACY.md', 'COPYRIGHT.md', 'CONTRIBUTING.md']) {
+for (const policyLink of ['PRIVACY.md', 'RIGHTS.md', 'CONTRIBUTING.md']) {
   if (!readme.includes(policyLink)) fail(`README.md does not reference ${policyLink}`);
 }
 if (!readme.includes('Public visibility does not make it an open-source project')) {
@@ -103,9 +103,9 @@ for (const privacyBoundary of ['GitHub Pages', 'IP addresses', 'personal informa
   if (!privacy.includes(privacyBoundary)) fail(`PRIVACY.md is missing its ${privacyBoundary} boundary`);
 }
 
-const copyright = await readFile('COPYRIGHT.md', 'utf8');
-for (const copyrightBoundary of ['All rights reserved', 'absence of an open-source licence is intentional']) {
-  if (!copyright.includes(copyrightBoundary)) fail(`COPYRIGHT.md is missing: ${copyrightBoundary}`);
+const rights = await readFile('RIGHTS.md', 'utf8');
+for (const rightsBoundary of ['All rights reserved', 'absence of an open-source licence is intentional']) {
+  if (!rights.includes(rightsBoundary)) fail(`RIGHTS.md is missing: ${rightsBoundary}`);
 }
 
 const contributing = await readFile('CONTRIBUTING.md', 'utf8');
@@ -133,4 +133,4 @@ for (const behaviour of ['MAX_FRAGMENTS = 6', 'localStorage', 'prefers-reduced-m
 if (failed) process.exit(1);
 console.log(`Museum checks passed across ${allFiles.length} source files.`);
 console.log('No external runtime dependencies, obvious secrets, free-form visitor input, or third-party network references found.');
-console.log('Public-hosting privacy, copyright, and contribution boundaries are present.');
+console.log('Public-hosting privacy, rights, and contribution boundaries are present.');

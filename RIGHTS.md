@@ -1,4 +1,4 @@
-# Copyright
+# Rights and usage
 
 Copyright © 2026 yushirm. All rights reserved.
 

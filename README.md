@@ -47,6 +47,6 @@ See [PRIVACY.md](PRIVACY.md) for the full boundary.
 
 This repository is intended to be publicly viewable for transparency and to support the hosted Museum website. Public visibility does not make it an open-source project.
 
-No open-source licence is granted. The absence of a licence is deliberate, and all rights are reserved except where applicable law or GitHub's Terms of Service provide otherwise. See [COPYRIGHT.md](COPYRIGHT.md).
+No open-source licence is granted. The absence of a licence is deliberate, and all rights are reserved except where applicable law or GitHub's Terms of Service provide otherwise. See [RIGHTS.md](RIGHTS.md).
 
 External contributions are not accepted unless explicitly invited by the repository owner. See [CONTRIBUTING.md](CONTRIBUTING.md).
