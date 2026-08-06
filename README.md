@@ -2,7 +2,9 @@
 
 A dependency-free, offline-first interactive fiction and generative art experience for the browser.
 
-**Website:** [https://yushirm.github.io/museum-of-almost/](https://yushirm.github.io/museum-of-almost/)
+## Website
+
+[Visit The Museum of Almost](https://yushirm.github.io/museum-of-almost/)
 
 The museum procedurally creates gallery rooms filled with impossible unfinished artifacts. Visitors can examine objects, keep one fictional fragment from each room, tune ten impossible transmissions in **The Listening Room**, enter **The Dreaming Wing** after keeping three fragments, and unlock **The Room That Was Finished** after completing a six-fragment collection.
 
