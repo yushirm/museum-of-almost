@@ -11,6 +11,7 @@ let fetchImplementation = async () => {
 };
 let skipWaitingCalls = 0;
 let claimCalls = 0;
+let cachePutFailure = false;
 
 function keyFor(request) {
   return typeof request === 'string' ? request : request.url;
@@ -35,6 +36,7 @@ function cacheFor(name) {
       for (const path of paths) entries.set(path, createResponse(`precache:${path}`));
     },
     async put(request, response) {
+      if (cachePutFailure) throw new Error('cache unavailable');
       entries.set(keyFor(request), response);
     }
   };
@@ -162,6 +164,21 @@ const navigationEvent = createFetchEvent(navigationRequest);
 listeners.get('fetch')(navigationEvent);
 assert.equal((await navigationEvent.responsePromise).body, 'current page', 'online navigation prefers the current page');
 assert.equal((await caches.match(navigationRequest)).body, 'current page', 'successful navigation refreshes its cached response');
+
+cachePutFailure = true;
+fetchImplementation = async () => createResponse('current page without cache');
+const cacheFailureNavigation = createFetchEvent({
+  url: 'https://example.test/museum/cache-unavailable',
+  method: 'GET',
+  mode: 'navigate'
+});
+listeners.get('fetch')(cacheFailureNavigation);
+assert.equal(
+  (await cacheFailureNavigation.responsePromise).body,
+  'current page without cache',
+  'a cache write failure does not hide a valid online navigation response'
+);
+cachePutFailure = false;
 
 fetchImplementation = async () => {
   throw new Error('offline');

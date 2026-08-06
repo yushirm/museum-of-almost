@@ -15,8 +15,12 @@ async function fetchFresh(request) {
   const response = await fetch(request, { cache: 'no-cache' });
   if (!response || response.status !== 200 || response.type !== 'basic') return response;
 
-  const cache = await caches.open(CACHE_NAME);
-  await cache.put(request, response.clone());
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put(request, response.clone());
+  } catch {
+    // A cache write failure must not hide a valid network response.
+  }
   return response;
 }
 
