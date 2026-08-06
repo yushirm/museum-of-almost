@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b13">
+  <meta name="description" content="A private, dependency-free browser playground for generative experiments.">
+  <title>Curiosity Lab</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">LOCAL-FIRST EXPERIMENTS</p>
+        <h1>Curiosity Lab</h1>
+        <p class="lede">Three tiny systems. Prod them, break them, make something strange.</p>
+      </div>
+      <div class="status" aria-label="Privacy status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>No accounts · no analytics · no network calls</span>
+      </div>
+    </header>
+
+    <nav class="tabs" aria-label="Experiments">
+      <button class="tab is-active" data-lab="orbit" aria-pressed="true">
+        <span class="tab-number">01</span>
+        <span>Orbit Forge</span>
+      </button>
+      <button class="tab" data-lab="bloom" aria-pressed="false">
+        <span class="tab-number">02</span>
+        <span>Cellular Bloom</span>
+      </button>
+      <button class="tab" data-lab="waves" aria-pressed="false">
+        <span class="tab-number">03</span>
+        <span>Wave Loom</span>
+      </button>
+    </nav>
+
+    <section class="workbench">
+      <div class="canvas-wrap">
+        <canvas id="lab-canvas" aria-label="Interactive generative canvas"></canvas>
+        <div class="canvas-hint" id="canvas-hint">Tap to add a body. Drag to bend gravity.</div>
+      </div>
+
+      <aside class="panel" aria-label="Experiment controls">
+        <div>
+          <p class="eyebrow" id="lab-kicker">GRAVITY TOY</p>
+          <h2 id="lab-title">Orbit Forge</h2>
+          <p id="lab-description">Drop luminous bodies into a soft gravity field and watch them negotiate a future.</p>
+        </div>
+
+        <div id="dynamic-controls" class="controls"></div>
+
+        <div class="actions">
+          <button id="randomise" class="button button-primary">Randomise</button>
+          <button id="pause" class="button">Pause</button>
+          <button id="clear" class="button">Clear</button>
+          <button id="snapshot" class="button">Save image</button>
+        </div>
+
+        <details class="notes">
+          <summary>What am I looking at?</summary>
+          <p id="lab-notes"></p>
+        </details>
+      </aside>
+    </section>
+
+    <footer>
+      <span>Runs entirely in your browser.</span>
+      <a href="PRIVACY.md">Read the privacy contract</a>
+    </footer>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

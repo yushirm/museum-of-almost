@@ -1,0 +1,25 @@
+name: Check playground
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Use Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Check JavaScript syntax
+        run: node --check app.js && node --check service-worker.js && node --check scripts/check.mjs
+      - name: Check privacy contract
+        run: node scripts/check.mjs
