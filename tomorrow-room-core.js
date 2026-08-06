@@ -171,7 +171,7 @@ globalThis.MuseumTomorrowCore = (() => {
     const tomorrows = Array.from({ length: 7 }, (_, index) => {
       const seed = (baseSeed ^ Math.imul(index + 1, 0x9E3779B1)) >>> 0;
       const random = mulberry32(seed);
-      const subject = subjects[(Math.floor(random() * subjects.length) + index) % subjects.length];
+      const subject = subjects[(baseSeed + index * 5) % subjects.length];
       const condition = conditions[(Math.floor(random() * conditions.length) + index * 3) % conditions.length];
       const angle = Number(((index * 360 / 7) - 90 + (random() - 0.5) * 9).toFixed(2));
       const radius = Number((31 + random() * 8).toFixed(2));
