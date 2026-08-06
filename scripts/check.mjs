@@ -11,7 +11,8 @@ const required = [
   'README.md',
   'PRIVACY.md',
   'RIGHTS.md',
-  'CONTRIBUTING.md'
+  'CONTRIBUTING.md',
+  'scripts/test-service-worker.mjs'
 ];
 
 const runtimeFiles = [
@@ -123,6 +124,9 @@ for (const asset of ['./index.html', './styles.css', './app.js', './manifest.web
 }
 if (!serviceWorker.includes('requestUrl.origin !== self.location.origin')) {
   fail('service worker is missing its same-origin request guard');
+}
+for (const behaviour of ['networkFirst', 'fetch(request)', 'caches.match(request)', "request.mode === 'navigate'", 'Response.error()']) {
+  if (!serviceWorker.includes(behaviour)) fail(`service worker is missing expected update behaviour: ${behaviour}`);
 }
 
 const app = await readFile('app.js', 'utf8');

@@ -28,6 +28,8 @@ jobs:
         with:
           node-version: 22
       - name: Check JavaScript syntax
-        run: node --check app.js && node --check service-worker.js && node --check scripts/check.mjs
+        run: node --check app.js && node --check service-worker.js && node --check scripts/check.mjs && node --check scripts/test-service-worker.mjs
+      - name: Test service worker updates and offline fallback
+        run: node scripts/test-service-worker.mjs
       - name: Check privacy and application contract
         run: node scripts/check.mjs
