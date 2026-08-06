@@ -26,8 +26,10 @@ const repeated = core.buildCase(date, state, 0);
 const varied = core.buildCase(date, state, 1);
 
 assert.deepEqual(first, repeated, 'the same date, state and variation produce the same case');
+assert.equal(first.variation, 0, 'the first case records its bounded variation');
+assert.equal(varied.variation, 1, 'another case records the next bounded variation');
 assert.notEqual(first.seed, varied.seed, 'another case variation changes the deterministic seed');
-assert.notEqual(first.title, varied.title, 'another case variation changes the object title');
+assert.notDeepEqual(first.startPieces, varied.startPieces, 'another case variation changes the workbench arrangement');
 assert.equal(first.startPieces.length, 3, 'a case begins with three fragments');
 assert.equal(first.targetPieces.length, 3, 'a case has three target outlines');
 assert.equal(new Set(first.startPieces.map((piece) => piece.id)).size, 3, 'fragment identifiers are unique');
