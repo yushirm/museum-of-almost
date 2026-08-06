@@ -1,12 +1,19 @@
-# Curiosity Lab
+# The Museum of Almost
 
-A dependency-free browser playground for small generative systems.
+A dependency-free, offline-first interactive fiction and generative art experience for the browser.
 
-## Experiments
+The museum procedurally creates gallery rooms filled with impossible unfinished artifacts. Visitors can examine objects, keep one fictional fragment from each room, save local postcards, and unlock **The Room That Was Finished** after completing a six-fragment collection.
 
-- **Orbit Forge** — a deliberately soft gravity sandbox.
-- **Cellular Bloom** — a cyclic cellular automaton that grows moving colour fronts.
-- **Wave Loom** — layered sine waves that form an interactive moving textile.
+## What is inside
+
+- Deterministic procedural rooms and exhibit writing.
+- Canvas-rendered galleries with responsive mobile and desktop layouts.
+- Keyboard-accessible exhibit hotspots and native dialogs.
+- A local pocket catalogue with finite collection cycles.
+- Optional browser-synthesised ambient sound.
+- Local PNG postcard export.
+- A same-origin service worker for offline use.
+- No framework, package install, build step or external dependency.
 
 ## Run it
 
@@ -14,20 +21,22 @@ A dependency-free browser playground for small generative systems.
 python -m http.server 8080
 ```
 
-Open `http://localhost:8080`.
+Then open `http://localhost:8080`.
 
-No build step is required. Opening `index.html` directly also works, although offline installation requires a local web server.
+A local server is recommended because browsers restrict service workers when a page is opened directly from the filesystem.
 
-## Privacy and safety
-
-The application has no external dependencies, API integrations, analytics, accounts or identifying sample data. See [PRIVACY.md](PRIVACY.md).
-
-A small repository check rejects runtime network calls, externally hosted assets and common secret patterns:
+## Validate it
 
 ```bash
+node --check app.js
+node --check service-worker.js
 node scripts/check.mjs
 ```
 
-## Intent
+The repository check verifies required assets, local-only runtime references, service-worker coverage, basic accessibility structure and common secret patterns.
 
-This repository is a place for experiments that are complete enough to touch but small enough to throw away. New toys should remain self-contained, understandable and privacy-preserving.
+## Privacy boundary
+
+This project contains no personal or identifying sample data and does not accept visitor text. Progress is limited to generated fictional labels, counters and a random seed stored in local browser storage.
+
+See [PRIVACY.md](PRIVACY.md) for the full contract. Public deployment is intentionally out of scope.

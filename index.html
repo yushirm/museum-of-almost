@@ -2,77 +2,147 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#090b13">
-  <meta name="description" content="A private, dependency-free browser playground for generative experiments.">
-  <title>Curiosity Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#11100f">
+  <meta name="description" content="An offline procedural museum of unfinished ideas, impossible artifacts, and small discoveries.">
+  <title>The Museum of Almost</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="shell">
-    <header class="hero">
-      <div>
-        <p class="eyebrow">LOCAL-FIRST EXPERIMENTS</p>
-        <h1>Curiosity Lab</h1>
-        <p class="lede">Three tiny systems. Prod them, break them, make something strange.</p>
-      </div>
-      <div class="status" aria-label="Privacy status">
-        <span class="status-dot" aria-hidden="true"></span>
-        <span>No accounts · no analytics · no network calls</span>
-      </div>
-    </header>
+  <a class="skip-link" href="#museum">Skip to the museum</a>
 
-    <nav class="tabs" aria-label="Experiments">
-      <button class="tab is-active" data-lab="orbit" aria-pressed="true">
-        <span class="tab-number">01</span>
-        <span>Orbit Forge</span>
-      </button>
-      <button class="tab" data-lab="bloom" aria-pressed="false">
-        <span class="tab-number">02</span>
-        <span>Cellular Bloom</span>
-      </button>
-      <button class="tab" data-lab="waves" aria-pressed="false">
-        <span class="tab-number">03</span>
-        <span>Wave Loom</span>
-      </button>
-    </nav>
+  <div class="page-noise" aria-hidden="true"></div>
 
-    <section class="workbench">
-      <div class="canvas-wrap">
-        <canvas id="lab-canvas" aria-label="Interactive generative canvas"></canvas>
-        <div class="canvas-hint" id="canvas-hint">Tap to add a body. Drag to bend gravity.</div>
-      </div>
+  <header class="site-header">
+    <a class="wordmark" href="#museum" aria-label="The Museum of Almost, return to current room">
+      <span class="wordmark-mark" aria-hidden="true">◇</span>
+      <span>
+        <small>THE MUSEUM OF</small>
+        <strong>ALMOST</strong>
+      </span>
+    </a>
 
-      <aside class="panel" aria-label="Experiment controls">
+    <div class="header-actions">
+      <button class="quiet-button" id="sound-button" type="button" aria-pressed="false">
+        <span aria-hidden="true">◌</span>
+        <span class="button-copy">Sound asleep</span>
+      </button>
+      <button class="quiet-button" id="catalogue-button" type="button">
+        <span aria-hidden="true">▤</span>
+        <span>Catalogue</span>
+        <span class="count-badge" id="fragment-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="museum" class="museum-shell" tabindex="-1">
+    <section class="room-card" aria-labelledby="room-title">
+      <div class="room-heading">
         <div>
-          <p class="eyebrow" id="lab-kicker">GRAVITY TOY</p>
-          <h2 id="lab-title">Orbit Forge</h2>
-          <p id="lab-description">Drop luminous bodies into a soft gravity field and watch them negotiate a future.</p>
+          <p class="eyebrow" id="room-number">ROOM 001 · OPEN COLLECTION</p>
+          <h1 id="room-title">The Gallery of Borrowed Weather</h1>
         </div>
+        <p class="room-intro" id="room-intro">The ceiling is remembering a sky it never had.</p>
+      </div>
 
-        <div id="dynamic-controls" class="controls"></div>
+      <div class="stage" id="stage">
+        <canvas id="room-canvas" aria-label="A procedural gallery room containing three interactive exhibits"></canvas>
+        <div class="hotspots" id="hotspots" aria-label="Exhibits in this room"></div>
+        <div class="stage-vignette" aria-hidden="true"></div>
+        <p class="stage-hint" id="stage-hint">Choose an exhibit to examine it.</p>
+      </div>
 
-        <div class="actions">
-          <button id="randomise" class="button button-primary">Randomise</button>
-          <button id="pause" class="button">Pause</button>
-          <button id="clear" class="button">Clear</button>
-          <button id="snapshot" class="button">Save image</button>
+      <div class="room-toolbar">
+        <p class="museum-status" id="museum-status">The museum has not decided whether you are early or late.</p>
+        <div class="toolbar-actions">
+          <button class="text-button" id="postcard-button" type="button">
+            <span aria-hidden="true">⇩</span>
+            Save postcard
+          </button>
+          <button class="primary-button" id="next-room-button" type="button">
+            Walk into another wing
+            <span aria-hidden="true">→</span>
+          </button>
         </div>
-
-        <details class="notes">
-          <summary>What am I looking at?</summary>
-          <p id="lab-notes"></p>
-        </details>
-      </aside>
+      </div>
     </section>
 
-    <footer>
-      <span>Runs entirely in your browser.</span>
-      <a href="PRIVACY.md">Read the privacy contract</a>
-    </footer>
+    <section class="rules-card" aria-labelledby="rules-title">
+      <div>
+        <p class="eyebrow">VISITOR NOTICE</p>
+        <h2 id="rules-title">Nothing here needs fixing.</h2>
+      </div>
+      <p>
+        Examine what catches you. Keep one fragment from each room. After six fragments,
+        the museum may admit that one of its rooms is finished.
+      </p>
+      <div class="privacy-stamp" aria-label="Privacy promise">
+        <span aria-hidden="true">●</span>
+        Offline · no accounts · no analytics
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <span>Open whenever the ordinary world becomes suspiciously complete.</span>
+    <a href="PRIVACY.md">Privacy contract</a>
+  </footer>
+
+  <dialog class="museum-dialog exhibit-dialog" id="exhibit-dialog" aria-labelledby="exhibit-title">
+    <form method="dialog" class="dialog-frame">
+      <button class="dialog-close" value="close" aria-label="Close exhibit details">×</button>
+      <p class="eyebrow" id="exhibit-number">OBJECT 01</p>
+      <h2 id="exhibit-title">An unfinished object</h2>
+      <p class="object-medium" id="exhibit-medium">Mixed possibility, date uncertain</p>
+      <div class="dialog-art" id="dialog-art" aria-hidden="true"></div>
+      <p class="object-story" id="exhibit-story"></p>
+      <blockquote id="exhibit-quote"></blockquote>
+      <div class="fragment-card" id="fragment-card">
+        <span>FOUND FRAGMENT</span>
+        <strong id="fragment-text"></strong>
+      </div>
+      <menu>
+        <button class="text-button" value="close">Leave it here</button>
+        <button class="primary-button" id="keep-fragment-button" value="keep">Keep this fragment</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <dialog class="museum-dialog catalogue-dialog" id="catalogue-dialog" aria-labelledby="catalogue-title">
+    <form method="dialog" class="dialog-frame catalogue-frame">
+      <button class="dialog-close" value="close" aria-label="Close catalogue">×</button>
+      <p class="eyebrow">POCKET CATALOGUE</p>
+      <h2 id="catalogue-title">Things the museum let you keep</h2>
+      <p class="catalogue-intro">Stored only in this browser. The labels are small because certainty is expensive.</p>
+      <ol class="fragment-list" id="fragment-list"></ol>
+      <div class="catalogue-empty" id="catalogue-empty">
+        <span aria-hidden="true">◇</span>
+        <p>No fragments yet. The empty pocket is also part of the collection.</p>
+      </div>
+      <div class="catalogue-footer">
+        <p id="cycle-count">Completed collections: 0</p>
+        <button class="text-button danger-button" id="reset-button" value="reset">Return everything</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="museum-dialog welcome-dialog" id="welcome-dialog" aria-labelledby="welcome-title">
+    <form method="dialog" class="dialog-frame welcome-frame">
+      <div class="welcome-mark" aria-hidden="true">◇</div>
+      <p class="eyebrow">ADMISSION IS COMPLIMENTARY</p>
+      <h2 id="welcome-title">Some ideas refuse to become products.</h2>
+      <p>
+        So they opened a museum instead. Walk through procedural rooms, examine impossible
+        artifacts, and keep the fragments that feel nearly true.
+      </p>
+      <p class="welcome-note">Everything stays on this device. There is no login desk.</p>
+      <button class="primary-button welcome-button" value="enter">Enter quietly</button>
+    </form>
+  </dialog>
+
+  <div class="sr-only" id="live-region" aria-live="polite"></div>
 
   <script src="app.js" defer></script>
 </body>

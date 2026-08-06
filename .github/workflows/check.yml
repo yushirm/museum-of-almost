@@ -1,4 +1,4 @@
-name: Check playground
+name: Check museum
 
 on:
   pull_request:
@@ -21,5 +21,5 @@ jobs:
           node-version: 22
       - name: Check JavaScript syntax
         run: node --check app.js && node --check service-worker.js && node --check scripts/check.mjs
-      - name: Check privacy contract
+      - name: Check privacy and application contract
         run: node scripts/check.mjs

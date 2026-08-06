@@ -1,422 +1,857 @@
 (() => {
   'use strict';
 
-  const canvas = document.querySelector('#lab-canvas');
-  const ctx = canvas.getContext('2d', { alpha: false });
-  const tabs = [...document.querySelectorAll('.tab')];
-  const controlsHost = document.querySelector('#dynamic-controls');
-  const pauseButton = document.querySelector('#pause');
-  const hint = document.querySelector('#canvas-hint');
+  const STORAGE_KEY = 'museum-of-almost:v1';
+  const MAX_FRAGMENTS = 6;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const labels = {
-    kicker: document.querySelector('#lab-kicker'),
-    title: document.querySelector('#lab-title'),
-    description: document.querySelector('#lab-description'),
-    notes: document.querySelector('#lab-notes')
+  const canvas = document.querySelector('#room-canvas');
+  const context = canvas.getContext('2d', { alpha: false });
+  const stage = document.querySelector('#stage');
+  const hotspotsHost = document.querySelector('#hotspots');
+  const roomNumber = document.querySelector('#room-number');
+  const roomTitle = document.querySelector('#room-title');
+  const roomIntro = document.querySelector('#room-intro');
+  const museumStatus = document.querySelector('#museum-status');
+  const fragmentCount = document.querySelector('#fragment-count');
+  const liveRegion = document.querySelector('#live-region');
+  const nextRoomButton = document.querySelector('#next-room-button');
+  const postcardButton = document.querySelector('#postcard-button');
+  const soundButton = document.querySelector('#sound-button');
+  const catalogueButton = document.querySelector('#catalogue-button');
+  const resetButton = document.querySelector('#reset-button');
+
+  const exhibitDialog = document.querySelector('#exhibit-dialog');
+  const exhibitNumber = document.querySelector('#exhibit-number');
+  const exhibitTitle = document.querySelector('#exhibit-title');
+  const exhibitMedium = document.querySelector('#exhibit-medium');
+  const exhibitStory = document.querySelector('#exhibit-story');
+  const exhibitQuote = document.querySelector('#exhibit-quote');
+  const fragmentText = document.querySelector('#fragment-text');
+  const fragmentCard = document.querySelector('#fragment-card');
+  const dialogArt = document.querySelector('#dialog-art');
+  const keepFragmentButton = document.querySelector('#keep-fragment-button');
+
+  const catalogueDialog = document.querySelector('#catalogue-dialog');
+  const fragmentList = document.querySelector('#fragment-list');
+  const catalogueEmpty = document.querySelector('#catalogue-empty');
+  const cycleCount = document.querySelector('#cycle-count');
+  const welcomeDialog = document.querySelector('#welcome-dialog');
+
+  const palettes = [
+    ['#c9a56a', '#4f5d63', '#766356', '#d8c9ac'],
+    ['#b69c72', '#4d566c', '#7a4f48', '#d8cfb6'],
+    ['#c4aa7d', '#3d5b58', '#6e5149', '#e0d1b5'],
+    ['#d1b078', '#5b5068', '#34535c', '#d7c6a6'],
+    ['#c79a68', '#4f6254', '#6a4c5b', '#d9c9b5'],
+    ['#c6ad8f', '#445563', '#6d5746', '#e1d3bd']
+  ];
+
+  const roomFirst = [
+    'Borrowed', 'Unsent', 'Patient', 'Misplaced', 'Unfinished', 'Quiet',
+    'Second-Hand', 'Temporary', 'Unmeasured', 'Almost Forgotten', 'Unclaimed', 'Polite'
+  ];
+  const roomLast = [
+    'Weather', 'Directions', 'Echoes', 'Beginnings', 'Gravity', 'Apologies',
+    'Constellations', 'Blueprints', 'Thunder', 'Shadows', 'Possibilities', 'Distances'
+  ];
+  const roomIntros = [
+    'The ceiling is remembering a sky it never had.',
+    'Someone has carefully dusted the silence.',
+    'Every frame is hanging one degree away from certainty.',
+    'The light arrives before its explanation.',
+    'A small draft keeps turning the invisible pages.',
+    'The room appears to have been expecting a different century.',
+    'Nothing moves, except the parts that have not happened yet.',
+    'The walls are listening with professional discretion.',
+    'A bell rings somewhere beyond the architecture.',
+    'The floor plan has developed a private opinion.'
+  ];
+  const statuses = [
+    'The museum has not decided whether you are early or late.',
+    'A nearby corridor is pretending not to exist.',
+    'The curator has stepped out to reconsider the labels.',
+    'There are no cameras. The portraits remain nosy on their own.',
+    'Today’s closing time has been postponed indefinitely.',
+    'The gift shop sells only receipts for things you nearly bought.',
+    'A velvet rope has been placed around an excellent absence.',
+    'The building settles into a more interesting version of itself.'
+  ];
+
+  const subjects = [
+    'Compass', 'Choir', 'Machine', 'Window', 'Map', 'Clock', 'Umbrella', 'Ladder',
+    'Archive', 'Lantern', 'Key', 'Telescope', 'Envelope', 'Bridge', 'Mirror', 'Garden'
+  ];
+  const conditions = [
+    'That Pointed at Maybe', 'Waiting for Its First Note', 'Built to Misremember',
+    'Facing an Unbuilt Room', 'of Roads Not Taken', 'Practising Tomorrow',
+    'for Indoor Rain', 'Missing Its Final Rung', 'of Unimportant Miracles',
+    'Lit by a Previous Evening', 'for a Door with No Hurry', 'Trained on Nearby Things',
+    'Addressed to Later', 'Ending Halfway Across', 'That Reflected the Next Thought',
+    'Grown from Spare Afternoons'
+  ];
+  const media = [
+    'Brass, hesitation, and borrowed light',
+    'Graphite on a promise not yet made',
+    'Recovered mechanism, purpose unknown',
+    'Folded distance with minor weather damage',
+    'Glass, thread, and an avoidable coincidence',
+    'Ink on the reverse side of time',
+    'Wood, velvet, and one missing instruction',
+    'Acrylic possibility under museum glass'
+  ];
+  const stories = [
+    'The object was commissioned to solve a problem that disappeared during construction. The maker continued anyway, claiming the absence had improved the brief.',
+    'Conservators disagree about whether this piece is incomplete or simply facing the wrong direction. It has declined to clarify the matter.',
+    'The original label contained seven confident paragraphs. During restoration, six faded and the remaining one became much more useful.',
+    'Visitors often report that the object changes after they leave. The museum suspects the visitors are the moving part.',
+    'Its mechanism has never worked in public. At night, however, the dust around it forms extremely persuasive diagrams.',
+    'This is the third attempt to exhibit the piece. The first two displays quietly became exits.',
+    'A note found inside reads: “Do not complete under ordinary lighting.” The instruction has been followed with unusual dedication.',
+    'The artist described it as a rehearsal for an object. No finished object has been located, which may have been the rehearsal’s ambition.'
+  ];
+  const quotes = [
+    '“It was more accurate before we understood it.”',
+    '“Please leave enough room for the missing part.”',
+    '“Completion is not included in the insurance valuation.”',
+    '“The object is stable provided nobody agrees on it.”',
+    '“Handle the possibility by its edges.”',
+    '“A replica would be indistinguishable from the original doubt.”',
+    '“The silence is structural, not decorative.”',
+    '“It has reached the final stage before the final stage.”'
+  ];
+  const fragments = [
+    'a direction that changes kindly',
+    'the first note before courage',
+    'a useful piece of uncertainty',
+    'weather from an indoor sky',
+    'the hinge of an invisible door',
+    'a patient spark',
+    'proof that the gap was deliberate',
+    'one unspent beginning',
+    'the weight of almost',
+    'a map folded around hope',
+    'the quiet after an idea arrives',
+    'a small permission to continue',
+    'the shadow of a better question',
+    'an unfinished thing at peace',
+    'a spare afternoon',
+    'the part that did not need fixing'
+  ];
+
+  const finalRoom = {
+    title: 'The Room That Was Finished',
+    intro: 'It is smaller than expected, and exactly large enough.',
+    status: 'For once, every label agrees. This is deeply suspicious.',
+    palette: ['#e2c995', '#5c5548', '#8a7557', '#f1e6cd'],
+    exhibits: [{
+      title: 'The Complete Collection of What You Kept',
+      medium: 'Six fragments, one witness, no missing pieces',
+      story: 'The museum arranged your fragments in the order they arrived. Together they do not explain anything. They do, however, make a room—and for a moment, the room asks nothing more of them.',
+      quote: '“Nothing here was waiting to become perfect. It was waiting to be seen.”',
+      fragment: 'a finished moment that knows how to leave',
+      artType: 5,
+      artSeed: 1
+    }]
   };
 
+  let state = loadState();
+  let room = null;
+  let selectedExhibitIndex = 0;
+  let frameRects = [];
+  let dust = [];
   let width = 1;
   let height = 1;
   let dpr = 1;
-  let paused = false;
-  let lastTime = performance.now();
-  let activeLab = null;
+  let pointer = { x: 0.5, y: 0.5 };
+  let lastFrame = 0;
+  let audio = null;
 
-  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
-  const randomBetween = (min, max) => min + Math.random() * (max - min);
-  const palette = ['#6ef2ff', '#b19cff', '#bcff7d', '#ff8fcf', '#ffd36e'];
+  function defaultState() {
+    return {
+      seed: globalThis.crypto?.getRandomValues
+        ? globalThis.crypto.getRandomValues(new Uint32Array(1))[0]
+        : Math.floor(Math.random() * 0xFFFFFFFF),
+      roomIndex: 0,
+      cycle: 0,
+      fragments: [],
+      collectedRooms: [],
+      completedCollections: 0,
+      welcomed: false,
+      finalRoomPending: false
+    };
+  }
+
+  function loadState() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (!stored || typeof stored !== 'object') return defaultState();
+      return {
+        ...defaultState(),
+        ...stored,
+        fragments: Array.isArray(stored.fragments) ? stored.fragments.slice(0, MAX_FRAGMENTS) : [],
+        collectedRooms: Array.isArray(stored.collectedRooms) ? stored.collectedRooms.slice(-30) : []
+      };
+    } catch {
+      return defaultState();
+    }
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      // Storage can be disabled by browser policy. The current visit still works in memory.
+    }
+  }
+
+  function hashString(value) {
+    let hash = 2166136261;
+    for (let index = 0; index < value.length; index += 1) {
+      hash ^= value.charCodeAt(index);
+      hash = Math.imul(hash, 16777619);
+    }
+    return hash >>> 0;
+  }
+
+  function mulberry32(seed) {
+    return function random() {
+      let value = seed += 0x6D2B79F5;
+      value = Math.imul(value ^ value >>> 15, value | 1);
+      value ^= value + Math.imul(value ^ value >>> 7, value | 61);
+      return ((value ^ value >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function choose(random, options) {
+    return options[Math.floor(random() * options.length)];
+  }
+
+  function roomId() {
+    return `${state.seed}:${state.cycle}:${state.roomIndex}`;
+  }
+
+  function generateRoom() {
+    if (state.finalRoomPending) {
+      return { ...finalRoom, id: `final:${state.cycle}`, final: true };
+    }
+
+    const id = roomId();
+    const random = mulberry32(hashString(id));
+    const palette = palettes[Math.floor(random() * palettes.length)];
+    const usedTitles = new Set();
+    const exhibits = Array.from({ length: 3 }, (_, index) => {
+      let title = '';
+      while (!title || usedTitles.has(title)) {
+        title = `The ${choose(random, subjects)} ${choose(random, conditions)}`;
+      }
+      usedTitles.add(title);
+      return {
+        title,
+        medium: `${choose(random, media)}, ${1880 + Math.floor(random() * 170)}–present`,
+        story: choose(random, stories),
+        quote: choose(random, quotes),
+        fragment: choose(random, fragments),
+        artType: Math.floor(random() * 6),
+        artSeed: Math.floor(random() * 1_000_000) + index
+      };
+    });
+
+    return {
+      id,
+      final: false,
+      title: `The Gallery of ${choose(random, roomFirst)} ${choose(random, roomLast)}`,
+      intro: choose(random, roomIntros),
+      status: choose(random, statuses),
+      palette,
+      exhibits
+    };
+  }
+
+  function announce(message) {
+    liveRegion.textContent = '';
+    window.setTimeout(() => { liveRegion.textContent = message; }, 20);
+  }
+
+  function openDialog(dialog) {
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+  }
+
+  function closeDialog(dialog) {
+    if (typeof dialog.close === 'function') dialog.close();
+    else dialog.removeAttribute('open');
+  }
+
+  function renderRoom() {
+    room = generateRoom();
+    roomNumber.textContent = room.final
+      ? `ROOM ∞ · COMPLETED COLLECTION ${String(state.completedCollections + 1).padStart(2, '0')}`
+      : `ROOM ${String(state.roomIndex + 1).padStart(3, '0')} · OPEN COLLECTION`;
+    roomTitle.textContent = room.title;
+    roomIntro.textContent = room.intro;
+    museumStatus.textContent = room.status;
+    fragmentCount.textContent = state.fragments.length;
+    nextRoomButton.innerHTML = room.final
+      ? 'Begin another collection <span aria-hidden="true">↻</span>'
+      : 'Walk into another wing <span aria-hidden="true">→</span>';
+    postcardButton.disabled = false;
+    buildHotspots();
+    fitCanvas();
+    renderCatalogue();
+    updateAudioNotes();
+  }
+
+  function buildHotspots() {
+    hotspotsHost.replaceChildren();
+    room.exhibits.forEach((exhibit, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'exhibit-hotspot';
+      button.dataset.index = String(index);
+      button.dataset.label = room.final ? 'Examine the collection' : `Object ${String(index + 1).padStart(2, '0')}`;
+      button.setAttribute('aria-label', `Examine ${exhibit.title}`);
+      button.addEventListener('click', () => showExhibit(index));
+      hotspotsHost.append(button);
+    });
+  }
+
+  function layoutFrames() {
+    const mobile = width < 650;
+    if (room.final) {
+      const frameWidth = mobile ? width * 0.72 : Math.min(width * 0.42, 470);
+      const frameHeight = mobile ? height * 0.35 : height * 0.5;
+      return [{ x: (width - frameWidth) / 2, y: height * 0.2, w: frameWidth, h: frameHeight }];
+    }
+
+    if (mobile) {
+      const margin = width * 0.08;
+      const topWidth = width * 0.62;
+      const topHeight = height * 0.26;
+      const smallWidth = width * 0.37;
+      const smallHeight = height * 0.2;
+      return [
+        { x: (width - topWidth) / 2, y: height * 0.13, w: topWidth, h: topHeight },
+        { x: margin, y: height * 0.49, w: smallWidth, h: smallHeight },
+        { x: width - margin - smallWidth, y: height * 0.49, w: smallWidth, h: smallHeight }
+      ];
+    }
+
+    const frameWidth = Math.min(width * 0.22, 260);
+    const frameHeight = Math.min(height * 0.42, 330);
+    const gap = Math.min(width * 0.075, 90);
+    const total = frameWidth * 3 + gap * 2;
+    const start = (width - total) / 2;
+    return Array.from({ length: 3 }, (_, index) => ({
+      x: start + index * (frameWidth + gap),
+      y: height * (index === 1 ? 0.18 : 0.23),
+      w: frameWidth,
+      h: frameHeight * (index === 1 ? 1.05 : 0.92)
+    }));
+  }
 
   function fitCanvas() {
-    const rect = canvas.getBoundingClientRect();
+    const rect = stage.getBoundingClientRect();
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     width = Math.max(1, Math.round(rect.width));
     height = Math.max(1, Math.round(rect.height));
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    activeLab?.resize(width, height);
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    frameRects = layoutFrames();
+    positionHotspots();
+    createDust();
+    drawScene(performance.now());
   }
 
-  function pointerPosition(event) {
-    const rect = canvas.getBoundingClientRect();
-    return {
-      x: clamp(event.clientX - rect.left, 0, rect.width),
-      y: clamp(event.clientY - rect.top, 0, rect.height)
-    };
-  }
-
-  function renderControls(definitions, onChange) {
-    controlsHost.replaceChildren();
-    for (const definition of definitions) {
-      const wrapper = document.createElement('label');
-      wrapper.className = 'control';
-
-      const row = document.createElement('span');
-      row.className = 'control-row';
-      const title = document.createElement('span');
-      title.textContent = definition.label;
-      const output = document.createElement('output');
-      output.className = 'control-output';
-      output.textContent = definition.format(definition.value);
-      row.append(title, output);
-
-      const input = document.createElement('input');
-      input.type = 'range';
-      input.min = definition.min;
-      input.max = definition.max;
-      input.step = definition.step;
-      input.value = definition.value;
-      input.addEventListener('input', () => {
-        const value = Number(input.value);
-        output.textContent = definition.format(value);
-        onChange(definition.key, value);
-      });
-
-      wrapper.append(row, input);
-      controlsHost.append(wrapper);
-    }
-  }
-
-  class OrbitForge {
-    constructor() {
-      this.settings = { gravity: 72, trails: 0.14, bodies: 36 };
-      this.bodies = [];
-      this.pointer = { x: width / 2, y: height / 2, down: false };
-      this.randomise();
-    }
-
-    get meta() {
-      return {
-        kicker: 'GRAVITY TOY',
-        title: 'Orbit Forge',
-        description: 'Drop luminous bodies into a soft gravity field and watch them negotiate a future.',
-        hint: 'Tap to add a body. Drag to bend gravity.',
-        notes: 'Each particle is pulled toward the current gravity point. Trails are simply translucent frame history; the system is intentionally playful rather than physically exact.'
-      };
-    }
-
-    controls() {
-      return [
-        { key: 'gravity', label: 'Gravity', min: 12, max: 160, step: 1, value: this.settings.gravity, format: value => `${value}` },
-        { key: 'trails', label: 'Trail memory', min: 0.03, max: 0.42, step: 0.01, value: this.settings.trails, format: value => value.toFixed(2) },
-        { key: 'bodies', label: 'Bodies on reset', min: 8, max: 100, step: 1, value: this.settings.bodies, format: value => `${value}` }
-      ];
-    }
-
-    change(key, value) { this.settings[key] = value; }
-    resize() { this.pointer.x = clamp(this.pointer.x, 0, width); this.pointer.y = clamp(this.pointer.y, 0, height); }
-
-    addBody(x, y, speed = randomBetween(18, 80)) {
-      const angle = Math.atan2(y - this.pointer.y, x - this.pointer.x) + Math.PI / 2;
-      this.bodies.push({
-        x,
-        y,
-        vx: Math.cos(angle) * speed + randomBetween(-12, 12),
-        vy: Math.sin(angle) * speed + randomBetween(-12, 12),
-        radius: randomBetween(1.2, 3.4),
-        colour: palette[Math.floor(Math.random() * palette.length)]
-      });
-    }
-
-    randomise() {
-      this.bodies = [];
-      this.pointer = { x: width / 2, y: height / 2, down: false };
-      const count = Math.round(this.settings.bodies);
-      const radius = Math.min(width, height) * 0.34;
-      for (let i = 0; i < count; i += 1) {
-        const angle = Math.random() * Math.PI * 2;
-        const distance = randomBetween(radius * 0.25, radius);
-        this.addBody(this.pointer.x + Math.cos(angle) * distance, this.pointer.y + Math.sin(angle) * distance, randomBetween(22, 86));
-      }
-    }
-
-    clear() { this.bodies = []; }
-
-    pointerDown(position) {
-      this.pointer = { ...position, down: true };
-      this.addBody(position.x, position.y, 34);
-    }
-
-    pointerMove(position) {
-      if (this.pointer.down) Object.assign(this.pointer, position);
-    }
-
-    pointerUp() { this.pointer.down = false; }
-
-    frame(delta) {
-      ctx.fillStyle = `rgba(7, 9, 17, ${this.settings.trails})`;
-      ctx.fillRect(0, 0, width, height);
-
-      ctx.beginPath();
-      ctx.arc(this.pointer.x, this.pointer.y, 5, 0, Math.PI * 2);
-      ctx.fillStyle = '#ffffff';
-      ctx.shadowColor = '#6ef2ff';
-      ctx.shadowBlur = 18;
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      for (const body of this.bodies) {
-        const dx = this.pointer.x - body.x;
-        const dy = this.pointer.y - body.y;
-        const distanceSquared = Math.max(90, dx * dx + dy * dy);
-        const force = this.settings.gravity * 1200 / distanceSquared;
-        const distance = Math.sqrt(distanceSquared);
-        body.vx += (dx / distance) * force * delta;
-        body.vy += (dy / distance) * force * delta;
-        body.x += body.vx * delta;
-        body.y += body.vy * delta;
-
-        if (body.x < -40 || body.x > width + 40 || body.y < -40 || body.y > height + 40) {
-          body.x = this.pointer.x + randomBetween(-100, 100);
-          body.y = this.pointer.y + randomBetween(-100, 100);
-          body.vx *= -0.55;
-          body.vy *= -0.55;
-        }
-
-        ctx.beginPath();
-        ctx.arc(body.x, body.y, body.radius, 0, Math.PI * 2);
-        ctx.fillStyle = body.colour;
-        ctx.shadowColor = body.colour;
-        ctx.shadowBlur = 10;
-        ctx.fill();
-      }
-      ctx.shadowBlur = 0;
-    }
-  }
-
-  class CellularBloom {
-    constructor() {
-      this.settings = { scale: 8, threshold: 2, tempo: 22 };
-      this.accumulator = 0;
-      this.grid = [];
-      this.columns = 0;
-      this.rows = 0;
-      this.resize();
-    }
-
-    get meta() {
-      return {
-        kicker: 'CYCLIC AUTOMATON',
-        title: 'Cellular Bloom',
-        description: 'A field of tiny states chases its successor and unexpectedly grows petals, fronts and storms.',
-        hint: 'Tap or drag to disturb the field.',
-        notes: 'A cell advances when enough neighbours are exactly one colour-step ahead. There is no goal; the pleasure is watching order appear, collapse and appear again.'
-      };
-    }
-
-    controls() {
-      return [
-        { key: 'scale', label: 'Cell size', min: 4, max: 16, step: 1, value: this.settings.scale, format: value => `${value}px` },
-        { key: 'threshold', label: 'Neighbour threshold', min: 1, max: 5, step: 1, value: this.settings.threshold, format: value => `${value}` },
-        { key: 'tempo', label: 'Tempo', min: 4, max: 60, step: 1, value: this.settings.tempo, format: value => `${value}/s` }
-      ];
-    }
-
-    change(key, value) {
-      this.settings[key] = value;
-      if (key === 'scale') this.resize();
-    }
-
-    resize() {
-      this.columns = Math.max(1, Math.ceil(width / this.settings.scale));
-      this.rows = Math.max(1, Math.ceil(height / this.settings.scale));
-      this.randomise();
-    }
-
-    randomise() {
-      this.grid = Array.from({ length: this.columns * this.rows }, () => Math.floor(Math.random() * palette.length));
-    }
-
-    clear() { this.grid.fill(0); }
-
-    disturb(position) {
-      const cx = Math.floor(position.x / this.settings.scale);
-      const cy = Math.floor(position.y / this.settings.scale);
-      for (let oy = -4; oy <= 4; oy += 1) {
-        for (let ox = -4; ox <= 4; ox += 1) {
-          const x = (cx + ox + this.columns) % this.columns;
-          const y = (cy + oy + this.rows) % this.rows;
-          if (Math.hypot(ox, oy) < 4.5) this.grid[y * this.columns + x] = Math.floor(Math.random() * palette.length);
-        }
-      }
-    }
-
-    pointerDown(position) { this.dragging = true; this.disturb(position); }
-    pointerMove(position) { if (this.dragging) this.disturb(position); }
-    pointerUp() { this.dragging = false; }
-
-    step() {
-      const next = this.grid.slice();
-      for (let y = 0; y < this.rows; y += 1) {
-        for (let x = 0; x < this.columns; x += 1) {
-          const index = y * this.columns + x;
-          const target = (this.grid[index] + 1) % palette.length;
-          let neighbours = 0;
-          for (let oy = -1; oy <= 1; oy += 1) {
-            for (let ox = -1; ox <= 1; ox += 1) {
-              if (ox === 0 && oy === 0) continue;
-              const nx = (x + ox + this.columns) % this.columns;
-              const ny = (y + oy + this.rows) % this.rows;
-              if (this.grid[ny * this.columns + nx] === target) neighbours += 1;
-            }
-          }
-          if (neighbours >= this.settings.threshold) next[index] = target;
-        }
-      }
-      this.grid = next;
-    }
-
-    frame(delta) {
-      this.accumulator += delta;
-      const interval = 1 / this.settings.tempo;
-      while (this.accumulator >= interval) {
-        this.step();
-        this.accumulator -= interval;
-      }
-
-      const size = this.settings.scale;
-      for (let y = 0; y < this.rows; y += 1) {
-        for (let x = 0; x < this.columns; x += 1) {
-          ctx.fillStyle = palette[this.grid[y * this.columns + x]];
-          ctx.fillRect(x * size, y * size, size + 0.5, size + 0.5);
-        }
-      }
-    }
-  }
-
-  class WaveLoom {
-    constructor() {
-      this.settings = { strands: 9, speed: 0.55, tension: 1.4 };
-      this.time = 0;
-      this.pointer = { x: width / 2, y: height / 2, down: false };
-      this.seed = Math.random() * 1000;
-    }
-
-    get meta() {
-      return {
-        kicker: 'INTERFERENCE FIELD',
-        title: 'Wave Loom',
-        description: 'Layer simple waves until they weave a moving textile that almost looks intentional.',
-        hint: 'Move across the canvas to pull the weave.',
-        notes: 'Every strand is a sum of sine waves with slightly different phases. The pointer adds a local bend. Complexity here is repetition plus disagreement.'
-      };
-    }
-
-    controls() {
-      return [
-        { key: 'strands', label: 'Strands', min: 3, max: 20, step: 1, value: this.settings.strands, format: value => `${value}` },
-        { key: 'speed', label: 'Drift speed', min: 0.05, max: 1.5, step: 0.05, value: this.settings.speed, format: value => value.toFixed(2) },
-        { key: 'tension', label: 'Tension', min: 0.4, max: 3.2, step: 0.1, value: this.settings.tension, format: value => value.toFixed(1) }
-      ];
-    }
-
-    change(key, value) { this.settings[key] = value; }
-    resize() { this.pointer.x = clamp(this.pointer.x, 0, width); this.pointer.y = clamp(this.pointer.y, 0, height); }
-    randomise() { this.seed = Math.random() * 1000; this.time = 0; }
-    clear() { this.time = 0; this.seed = 0; }
-    pointerDown(position) { this.pointer = { ...position, down: true }; }
-    pointerMove(position) { Object.assign(this.pointer, position); }
-    pointerUp() { this.pointer.down = false; }
-
-    frame(delta) {
-      this.time += delta * this.settings.speed;
-      ctx.fillStyle = '#070911';
-      ctx.fillRect(0, 0, width, height);
-
-      const strands = Math.round(this.settings.strands);
-      const spacing = height / (strands + 1);
-      const step = Math.max(3, width / 260);
-
-      for (let strand = 0; strand < strands; strand += 1) {
-        const baseY = spacing * (strand + 1);
-        const colour = palette[strand % palette.length];
-        ctx.beginPath();
-        for (let x = -step; x <= width + step; x += step) {
-          const phase = this.seed + strand * 0.78;
-          const waveA = Math.sin(x * 0.012 * this.settings.tension + this.time * 2.1 + phase) * spacing * 0.28;
-          const waveB = Math.sin(x * 0.027 - this.time * 1.35 + phase * 1.7) * spacing * 0.12;
-          const distance = Math.hypot(x - this.pointer.x, baseY - this.pointer.y);
-          const bend = Math.max(0, 150 - distance) / 150 * (this.pointer.y - baseY) * 0.42;
-          const y = baseY + waveA + waveB + bend;
-          if (x <= 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-        }
-        ctx.strokeStyle = colour;
-        ctx.globalAlpha = 0.72;
-        ctx.lineWidth = 1.5;
-        ctx.shadowColor = colour;
-        ctx.shadowBlur = 10;
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
-    }
-  }
-
-  const labs = {
-    orbit: () => new OrbitForge(),
-    bloom: () => new CellularBloom(),
-    waves: () => new WaveLoom()
-  };
-
-  function activateLab(name) {
-    activeLab = labs[name]();
-    const meta = activeLab.meta;
-    labels.kicker.textContent = meta.kicker;
-    labels.title.textContent = meta.title;
-    labels.description.textContent = meta.description;
-    labels.notes.textContent = meta.notes;
-    hint.textContent = meta.hint;
-    renderControls(activeLab.controls(), (key, value) => activeLab.change(key, value));
-    tabs.forEach(tab => {
-      const selected = tab.dataset.lab === name;
-      tab.classList.toggle('is-active', selected);
-      tab.setAttribute('aria-pressed', String(selected));
+  function positionHotspots() {
+    [...hotspotsHost.children].forEach((button, index) => {
+      const rect = frameRects[index];
+      if (!rect) return;
+      button.style.left = `${rect.x}px`;
+      button.style.top = `${rect.y}px`;
+      button.style.width = `${rect.w}px`;
+      button.style.height = `${rect.h}px`;
     });
-    ctx.fillStyle = '#070911';
-    ctx.fillRect(0, 0, width, height);
   }
 
-  tabs.forEach(tab => tab.addEventListener('click', () => activateLab(tab.dataset.lab)));
-  document.querySelector('#randomise').addEventListener('click', () => activeLab.randomise());
-  document.querySelector('#clear').addEventListener('click', () => activeLab.clear());
-  pauseButton.addEventListener('click', () => {
-    paused = !paused;
-    pauseButton.textContent = paused ? 'Resume' : 'Pause';
-  });
-  document.querySelector('#snapshot').addEventListener('click', () => {
-    const link = document.createElement('a');
-    link.download = `curiosity-lab-${Date.now()}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+  function createDust() {
+    const random = mulberry32(hashString(`${room.id}:dust`));
+    dust = Array.from({ length: prefersReducedMotion ? 18 : 44 }, () => ({
+      x: random() * width,
+      y: random() * height,
+      r: 0.35 + random() * 1.2,
+      speed: 0.003 + random() * 0.012,
+      phase: random() * Math.PI * 2,
+      alpha: 0.08 + random() * 0.25
+    }));
+  }
+
+  function roundedRect(ctx, x, y, w, h, radius) {
+    const r = Math.min(radius, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.arcTo(x + w, y, x + w, y + r, r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+    ctx.lineTo(x + r, y + h);
+    ctx.arcTo(x, y + h, x, y + h - r, r);
+    ctx.lineTo(x, y + r);
+    ctx.arcTo(x, y, x + r, y, r);
+    ctx.closePath();
+  }
+
+  function drawScene(time) {
+    const [gold, cool, warm, paper] = room.palette;
+    const shiftX = (pointer.x - 0.5) * 14;
+    const shiftY = (pointer.y - 0.5) * 6;
+
+    const wall = context.createLinearGradient(0, 0, 0, height);
+    wall.addColorStop(0, '#24201b');
+    wall.addColorStop(0.67, '#171411');
+    wall.addColorStop(1, '#0d0c0a');
+    context.fillStyle = wall;
+    context.fillRect(0, 0, width, height);
+
+    context.save();
+    context.globalAlpha = 0.17;
+    context.strokeStyle = paper;
+    context.lineWidth = 1;
+    const vanishingX = width / 2 + shiftX;
+    const horizon = height * 0.74 + shiftY;
+    for (let x = -width; x < width * 2; x += Math.max(55, width / 10)) {
+      context.beginPath();
+      context.moveTo(vanishingX, horizon);
+      context.lineTo(x, height);
+      context.stroke();
+    }
+    for (let y = horizon; y < height; y += Math.max(24, (y - horizon) * 0.28 + 16)) {
+      context.beginPath();
+      context.moveTo(0, y);
+      context.lineTo(width, y);
+      context.stroke();
+    }
+    context.restore();
+
+    const ceilingGlow = context.createRadialGradient(width / 2 + shiftX, -20, 0, width / 2, 0, width * 0.58);
+    ceilingGlow.addColorStop(0, `${gold}55`);
+    ceilingGlow.addColorStop(1, 'transparent');
+    context.fillStyle = ceilingGlow;
+    context.fillRect(0, 0, width, height * 0.75);
+
+    frameRects.forEach((rect, index) => {
+      drawFrame(rect, room.exhibits[index], time, { gold, cool, warm, paper });
+      drawPlaque(rect, room.exhibits[index], index, paper, gold);
+    });
+
+    dust.forEach((particle) => {
+      const y = prefersReducedMotion
+        ? particle.y
+        : (particle.y - time * particle.speed + height * 10) % height;
+      const x = particle.x + Math.sin(time * 0.0004 + particle.phase) * 8;
+      context.beginPath();
+      context.arc(x, y, particle.r, 0, Math.PI * 2);
+      context.fillStyle = `rgba(242, 226, 196, ${particle.alpha})`;
+      context.fill();
+    });
+  }
+
+  function drawFrame(rect, exhibit, time, colors) {
+    const { x, y, w, h } = rect;
+    const border = Math.max(10, Math.min(18, w * 0.055));
+    const inner = { x: x + border, y: y + border, w: w - border * 2, h: h - border * 2 };
+
+    context.save();
+    context.shadowColor = 'rgba(0,0,0,.65)';
+    context.shadowBlur = 28;
+    context.shadowOffsetY = 14;
+    context.fillStyle = '#30281f';
+    roundedRect(context, x, y, w, h, 3);
+    context.fill();
+    context.restore();
+
+    const frameGradient = context.createLinearGradient(x, y, x + w, y + h);
+    frameGradient.addColorStop(0, colors.gold);
+    frameGradient.addColorStop(0.18, '#4a3925');
+    frameGradient.addColorStop(0.55, '#1f1a15');
+    frameGradient.addColorStop(0.84, '#6f5735');
+    frameGradient.addColorStop(1, colors.gold);
+    context.strokeStyle = frameGradient;
+    context.lineWidth = Math.max(3, border * 0.42);
+    context.strokeRect(x + border * 0.25, y + border * 0.25, w - border * 0.5, h - border * 0.5);
+
+    context.save();
+    context.beginPath();
+    context.rect(inner.x, inner.y, inner.w, inner.h);
+    context.clip();
+    drawArtwork(inner, exhibit, time, colors);
+    const glaze = context.createLinearGradient(inner.x, inner.y, inner.x + inner.w, inner.y + inner.h);
+    glaze.addColorStop(0, 'rgba(255,255,255,.13)');
+    glaze.addColorStop(0.3, 'transparent');
+    glaze.addColorStop(0.72, 'rgba(255,255,255,.035)');
+    glaze.addColorStop(1, 'rgba(0,0,0,.15)');
+    context.fillStyle = glaze;
+    context.fillRect(inner.x, inner.y, inner.w, inner.h);
+    context.restore();
+  }
+
+  function drawArtwork(rect, exhibit, time, colors) {
+    const random = mulberry32(exhibit.artSeed);
+    const { x, y, w, h } = rect;
+    const background = context.createLinearGradient(x, y, x + w, y + h);
+    background.addColorStop(0, '#0d1012');
+    background.addColorStop(0.52, colors.cool);
+    background.addColorStop(1, '#17110f');
+    context.fillStyle = background;
+    context.fillRect(x, y, w, h);
+
+    const motion = prefersReducedMotion ? 0 : time * 0.00018;
+    context.save();
+    context.translate(x, y);
+
+    switch (exhibit.artType) {
+      case 0:
+        for (let index = 0; index < 7; index += 1) {
+          const radius = (0.08 + index * 0.055) * Math.min(w, h);
+          context.beginPath();
+          context.arc(w * (0.42 + Math.sin(index + motion) * 0.035), h * 0.48, radius, 0, Math.PI * 2);
+          context.strokeStyle = index % 2 ? `${colors.gold}aa` : `${colors.paper}66`;
+          context.lineWidth = 1 + (index % 3);
+          context.stroke();
+        }
+        break;
+      case 1:
+        for (let index = 0; index < 18; index += 1) {
+          context.beginPath();
+          const px = random() * w;
+          const py = random() * h;
+          context.moveTo(px, py);
+          context.lineTo(px + (random() - 0.5) * w * 0.45, py + (random() - 0.5) * h * 0.45);
+          context.lineTo(px + (random() - 0.5) * w * 0.2, py + (random() - 0.5) * h * 0.2);
+          context.closePath();
+          context.fillStyle = index % 3 === 0 ? `${colors.gold}77` : `${colors.warm}88`;
+          context.fill();
+        }
+        break;
+      case 2:
+        for (let band = 0; band < 10; band += 1) {
+          context.beginPath();
+          for (let step = 0; step <= 20; step += 1) {
+            const px = (step / 20) * w;
+            const py = h * (0.12 + band * 0.085) + Math.sin(step * 0.7 + band + motion * 8) * h * 0.035;
+            if (step === 0) context.moveTo(px, py);
+            else context.lineTo(px, py);
+          }
+          context.strokeStyle = band % 2 ? `${colors.paper}55` : `${colors.gold}88`;
+          context.lineWidth = 1.5;
+          context.stroke();
+        }
+        break;
+      case 3:
+        context.strokeStyle = `${colors.paper}66`;
+        context.lineWidth = 1;
+        for (let index = 0; index < 24; index += 1) {
+          const px = random() * w;
+          const py = random() * h;
+          const nextX = random() * w;
+          const nextY = random() * h;
+          context.beginPath();
+          context.moveTo(px, py);
+          context.lineTo(nextX, nextY);
+          context.stroke();
+          context.beginPath();
+          context.arc(px, py, 1.5 + random() * 3.5, 0, Math.PI * 2);
+          context.fillStyle = index % 4 === 0 ? colors.gold : colors.paper;
+          context.fill();
+        }
+        break;
+      case 4:
+        for (let index = 0; index < 9; index += 1) {
+          const paneW = w * (0.18 + random() * 0.16);
+          const paneH = h * (0.14 + random() * 0.25);
+          const px = random() * (w - paneW);
+          const py = random() * (h - paneH);
+          context.fillStyle = index % 2 ? `${colors.gold}44` : `${colors.paper}22`;
+          context.fillRect(px, py, paneW, paneH);
+          context.strokeStyle = `${colors.paper}55`;
+          context.strokeRect(px, py, paneW, paneH);
+        }
+        break;
+      default:
+        for (let index = 0; index < 12; index += 1) {
+          const px = w * 0.5 + Math.cos(index * 1.7 + motion) * w * (0.08 + index * 0.025);
+          const py = h * 0.5 + Math.sin(index * 1.3 + motion) * h * (0.06 + index * 0.022);
+          context.beginPath();
+          context.arc(px, py, 4 + index * 1.1, 0, Math.PI * 2);
+          context.fillStyle = index % 2 ? `${colors.gold}99` : `${colors.paper}77`;
+          context.fill();
+        }
+    }
+
+    context.restore();
+  }
+
+  function drawPlaque(rect, exhibit, index, paper, gold) {
+    const plaqueWidth = Math.min(rect.w * 0.72, 150);
+    const plaqueHeight = 22;
+    const x = rect.x + (rect.w - plaqueWidth) / 2;
+    const y = rect.y + rect.h + 13;
+    context.fillStyle = 'rgba(14,12,10,.88)';
+    context.fillRect(x, y, plaqueWidth, plaqueHeight);
+    context.strokeStyle = `${gold}55`;
+    context.strokeRect(x, y, plaqueWidth, plaqueHeight);
+    context.fillStyle = paper;
+    context.font = `${Math.max(8, Math.min(10, rect.w * 0.045))}px ui-sans-serif, system-ui, sans-serif`;
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    const label = room.final ? 'THE COLLECTION' : `OBJECT ${String(index + 1).padStart(2, '0')}`;
+    context.fillText(label, x + plaqueWidth / 2, y + plaqueHeight / 2 + 0.5);
+  }
+
+  function animationLoop(time) {
+    if (time - lastFrame > 32) {
+      drawScene(time);
+      lastFrame = time;
+    }
+    requestAnimationFrame(animationLoop);
+  }
+
+  function showExhibit(index) {
+    selectedExhibitIndex = index;
+    const exhibit = room.exhibits[index];
+    exhibitNumber.textContent = room.final ? 'FINAL ARRANGEMENT' : `OBJECT ${String(index + 1).padStart(2, '0')}`;
+    exhibitTitle.textContent = exhibit.title;
+    exhibitMedium.textContent = exhibit.medium;
+    exhibitStory.textContent = exhibit.story;
+    exhibitQuote.textContent = exhibit.quote;
+    fragmentText.textContent = exhibit.fragment;
+    dialogArt.style.setProperty('--art-a', room.palette[0]);
+    dialogArt.style.setProperty('--art-b', room.palette[1]);
+    dialogArt.style.setProperty('--art-c', room.palette[2]);
+    dialogArt.style.setProperty('--x', `${18 + (exhibit.artSeed % 64)}%`);
+    dialogArt.style.setProperty('--y', `${18 + (Math.floor(exhibit.artSeed / 7) % 64)}%`);
+    dialogArt.style.setProperty('--turn', `${exhibit.artSeed % 360}deg`);
+
+    const alreadyCollected = state.collectedRooms.includes(room.id);
+    fragmentCard.hidden = alreadyCollected && !room.final;
+    keepFragmentButton.disabled = alreadyCollected;
+    keepFragmentButton.textContent = room.final
+      ? 'Open the last door'
+      : alreadyCollected
+        ? 'Fragment already kept'
+        : 'Keep this fragment';
+    openDialog(exhibitDialog);
+  }
+
+  function keepFragment(event) {
+    event.preventDefault();
+
+    if (room.final) {
+      completeCollection();
+      closeDialog(exhibitDialog);
+      return;
+    }
+
+    if (state.collectedRooms.includes(room.id)) return;
+    const exhibit = room.exhibits[selectedExhibitIndex];
+    state.fragments.push({
+      text: exhibit.fragment,
+      source: exhibit.title,
+      room: state.roomIndex + 1
+    });
+    state.collectedRooms.push(room.id);
+    state.finalRoomPending = state.fragments.length >= MAX_FRAGMENTS;
+    saveState();
+    fragmentCount.textContent = state.fragments.length;
+    renderCatalogue();
+    closeDialog(exhibitDialog);
+    announce(`Fragment kept: ${exhibit.fragment}. ${state.fragments.length} of ${MAX_FRAGMENTS}.`);
+    museumStatus.textContent = state.finalRoomPending
+      ? 'Somewhere nearby, a room has reluctantly become complete.'
+      : `The catalogue now contains ${state.fragments.length} of ${MAX_FRAGMENTS} fragments.`;
+  }
+
+  function nextRoom() {
+    if (room.final) {
+      completeCollection();
+      return;
+    }
+    state.roomIndex += 1;
+    saveState();
+    renderRoom();
+    stage.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'center' });
+    announce(`Entered ${room.title}.`);
+  }
+
+  function completeCollection() {
+    state.completedCollections += 1;
+    state.cycle += 1;
+    state.roomIndex = 0;
+    state.fragments = [];
+    state.collectedRooms = [];
+    state.finalRoomPending = false;
+    saveState();
+    renderRoom();
+    announce('The finished room closed gently. A new collection has begun.');
+  }
+
+  function renderCatalogue() {
+    fragmentList.replaceChildren();
+    state.fragments.forEach((fragment, index) => {
+      const item = document.createElement('li');
+      const number = document.createElement('span');
+      number.className = 'fragment-index';
+      number.textContent = String(index + 1).padStart(2, '0');
+      const copy = document.createElement('div');
+      const title = document.createElement('strong');
+      title.textContent = fragment.text;
+      const source = document.createElement('small');
+      source.textContent = `From ${fragment.source}`;
+      copy.append(title, source);
+      item.append(number, copy);
+      fragmentList.append(item);
+    });
+    catalogueEmpty.hidden = state.fragments.length > 0;
+    fragmentList.hidden = state.fragments.length === 0;
+    cycleCount.textContent = `Completed collections: ${state.completedCollections}`;
+    fragmentCount.textContent = state.fragments.length;
+  }
+
+  function resetMuseum(event) {
+    event.preventDefault();
+    const confirmed = window.confirm('Return every fragment and begin with an empty catalogue?');
+    if (!confirmed) return;
+    const welcomed = state.welcomed;
+    state = defaultState();
+    state.welcomed = welcomed;
+    saveState();
+    closeDialog(catalogueDialog);
+    renderRoom();
+    announce('The catalogue is empty again.');
+  }
+
+  function savePostcard() {
+    const scale = 1.5;
+    const postcard = document.createElement('canvas');
+    postcard.width = Math.round(canvas.width * scale / dpr);
+    postcard.height = Math.round((canvas.height / dpr + 120) * scale);
+    const ctx = postcard.getContext('2d');
+    ctx.scale(scale, scale);
+    ctx.drawImage(canvas, 0, 0, canvas.width / dpr, canvas.height / dpr);
+    ctx.fillStyle = '#12100e';
+    ctx.fillRect(0, canvas.height / dpr, canvas.width / dpr, 120);
+    ctx.fillStyle = '#d6ad6c';
+    ctx.font = '700 11px ui-sans-serif, system-ui, sans-serif';
+    ctx.fillText('THE MUSEUM OF ALMOST', 24, canvas.height / dpr + 30);
+    ctx.fillStyle = '#f3eadb';
+    ctx.font = '28px Georgia, serif';
+    ctx.fillText(room.title, 24, canvas.height / dpr + 68, canvas.width / dpr - 48);
+    ctx.fillStyle = '#a99e8f';
+    ctx.font = '13px Georgia, serif';
+    ctx.fillText(room.intro, 24, canvas.height / dpr + 95, canvas.width / dpr - 48);
+
+    postcard.toBlob((blob) => {
+      if (!blob) return;
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      link.download = `museum-of-almost-room-${String(state.roomIndex + 1).padStart(3, '0')}.png`;
+      link.click();
+      URL.revokeObjectURL(url);
+      announce('Postcard saved to this device.');
+    }, 'image/png');
+  }
+
+  function createAudio() {
+    if (audio) return audio;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return null;
+    const ctx = new AudioContext();
+    const master = ctx.createGain();
+    master.gain.value = 0;
+    master.connect(ctx.destination);
+    const oscillators = [0, 1, 2].map((index) => {
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+      oscillator.type = index === 1 ? 'sine' : 'triangle';
+      gain.gain.value = index === 0 ? 0.012 : 0.007;
+      oscillator.connect(gain).connect(master);
+      oscillator.start();
+      return oscillator;
+    });
+    audio = { ctx, master, oscillators, enabled: false };
+    return audio;
+  }
+
+  async function toggleSound() {
+    const system = createAudio();
+    if (!system) {
+      soundButton.disabled = true;
+      soundButton.querySelector('.button-copy').textContent = 'Sound unavailable';
+      return;
+    }
+    if (system.ctx.state === 'suspended') await system.ctx.resume();
+    system.enabled = !system.enabled;
+    system.master.gain.cancelScheduledValues(system.ctx.currentTime);
+    system.master.gain.linearRampToValueAtTime(system.enabled ? 0.7 : 0, system.ctx.currentTime + 0.35);
+    soundButton.setAttribute('aria-pressed', String(system.enabled));
+    soundButton.querySelector('.button-copy').textContent = system.enabled ? 'Sound awake' : 'Sound asleep';
+    updateAudioNotes();
+  }
+
+  function updateAudioNotes() {
+    if (!audio) return;
+    const noteSeed = hashString(room.id);
+    const base = 46 + (noteSeed % 24);
+    const ratios = room.final ? [1, 1.25, 1.5] : [1, 1.2, 1.49];
+    audio.oscillators.forEach((oscillator, index) => {
+      oscillator.frequency.setTargetAtTime(base * ratios[index], audio.ctx.currentTime, 0.8);
+    });
+  }
+
+  function registerServiceWorker() {
+    if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+      navigator.serviceWorker.register('service-worker.js').catch(() => {
+        // Offline installation is optional; the museum still works without it.
+      });
+    }
+  }
+
+  stage.addEventListener('pointermove', (event) => {
+    const rect = stage.getBoundingClientRect();
+    pointer = {
+      x: Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
+      y: Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height))
+    };
+    if (prefersReducedMotion) drawScene(performance.now());
+  }, { passive: true });
+
+  stage.addEventListener('pointerleave', () => {
+    pointer = { x: 0.5, y: 0.5 };
   });
 
-  canvas.addEventListener('pointerdown', event => {
-    canvas.setPointerCapture(event.pointerId);
-    activeLab.pointerDown(pointerPosition(event));
+  keepFragmentButton.addEventListener('click', keepFragment);
+  nextRoomButton.addEventListener('click', nextRoom);
+  postcardButton.addEventListener('click', savePostcard);
+  soundButton.addEventListener('click', toggleSound);
+  catalogueButton.addEventListener('click', () => {
+    renderCatalogue();
+    openDialog(catalogueDialog);
   });
-  canvas.addEventListener('pointermove', event => activeLab.pointerMove(pointerPosition(event)));
-  canvas.addEventListener('pointerup', event => {
-    activeLab.pointerUp(pointerPosition(event));
-    if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
-  });
-  canvas.addEventListener('pointercancel', () => activeLab.pointerUp());
-
-  const observer = new ResizeObserver(fitCanvas);
-  observer.observe(canvas.parentElement);
+  resetButton.addEventListener('click', resetMuseum);
   window.addEventListener('resize', fitCanvas, { passive: true });
 
-  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-    navigator.serviceWorker.register('./service-worker.js').catch(() => undefined);
-  }
+  welcomeDialog.addEventListener('close', () => {
+    if (!state.welcomed) {
+      state.welcomed = true;
+      saveState();
+    }
+  });
 
-  function animate(now) {
-    const delta = Math.min(0.04, (now - lastTime) / 1000);
-    lastTime = now;
-    if (!paused && activeLab) activeLab.frame(delta);
-    requestAnimationFrame(animate);
-  }
+  renderRoom();
+  if (!prefersReducedMotion) requestAnimationFrame(animationLoop);
+  registerServiceWorker();
 
-  fitCanvas();
-  activateLab('orbit');
-  requestAnimationFrame(animate);
+  if (!state.welcomed) openDialog(welcomeDialog);
 })();

@@ -1,11 +1,11 @@
 {
-  "name": "Curiosity Lab",
-  "short_name": "Curiosity Lab",
-  "description": "A private, dependency-free browser playground for generative experiments.",
+  "name": "The Museum of Almost",
+  "short_name": "Almost",
+  "description": "An offline procedural museum of unfinished ideas and impossible artifacts.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#090b13",
-  "theme_color": "#090b13",
+  "background_color": "#0d0c0b",
+  "theme_color": "#11100f",
   "icons": [
     {
       "src": "icon.svg",
