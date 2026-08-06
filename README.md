@@ -37,6 +37,16 @@ The repository check verifies required assets, local-only runtime references, se
 
 ## Privacy boundary
 
-This project contains no personal or identifying sample data and does not accept visitor text. Progress is limited to generated fictional labels, counters and a random seed stored in local browser storage.
+The Museum application contains no personal or identifying sample data and does not accept visitor text. Progress is limited to generated fictional labels, counters and a random seed stored in local browser storage.
 
-See [PRIVACY.md](PRIVACY.md) for the full contract. Public deployment is intentionally out of scope.
+When GitHub Pages is enabled, GitHub provides the public hosting and may process technical connection information under its own privacy terms.
+
+See [PRIVACY.md](PRIVACY.md) for the full boundary.
+
+## Public availability and copyright
+
+This repository is intended to be publicly viewable for transparency and to support the hosted Museum website. Public visibility does not make it an open-source project.
+
+No open-source licence is granted. The absence of a licence is deliberate, and all rights are reserved except where applicable law or GitHub's Terms of Service provide otherwise. See [COPYRIGHT.md](COPYRIGHT.md).
+
+External contributions are not accepted unless explicitly invited by the repository owner. See [CONTRIBUTING.md](CONTRIBUTING.md).
