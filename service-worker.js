@@ -1,14 +1,20 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-v2';
+const CACHE_NAME = 'museum-of-almost-v3';
 const STATIC_FILES = [
   './',
   './index.html',
   './styles.css',
   './app.js',
+  './dreaming-wing.js',
+  './dreaming-photos.js',
   './manifest.webmanifest',
   './icon.svg',
-  './PRIVACY.md'
+  './PRIVACY.md',
+  './PHOTO_CREDITS.md',
+  './assets/dreaming-wing/atrium.webp',
+  './assets/dreaming-wing/clouds.webp',
+  './assets/dreaming-wing/moon.webp'
 ];
 
 async function fetchFresh(request) {
