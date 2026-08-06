@@ -12,6 +12,8 @@ const required = [
   'index.html',
   'styles.css',
   'app.js',
+  'tomorrow-room-core.js',
+  'tomorrow-room.js',
   'signal-vault-core.js',
   'signal-vault.js',
   'dreaming-wing.js',
@@ -24,6 +26,7 @@ const required = [
   'RIGHTS.md',
   'PHOTO_CREDITS.md',
   'CONTRIBUTING.md',
+  'scripts/test-tomorrow-room.mjs',
   'scripts/test-signal-vault.mjs',
   'scripts/test-service-worker.mjs',
   'scripts/test-dreaming-wing.mjs',
@@ -34,6 +37,8 @@ const runtimeFiles = [
   'index.html',
   'styles.css',
   'app.js',
+  'tomorrow-room-core.js',
+  'tomorrow-room.js',
   'signal-vault-core.js',
   'signal-vault.js',
   'dreaming-wing.js',
@@ -97,7 +102,15 @@ for (const file of runtimeFiles) {
   if (file === 'styles.css' && /@import\s/i.test(content)) fail('styles.css imports an external stylesheet');
 }
 
-for (const file of ['app.js', 'signal-vault-core.js', 'signal-vault.js', 'dreaming-wing.js', 'dreaming-photos.js']) {
+for (const file of [
+  'app.js',
+  'tomorrow-room-core.js',
+  'tomorrow-room.js',
+  'signal-vault-core.js',
+  'signal-vault.js',
+  'dreaming-wing.js',
+  'dreaming-photos.js'
+]) {
   const content = await readFile(file, 'utf8');
   if (/\bfetch\s*\(/.test(content)) fail(`${file} performs a runtime fetch`);
 }
@@ -106,6 +119,8 @@ const html = await readFile('index.html', 'utf8');
 for (const asset of [
   'styles.css',
   'app.js',
+  'tomorrow-room-core.js',
+  'tomorrow-room.js',
   'signal-vault-core.js',
   'signal-vault.js',
   'dreaming-wing.js',
@@ -132,13 +147,20 @@ for (const policyLink of ['PRIVACY.md', 'RIGHTS.md', 'PHOTO_CREDITS.md', 'CONTRI
 if (!readme.includes('Public visibility does not make it an open-source project')) {
   fail('README.md is missing the public-visibility boundary');
 }
+if (!readme.includes('The Observatory of Almost Tomorrow')) fail('README.md does not document the Almost Tomorrow observatory');
+if (!readme.includes('selected alternative number')) fail('README.md does not document the tomorrow seal boundary');
 if (!readme.includes('The Dreaming Wing')) fail('README.md does not document the Dreaming Wing');
 if (!readme.includes('The Listening Room')) fail('README.md does not document the Listening Room');
 if (!readme.includes('does not request remote images')) fail('README.md does not document the local-image boundary');
 if (!readme.includes('source seed strings are not stored')) fail('README.md does not document the Listening Room seed boundary');
 
 const privacy = await readFile('PRIVACY.md', 'utf8');
-for (const privacyBoundary of ['GitHub Pages', 'IP addresses', 'personal information about any person']) {
+for (const privacyBoundary of [
+  'GitHub Pages',
+  'IP addresses',
+  'personal information about any person',
+  'target date and a number from zero to six'
+]) {
   if (!privacy.includes(privacyBoundary)) fail(`PRIVACY.md is missing its ${privacyBoundary} boundary`);
 }
 
@@ -185,6 +207,8 @@ for (const asset of [
   './index.html',
   './styles.css',
   './app.js',
+  './tomorrow-room-core.js',
+  './tomorrow-room.js',
   './signal-vault-core.js',
   './signal-vault.js',
   './dreaming-wing.js',
@@ -214,6 +238,33 @@ for (const guard of [
   "stage.addEventListener('pointermove', (event) => {\n    if (prefersReducedMotion) return;"
 ]) {
   if (!app.includes(guard)) fail(`app.js is missing reduced-motion protection: ${guard}`);
+}
+
+const tomorrowCore = await readFile('tomorrow-room-core.js', 'utf8');
+for (const behaviour of ['buildTomorrows', 'tomorrowDate', 'dateKey', 'normalizeState', 'observatoryNote']) {
+  if (!tomorrowCore.includes(behaviour)) fail(`tomorrow-room-core.js is missing expected behaviour: ${behaviour}`);
+}
+
+const tomorrowController = await readFile('tomorrow-room.js', 'utf8');
+for (const behaviour of [
+  'The Observatory of Almost Tomorrow',
+  'SEVEN POSSIBLE MORNINGS',
+  'aria-live="polite"',
+  'SEAL_STORAGE_KEY',
+  'localStorage.setItem',
+  'prefers-reduced-motion',
+  'Save tomorrow postcard',
+  'Previous future',
+  'Next future',
+  'toBlob'
+]) {
+  if (!tomorrowController.includes(behaviour)) fail(`tomorrow-room.js is missing expected behaviour: ${behaviour}`);
+}
+if (/<input\b|<textarea\b|contenteditable=/i.test(tomorrowController)) {
+  fail('tomorrow-room.js accepts free-form visitor input');
+}
+if (/\b(?:geolocation|getCurrentPosition|watchPosition)\b/i.test(tomorrowController)) {
+  fail('tomorrow-room.js attempts to read visitor location');
 }
 
 const signalCore = await readFile('signal-vault-core.js', 'utf8');
@@ -271,6 +322,7 @@ for (const behaviour of [
 if (failed) process.exit(1);
 console.log(`Museum checks passed across ${allFiles.length} source files.`);
 console.log(`Dreaming Wing photographs are local WebP assets totalling ${totalPhotoBytes} bytes with no EXIF, XMP, or ICC chunks.`);
+console.log('The Observatory of Almost Tomorrow generates seven local daily alternatives and stores only one bounded seal.');
 console.log('The Listening Room retains ten anonymous numeric entropy values and no source seed identifiers.');
 console.log('No external runtime dependencies, obvious secrets, free-form visitor input, or third-party network references found.');
 console.log('Public-hosting privacy, rights, photograph provenance, and contribution boundaries are present.');
