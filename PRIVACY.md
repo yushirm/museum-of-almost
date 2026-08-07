@@ -20,11 +20,17 @@ It contains only bounded fictional and technical state:
 - a random numeric install seed;
 - optionally, the last fictional suspension the visitor attempted to erase, represented by one bounded position integer and one bounded weight integer.
 
-Active suspensions are session-only and are not stored. Hold durations and pointer coordinates exist only transiently in memory while a gesture is being interpreted. Pointer paths, action histories, visit counters, timestamps, semantic labels, movement histories, sound choices, and animation phases are not stored.
+Active suspensions are session-only and are not stored. The constructive field ledger, resonance spans, mirrored echoes, session undo state, weight edits, and current-visit journal are also session-only. Hold durations and pointer coordinates exist only transiently in memory while a gesture is being interpreted. Pointer paths, action histories, visit counters, timestamps, semantic labels, movement histories, sound choices, postcard history, print history, and animation phases are not stored.
 
 The once-per-installation field reversal is inferred from whether an attempted-erasure ghost already exists. It does not require a separate tracking flag. Using **Reset local state** intentionally clears that local installation memory and permits the fictional one-time event to occur again.
 
 The stored data is inspectable in browser storage, remains on the device, and can be removed with the visible reset control or browser storage controls. If storage is unavailable, the current session continues in memory only.
+
+## Local postcard and printing
+
+**Make local postcard** generates an SVG file entirely in the browser from the currently visible fictional treaty state. It includes bounded mark positions and weights, the visible unresolved measurement, the current resonance classification, whether an erased ghost is visible, and an installation-neutral code derived from the postcard's fictional configuration. It does not include the install seed, visitor text, timestamps, browser details, network information, or hidden personal data. The generated file is not uploaded or transmitted by the application.
+
+**Print treaty** opens the browser's local print dialog. The application does not receive printer information or a copy of the printed output.
 
 ## State migration
 
@@ -32,7 +38,7 @@ The application may read obsolete Museum keys only to preserve an existing rando
 
 ## Sound
 
-Sound is off by default. When explicitly enabled, brief tones are generated locally with browser WebAudio for suspensions, erasure attempts, and the one-time fictional reversal. The application does not record audio, request microphone access, upload sound, or fetch remote media.
+Sound is off by default. When explicitly enabled, brief tones are generated locally with browser WebAudio for suspensions, constructive edits, erasure attempts, and the one-time fictional reversal. The application does not record audio, request microphone access, upload sound, or fetch remote media.
 
 ## Motion
 

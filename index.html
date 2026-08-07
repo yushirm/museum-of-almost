@@ -36,7 +36,7 @@
       tabindex="0"
       role="application"
       aria-label="A continuous timeline carrying two opposing forces. Hold or press Space to suspend a force. Use left and right arrows to move the keyboard counterweight. Press Delete to attempt erasure."
-      aria-describedby="instruction treaty-state measurement memory-note status"
+      aria-describedby="instruction treaty-state measurement memory-note ledger-summary status"
     >
       <div id="construction-marks" class="construction-marks" aria-hidden="true"></div>
       <div id="field-lines" class="field-lines" aria-hidden="true"></div>
@@ -55,6 +55,7 @@
         <small>FORCE B · RETURNING</small>
       </div>
 
+      <div id="suspension-spans" class="suspension-spans" aria-hidden="true"></div>
       <div id="suspensions" class="suspensions" aria-hidden="true"></div>
       <div id="ghost-mark" class="ghost-mark" aria-hidden="true" hidden>
         <span></span>
@@ -74,16 +75,73 @@
       <p class="surface-instruction" aria-hidden="true">HOLD TO SUSPEND · RELEASE TO LEAVE AN ERROR</p>
     </div>
 
-    <div class="action-strip">
-      <button id="erase-button" type="button" disabled>Attempt erase latest suspension</button>
-      <p>Erasure is not deletion here.</p>
+    <div class="action-strip" role="group" aria-label="Treaty construction controls">
+      <div class="action-group">
+        <button id="erase-button" type="button" disabled>Attempt erase</button>
+        <button id="echo-button" type="button" disabled>Cast echo</button>
+        <button id="undo-button" type="button" disabled>Undo session mark</button>
+        <button id="soften-button" type="button" disabled>Soften latest</button>
+        <button id="intensify-button" type="button" disabled>Intensify latest</button>
+      </div>
+      <div class="action-group action-group-secondary">
+        <button id="postcard-button" type="button">Make local postcard</button>
+        <button id="print-button" type="button">Print treaty</button>
+      </div>
+      <p>Session additions stay local and temporary. Erasure remains the only durable fictional memory.</p>
     </div>
 
     <div class="readout">
       <p id="treaty-state">The forces match too perfectly to agree.</p>
       <p id="measurement">Measured: 11 q? · unit unresolved</p>
       <p id="memory-note">Nothing attempted to erase has been preserved yet.</p>
+      <p id="ledger-summary">No active marks. The session ledger is unwritten.</p>
     </div>
+
+    <section class="field-ledger" aria-labelledby="ledger-title">
+      <div class="ledger-heading">
+        <p class="registration">FIELD LEDGER</p>
+        <h2 id="ledger-title">What this session has accumulated.</h2>
+      </div>
+      <dl class="ledger-grid">
+        <div>
+          <dt>Active marks</dt>
+          <dd id="ledger-count">0</dd>
+        </div>
+        <div>
+          <dt>Total weight</dt>
+          <dd id="ledger-weight">0</dd>
+        </div>
+        <div>
+          <dt>Center</dt>
+          <dd id="ledger-center">—</dd>
+        </div>
+        <div>
+          <dt>Spread</dt>
+          <dd id="ledger-spread">0</dd>
+        </div>
+      </dl>
+      <p id="resonance-summary" class="resonance-summary">Resonance: unwritten.</p>
+    </section>
+
+    <section class="session-record" aria-labelledby="record-title">
+      <div>
+        <p class="registration">SESSION RECORD</p>
+        <h2 id="record-title">Only the current visit remembers these actions.</h2>
+      </div>
+      <ol id="session-journal" class="session-journal">
+        <li>The treaty opened without an active suspension.</li>
+      </ol>
+    </section>
+
+    <details class="shortcut-help">
+      <summary>Keyboard and construction help</summary>
+      <div class="shortcut-grid">
+        <p><kbd>←</kbd> <kbd>→</kbd> move the counterweight. <kbd>Home</kbd> and <kbd>End</kbd> move to the edges.</p>
+        <p>Hold <kbd>Space</kbd> to create a weighted suspension, or press <kbd>Enter</kbd> for a medium suspension.</p>
+        <p><kbd>Delete</kbd> attempts erasure. <kbd>[</kbd> and <kbd>]</kbd> soften or intensify the latest mark.</p>
+        <p><kbd>Shift</kbd> + <kbd>E</kbd> casts a mirrored echo. <kbd>Shift</kbd> + <kbd>U</kbd> undoes the latest session-only mark.</p>
+      </div>
+    </details>
 
     <p id="status" class="status" role="status" aria-live="polite">The treaty is waiting for a counterweight.</p>
     <p class="privacy-line">Local state only. No accounts, analytics, visitor text, or remote runtime calls.</p>
@@ -91,7 +149,7 @@
 
   <footer class="site-footer">
     <a href="PRIVACY.md">Privacy boundary</a>
-    <span>The title remains. Agreement is temporary.</span>
+    <span>The title remains. Agreement is temporary. Construction is additive.</span>
   </footer>
 
   <script src="entropy-core.js" defer></script>

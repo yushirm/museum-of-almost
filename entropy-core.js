@@ -17,6 +17,7 @@
   ];
   const MAX_SUSPENSIONS = 6;
   const UNKNOWN_UNITS = ['q?', 'ø?', '∴?', 'u?'];
+  const RESONANCES = ['near lock', 'close drift', 'balanced interval', 'wide accord'];
 
   function clampInt(value, min, max, fallback = min) {
     const numeric = Math.round(Number(value));
@@ -163,6 +164,60 @@
     return { state: nextState, session: nextSession, erased, firstEvent };
   }
 
+  function echoLatest(inputState, inputSession) {
+    const state = sanitizeState(inputState, inputState?.installSeed || 1);
+    const session = sanitizeSession(inputSession, state);
+    const latest = session.suspensions[session.suspensions.length - 1];
+    if (!latest) return { session, echoed: null };
+
+    const sequence = Math.min(9999, session.sequence + 1);
+    const echoed = {
+      id: sequence,
+      position: 1000 - latest.position,
+      weight: 6 - latest.weight
+    };
+    return {
+      session: {
+        ...session,
+        cursor: echoed.position,
+        sequence,
+        suspensions: [...session.suspensions, echoed].slice(-MAX_SUSPENSIONS)
+      },
+      echoed
+    };
+  }
+
+  function undoLatest(inputState, inputSession) {
+    const state = sanitizeState(inputState, inputState?.installSeed || 1);
+    const session = sanitizeSession(inputSession, state);
+    if (session.suspensions.length === 0) return { session, removed: null };
+    const removed = session.suspensions[session.suspensions.length - 1];
+    return {
+      session: {
+        ...session,
+        cursor: removed.position,
+        suspensions: session.suspensions.slice(0, -1)
+      },
+      removed
+    };
+  }
+
+  function adjustLatestWeight(inputState, inputSession, delta) {
+    const state = sanitizeState(inputState, inputState?.installSeed || 1);
+    const session = sanitizeSession(inputSession, state);
+    if (session.suspensions.length === 0) return { session, changed: null };
+
+    const index = session.suspensions.length - 1;
+    const latest = session.suspensions[index];
+    const changed = {
+      ...latest,
+      weight: clampInt(latest.weight + Number(delta || 0), 1, 5, latest.weight)
+    };
+    const next = session.suspensions.slice();
+    next[index] = changed;
+    return { session: { ...session, suspensions: next }, changed };
+  }
+
   function treatyState(inputState, inputSession) {
     const state = sanitizeState(inputState, inputState?.installSeed || 1);
     const session = sanitizeSession(inputSession, state);
@@ -205,6 +260,73 @@
     };
   }
 
+  function resonanceForDistance(rawDistance) {
+    const distance = clampInt(rawDistance, 0, 1000, 0);
+    if (distance < 120) return RESONANCES[0];
+    if (distance < 300) return RESONANCES[1];
+    if (distance < 600) return RESONANCES[2];
+    return RESONANCES[3];
+  }
+
+  function spanState(inputState, inputSession) {
+    const state = sanitizeState(inputState, inputState?.installSeed || 1);
+    const session = sanitizeSession(inputSession, state);
+    const ordered = session.suspensions.slice().sort((left, right) => left.position - right.position);
+    return ordered.slice(0, -1).map((mark, index) => {
+      const next = ordered[index + 1];
+      const distance = next.position - mark.position;
+      return {
+        from: mark.position,
+        to: next.position,
+        distance,
+        weightDelta: next.weight - mark.weight,
+        resonance: resonanceForDistance(distance)
+      };
+    });
+  }
+
+  function ledgerFor(inputState, inputSession) {
+    const state = sanitizeState(inputState, inputState?.installSeed || 1);
+    const session = sanitizeSession(inputSession, state);
+    const count = session.suspensions.length;
+    const totalWeight = session.suspensions.reduce((sum, mark) => sum + mark.weight, 0);
+    const averagePosition = count
+      ? Math.round(session.suspensions.reduce((sum, mark) => sum + mark.position, 0) / count)
+      : session.cursor;
+    const positions = session.suspensions.map((mark) => mark.position);
+    const spread = count > 1 ? Math.max(...positions) - Math.min(...positions) : 0;
+    const resonance = count > 1 ? resonanceForDistance(spread) : count === 1 ? 'single hold' : 'unwritten';
+    return { count, totalWeight, averagePosition, spread, resonance };
+  }
+
+  function sessionCodeFor(inputState, inputSession) {
+    const state = sanitizeState(inputState, inputState?.installSeed || 1);
+    const session = sanitizeSession(inputSession, state);
+    const signature = session.suspensions.map((mark) => `${mark.position}.${mark.weight}`).join('-') || 'empty';
+    const ghost = state.ghost ? `${state.ghost.position}.${state.ghost.weight}` : 'none';
+    const hash = hashString(`${EXECUTION_SEED}:${signature}:${ghost}:${session.inversion}:code`);
+    return hash.toString(36).toUpperCase().padStart(7, '0').slice(0, 7);
+  }
+
+  function postcardData(inputState, inputSession) {
+    const state = sanitizeState(inputState, inputState?.installSeed || 1);
+    const session = sanitizeSession(inputSession, state);
+    const ledger = ledgerFor(state, session);
+    const measured = measurementFor(state, session);
+    const force = forceState(state, session);
+    return {
+      code: sessionCodeFor(state, session),
+      count: ledger.count,
+      totalWeight: ledger.totalWeight,
+      resonance: ledger.resonance,
+      measurement: `${measured.value} ${measured.unit}`,
+      order: treatyState(state, session),
+      ghost: Boolean(state.ghost),
+      scaleA: force.scaleA,
+      scaleB: force.scaleB
+    };
+  }
+
   function statusText(inputState, inputSession) {
     const state = sanitizeState(inputState, inputState?.installSeed || 1);
     const session = sanitizeSession(inputSession, state);
@@ -241,6 +363,7 @@
     LEGACY_KEYS,
     MAX_SUSPENSIONS,
     UNKNOWN_UNITS,
+    RESONANCES,
     hashString,
     sanitizeGhost,
     createState,
@@ -253,9 +376,17 @@
     weightForDuration,
     suspend,
     attemptErase,
+    echoLatest,
+    undoLatest,
+    adjustLatestWeight,
     treatyState,
     forceState,
     measurementFor,
+    resonanceForDistance,
+    spanState,
+    ledgerFor,
+    sessionCodeFor,
+    postcardData,
     statusText,
     memoryText,
     timelinePositions
