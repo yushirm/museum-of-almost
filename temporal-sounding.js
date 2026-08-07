@@ -103,11 +103,17 @@
       return null;
     }
 
-    if (url.origin === 'https://earthquake.usgs.gov' && url.pathname === '/earthquakes/feed/v1.0/summary/all_hour.geojson') return 'earthquakes';
-    if (url.origin === 'https://services.swpc.noaa.gov' && url.pathname === '/products/summary/solar-wind-speed.json') return 'solar';
-    if (url.origin === 'https://services.swpc.noaa.gov' && url.pathname === '/products/noaa-scales.json') return 'scales';
-    if (url.origin === 'https://api.open-meteo.com' && url.pathname === '/v1/forecast') return 'weather';
-    if (url.origin === 'https://eonet.gsfc.nasa.gov' && url.pathname === '/api/v3/events') return 'events';
+    if (url.protocol !== 'https:') return null;
+    if (url.hostname === 'earthquake.usgs.gov' && url.pathname === '/earthquakes/feed/v1.0/summary/all_hour.geojson') return 'earthquakes';
+    if (url.hostname === 'services.swpc.noaa.gov' && url.pathname === '/products/summary/solar-wind-speed.json') return 'solar';
+    if (url.hostname === 'services.swpc.noaa.gov' && url.pathname === '/products/noaa-scales.json') return 'scales';
+    if (url.hostname === 'api.open-meteo.com' && url.pathname === '/v1/forecast') return 'weather';
+    if (
+      url.hostname === 'eonet.gsfc.nasa.gov'
+      && url.pathname === '/api/v3/events'
+      && url.searchParams.get('status') === 'open'
+      && url.searchParams.get('limit') === '500'
+    ) return 'events';
     return null;
   }
 
@@ -133,10 +139,10 @@
       <div class="sounding-heading">
         <p class="eyebrow">THE SOUNDING WELL / THE THICKNESS OF NOW</p>
         <h2 id="sounding-title">A latched moment can still have depth.</h2>
-        <p>The five requests commit together, but their source timestamps do not necessarily describe the same instant. Borrowed from maritime sounding: the latch is the surface; a trustworthy source time hangs below it by how long before the latch it occurred.</p>
+        <p>The five requests commit together, but their source timestamps do not necessarily describe the same instant or the same timestamp semantics. Borrowed from maritime sounding: the latch is the surface; a trustworthy source time hangs below it by how long before the latch it occurred.</p>
       </div>
       <div class="sounding-summary">
-        <span>KNOWN TIME THICKNESS</span>
+        <span>KNOWN SOURCE-TIME THICKNESS</span>
         <strong id="sounding-thickness">—</strong>
         <p id="sounding-span">Waiting for the first latched snapshot.</p>
       </div>
@@ -146,7 +152,7 @@
           <strong id="sounding-latch">—</strong>
         </div>
         <ol id="sounding-lines" class="sounding-lines" aria-label="Temporal depth of source timestamps in the current latch"></ol>
-        <p class="sounding-scale-note">Line depth is relative to the deepest comparable timestamp in this latch. The written durations are authoritative; depth is not a quality score.</p>
+        <p class="sounding-scale-note">Line depth is relative to the deepest comparable source timestamp in this latch. The written durations and timestamp labels are authoritative; depth is not a quality score, confidence score, or claim that every provider timestamp means the same thing.</p>
       </div>
       <p id="sounding-status" class="sounding-status" role="status" aria-live="polite">Waiting for source timestamp metadata from the shared acquisition.</p>
       <p class="sounding-note"><strong>No fake timestamp.</strong> NASA EONET pairs dates with individual event geometries rather than publishing one feed-wide observation instant, so its channel is left unsounded instead of forcing unlike time semantics onto one scale.</p>
@@ -193,12 +199,12 @@
     if (ui.latch) ui.latch.textContent = sounding.latchAt ? formatUtc(sounding.latchAt) : '—';
     if (ui.span) {
       ui.span.textContent = sounding.available
-        ? `${sounding.comparableCount} of 5 channels expose a timestamp that can be compared with this latch.`
+        ? `${sounding.comparableCount} of 5 channels expose a source timestamp that can be offset from this latch.`
         : 'No comparable source timestamp was available in this latch.';
     }
     if (ui.status) {
       ui.status.textContent = sounding.available
-        ? `Known temporal thickness: ${core.formatDuration(deepest)} across ${sounding.comparableCount} comparable channels.`
+        ? `Known source-time thickness: ${core.formatDuration(deepest)} across ${sounding.comparableCount} comparable channels.`
         : 'The snapshot is latched, but no comparable source timestamp could be sounded.';
     }
 
