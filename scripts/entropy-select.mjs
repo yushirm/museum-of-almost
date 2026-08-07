@@ -4,6 +4,9 @@ import fs from 'node:fs';
 const dimensions = JSON.parse(
   fs.readFileSync(new URL('./entropy-dimensions.json', import.meta.url), 'utf8')
 );
+const rerolls = JSON.parse(
+  fs.readFileSync(new URL('./entropy-rerolls.json', import.meta.url), 'utf8')
+);
 
 export function selectIndex(seed, label, length, offset = 0) {
   const digest = crypto.createHash('sha256').update(`${seed}:${label}:${offset}`).digest();
@@ -11,11 +14,17 @@ export function selectIndex(seed, label, length, offset = 0) {
   return Number(value % BigInt(length));
 }
 
+function offsetFor(seed, label) {
+  return Number(rerolls?.[seed]?.[label]?.offset) || 0;
+}
+
 export function selectEntropy(seed) {
   const result = {};
   for (const label of ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'J', 'K']) {
-    result[label] = dimensions[label][selectIndex(seed, label, dimensions[label].length)];
+    const offset = offsetFor(seed, label);
+    result[label] = dimensions[label][selectIndex(seed, label, dimensions[label].length, offset)];
   }
+
   const firstMaterialIndex = selectIndex(seed, 'H', dimensions.H.length, 0);
   let secondMaterialIndex = selectIndex(seed, 'H', dimensions.H.length, 1);
   if (secondMaterialIndex === firstMaterialIndex) {
@@ -25,6 +34,10 @@ export function selectEntropy(seed) {
   result.preservationBudget =
     dimensions.Preservation[selectIndex(seed, 'Preservation', dimensions.Preservation.length)];
   return result;
+}
+
+export function rerollRecord(seed) {
+  return rerolls?.[seed] || {};
 }
 
 if (process.argv[1] === new URL(import.meta.url).pathname) {
