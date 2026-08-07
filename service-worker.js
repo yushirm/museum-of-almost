@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-entropy-v4';
+const CACHE_NAME = 'museum-of-almost-entropy-v5';
 const APP_SHELL = [
   './',
   './index.html',

@@ -1,10 +1,10 @@
 {
   "name": "The Museum of Almost",
   "short_name": "Almost",
-  "description": "A local-first organism of simultaneous unfinished realities.",
+  "description": "A local-first agreement between impossible forces.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0d1112",
-  "theme_color": "#0d1112"
+  "background_color": "#101317",
+  "theme_color": "#101317"
 }

@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0d1112">
-  <meta name="description" content="A local-first organism of simultaneous unfinished realities.">
+  <meta name="theme-color" content="#101317">
+  <meta name="description" content="A local-first agreement between impossible forces.">
   <title>The Museum of Almost</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#organism">Skip to the organism</a>
+  <a class="skip-link" href="#treaty">Skip to the treaty</a>
 
   <header class="site-header">
     <div class="identity" aria-label="The Museum of Almost">
       <small>The Museum of Almost</small>
-      <strong>Organism 04 · Parallel anatomy</strong>
+      <strong>Treaty 05 · Counterweight protocol</strong>
     </div>
     <div class="site-controls" aria-label="Local controls">
       <button id="sound-button" type="button" aria-pressed="false">Sound off</button>
@@ -23,56 +23,75 @@
     </div>
   </header>
 
-  <main id="organism" class="organism" tabindex="-1" data-late="false">
-    <div class="organism-heading">
-      <p class="registration">UNFINISHED ORGANISM / 04</p>
-      <h1>Separate what is happening at once.</h1>
-      <p id="instruction" class="instruction">Drag across the organism, or use an arrow key. Then leave it alone.</p>
+  <main id="treaty" class="treaty" tabindex="-1" data-order="too-exact" data-holding="false" data-event="false">
+    <div class="treaty-heading">
+      <p class="registration">IMPOSSIBLE TREATY / 05</p>
+      <h1>Suspend one force so both can agree.</h1>
+      <p id="instruction" class="instruction">Hold anywhere on the line. Arrow keys move the keyboard counterweight.</p>
     </div>
 
     <div
-      id="organism-surface"
-      class="organism-surface"
+      id="treaty-surface"
+      class="treaty-surface"
       tabindex="0"
       role="application"
-      aria-label="Three overlapping realities. Drag in any direction, use an arrow key, or press Enter to separate them."
-      aria-describedby="instruction reality-summary status memory-note"
+      aria-label="A continuous timeline carrying two opposing forces. Hold or press Space to suspend a force. Use left and right arrows to move the keyboard counterweight. Press Delete to attempt erasure."
+      aria-describedby="instruction treaty-state measurement memory-note status"
     >
-      <div class="boundary-detection" aria-hidden="true">BOUNDARY DETECTED</div>
+      <div id="construction-marks" class="construction-marks" aria-hidden="true"></div>
+      <div id="field-lines" class="field-lines" aria-hidden="true"></div>
 
-      <section class="membrane membrane-a" aria-hidden="true">
-        <div class="contours"></div>
-        <strong class="membrane-label">scaffold</strong>
-        <small class="membrane-note">edge unconfirmed</small>
-      </section>
+      <div class="timeline-rail" aria-hidden="true"></div>
 
-      <section class="membrane membrane-b" aria-hidden="true">
-        <div class="contours"></div>
-        <strong class="membrane-label">appetite</strong>
-        <small class="membrane-note">fold still growing</small>
-      </section>
+      <div id="force-a" class="force force-a" aria-hidden="true">
+        <span class="force-line"></span>
+        <span class="force-head"></span>
+        <small>FORCE A · OUTWARD</small>
+      </div>
 
-      <section class="membrane membrane-c" aria-hidden="true">
-        <div class="contours"></div>
-        <strong class="membrane-label">weather</strong>
-        <small class="membrane-note">map refuses north</small>
-      </section>
+      <div id="force-b" class="force force-b" aria-hidden="true">
+        <span class="force-line"></span>
+        <span class="force-head"></span>
+        <small>FORCE B · RETURNING</small>
+      </div>
 
-      <p class="surface-instruction" aria-hidden="true">YOU ARE BEING USED AS AN EDGE</p>
+      <div id="suspensions" class="suspensions" aria-hidden="true"></div>
+      <div id="ghost-mark" class="ghost-mark" aria-hidden="true" hidden>
+        <span></span>
+        <small>ERASED / RETAINED</small>
+      </div>
+
+      <div id="counterweight" class="counterweight" aria-hidden="true">
+        <span></span>
+        <small>COUNTERWEIGHT</small>
+      </div>
+
+      <div id="once-event" class="once-event" aria-hidden="true" hidden>
+        <strong>FIELD REVERSAL</strong>
+        <small>This event belongs to one installation only.</small>
+      </div>
+
+      <p class="surface-instruction" aria-hidden="true">HOLD TO SUSPEND · RELEASE TO LEAVE AN ERROR</p>
+    </div>
+
+    <div class="action-strip">
+      <button id="erase-button" type="button" disabled>Attempt erase latest suspension</button>
+      <p>Erasure is not deletion here.</p>
     </div>
 
     <div class="readout">
-      <p id="reality-summary">Three realities are occupying the same geometry.</p>
-      <p id="status" role="status" aria-live="polite">Nothing has separated yet.</p>
-      <p id="memory-note">No earlier geometry is being carried yet.</p>
+      <p id="treaty-state">The forces match too perfectly to agree.</p>
+      <p id="measurement">Measured: 11 q? · unit unresolved</p>
+      <p id="memory-note">Nothing attempted to erase has been preserved yet.</p>
     </div>
 
+    <p id="status" class="status" role="status" aria-live="polite">The treaty is waiting for a counterweight.</p>
     <p class="privacy-line">Local state only. No accounts, analytics, visitor text, or remote runtime calls.</p>
   </main>
 
   <footer class="site-footer">
     <a href="PRIVACY.md">Privacy boundary</a>
-    <span>The title remains. The floor plan does not.</span>
+    <span>The title remains. Agreement is temporary.</span>
   </footer>
 
   <script src="entropy-core.js" defer></script>

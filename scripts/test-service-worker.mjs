@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 
-assert.match(source, /museum-of-almost-entropy-v4/);
+assert.match(source, /museum-of-almost-entropy-v5/);
 for (const asset of [
   './',
   './index.html',
@@ -24,4 +24,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//);
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Service worker lifecycle and offline fallback verified for entropy v4.');
+console.log('Service worker lifecycle and offline fallback verified for entropy v5.');
