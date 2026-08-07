@@ -3,7 +3,7 @@
 const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish';
 const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold';
 const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now';
-const CURRENT_CACHE_NAME = 'museum-of-almost-commons-now-v13-faultline-core';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v14-deep-space';
 const APP_SHELL = [
   './',
   './index.html',
@@ -34,6 +34,10 @@ const APP_SHELL = [
   './temporal-sounding.js',
   './app.js',
   './cosmic-signal.js',
+  './deep-space.html',
+  './deep-space.css',
+  './deep-space-core.js',
+  './deep-space.js',
   './manifest.webmanifest',
   './PRIVACY.md',
   './SOURCES.md',
@@ -42,7 +46,8 @@ const APP_SHELL = [
   './FAULTLINE_CORE.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
-  './PLANETARY_HELIODON.md'
+  './PLANETARY_HELIODON.md',
+  './DEEP_SPACE.md'
 ];
 
 self.addEventListener('install', (event) => {
@@ -74,6 +79,13 @@ self.addEventListener('activate', (event) => {
   })());
 });
 
+function cacheSuccessfulResponse(request, response) {
+  if (!response || response.status !== 200 || response.type === 'opaque') return response;
+  const copy = response.clone();
+  caches.open(CURRENT_CACHE_NAME).then((cache) => cache.put(request, copy));
+  return response;
+}
+
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
@@ -83,14 +95,18 @@ self.addEventListener('fetch', (event) => {
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      caches.match('./index.html').then((cached) => {
+      caches.match(request).then((cached) => {
         if (cached) return cached;
-        return fetch(request).then((response) => {
-          if (!response || response.status !== 200 || response.type === 'opaque') return response;
-          const copy = response.clone();
-          caches.open(CURRENT_CACHE_NAME).then((cache) => cache.put('./index.html', copy));
-          return response;
-        });
+
+        const scopePath = new URL(self.registration.scope).pathname;
+        if (url.pathname === scopePath) {
+          return caches.match('./index.html').then((cached) => {
+            if (cached) return cached;
+            return fetch(request).then((response) => cacheSuccessfulResponse(request, response));
+          });
+        }
+
+        return fetch(request).then((response) => cacheSuccessfulResponse(request, response));
       })
     );
     return;
@@ -99,12 +115,7 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(request).then((cached) => {
       if (cached) return cached;
-      return fetch(request).then((response) => {
-        if (!response || response.status !== 200 || response.type === 'opaque') return response;
-        const copy = response.clone();
-        caches.open(CURRENT_CACHE_NAME).then((cache) => cache.put(request, copy));
-        return response;
-      });
+      return fetch(request).then((response) => cacheSuccessfulResponse(request, response));
     })
   );
 });
