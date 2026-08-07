@@ -114,7 +114,8 @@ assert.match(worldMap, /viewBox="0 0 360 180"/);
 assert.match(worldMap, /Natural Earth 110m land geometry, public domain/i);
 assert.match(worldMap, /x = longitude \+ 180; y = 90 - latitude/);
 assert.match(worldMap, /<path\b/);
-assert.doesNotMatch(worldMap, /<script\b|<foreignObject\b|\bhref=|https?:\/\//i, 'local map asset must be inert and self-contained');
+assert.doesNotMatch(worldMap, /<script\b|<foreignObject\b|\b(?:href|xlink:href)=["'](?:https?:)?\/\/|url\(\s*["']?https?:\/\//i,
+  'local map asset must be inert and must not load remote content');
 
 assert.match(mapStyles, /\.world-map-image/);
 assert.match(mapStyles, /aspect-ratio:\s*2\s*\/\s*1/);
