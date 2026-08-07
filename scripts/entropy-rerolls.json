@@ -1,0 +1,9 @@
+{
+  "18fe665945016bff2168f9c3ad6110e5c684dc9e8ef0983d9a300a8ac848782c": {
+    "B": {
+      "offset": 2,
+      "original": "custodian of an unstable rule",
+      "reason": "The original selection exactly repeats the current implemented visitor relationship; offset 2 is the first deterministic non-identical replacement."
+    }
+  }
+}
