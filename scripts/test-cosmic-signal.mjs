@@ -15,6 +15,10 @@ assert.equal(cosmic.SOURCE, 'https://services.swpc.noaa.gov/products/noaa-scales
 assert.ok(appSource.includes(cosmic.SOURCE), 'the shared snapshot acquisition must own the approved NOAA Scales request');
 assert.match(appSource, /Promise\.allSettled\([\s\S]*SOURCES\.earthquakes[\s\S]*SOURCES\.solar[\s\S]*SOURCES\.scales[\s\S]*weatherUrl[\s\S]*SOURCES\.events/,
   'all five current feeds must cross the same acquisition barrier');
+assert.match(appSource, /if \(requestController !== activeController\) return;/,
+  'an aborted older acquisition must never overwrite a newer latch');
+assert.match(appSource, /snapshot\.feeds\.solar \|\| snapshot\.feeds\.scales/,
+  'NOAA must count as an answered public service when either of its two feeds answers');
 assert.match(appSource, /MuseumCommonsSnapshot/);
 assert.match(appSource, /museum:commons-snapshot/);
 assert.match(viewSource, /museum:commons-snapshot/);
@@ -116,4 +120,4 @@ assert.match(styles, /@media print/);
 assert.doesNotMatch(styles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
 
-console.log('Cosmic Signal Chain normalization, shared five-feed latch, privacy boundary, accessibility hooks, and missing-value integrity verified.');
+console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, privacy boundary, accessibility hooks, and missing-value integrity verified.');
