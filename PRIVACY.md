@@ -96,3 +96,9 @@ When offline, live values are shown as unavailable. The page does not display st
 GitHub Pages and the public data providers may process ordinary technical connection information under their own terms. The Museum adds no analytics or tracking on top of that hosting.
 
 See `SOURCES.md` for the exact public endpoints and source documentation.
+
+## Planetary Heliodon
+
+The **Planetary Heliodon / Earth Casts the Night** adds no network request and collects no visitor information. It reads only the Museum's already-visible captured UTC snapshot time and fixed local solar-geometry code. It does not request browser geolocation, timezone, orientation, ambient-light sensors, camera access, or any other device sensor.
+
+The derived subsolar point, antisolar point, terminator path, night-side hatching, and field-sheet copy exist only in page memory and the current DOM. They are not uploaded or persisted by the Museum. The NOAA solar-calculation references documented in `PLANETARY_HELIODON.md` and `SOURCES.md` are not contacted at runtime.

@@ -29,7 +29,11 @@
       load('./cosmic-latency-core.js', 'cosmicLatencyCore', () => {
         load('./cosmic-latency.js', 'cosmicLatencyView', () => {
           load('./cosmic-escapement-core.js', 'celestialEscapementCore', () => {
-            load('./cosmic-escapement.js', 'celestialEscapementView');
+            load('./cosmic-escapement.js', 'celestialEscapementView', () => {
+              load('./planetary-heliodon-core.js', 'planetaryHeliodonCore', () => {
+                load('./planetary-heliodon.js', 'planetaryHeliodonView');
+              });
+            });
           });
         });
       });
