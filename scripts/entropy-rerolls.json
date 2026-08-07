@@ -5,5 +5,17 @@
       "original": "custodian of an unstable rule",
       "reason": "The original selection exactly repeats the current implemented visitor relationship; offset 2 is the first deterministic non-identical replacement."
     }
+  },
+  "800cbe27a5b38bddb19ba0b4eb8a65dea8507e39afeeb06b77aa54043e5424b9": {
+    "C": {
+      "offset": 1,
+      "original": "wait",
+      "reason": "The original selection exactly repeats the primary verb implemented by Execution 3; offset 1 is the first deterministic non-identical replacement."
+    },
+    "K": {
+      "offset": 1,
+      "original": "the core interaction must work without precise pointing",
+      "reason": "The original severe constraint exactly repeats Execution 3 and would not constrain a new implementation differently; offset 1 is the first deterministic non-identical replacement."
+    }
   }
 }

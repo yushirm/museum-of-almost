@@ -68,3 +68,26 @@
 - Preservation budget: Inversion.
 - Resulting organising principle: One self-translating weave reveals a contradiction, briefly permits interference, and treats continued waiting as complicity.
 - Concise implementation outcome: The timeline, seasons, term targets, misregistration values, coherence calculation, and correction grammar were removed. One broad weave now changes meaning by rhythm; visible effects precede action, and persistence is reduced to one fictional contradiction.
+
+## Execution 4
+
+- Seed: `800cbe27a5b38bddb19ba0b4eb8a65dea8507e39afeeb06b77aa54043e5424b9`
+- Date: 2026-08-07
+- Primary Fixation exiled: Timed contradiction pulse.
+- Supporting patterns prohibited: Fixed activation-to-reveal phase cycle; paired-opposition output; one broad pulse surface as the universal interaction grammar.
+- Pattern inverted: Waiting is the visitor's action → visitor activity changes geometry immediately, while only inactivity advances time.
+- Patterns retained: Deterministic procedural variation; local-first offline engineering.
+- Ontology selected: An organism made from unfinished ideas.
+- Visitor relationship selected: Visitor mistaken by the system for something else.
+- Primary verb selected: Separate.
+- Topology selected: Several simultaneous realities sharing one interface.
+- Time law selected: Time advances only when the visitor does nothing.
+- Memory law selected: Preserve state while changing its meaning.
+- Sensory centre selected: Geometric transformation.
+- Materials selected: Woven maps; translucent membranes.
+- Governing contradiction selected: Silence creates more information than activity.
+- Intrusion selected: A warning issued too late.
+- Severe constraint selected: No images.
+- Preservation budget: Three.
+- Resulting organising principle: Three simultaneous membranes preserve geometry while separation changes their relationship and silence alone advances generation, reinterprets meaning, and reveals more information.
+- Concise implementation outcome: The timed measure, contradiction pair, tiny ecosystem, wait-as-action grammar, and effect-gated response window were removed. One shared organism now supports direct separation, silence-only time, mutable semantics, late warnings, and bounded geometry persistence.
