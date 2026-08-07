@@ -167,7 +167,7 @@ h1 {
   overflow: clip;
   border-block: 1px solid var(--line);
   cursor: grab;
-  touch-action: none;
+  touch-action: pan-y;
   user-select: none;
   isolation: isolate;
 }
