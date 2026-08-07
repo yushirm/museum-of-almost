@@ -304,7 +304,7 @@
     const session = sanitizeSession(inputSession, state);
     const signature = session.suspensions.map((mark) => `${mark.position}.${mark.weight}`).join('-') || 'empty';
     const ghost = state.ghost ? `${state.ghost.position}.${state.ghost.weight}` : 'none';
-    const hash = hashString(`${EXECUTION_SEED}:${state.installSeed}:${signature}:${ghost}:${session.inversion}:code`);
+    const hash = hashString(`${EXECUTION_SEED}:${signature}:${ghost}:${session.inversion}:code`);
     return hash.toString(36).toUpperCase().padStart(7, '0').slice(0, 7);
   }
 
