@@ -252,8 +252,12 @@
   }
 
   function renderSnapshot() {
-    const availableSources = [snapshot.earthquakes, snapshot.solar, snapshot.weather, snapshot.events]
-      .filter((source) => source.available).length;
+    const availableSources = [
+      snapshot.feeds.earthquakes,
+      snapshot.feeds.solar || snapshot.feeds.scales,
+      snapshot.feeds.weather,
+      snapshot.feeds.events
+    ].filter(Boolean).length;
     const answeredFeeds = Object.values(snapshot.feeds).filter(Boolean).length;
 
     document.body.dataset.sourceCount = String(availableSources);
