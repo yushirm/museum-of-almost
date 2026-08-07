@@ -30,11 +30,13 @@ Requests use CORS mode, `credentials: omit`, `referrerPolicy: no-referrer`, and 
 
 As with any direct internet request, the requested service and ordinary network infrastructure can see network-layer information such as the visitor's IP address. Each provider may process connection information under its own policies. The Museum does not receive their server logs.
 
-## Fixed world sample
+## Fixed world sample and map
 
 The Open-Meteo request contains thirteen fixed latitude/longitude pairs that are built into the application. They are the same for every visitor. They are not generated from browser location, IP address, language, timezone, or any other visitor characteristic.
 
 The coordinates were derived once from opaque seed material supplied for the rebuild. Only the resulting one-way build seed and fixed coordinates are retained in the repository. The original opaque values are not stored or published by the application.
+
+The geographic basemap under those points is `world-map.svg`, a same-origin static asset derived from Natural Earth public-domain land geometry. Loading, selecting, or viewing map points does not contact a map API, tile provider, geocoder, or other mapping service.
 
 ## Difference Engine
 
@@ -57,7 +59,7 @@ The page deliberately reduces source data:
 
 ## Offline shell
 
-A same-origin service worker caches only the Museum's static application shell so that the explanatory interface can still open offline. The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses.
+A same-origin service worker caches only the Museum's static application shell, including the local world map, so that the explanatory interface can still open offline. The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses.
 
 When offline, live values are shown as unavailable. The page does not display stale live values from storage.
 

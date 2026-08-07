@@ -17,7 +17,10 @@ The page shows:
 - current Open-Meteo temperature, wind, and precipitation at thirteen fixed coordinates distributed around the planet;
 - NASA EONET currently open natural-event counts and aggregate categories;
 - an approximate local day / twilight / night state for each fixed coordinate, calculated in the browser from UTC time and geometry;
+- a locally stored equirectangular world basemap so the thirteen fixed points have real geographic context;
 - **The Difference Engine**, a two-point patchboard that compares any pair of the thirteen fixed windows across the same current snapshot.
+
+The world basemap is generated from Natural Earth 110m public-domain land geometry and stored in this repository as `world-map.svg`. It uses the same equirectangular formula as the station positions, so points are not shifted by eye. No map API, tile server, remote image, or runtime mapping library is contacted.
 
 The Difference Engine adds no data source and makes no extra network request. It derives great-circle distance locally and compares temperature, wind, precipitation, and light between two visitor-selected fixed points. A lens control also places both points inside the observed range of the current thirteen-point snapshot. It describes difference without ranking places as better or worse.
 
@@ -46,7 +49,7 @@ The four public services are:
 - Open-Meteo;
 - NASA Earth Observatory Natural Event Tracker.
 
-No API keys, paid services, accounts, external scripts, remote fonts, remote images, analytics, ads, or tracking are used.
+No API keys, paid services, accounts, external scripts, remote fonts, remote images, analytics, ads, tracking, map APIs, or tile services are used.
 
 See `SOURCES.md` for exact endpoints and attribution.
 
@@ -56,11 +59,13 @@ There is no visitor persistence. The application does not use `localStorage`, `s
 
 Difference Engine selections and lenses exist only in page memory and reset on reload. They are not sent to any external service.
 
+The world basemap is a same-origin static file. Viewing or interacting with the map does not contact a mapping provider.
+
 Live requests omit credentials and referrer and use no-store caching. Normal direct internet requests still expose network-layer information such as an IP address to the requested public service. See `PRIVACY.md` for the full boundary.
 
 ## Offline behavior
 
-The explanatory application shell is cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world sample and Difference Engine controls still render, while live comparison values remain visibly unavailable.
+The explanatory application shell, local map asset, and local styles are cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world map and Difference Engine controls still render, while live comparison values remain visibly unavailable.
 
 ## Run locally
 
@@ -84,7 +89,7 @@ node scripts/test-service-worker.mjs
 node scripts/check.mjs
 ```
 
-The checks enforce the four-source network allowlist, thirteen fixed sampling points, truthful Difference Engine derivation, no visitor storage or location access, no polling, same-origin service-worker behavior, responsive accessibility hooks, source attribution, seed privacy, and deterministic data reduction.
+The checks enforce the four-source network allowlist, thirteen fixed sampling points, local-map projection and provenance, truthful Difference Engine derivation, no visitor storage or location access, no polling, same-origin service-worker behavior, responsive accessibility hooks, source attribution, seed privacy, and deterministic data reduction.
 
 ## Records
 
@@ -96,6 +101,6 @@ Those historical files describe previous versions and are not current product do
 
 ## Rights
 
-This repository is publicly viewable for transparency and to host the website. No open-source licence is granted. All rights are reserved except where applicable law or platform terms provide otherwise. See `RIGHTS.md`.
+This repository is publicly viewable for transparency and to host the website. No open-source licence is granted to the Museum code. `world-map.svg` is derived from Natural Earth public-domain geographic data; that public-domain source status is not restricted by the Museum's rights notice. See `RIGHTS.md`.
 
 External contributions are not accepted unless explicitly invited. See `CONTRIBUTING.md`.

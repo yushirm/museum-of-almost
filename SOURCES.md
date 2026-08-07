@@ -71,6 +71,25 @@ Documentation:
 
 The page intentionally aggregates categories rather than reproducing event titles, coordinates, or source links.
 
+## Local world basemap
+
+`world-map.svg` is a same-origin static asset generated from Natural Earth 110m land geometry. Natural Earth states that its raster and vector map data are in the public domain.
+
+Natural Earth land data:
+
+`https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/`
+
+Terms of use:
+
+`https://www.naturalearthdata.com/about/terms-of-use/`
+
+The Museum simplifies the public-domain geometry locally and projects it into a 360 × 180 equirectangular SVG using the same station placement formula:
+
+- `x = longitude + 180`;
+- `y = 90 - latitude`.
+
+The SVG is committed to the repository and cached with the static application shell. The browser does not contact Natural Earth, a map API, a tile server, or a geocoder at runtime.
+
 ## Local derived values
 
 The following values do not come from an additional service:
@@ -83,4 +102,4 @@ The following values do not come from an additional service:
 
 These are third-party public services. Their availability, update cadence, definitions, and terms are controlled by their respective providers. A missing or failed response is shown as unavailable rather than replaced with a guessed value.
 
-No API key, paid service, account, analytics provider, or tracking service is used by the Museum.
+No API key, paid service, account, analytics provider, tracking service, map API, or tile provider is used by the Museum.
