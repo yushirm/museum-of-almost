@@ -2,7 +2,7 @@
 
 **COMMONS / NOW** uses four public data services across five current feeds. The website makes one request to USGS, one to Open-Meteo, one to NASA EONET, and two current-product requests to NOAA SWPC when the page opens. Another set is requested only when the visitor presses **Refresh world**. It does not poll automatically.
 
-The **Sample-and-Hold Bus** commits those five responses together. The **Sounding Well / The Thickness of Now** adds no request: it passively reads timestamp metadata already present in the existing responses, where the provider exposes timestamp semantics that can honestly be compared with the Museum's UTC latch.
+The **Sample-and-Hold Bus** commits those five responses together. The **Sounding Well / The Thickness of Now** adds no request: it passively reads timestamp metadata already present in the existing responses, where the provider exposes source-time semantics that can honestly be offset from the Museum's UTC latch.
 
 ## USGS Earthquake Hazards Program
 
@@ -70,7 +70,7 @@ Documentation:
 
 Open-Meteo provides no-key access for non-commercial use and requires attribution for its CC BY 4.0 data. The visible website includes the required Open-Meteo attribution. The coordinates are fixed in source code and are not derived from visitor location.
 
-Open-Meteo documents that each `current` object contains `time`, the moment at which the current data is valid. The Museum requests `timezone=UTC`. The Sounding Well therefore compares those current-valid timestamps with the UTC latch. If the thirteen locations do not return the exact same valid time, the instrument retains the oldest and newest valid time and uses the oldest as that channel's temporal depth.
+Open-Meteo documents that each `current` object contains `time`, the moment at which the current data is valid. The Museum requests `timezone=UTC`. The Sounding Well therefore offsets those current-valid timestamps from the UTC latch. If the thirteen locations do not return the exact same valid time, the instrument retains the oldest and newest valid time and uses the oldest as that channel's temporal depth.
 
 The Difference Engine reuses this same thirteen-point response. It makes no second Open-Meteo request: pair deltas and the observed comparison range are calculated locally from the current snapshot already in page memory.
 
@@ -139,9 +139,9 @@ The following values do not come from an additional service:
 - Planetary Section temperature, wind, and precipitation positions are normalized only against the current thirteen reporting points;
 - the field-sheet timestamp is the time the current snapshot was received by the page;
 - the Cosmic Signal Chain's first value is a local mirror of the already-loaded solar-wind headline rather than a duplicate NOAA request;
-- the Sounding Well's known time thickness is the largest non-negative difference between the UTC latch and the oldest comparable source timestamp in the current acquisition.
+- the Sounding Well's known **source-time thickness** is the largest non-negative difference between the UTC latch and the oldest comparable source timestamp in the current acquisition.
 
-The Sounding Well's hanging-line lengths are normalized only within the current latch. Written durations and UTC times are authoritative. Visual depth is not a fixed time scale, provider score, confidence score, or uncertainty estimate.
+The Sounding Well's hanging-line lengths are normalized only within the current latch. Written durations, UTC times, and each channel's timestamp-semantic label are authoritative. Visual depth is not a fixed time scale, provider score, confidence score, uncertainty estimate, or claim that all source timestamps mean the same thing.
 
 The Planetary Section intentionally draws discrete posts rather than a connecting path. A blank span between stations means **not measured here**, not a hidden estimate.
 
