@@ -16,6 +16,8 @@ The Museum itself:
 
 The pocket catalogue stores only generated fictional fragment labels, progress counters and a random seed in the visitor's browser storage.
 
+The Conservation Lab reads only the existing fictional catalogue and local calendar date to generate an impossible object. It stores no restoration state, pointer movement, completed case or postcard. Fragment positions exist only in memory until the page is closed or another case is opened.
+
 The Observatory of Almost Tomorrow reads the browser's local calendar date and the existing fictional catalogue to generate seven alternatives on the device. When a visitor seals one alternative, it stores only the target date and a number from zero to six in browser storage. The Observatory does not store location, timezone, calendar events or free-form text, and it does not transmit the selection.
 
 The Listening Room stores no additional visitor state. It retains ten fixed numeric entropy values in the application source; the source seed identifiers are not stored. Its receiver reads the existing fictional catalogue locally to choose an echo and does not transmit that catalogue.
