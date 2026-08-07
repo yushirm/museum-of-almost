@@ -3,8 +3,8 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 
-assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v4-world-map'/);
-assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet'/);
+assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet'/);
+assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal'/);
 for (const asset of [
   './',
   './index.html',
