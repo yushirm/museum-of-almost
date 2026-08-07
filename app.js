@@ -336,7 +336,9 @@
   }
 
   function renderForcePositions(explicitPhase = null) {
-    const phase = explicitPhase === null ? currentPhase() : explicitPhase;
+    const phase = explicitPhase === null
+      ? (reducedMotion ? 0.25 : currentPhase())
+      : explicitPhase;
     const positions = core.timelinePositions(state, session, phase);
     const a = `${positions.a / 10}%`;
     const b = `${positions.b / 10}%`;
