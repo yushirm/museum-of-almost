@@ -31,16 +31,16 @@
           load('./cosmic-escapement-core.js', 'celestialEscapementCore', () => {
             load('./cosmic-escapement.js', 'celestialEscapementView', () => {
               load('./planetary-heliodon-core.js', 'planetaryHeliodonCore', () => {
-                load('./planetary-heliodon.js', 'planetaryHeliodonView', () => {
-                  load('./faultline-core.js', 'faultlineCore', () => {
-                    load('./faultline.js', 'faultlineView');
-                  });
-                });
+                load('./planetary-heliodon.js', 'planetaryHeliodonView');
               });
             });
           });
         });
       });
     });
+  });
+
+  load('./faultline-core.js', 'faultlineCore', () => {
+    load('./faultline.js', 'faultlineView');
   });
 })(typeof globalThis !== 'undefined' ? globalThis : this);
