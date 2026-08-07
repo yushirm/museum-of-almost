@@ -38,6 +38,7 @@
     requestController = new AbortController();
     const timeout = window.setTimeout(() => requestController.abort(), 6500);
 
+    main.dataset.liveRequest = 'requesting';
     inviteButton.disabled = true;
     inviteButton.textContent = 'Listening outside…';
     liveStatus.textContent = 'Requesting one current aggregate from USGS and one current solar-wind value from NOAA SWPC.';
@@ -97,6 +98,7 @@
   }
 
   function applyLiveEntropy() {
+    main.dataset.liveRequest = 'active';
     main.dataset.liveEntropy = 'true';
     main.style.setProperty('--live-force-a-scale', String(currentEntropy.scaleA));
     main.style.setProperty('--live-force-b-scale', String(currentEntropy.scaleB));
@@ -104,6 +106,28 @@
     main.style.setProperty('--live-entropy-x', `${currentEntropy.position / 10}%`);
     marker.style.left = `${currentEntropy.position / 10}%`;
     marker.hidden = false;
+    exposeLiveSnapshot();
+  }
+
+  function exposeLiveSnapshot() {
+    main.dataset.worldPressure = String(currentEntropy.pressure);
+    main.dataset.worldPressureLabel = currentEntropy.label;
+    main.dataset.liveSourceCount = String(currentEntropy.sourceCount);
+    main.dataset.livePosition = String(currentEntropy.position);
+
+    if (currentEarthquakes?.available) {
+      main.dataset.quakeCount = String(currentEarthquakes.count);
+      main.dataset.quakeStrongest = currentEarthquakes.strongest.toFixed(1);
+    } else {
+      delete main.dataset.quakeCount;
+      delete main.dataset.quakeStrongest;
+    }
+
+    if (currentSolarWind?.available) {
+      main.dataset.solarSpeed = String(Math.round(currentSolarWind.speed));
+    } else {
+      delete main.dataset.solarSpeed;
+    }
   }
 
   function releaseLiveEntropy(announceRelease = true) {
@@ -112,8 +136,16 @@
     currentEntropy = null;
     currentEarthquakes = null;
     currentSolarWind = null;
+    delete main.dataset.liveRequest;
     delete main.dataset.liveEntropy;
     delete main.dataset.correspondence;
+    delete main.dataset.worldPressure;
+    delete main.dataset.worldPressureLabel;
+    delete main.dataset.liveSourceCount;
+    delete main.dataset.livePosition;
+    delete main.dataset.quakeCount;
+    delete main.dataset.quakeStrongest;
+    delete main.dataset.solarSpeed;
     main.style.removeProperty('--live-force-a-scale');
     main.style.removeProperty('--live-force-b-scale');
     main.style.removeProperty('--live-field-scale');

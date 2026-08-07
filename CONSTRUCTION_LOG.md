@@ -28,7 +28,7 @@ Additions:
 3. A field ledger reports active mark count, total weight, center, spread, and resonance.
 4. The latest mark can cast a mirrored echo with complementary weight.
 5. The latest session-only mark can be undone without creating durable memory.
-6. The latest mark can be softened or intensified inside the existing weight bounds.
+6. The latest mark can be softened or intensified inside the existing bounded weight range.
 7. A six-entry current-visit record explains recent constructive actions without persistence.
 8. Keyboard shortcuts expose echo, undo, and weight editing alongside the existing keyboard controls.
 9. A local SVG postcard can be generated from the visible fictional treaty state without remote assets or transmission.
@@ -44,7 +44,7 @@ Date: 2026-08-07
 
 Meaning:
 
-The Treaty can now be influenced by conditions that exist outside the Museum at the moment of the visit. Live data is not shown as a dashboard or treated as content. It is reduced into bounded pressure on the existing agreement, so the visitor's constructed counterweight can answer or resist a world that is not under the Museum's control.
+The Treaty can now be influenced by conditions that exist outside the Museum at the moment of the visit. Live data is reduced into bounded pressure on the existing agreement, so the visitor's constructed counterweight can answer or resist a world that is not under the Museum's control.
 
 External signals:
 
@@ -67,4 +67,37 @@ Privacy and network boundary:
 
 Product consequence:
 
-This is the first intentional relaxation of the earlier no-third-party-runtime-data boundary. It is narrowly scoped to free public scientific data, explicitly activated by the visitor, and used as entropy rather than as a new destination or information product. The durable v5 schema is unchanged.
+This is the first intentional relaxation of the earlier no-third-party-runtime-data boundary. It is narrowly scoped to free public scientific data, explicitly activated by the visitor, and used as entropy. The durable v5 schema is unchanged.
+
+## Build 3 — Operations dashboard
+
+Date: 2026-08-07
+
+Product decision:
+
+The earlier avoidance of dashboard form is explicitly retired. Treaty 05 is now composed as a live/local operations dashboard so its interacting systems can be read together rather than discovered only by scrolling through separate explanatory sections.
+
+Dashboard structure:
+
+1. A four-cell summary band reports agreement, world pressure, session load, and durable erased memory.
+2. The interactive treaty surface remains the dominant workbench rather than becoming a decorative chart.
+3. Live source cards expose the real invited snapshot: earthquake count, strongest magnitude, solar-wind speed, and correspondence.
+4. The existing field ledger becomes an operational panel for mark count, total weight, center, spread, and resonance.
+5. The current-visit record becomes the activity panel.
+6. A local system panel reports network availability, durable-store availability, service-worker state, and whether live influence is active.
+7. The desktop layout uses a twelve-column instrument grid; tablet and mobile collapse to progressively simpler stacks without removing information or controls.
+8. Print, reduced-motion, higher-contrast, keyboard, pointer, and touch behavior remain supported.
+
+Meaning:
+
+The dashboard is not analytics about visitors. It is instrumentation for the artwork itself. It answers four questions at once: what is the Treaty doing, what is the outside world doing to it, what has the current visit constructed, and what can survive after the visit ends.
+
+Integrity boundary:
+
+- the dashboard makes no network requests of its own;
+- it creates no local or session storage;
+- it does not add timers, polling, history capture, charts, fabricated trends, or visitor metrics;
+- live values remain a single explicitly requested snapshot;
+- the dashboard reads only visible Treaty state, bounded live snapshot attributes, browser online state, and service-worker readiness;
+- the durable v5 schema remains unchanged;
+- the service worker caches the dashboard's local CSS and JavaScript but still ignores all cross-origin live requests.

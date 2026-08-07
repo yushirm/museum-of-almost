@@ -23,7 +23,7 @@ It contains only bounded fictional and technical state:
 - a random numeric install seed;
 - optionally, the last fictional suspension the visitor attempted to erase, represented by one bounded position integer and one bounded weight integer.
 
-Active suspensions are session-only and are not stored. The constructive field ledger, resonance spans, mirrored echoes, session undo state, weight edits, and current-visit journal are also session-only. Hold durations and pointer coordinates exist only transiently in memory while a gesture is being interpreted. Pointer paths, action histories, visit counters, timestamps, semantic labels, movement histories, sound choices, postcard history, print history, live entropy responses, live pressure, and animation phases are not stored.
+Active suspensions are session-only and are not stored. The constructive field ledger, resonance spans, mirrored echoes, session undo state, weight edits, current-visit journal, dashboard summary, dashboard source cells, and dashboard system-status cells are also not stored. Hold durations and pointer coordinates exist only transiently in memory while a gesture is being interpreted. Pointer paths, action histories, visit counters, timestamps, semantic labels, movement histories, sound choices, postcard history, print history, live entropy responses, live pressure, and animation phases are not stored.
 
 The once-per-installation field reversal is inferred from whether an attempted-erasure ghost already exists. It does not require a separate tracking flag. Using **Reset local state** intentionally clears that local installation memory and permits the fictional one-time event to occur again.
 
@@ -52,6 +52,22 @@ Raw source data is reduced immediately to a small fictional influence:
 
 The reduced values and raw responses are not written to local storage, IndexedDB, cookies, the postcard, or the service-worker cache. They are not forwarded to another service. If one source fails, the other may contribute alone. If both fail or the visitor is offline, the local treaty continues unchanged.
 
+## Operations dashboard
+
+The operations dashboard is a local presentation layer over existing Treaty state. It performs no network requests itself and creates no local storage, session storage, IndexedDB records, cookies, timers, polling loops, or analytics events.
+
+It may display:
+
+- the current qualitative agreement state;
+- active mark count, total weight, center, spread, and resonance already present in the session;
+- whether an erased ghost is currently present;
+- the bounded live snapshot values already produced after explicit live-entropy activation: aggregate earthquake count, strongest magnitude, solar-wind speed, source count, world-pressure value, and correspondence classification;
+- browser online/offline state;
+- whether the existing local durable store is available;
+- whether the same-origin service worker is ready or controlling the page.
+
+The dashboard does not receive raw earthquake records, locations, feed identifiers, timestamps, the installation seed, visitor history, or server logs. It does not retain prior dashboard states and therefore does not create historical charts or trends.
+
 ## Local postcard and printing
 
 **Make local postcard** generates an SVG file entirely in the browser from the currently visible fictional treaty state. It includes bounded mark positions and weights, the visible unresolved measurement, the current resonance classification, whether an erased ghost is visible, and an installation-neutral code derived from the postcard's fictional configuration. It does not include the install seed, visitor text, timestamps, browser details, network information, or live entropy. The generated file is not uploaded or transmitted by the application.
@@ -72,7 +88,7 @@ The two fictional forces move only as a local visual animation. Animation phase 
 
 ## Offline support
 
-A same-origin service worker caches the small static application files, including the local live-entropy code and styles. It ignores cross-origin requests, does not cache or proxy the USGS or NOAA responses, and removes obsolete Museum cache versions during activation.
+A same-origin service worker caches the small static application files, including the local live-entropy and dashboard code and styles. It ignores cross-origin requests, does not cache or proxy the USGS or NOAA responses, and removes obsolete Museum cache versions during activation.
 
 ## Hosting
 
