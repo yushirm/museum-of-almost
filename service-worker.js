@@ -1,19 +1,15 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-entropy-v5-dashboard1';
+const CACHE_NAME = 'museum-of-almost-commons-now-v1';
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
-  './live-entropy.css',
-  './dashboard.css',
-  './entropy-core.js',
+  './data-core.js',
   './app.js',
-  './live-entropy-core.js',
-  './live-entropy.js',
-  './dashboard.js',
   './manifest.webmanifest',
-  './PRIVACY.md'
+  './PRIVACY.md',
+  './SOURCES.md'
 ];
 
 self.addEventListener('install', (event) => {
