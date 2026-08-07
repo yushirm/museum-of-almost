@@ -52,6 +52,8 @@ Documentation:
 
 Open-Meteo provides no-key access for non-commercial use and requires attribution for its CC BY 4.0 data. The visible website includes the required Open-Meteo attribution. The coordinates are fixed in source code and are not derived from visitor location.
 
+The Difference Engine reuses this same thirteen-point response. It makes no second Open-Meteo request: pair deltas and the observed comparison range are calculated locally from the current snapshot already in page memory.
+
 ## NASA Earth Observatory Natural Event Tracker (EONET)
 
 Current metrics:
@@ -68,6 +70,14 @@ Documentation:
 `https://eonet.gsfc.nasa.gov/docs/v3`
 
 The page intentionally aggregates categories rather than reproducing event titles, coordinates, or source links.
+
+## Local derived values
+
+The following values do not come from an additional service:
+
+- daylight, twilight, and night at each fixed point are approximated locally from UTC time and geometry;
+- Difference Engine surface distance is calculated locally as great-circle distance between two fixed coordinates;
+- Difference Engine temperature, wind, and precipitation deltas are derived from the existing Open-Meteo response.
 
 ## Availability and interpretation
 
