@@ -13,25 +13,30 @@ The Museum of Almost is a static, local-first browser experience.
 
 ## Local state
 
-The application may store one JSON value under `museum-of-almost:entropy:v4`.
+The application may store one JSON value under `museum-of-almost:entropy:v5`.
 
 It contains only bounded fictional and technical state:
 
 - a random numeric install seed;
-- a bounded visit counter used to reinterpret fictional labels;
-- preserved geometry consisting of four bounded integers: spread, axis, fold, and generation.
+- optionally, the last fictional suspension the visitor attempted to erase, represented by one bounded position integer and one bounded weight integer.
 
-The visible semantic labels are generated from that state and are not stored as visitor content. No action history is stored. Pointer coordinates are not stored; drag coordinates exist only transiently in memory long enough to classify one gesture as north, east, south, or west. No pointer path, timestamp, free-form text, or identifying data is retained.
+Active suspensions are session-only and are not stored. Hold durations and pointer coordinates exist only transiently in memory while a gesture is being interpreted. Pointer paths, action histories, visit counters, timestamps, semantic labels, movement histories, sound choices, and animation phases are not stored.
 
-The data is inspectable in browser storage, remains on the device, and can be removed with the visible **Reset local state** control or browser storage controls. If storage is unavailable, the current session continues in memory only.
+The once-per-installation field reversal is inferred from whether an attempted-erasure ghost already exists. It does not require a separate tracking flag. Using **Reset local state** intentionally clears that local installation memory and permits the fictional one-time event to occur again.
+
+The stored data is inspectable in browser storage, remains on the device, and can be removed with the visible reset control or browser storage controls. If storage is unavailable, the current session continues in memory only.
 
 ## State migration
 
-The application may check obsolete Museum keys only to determine whether old fictional state exists. It does not preserve old contradiction words, translations, offsets, seasons, action counts, fragments, selections, timing, or pointer data. Obsolete-state existence is compressed to a small neutral starting geometry and the old keys are removed.
+The application may read obsolete Museum keys only to preserve an existing random install seed when one is safely available. Previous geometry, labels, contradictions, translations, offsets, seasons, action counts, fragments, selections, timing, pointer data, and other fictional state are discarded. Obsolete keys are then removed.
 
 ## Sound
 
-Sound is off by default. When explicitly enabled, brief tones are generated locally with browser WebAudio only during visitor separation. Inactivity remains silent. No recording, microphone access, uploaded audio, or remote media is used.
+Sound is off by default. When explicitly enabled, brief tones are generated locally with browser WebAudio for suspensions, erasure attempts, and the one-time fictional reversal. The application does not record audio, request microphone access, upload sound, or fetch remote media.
+
+## Motion
+
+The two fictional forces move only as a local visual animation. Animation phase is never stored. Reduced-motion preferences replace continuous movement with a stable equivalent state while preserving all interaction and information.
 
 ## Offline support
 
