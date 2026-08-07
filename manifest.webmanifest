@@ -1,7 +1,7 @@
 {
   "name": "The Museum of Almost",
   "short_name": "Almost",
-  "description": "A local-first living weave made from unfinished ideas.",
+  "description": "A local-first living weave of unfinished ideas and delayed consequences.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
