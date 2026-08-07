@@ -28,9 +28,11 @@ jobs:
         with:
           node-version: 22
       - name: Check JavaScript syntax
-        run: node --check app.js && node --check entropy-core.js && node --check service-worker.js && node --check scripts/entropy-select.mjs && node --check scripts/test-entropy.mjs && node --check scripts/test-service-worker.mjs && node --check scripts/check.mjs
+        run: node --check app.js && node --check entropy-core.js && node --check live-entropy-core.js && node --check live-entropy.js && node --check service-worker.js && node --check scripts/entropy-select.mjs && node --check scripts/test-entropy.mjs && node --check scripts/test-live-entropy.mjs && node --check scripts/test-service-worker.mjs && node --check scripts/check.mjs
       - name: Test entropy behavior
         run: node scripts/test-entropy.mjs
+      - name: Test live entropy behavior
+        run: node scripts/test-live-entropy.mjs
       - name: Test service worker lifecycle and fallback
         run: node scripts/test-service-worker.mjs
       - name: Check privacy and application contract

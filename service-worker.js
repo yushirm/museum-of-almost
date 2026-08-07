@@ -1,12 +1,15 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-entropy-v5';
+const CACHE_NAME = 'museum-of-almost-entropy-v5-live1';
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
+  './live-entropy.css',
   './entropy-core.js',
   './app.js',
+  './live-entropy-core.js',
+  './live-entropy.js',
   './manifest.webmanifest',
   './PRIVACY.md'
 ];

@@ -6,10 +6,11 @@ const root = path.resolve(new URL('..', import.meta.url).pathname);
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 
 for (const file of [
-  'index.html', 'styles.css', 'entropy-core.js', 'app.js', 'manifest.webmanifest',
-  'service-worker.js', 'README.md', 'PRIVACY.md', 'ENTROPY_LOG.md', 'ENTROPY_HISTORY.md',
-  'CONSTRUCTION_LOG.md', 'RIGHTS.md', 'CONTRIBUTING.md', 'scripts/entropy-select.mjs',
-  'scripts/entropy-dimensions.json', 'scripts/entropy-rerolls.json', 'scripts/test-entropy.mjs',
+  'index.html', 'styles.css', 'live-entropy.css', 'entropy-core.js', 'app.js',
+  'live-entropy-core.js', 'live-entropy.js', 'manifest.webmanifest', 'service-worker.js',
+  'README.md', 'PRIVACY.md', 'ENTROPY_LOG.md', 'ENTROPY_HISTORY.md', 'CONSTRUCTION_LOG.md',
+  'RIGHTS.md', 'CONTRIBUTING.md', 'scripts/entropy-select.mjs', 'scripts/entropy-dimensions.json',
+  'scripts/entropy-rerolls.json', 'scripts/test-entropy.mjs', 'scripts/test-live-entropy.mjs',
   'scripts/test-service-worker.mjs', '.github/workflows/check.yml'
 ]) {
   assert.ok(fs.existsSync(path.join(root, file)), `missing ${file}`);
@@ -19,16 +20,25 @@ const index = read('index.html');
 const app = read('app.js');
 const core = read('entropy-core.js');
 const styles = read('styles.css');
+const liveStyles = read('live-entropy.css');
+const liveCore = read('live-entropy-core.js');
+const liveApp = read('live-entropy.js');
 const worker = read('service-worker.js');
 const privacy = read('PRIVACY.md');
 const history = read('ENTROPY_HISTORY.md');
 const log = read('ENTROPY_LOG.md');
 const construction = read('CONSTRUCTION_LOG.md');
+const readme = read('README.md');
 const workflow = read('.github/workflows/check.yml');
-const runtime = [index, app, core, styles, worker].join('\n');
+const runtime = [index, app, core, styles, liveStyles, liveCore, liveApp, worker].join('\n');
 
-assert.doesNotMatch(runtime, /https?:\/\//i, 'runtime must not contact remote origins');
-assert.doesNotMatch(runtime, /\b(fetch\s*\(\s*['"]https?:|XMLHttpRequest|sendBeacon|WebSocket|EventSource)\b/i);
+const allowedLiveUrls = [
+  'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson',
+  'https://services.swpc.noaa.gov/products/summary/solar-wind-speed.json'
+].sort();
+const runtimeUrls = [...new Set(runtime.match(/https:\/\/[^\s"'`<>]+/g) || [])].sort();
+assert.deepEqual(runtimeUrls, allowedLiveUrls, 'runtime remote origins must stay limited to the approved live entropy feeds');
+assert.doesNotMatch(runtime, /\b(XMLHttpRequest|sendBeacon|WebSocket|EventSource)\b/i);
 assert.doesNotMatch(runtime, /\b(gtag|dataLayer|mixpanel|segment|plausible|amplitude)\b/i);
 assert.doesNotMatch(runtime, /google-analytics|googletagmanager|analytics\.js|sendBeacon\s*\(/i);
 assert.doesNotMatch(index, /<script[^>]+src=["'](?:https?:)?\/\//i);
@@ -39,7 +49,10 @@ for (const id of [
   'treaty-surface', 'status', 'sound-button', 'erase-button', 'reset-button', 'once-event',
   'ghost-mark', 'suspension-spans', 'echo-button', 'undo-button', 'soften-button',
   'intensify-button', 'postcard-button', 'print-button', 'ledger-summary', 'ledger-count',
-  'ledger-weight', 'ledger-center', 'ledger-spread', 'resonance-summary', 'session-journal'
+  'ledger-weight', 'ledger-center', 'ledger-spread', 'resonance-summary', 'session-journal',
+  'live-entropy', 'live-entropy-marker', 'live-invite-button', 'live-release-button',
+  'live-entropy-status', 'live-quake-status', 'live-solar-status', 'live-vector-status',
+  'live-correspondence-status'
 ]) {
   assert.match(index, new RegExp(`id=["']${id}["']`), `missing constructive interface id: ${id}`);
 }
@@ -52,6 +65,13 @@ assert.match(index, /<details class="shortcut-help">/);
 assert.match(index, /<kbd>/);
 assert.match(index, /Make local postcard/i);
 assert.match(index, /Print treaty/i);
+assert.match(index, /Invite live entropy/i);
+assert.match(index, /Nothing will be requested until invited/i);
+assert.match(index, /credentials and referrer are omitted/i);
+assert.match(index, /never polled automatically/i);
+assert.match(index, /src="live-entropy-core\.js"/);
+assert.match(index, /src="live-entropy\.js"/);
+assert.match(index, /href="live-entropy\.css"/);
 
 assert.match(app, /addEventListener\('pointerdown'/);
 assert.match(app, /addEventListener\('pointermove'/);
@@ -82,6 +102,28 @@ assert.doesNotMatch(
   'transient gesture data and clocks must never enter durable core state'
 );
 
+for (const functionName of [
+  'normalizeEarthquakes', 'normalizeSolarWind', 'composeLiveEntropy', 'correspondenceFor'
+]) {
+  assert.match(liveCore, new RegExp(`function ${functionName}\\b`), `missing live entropy function: ${functionName}`);
+}
+assert.match(liveCore, /all_hour\.geojson/);
+assert.match(liveCore, /solar-wind-speed\.json/);
+assert.match(liveApp, /live-invite-button/);
+assert.match(liveApp, /addEventListener\('click', inviteLiveEntropy\)/);
+assert.match(liveApp, /Promise\.allSettled/);
+assert.match(liveApp, /fetch\(url/);
+assert.match(liveApp, /credentials:\s*'omit'/);
+assert.match(liveApp, /referrerPolicy:\s*'no-referrer'/);
+assert.match(liveApp, /cache:\s*'no-store'/);
+assert.match(liveApp, /mode:\s*'cors'/);
+assert.match(liveApp, /AbortController/);
+assert.match(liveApp, /MutationObserver/);
+assert.doesNotMatch(liveApp, /setInterval|geolocation|navigator\.geolocation|document\.cookie/i);
+assert.doesNotMatch(liveApp, /localStorage|sessionStorage|indexedDB/i, 'live entropy must remain memory-only');
+const liveSetup = liveApp.slice(0, liveApp.indexOf('async function inviteLiveEntropy'));
+assert.doesNotMatch(liveSetup, /fetch\(/, 'live data must not be fetched before explicit invitation');
+
 assert.match(styles, /min-height:\s*44px/);
 assert.match(styles, /touch-action:\s*pan-y/);
 assert.match(styles, /\.suspension-span/);
@@ -95,6 +137,14 @@ assert.match(styles, /@media \(max-width: 520px\)/);
 assert.match(styles, /@media \(max-width: 360px\)/);
 assert.match(styles, /:focus-visible/);
 assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
+assert.match(liveStyles, /\.live-entropy-marker/);
+assert.match(liveStyles, /data-live-entropy/);
+assert.match(liveStyles, /data-correspondence/);
+assert.match(liveStyles, /min-height:\s*44px/);
+assert.match(liveStyles, /@media \(prefers-reduced-motion: reduce\)/);
+assert.match(liveStyles, /@media \(prefers-contrast: more\)/);
+assert.match(liveStyles, /@media print/);
+assert.doesNotMatch(liveStyles, /min-width:\s*[4-9]\d\dpx/);
 
 const facing = index.toLowerCase();
 for (const word of [
@@ -152,6 +202,14 @@ assert.match(privacy, /constructive field ledger/i);
 assert.match(privacy, /session-only/i);
 assert.match(privacy, /installation-neutral code/i);
 assert.match(privacy, /generated file is not uploaded or transmitted/i);
+assert.match(privacy, /Live entropy is off by default/i);
+assert.match(privacy, /USGS/i);
+assert.match(privacy, /NOAA/i);
+assert.match(privacy, /credentials.*omitted/i);
+assert.match(privacy, /referrer.*omitted/i);
+assert.match(privacy, /IP address/i);
+assert.match(privacy, /not stored/i);
+assert.match(privacy, /does not poll/i);
 assert.match(history, /## Execution 5/);
 assert.match(history, /Primary Fixation exiled: Parallel membrane field/i);
 assert.match(log, /## Execution 5/);
@@ -159,21 +217,29 @@ assert.match(log, /Original seed: `679e472a1e31e8c20074426565d9ed6ccc2f5115266f7
 assert.match(log, /Parallel membrane field/i);
 assert.match(log, /Rerolls: None/i);
 assert.match(construction, /## Build 1 — Treaty expansion/);
+assert.match(construction, /## Build 2 — Live entropy/);
 assert.match(construction, /Constructive work extends the current experience instead of replacing/i);
 assert.match(construction, /durable v5 schema is unchanged/i);
-assert.match(read('README.md'), /constructive building mode/i);
+assert.match(construction, /USGS/i);
+assert.match(construction, /NOAA/i);
+assert.match(readme, /constructive building mode/i);
+assert.match(readme, /live entropy/i);
+assert.match(readme, /explicit opt-in/i);
 
-assert.match(worker, /museum-of-almost-entropy-v5/);
+assert.match(worker, /museum-of-almost-entropy-v5-live1/);
 assert.match(worker, /url\.origin !== self\.location\.origin/);
+assert.doesNotMatch(worker, /https?:\/\//, 'service worker must not proxy live entropy');
 assert.match(workflow, /jobs:\s*\n\s*check:/);
 assert.match(workflow, /permissions:\s*\n\s*contents: read/);
 assert.match(workflow, /persist-credentials: false/);
 assert.match(workflow, /timeout-minutes: 5/);
 assert.match(workflow, /actions\/checkout@[0-9a-f]{40}/);
 assert.match(workflow, /actions\/setup-node@[0-9a-f]{40}/);
+assert.match(workflow, /node scripts\/test-live-entropy\.mjs/);
 
 const publicText = [
-  index, app, core, privacy, history, log, construction, read('README.md'), read('RIGHTS.md'), read('CONTRIBUTING.md')
+  index, app, core, liveCore, liveApp, privacy, history, log, construction, readme,
+  read('RIGHTS.md'), read('CONTRIBUTING.md')
 ].join('\n');
 assert.doesNotMatch(publicText, /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i);
 assert.doesNotMatch(publicText, /\bAKIA[0-9A-Z]{16}\b/);
@@ -182,4 +248,4 @@ assert.doesNotMatch(publicText, /BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/);
 assert.doesNotMatch(publicText, /password\s*[:=]\s*["'][^"']+["']/i);
 assert.doesNotMatch(publicText, /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i);
 
-console.log('Privacy, accessibility, constructive treaty additions, erasure-only persistence, and offline contract verified.');
+console.log('Privacy, accessibility, constructive treaty additions, opt-in live entropy, erasure-only persistence, and offline contract verified.');
