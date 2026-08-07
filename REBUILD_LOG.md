@@ -280,3 +280,30 @@ Integrity rules:
 Rebuild rule:
 
 Capture one UTC instant, derive all four wheels locally, and freeze them until the existing refresh control recaptures time. Keep the approximation sources explicit and never add a live astronomy service merely to make the mechanism feel more animated.
+
+## Extension 6 — The Planetary Heliodon / Earth Casts the Night
+
+Date: 2026-08-07
+
+Before implementation, three concepts were evaluated:
+
+- **A — Global Day/Night Terminator:** the conventional next step, adding subsolar/antisolar points and the day/night boundary to the existing map.
+- **B — Planetary Heliodon:** borrow an architectural daylighting instrument and treat Earth itself as the model illuminated at the captured snapshot instant.
+- **C — Make the Whole Page a Horizon:** allow the calculated terminator to divide the entire webpage into visual day and night.
+
+Concept C was discarded because the whole-page effect would weaken contrast, print fidelity, reduced-motion expectations, and the coherent one-snapshot evidence model.
+
+Concepts A and B were merged into **The Planetary Heliodon / Earth Casts the Night**.
+
+Implementation rules:
+
+- reuse the same local solar-declination/elevation machinery that already classifies the thirteen fixed stations;
+- derive subsolar and antisolar points from the captured UTC snapshot instant;
+- generate the terminator as a sampled great circle and split it at the equirectangular map seam;
+- use coarse hatching only to distinguish the night-facing hemisphere, never as a claim of measured illumination;
+- make no new runtime request and request no visitor location;
+- keep the geometry frozen to the Museum snapshot rather than running an independent clock;
+- add the same derived coordinates to the printable field sheet;
+- advance the coherent offline shell for every new local asset.
+
+The feature extends the existing thesis without changing it: **The world is doing this without us. Half of it is always turning into night.**
