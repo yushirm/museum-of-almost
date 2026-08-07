@@ -13,8 +13,10 @@ for (const asset of [
   './world-map.svg',
   './difference-engine.css',
   './field-sheet.css',
+  './cosmic-signal.css',
   './data-core.js',
   './app.js',
+  './cosmic-signal.js',
   './manifest.webmanifest',
   './PRIVACY.md',
   './SOURCES.md'
@@ -37,4 +39,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Commons / Now coherent offline shell, local world map, Difference Engine, printable field sheet, and cross-origin boundary verified.');
+console.log('Commons / Now coherent offline shell, local world map, Cosmic Signal Chain, Difference Engine, printable field sheet, and cross-origin boundary verified.');
