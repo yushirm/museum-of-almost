@@ -24,17 +24,17 @@ Concept A was discarded because it solved the problem with familiar dashboard fu
 
 The Sample-and-Hold Bus guarantees an atomic commit: all five requests settle before the visible Museum changes. Atomic acquisition does **not** mean every provider measured or published its data at the same instant.
 
-The Sounding Well makes that distinction visible without adding a request.
+**The Sounding Well adds no request.** It makes that distinction visible by observing timestamp metadata already present in the existing five-feed acquisition.
 
 - the latch instant is the surface;
 - a trustworthy source timestamp is a sounding weight;
 - temporal depth is the source timestamp’s offset from the latch;
-- the deepest comparable past timestamp defines the current **known time thickness**;
+- the deepest comparable past timestamp defines the current **known source-time thickness**;
 - a source timestamp ahead of the latch is labeled as ahead rather than clamped to zero;
 - missing timestamp metadata remains missing;
 - incomparable timestamp semantics remain incomparable.
 
-Depth is not a quality score, confidence score, uncertainty estimate, or ranking of providers.
+Depth is not a quality score, confidence score, uncertainty estimate, or ranking of providers. A shared vertical scale does not imply that feed-generation, observation, and current-valid timestamps have identical meanings; each channel keeps its own semantic label.
 
 ## Existing response metadata used
 
@@ -66,7 +66,7 @@ Runtime endpoint:
 
 ### Open-Meteo current conditions
 
-Open-Meteo documents that each `current` object includes `time`, the moment at which the current data is valid. The Museum requests `timezone=UTC`, so those returned current-valid times can be compared with the UTC latch. With thirteen fixed coordinates, the Sounding Well retains the oldest and newest valid time if the points do not share one exact timestamp.
+Open-Meteo documents that each `current` object includes `time`, the moment at which the current data is valid. The Museum requests `timezone=UTC`, so those returned current-valid times can be offset from the UTC latch. With thirteen fixed coordinates, the Sounding Well retains the oldest and newest valid time if the points do not share one exact timestamp.
 
 Documentation:
 
