@@ -10,8 +10,10 @@ const APP_SHELL = [
   './world-map.svg',
   './difference-engine.css',
   './field-sheet.css',
+  './cosmic-signal.css',
   './data-core.js',
   './app.js',
+  './cosmic-signal.js',
   './manifest.webmanifest',
   './PRIVACY.md',
   './SOURCES.md'
