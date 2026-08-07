@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="world-map.css">
   <link rel="stylesheet" href="difference-engine.css">
+  <link rel="stylesheet" href="field-sheet.css">
 </head>
 <body data-loading="false" data-source-count="0">
   <a class="skip-link" href="#main">Skip to the world snapshot</a>
@@ -174,6 +175,75 @@
       </div>
 
       <p class="attribution">The Difference Engine derives everything from the existing thirteen-point weather snapshot and local geometry. It makes no additional network request.</p>
+    </section>
+
+    <section class="planetary-section" aria-labelledby="planetary-section-title">
+      <div class="section-heading">
+        <p class="eyebrow">PLANETARY SECTION / FIELD SHEET</p>
+        <h2 id="planetary-section-title">Cut through the planet as it is now.</h2>
+        <p>Architecture uses a section drawing to reveal what a plan view hides. Here the thirteen fixed stations become discrete measured posts from west to east. The page does not interpolate the unmeasured space between them.</p>
+      </div>
+
+      <div class="field-sheet-print-title" aria-hidden="true">
+        <strong>COMMONS / NOW — PLANETARY FIELD SHEET</strong>
+        <span>The page forgets. This sheet can remember one snapshot.</span>
+      </div>
+
+      <div id="field-sheet" class="field-sheet">
+        <div class="field-sheet-header">
+          <strong>13 FIXED POSTS · WEST → EAST</strong>
+          <span id="section-status">Waiting for current weather.</span>
+        </div>
+
+        <div class="section-instrument">
+          <svg id="planetary-section-plot" class="planetary-section-plot" viewBox="0 0 1000 360" role="img" aria-labelledby="section-plot-title section-plot-desc">
+            <title id="section-plot-title">Planetary section through thirteen fixed world samples</title>
+            <desc id="section-plot-desc">Thirteen discrete posts ordered west to east. Temperature controls post height; wind and precipitation are separate marks; light is labeled. No values are interpolated between posts.</desc>
+            <g id="section-guides" aria-hidden="true"></g>
+            <g id="section-posts" aria-hidden="true"></g>
+          </svg>
+        </div>
+
+        <div class="section-legend" aria-label="Planetary section legend">
+          <strong>READING KEY</strong>
+          <span>post height = temperature within this 13-point snapshot</span>
+          <span><i class="legend-wind"></i> flag length = wind within this snapshot</span>
+          <span><i class="legend-rain"></i> rain mark = current precipitation</span>
+          <span>post tone = day / twilight / night</span>
+        </div>
+
+        <p class="section-no-interpolation"><strong>No connecting line.</strong> The stations are measurements, not a continuous weather transect. Unmeasured space stays unmeasured.</p>
+
+        <div class="section-table-wrap">
+          <table class="section-table">
+            <thead>
+              <tr>
+                <th>Point</th>
+                <th>Longitude</th>
+                <th>Temperature</th>
+                <th>Wind</th>
+                <th>Precipitation</th>
+                <th>Light</th>
+              </tr>
+            </thead>
+            <tbody id="section-table-body">
+              <tr><td colspan="6">Waiting for the current snapshot.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="field-sheet-meta">
+          <span><strong id="field-sheet-time">No live snapshot yet</strong></span>
+          <span>Sources: USGS · NOAA SWPC · Open-Meteo · NASA EONET</span>
+          <span>Weather: 13 fixed coordinates · Open-Meteo</span>
+          <span>No account · no location · no stored visitor history</span>
+        </div>
+      </div>
+
+      <div class="field-sheet-actions">
+        <button id="field-sheet-button" type="button">Make field sheet</button>
+        <p class="field-sheet-help">This opens the browser’s native print dialog. Print on paper or choose a local PDF destination if your browser provides one. The Museum does not upload or save the sheet.</p>
+      </div>
     </section>
 
     <section class="signal-grid" aria-label="Detailed live signals">
