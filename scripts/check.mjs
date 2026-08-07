@@ -138,8 +138,8 @@ requirePatterns(file['PLANETARY_HELIODON.md'], [/The world is doing this without
 
 const worker = file['service-worker.js'];
 requirePatterns(worker, [
-  /PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency'/,
-  /CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/,
+  /PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/,
+  /CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/,
   /ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/,
   /url\.origin !== self\.location\.origin/, /caches\.match\('\.\/index\.html'\)/,
   /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/, /client\.navigate\(client\.url\)/
