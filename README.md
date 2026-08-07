@@ -4,7 +4,7 @@ A dependency-free, offline-first browser experiment currently behaving as an agr
 
 The current experience is one continuous treaty line carrying two forces in opposite directions. The visitor acts as a counterweight by suspending the line at any point. A suspension is a deliberate error: exactly one error creates temporary order, while perfect symmetry or too many errors destabilise the agreement. An erasure attempt removes an active mark but preserves that mark as the only durable fictional memory. The first erasure in a local installation also causes one field reversal that cannot repeat until local state is reset.
 
-The Museum is now in a **constructive building mode**: Treaty 05 is a stable foundation. New work should extend its behavior, expression, accessibility, and local tools rather than replacing the current experience unless a future task explicitly calls for a new direction.
+The Museum is now in a **constructive building mode**: Treaty 05 is a stable foundation. New work should extend its behavior, expression, accessibility, local tools, and meaningful connections rather than replacing the current experience unless a future task explicitly calls for a new direction.
 
 ## What is inside
 
@@ -33,10 +33,25 @@ Treaty 05 also supports additive session mechanics without changing its durable 
 - **Soften latest** and **Intensify latest** edit the newest mark within the existing bounded weight range.
 - A current-visit **session record** keeps the six most recent constructive actions in memory only; it is never persisted.
 - Keyboard construction shortcuts add `[` / `]` weight editing plus `Shift+E` echo and `Shift+U` session undo.
-- **Make local postcard** downloads an SVG generated entirely in-browser from the visible fictional configuration. It uses no remote images, fonts, APIs, or install-identifying code.
+- **Make local postcard** downloads an SVG generated entirely in-browser from the visible fictional configuration. It uses no remote images, fonts, install-identifying code, or live entropy data.
 - **Print treaty** provides a dedicated print layout through the browser's local print dialog.
 
 None of those additions store active-session history. The erased ghost remains the only durable fictional visitor action.
+
+## Live entropy
+
+Live entropy lets present-day public scientific conditions influence the existing Treaty instead of adding another content surface.
+
+It is an **explicit opt-in**. Nothing is fetched automatically. Pressing **Invite live entropy** makes one direct request to each of two fixed public sources:
+
+- the USGS all-earthquakes GeoJSON feed for the past hour;
+- the NOAA Space Weather Prediction Center current solar-wind-speed summary.
+
+USGS event data is reduced to aggregate disturbance only. NOAA contributes the numeric solar-wind speed. Those signals are combined into a bounded, session-only **world pressure** with a position, force bias, and field-scale influence. The Treaty then describes whether the visitor's current counterweight is answering, approaching, countering, or resisting that outside pressure.
+
+This is entropy, not a dashboard: no earthquake places, event IDs, news links, maps, personal location, or forecast interface are surfaced. The data changes the existing system's conditions rather than becoming the subject of the site.
+
+The browser sends no treaty state to either source. Requests omit credentials and referrer, are not cached, and are never polled in the background. Live values are not persisted and are discarded on release, reload, or page close. The core experience remains fully usable offline.
 
 ## Run it
 
@@ -53,17 +68,21 @@ A local server is recommended because browsers restrict service workers when a p
 ```bash
 node --check app.js
 node --check entropy-core.js
+node --check live-entropy-core.js
+node --check live-entropy.js
 node --check service-worker.js
 node --check scripts/entropy-select.mjs
 node --check scripts/test-entropy.mjs
+node --check scripts/test-live-entropy.mjs
 node --check scripts/test-service-worker.mjs
 node --check scripts/check.mjs
 node scripts/test-entropy.mjs
+node scripts/test-live-entropy.mjs
 node scripts/test-service-worker.mjs
 node scripts/check.mjs
 ```
 
-The checks cover deterministic entropy-history replay, the Execution 5 seed, bounded v5 persistence, legacy migration, continuous counterweight movement, duration-sensitive suspension, exactly-one-error treaty logic, attempted-erasure memory, the once-per-installation event, unresolved measurement, scale feedback, constructive spans, resonance classification, echo, session undo, weight editing, postcard data, pointer-data privacy, responsive accessibility hooks, local-only runtime behavior, and service-worker cache cleanup.
+The checks cover deterministic entropy-history replay, the Execution 5 seed, bounded v5 persistence, legacy migration, continuous counterweight movement, duration-sensitive suspension, exactly-one-error treaty logic, attempted-erasure memory, the once-per-installation event, unresolved measurement, scale feedback, constructive spans, resonance classification, echo, session undo, weight editing, postcard data, bounded live-data reduction, explicit opt-in network behavior, live correspondence, pointer-data privacy, responsive accessibility hooks, offline fallback, and service-worker cache cleanup.
 
 ## Project records
 
@@ -73,7 +92,9 @@ The checks cover deterministic entropy-history replay, the Execution 5 seed, bou
 
 ## Privacy boundary
 
-The application stores one bounded local JSON value containing a random install seed and, optionally, the last fictional suspension the visitor attempted to erase. That ghost contains only a bounded position integer and bounded weight integer. Active suspensions, the field ledger, resonance spans, echoes, undo state, weight edits, the session record, pointer coordinates, hold durations, animation phases, postcard history, print history, timestamps, and visitor text are not stored.
+The application stores one bounded local JSON value containing a random install seed and, optionally, the last fictional suspension the visitor attempted to erase. That ghost contains only a bounded position integer and bounded weight integer. Active suspensions, the field ledger, resonance spans, echoes, undo state, weight edits, the session record, pointer coordinates, hold durations, animation phases, postcard history, print history, live entropy responses, live pressure, timestamps, and visitor text are not stored.
+
+Live entropy is optional and makes direct requests only after visitor activation. A normal internet request exposes network-layer information such as an IP address to the requested public service; the Museum sends no local treaty state, location, credentials, or referrer with those requests.
 
 The public host may process ordinary connection information under its own terms. The application adds no analytics or tracking.
 
