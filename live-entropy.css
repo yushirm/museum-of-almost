@@ -1,0 +1,148 @@
+.treaty {
+  --live-force-a-scale: 1;
+  --live-force-b-scale: 1;
+  --live-field-scale: 1;
+  --live-entropy-x: 50%;
+}
+
+.live-entropy-marker {
+  position: absolute;
+  z-index: 11;
+  top: 9%;
+  bottom: 9%;
+  left: var(--live-entropy-x);
+  width: 1px;
+  border-left: 1px dotted var(--mark);
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0.86;
+}
+
+.live-entropy-marker[hidden] { display: none; }
+.live-entropy-marker::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  border: 1px dotted var(--mark);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: live-entropy-breathe 2.8s ease-in-out infinite alternate;
+}
+.live-entropy-marker small {
+  position: absolute;
+  top: -0.2rem;
+  left: 0.45rem;
+  max-width: 9rem;
+  color: var(--mark);
+  font-size: 0.64rem;
+  font-weight: 720;
+  letter-spacing: 0.12em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.treaty[data-live-entropy="true"] .force-a {
+  --force-scale: calc(var(--force-a-scale) * var(--live-force-a-scale));
+}
+.treaty[data-live-entropy="true"] .force-b {
+  --force-scale: calc(var(--force-b-scale) * var(--live-force-b-scale));
+}
+.treaty[data-live-entropy="true"] .field-lines {
+  transform: scale(calc(var(--field-scale) * var(--live-field-scale)));
+}
+.treaty[data-live-entropy="true"] .timeline-rail {
+  box-shadow: 0 0 28px rgba(227, 199, 101, 0.08);
+}
+
+.live-entropy {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.45fr) minmax(0, 1.55fr);
+  gap: 1.2rem 3rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem) 0;
+  border-bottom: 1px solid var(--line);
+}
+.live-entropy-heading h2,
+.live-entropy-body p { margin: 0; }
+.live-entropy-heading h2 {
+  margin-top: 0.8rem;
+  font-family: ui-serif, Georgia, serif;
+  font-size: clamp(1.45rem, 3.5vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+.live-entropy-body { display: grid; gap: 1rem; }
+.live-entropy-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.live-entropy-controls button {
+  min-height: 44px;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid currentColor;
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 0.84rem;
+}
+.live-entropy-controls button:hover:not(:disabled) { background: rgba(238, 241, 234, 0.07); }
+.live-entropy-controls button:disabled { opacity: 0.48; cursor: not-allowed; }
+.live-entropy-status {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.live-entropy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem 1.2rem;
+}
+.live-entropy-grid p {
+  min-height: 3.6rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+#live-vector-status,
+#live-correspondence-status { color: var(--ink); }
+.live-entropy-note {
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+.treaty[data-correspondence="accord"] .live-entropy { border-bottom-color: var(--mark); }
+.treaty[data-correspondence="resistance"] .live-entropy-marker::before { border-style: dashed; }
+
+@keyframes live-entropy-breathe {
+  from { transform: translate(-50%, -50%) scale(0.82); opacity: 0.46; }
+  to { transform: translate(-50%, -50%) scale(1.18); opacity: 0.92; }
+}
+
+@media (max-width: 760px) {
+  .live-entropy { grid-template-columns: 1fr; gap: 1rem; }
+}
+
+@media (max-width: 520px) {
+  .live-entropy-grid { grid-template-columns: 1fr; }
+  .live-entropy-grid p { min-height: 0; }
+  .live-entropy-controls button { flex: 1 1 10rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-entropy-marker::before { animation: none; }
+}
+
+@media (prefers-contrast: more) {
+  .live-entropy-marker,
+  .live-entropy-marker::before { border-color: var(--mark); }
+  .live-entropy-grid p { border-top-color: var(--line); }
+}
+
+@media print {
+  .live-entropy-controls,
+  .live-entropy-note { display: none !important; }
+  .live-entropy { break-inside: avoid; }
+}
