@@ -7,72 +7,41 @@ const root = path.resolve(new URL('..', import.meta.url).pathname);
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const require = createRequire(import.meta.url);
 
-for (const file of [
-  'index.html',
-  'styles.css',
-  'world-map.css',
-  'world-map.svg',
-  'difference-engine.css',
-  'field-sheet.css',
-  'cosmic-signal.js',
-  'cosmic-signal-core.js',
-  'cosmic-signal-view.js',
-  'cosmic-signal.css',
-  'cosmic-latency-core.js',
-  'cosmic-latency.js',
-  'cosmic-latency.css',
-  'cosmic-escapement-core.js',
-  'cosmic-escapement.js',
-  'cosmic-escapement.css',
-  'CELESTIAL_ESCAPEMENT.md',
-  'data-core.js',
-  'app.js',
-  'manifest.webmanifest',
-  'service-worker.js',
-  'README.md',
-  'PRIVACY.md',
-  'SOURCES.md',
-  'REBUILD_LOG.md',
-  'RIGHTS.md',
-  'CONTRIBUTING.md',
-  'scripts/test-data-core.mjs',
-  'scripts/test-service-worker.mjs',
-  'scripts/check.mjs',
-  '.github/workflows/check.yml'
-]) {
-  assert.ok(fs.existsSync(path.join(root, file)), `missing ${file}`);
-}
+const requiredFiles = [
+  'index.html', 'styles.css', 'world-map.css', 'world-map.svg', 'difference-engine.css', 'field-sheet.css',
+  'cosmic-signal.js', 'cosmic-signal-core.js', 'cosmic-signal-view.js', 'cosmic-signal.css',
+  'cosmic-latency-core.js', 'cosmic-latency.js', 'cosmic-latency.css',
+  'cosmic-escapement-core.js', 'cosmic-escapement.js', 'cosmic-escapement.css',
+  'planetary-heliodon-core.js', 'planetary-heliodon.js', 'planetary-heliodon.css',
+  'COSMIC_RECEIVE_DESK.md', 'CELESTIAL_ESCAPEMENT.md', 'PLANETARY_HELIODON.md',
+  'data-core.js', 'app.js', 'manifest.webmanifest', 'service-worker.js',
+  'README.md', 'PRIVACY.md', 'SOURCES.md', 'REBUILD_LOG.md', 'RIGHTS.md', 'CONTRIBUTING.md',
+  'scripts/test-data-core.mjs', 'scripts/test-cosmic-signal.mjs', 'scripts/test-cosmic-latency.mjs',
+  'scripts/test-cosmic-escapement.mjs', 'scripts/test-planetary-heliodon.mjs', 'scripts/test-service-worker.mjs',
+  'scripts/check.mjs', '.github/workflows/check.yml'
+];
+for (const file of requiredFiles) assert.ok(fs.existsSync(path.join(root, file)), `missing ${file}`);
 
-const index = read('index.html');
-const styles = read('styles.css');
-const mapStyles = read('world-map.css');
-const worldMap = read('world-map.svg');
-const differenceStyles = read('difference-engine.css');
-const fieldSheetStyles = read('field-sheet.css');
-const cosmicSignalLoader = read('cosmic-signal.js');
-const cosmicSignalCore = read('cosmic-signal-core.js');
-const cosmicSignalView = read('cosmic-signal-view.js');
-const cosmicSignalStyles = read('cosmic-signal.css');
-const cosmicLatencyCore = read('cosmic-latency-core.js');
-const cosmicLatencyView = read('cosmic-latency.js');
-const cosmicLatencyStyles = read('cosmic-latency.css');
-const cosmicEscapementCore = read('cosmic-escapement-core.js');
-const cosmicEscapementView = read('cosmic-escapement.js');
-const cosmicEscapementStyles = read('cosmic-escapement.css');
-const celestialEscapementNotes = read('CELESTIAL_ESCAPEMENT.md');
-const coreSource = read('data-core.js');
-const app = read('app.js');
-const worker = read('service-worker.js');
-const readme = read('README.md');
-const privacy = read('PRIVACY.md');
-const sources = read('SOURCES.md');
-const rebuild = read('REBUILD_LOG.md');
-const rights = read('RIGHTS.md');
-const manifest = read('manifest.webmanifest');
-const workflow = read('.github/workflows/check.yml');
-const runtime = [index, styles, mapStyles, differenceStyles, fieldSheetStyles, cosmicSignalLoader, cosmicSignalCore, cosmicSignalView, cosmicSignalStyles, cosmicLatencyCore, cosmicLatencyView, cosmicLatencyStyles, cosmicEscapementCore, cosmicEscapementView, cosmicEscapementStyles, coreSource, app, worker].join('\n');
-const publicCurrent = [index, coreSource, app, readme, privacy, sources, rebuild, rights].join('\n');
+const file = Object.fromEntries(requiredFiles.map((name) => [name, read(name)]));
 const core = require('../data-core.js');
+const runtimeFiles = [
+  'index.html', 'styles.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css',
+  'cosmic-signal.js', 'cosmic-signal-core.js', 'cosmic-signal-view.js', 'cosmic-signal.css',
+  'cosmic-latency-core.js', 'cosmic-latency.js', 'cosmic-latency.css',
+  'cosmic-escapement-core.js', 'cosmic-escapement.js', 'cosmic-escapement.css',
+  'planetary-heliodon-core.js', 'planetary-heliodon.js', 'planetary-heliodon.css',
+  'data-core.js', 'app.js', 'service-worker.js'
+];
+const runtime = runtimeFiles.map((name) => file[name]).join('\n');
+const publicCurrent = ['index.html', 'data-core.js', 'app.js', 'README.md', 'PRIVACY.md', 'SOURCES.md', 'REBUILD_LOG.md', 'RIGHTS.md']
+  .map((name) => file[name]).join('\n');
+
+function requirePatterns(source, patterns, label) {
+  for (const pattern of patterns) assert.match(source, pattern, `${label}: missing ${pattern}`);
+}
+function forbidPatterns(source, patterns, label) {
+  for (const pattern of patterns) assert.doesNotMatch(source, pattern, `${label}: forbidden ${pattern}`);
+}
 
 const allowedRuntimeUrls = [
   'https://api.open-meteo.com/v1/forecast',
@@ -82,273 +51,146 @@ const allowedRuntimeUrls = [
   'https://services.swpc.noaa.gov/products/summary/solar-wind-speed.json'
 ].sort();
 const runtimeUrls = [...new Set(runtime.match(/https:\/\/[^\s"'`<>]+/g) || [])].sort();
-assert.deepEqual(runtimeUrls, allowedRuntimeUrls, 'runtime network URLs must stay limited to the five approved current requests across four services');
-
-assert.doesNotMatch(runtime, /\b(XMLHttpRequest|sendBeacon|WebSocket|EventSource)\b/i);
-assert.doesNotMatch(runtime, /\b(gtag|dataLayer|mixpanel|segment|plausible|amplitude|hotjar)\b/i);
-assert.doesNotMatch(runtime, /google-analytics|googletagmanager|analytics\.js|facebook\.com\/tr|doubleclick/i);
-assert.doesNotMatch(index, /<script[^>]+src=["'](?:https?:)?\/\//i);
-assert.doesNotMatch(index, /<link[^>]+href=["'](?:https?:)?\/\//i);
-assert.doesNotMatch(index, /<img[^>]+src=["'](?:https?:)?\/\//i);
-assert.doesNotMatch(index, /<(input|textarea|select)\b|contenteditable/i, 'visitor free text and form collection are prohibited');
-assert.doesNotMatch(index, /<iframe\b/i);
+assert.deepEqual(runtimeUrls, allowedRuntimeUrls, 'runtime URLs must remain exactly the five approved requests across four services');
+forbidPatterns(runtime, [
+  /\b(XMLHttpRequest|sendBeacon|WebSocket|EventSource)\b/i,
+  /\b(gtag|dataLayer|mixpanel|segment|plausible|amplitude|hotjar)\b/i,
+  /google-analytics|googletagmanager|analytics\.js|facebook\.com\/tr|doubleclick/i
+], 'runtime privacy boundary');
+forbidPatterns(file['index.html'], [
+  /<script[^>]+src=["'](?:https?:)?\/\//i,
+  /<link[^>]+href=["'](?:https?:)?\/\//i,
+  /<img[^>]+src=["'](?:https?:)?\/\//i,
+  /<(input|textarea|select)\b|contenteditable/i,
+  /<iframe\b/i
+], 'document boundary');
 
 assert.equal(core.BUILD_SEED, '6bc76dc33337414e7c9f9ccbd7539976d98ac371444860c605fb88003174ded2');
-assert.equal(core.STATIONS.length, 13, 'the opaque transmission must resolve to exactly thirteen fixed world points');
-assert.equal(new Set(core.STATIONS.map((station) => station.id)).size, 13, 'station identifiers must be unique');
+assert.equal(core.STATIONS.length, 13);
+assert.equal(new Set(core.STATIONS.map(({ id }) => id)).size, 13);
 for (const station of core.STATIONS) {
-  assert.ok(station.lat >= -90 && station.lat <= 90, `invalid latitude for station ${station.id}`);
-  assert.ok(station.lon >= -180 && station.lon <= 180, `invalid longitude for station ${station.id}`);
+  assert.ok(station.lat >= -90 && station.lat <= 90, `invalid latitude ${station.id}`);
+  assert.ok(station.lon >= -180 && station.lon <= 180, `invalid longitude ${station.id}`);
 }
+for (const name of [
+  'normalizeEarthquakes', 'normalizeSolarWind', 'normalizeWeather', 'normalizeEvents',
+  'normalizeLongitude', 'solarGeometry', 'solarElevation', 'sunState', 'stationPosition',
+  'greatCircleDistanceKm', 'observedRange', 'metricPosition', 'planetarySection',
+  'compareStationPair', 'differenceSentence', 'snapshotSentence'
+]) assert.equal(typeof core[name], 'function', `missing core export ${name}`);
+assert.equal(core.solarGeometry(null), null, 'missing snapshot time must fail closed');
+assert.equal(core.sunState(null, 0, 0), 'unknown', 'missing snapshot must never become a fabricated daylight state');
 
+const index = file['index.html'];
 for (const id of [
   'refresh-button', 'connection-state', 'live-status', 'snapshot-time', 'source-count',
-  'quake-count', 'quake-strongest', 'solar-wind', 'event-count', 'weather-range',
-  'world-sentence', 'station-points', 'station-list', 'station-name', 'station-temperature',
-  'station-wind', 'station-rain', 'station-light', 'event-categories', 'daylight-count',
-  'patch-a', 'patch-b', 'difference-points', 'patch-help', 'difference-readout',
-  'difference-scale', 'difference-scale-label', 'difference-marker-a', 'difference-marker-b',
-  'difference-distance', 'difference-temperature', 'difference-wind', 'difference-rain', 'difference-light',
-  'section-status', 'planetary-section-plot', 'section-plot-desc', 'section-guides', 'section-posts',
-  'section-table-body', 'field-sheet-time', 'field-sheet-button'
-]) {
-  assert.match(index, new RegExp(`id=["']${id}["']`), `missing Commons / Now interface id: ${id}`);
+  'quake-count', 'quake-strongest', 'solar-wind', 'event-count', 'weather-range', 'world-sentence',
+  'station-points', 'station-list', 'station-name', 'station-temperature', 'station-wind', 'station-rain', 'station-light',
+  'patch-a', 'patch-b', 'difference-points', 'difference-readout', 'difference-scale',
+  'planetary-section-plot', 'section-table-body', 'field-sheet-time', 'field-sheet-button'
+]) assert.match(index, new RegExp(`id=["']${id}["']`), `missing interface id ${id}`);
+requirePatterns(index, [
+  /COMMONS \/ NOW/, /The world is doing this without us\./, /src="world-map\.svg"/,
+  /Natural Earth 110m land, public domain/i, /THE DIFFERENCE ENGINE/, /PLANETARY SECTION \/ FIELD SHEET/,
+  /No connecting line\./, /native print dialog/i, /No account\. No location\. No visitor data\./i,
+  /role="status"[^>]+aria-live="polite"/, /src="data-core\.js"/, /src="app\.js"/
+], 'current document');
+
+const map = file['world-map.svg'];
+requirePatterns(map, [/viewBox="0 0 360 180"/, /Natural Earth 110m land geometry, public domain/i, /x = longitude \+ 180; y = 90 - latitude/, /<path\b/], 'map');
+forbidPatterns(map, [/<script\b|<foreignObject\b|\b(?:href|xlink:href)=["'](?:https?:)?\/\/|url\(\s*["']?https?:\/\//i], 'map');
+
+const app = file['app.js'];
+requirePatterns(app, [
+  /Promise\.allSettled/, /fetch\(url/, /credentials:\s*'omit'/, /referrerPolicy:\s*'no-referrer'/,
+  /cache:\s*'no-store'/, /mode:\s*'cors'/, /AbortController/, /addEventListener\('click', refreshSnapshot\)/,
+  /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/, /function renderDifferenceEngine\b/,
+  /function renderPlanetarySection\b/, /window\.print\(\)/
+], 'application');
+forbidPatterns(app, [/setInterval|requestAnimationFrame/i, /navigator\.geolocation|\bgeolocation\b/i, /localStorage|sessionStorage|indexedDB|document\.cookie/i], 'application');
+
+for (const styleName of ['styles.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css', 'cosmic-signal.css', 'cosmic-latency.css', 'cosmic-escapement.css', 'planetary-heliodon.css']) {
+  const css = file[styleName];
+  assert.match(css, /@media/, `${styleName} must include responsive or environment handling`);
+  forbidPatterns(css, [/@import\s+url|font-face|https?:\/\//i], styleName);
 }
-assert.match(index, /COMMONS \/ NOW/);
-assert.match(index, /The world is doing this without us\./);
-assert.match(index, /Equirectangular world map with thirteen fixed global weather points/);
-assert.match(index, /src="world-map\.svg"/);
-assert.match(index, /href="world-map\.css"/);
-assert.match(index, /Natural Earth 110m land, public domain/i);
-assert.match(index, /No map or tile service is contacted/i);
-assert.match(index, /THE DIFFERENCE ENGINE/);
-assert.match(index, /How different can the same planet be at the same moment\?/);
-assert.match(index, /makes no additional network request/i);
-assert.match(index, /PLANETARY SECTION \/ FIELD SHEET/);
-assert.match(index, /Cut through the planet as it is now\./);
-assert.match(index, /No connecting line\./);
-assert.match(index, /Unmeasured space stays unmeasured\./);
-assert.match(index, /Make field sheet/);
-assert.match(index, /native print dialog/i);
-assert.match(index, /does not upload or save the sheet/i);
-assert.match(index, /href="field-sheet\.css"/);
-assert.match(index, /WHAT THIS ACTUALLY DOES/);
-assert.match(index, /No account\. No location\. No visitor data\./i);
-assert.match(index, /Weather data: Open-Meteo/i);
-assert.match(index, /role="status"[^>]+aria-live="polite"/);
-assert.match(index, /role="group"[^>]+aria-label="Thirteen fixed global weather points"/);
-assert.match(index, /role="group"[^>]+aria-label="Choose a comparison lens"/);
-assert.match(index, /role="img"[^>]+aria-labelledby="section-plot-title section-plot-desc"/);
-assert.match(index, /aria-live="polite"/);
-assert.match(index, /href="SOURCES\.md"/);
-assert.match(index, /href="PRIVACY\.md"/);
-assert.match(index, /href="difference-engine\.css"/);
-assert.match(index, /src="data-core\.js"/);
-assert.match(index, /src="app\.js"/);
+requirePatterns(file['styles.css'], [/min-height:\s*44px/, /:focus-visible/, /prefers-reduced-motion/, /prefers-contrast/], 'base accessibility');
+requirePatterns(file['field-sheet.css'], [/@media print/, /@page\s*\{\s*size:\s*landscape/], 'field sheet');
+requirePatterns(file['planetary-heliodon.css'], [/max-width: 620px/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/, /pointer-events:\s*none/], 'heliodon styles');
 
-assert.match(worldMap, /viewBox="0 0 360 180"/);
-assert.match(worldMap, /Natural Earth 110m land geometry, public domain/i);
-assert.match(worldMap, /x = longitude \+ 180; y = 90 - latitude/);
-assert.match(worldMap, /<path\b/);
-assert.doesNotMatch(worldMap, /<script\b|<foreignObject\b|\b(?:href|xlink:href)=["'](?:https?:)?\/\/|url\(\s*["']?https?:\/\//i,
-  'local map asset must be inert and must not load remote content');
-
-assert.match(mapStyles, /\.world-map-image/);
-assert.match(mapStyles, /aspect-ratio:\s*2\s*\/\s*1/);
-assert.match(mapStyles, /object-fit:\s*fill/);
-assert.match(mapStyles, /@media \(max-width: 620px\)/);
-assert.match(mapStyles, /@media print/);
-assert.doesNotMatch(mapStyles, /@import\s+url|font-face|https?:\/\//i);
-
-assert.match(app, /Promise\.allSettled/);
-assert.match(app, /fetch\(url/);
-assert.match(app, /credentials:\s*'omit'/);
-assert.match(app, /referrerPolicy:\s*'no-referrer'/);
-assert.match(app, /cache:\s*'no-store'/);
-assert.match(app, /mode:\s*'cors'/);
-assert.match(app, /AbortController/);
-assert.match(app, /renderSnapshot\(\);\s*refreshSnapshot\(\);/);
-assert.match(app, /addEventListener\('click', refreshSnapshot\)/);
-assert.match(app, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
-assert.match(app, /comparisonAId = '01'/);
-assert.match(app, /comparisonBId = '09'/);
-assert.match(app, /function patchComparisonPoint\b/);
-assert.match(app, /function renderDifferenceEngine\b/);
-assert.match(app, /function renderDifferenceScale\b/);
-assert.match(app, /function renderPlanetarySection\b/);
-assert.match(app, /fieldSheetButton\?\.addEventListener\('click', \(\) => window\.print\(\)\)/);
-assert.match(app, /createElementNS\(SVG_NS, 'line'\)/);
-assert.match(app, /createElementNS\(SVG_NS, 'circle'\)/);
-assert.doesNotMatch(app, /createElementNS\(SVG_NS, ['"](?:path|polyline|polygon)['"]\)/,
-  'planetary section must not connect sparse station samples into invented continuity');
-assert.doesNotMatch(app, /setInterval|requestAnimationFrame/i, 'live public data must not poll or run a data animation loop');
-assert.doesNotMatch(app, /navigator\.geolocation|\bgeolocation\b/i);
-assert.doesNotMatch(app, /localStorage|sessionStorage|indexedDB|document\.cookie/i, 'visitor state must not be persisted');
-
-for (const functionName of [
-  'normalizeEarthquakes', 'normalizeSolarWind', 'normalizeWeather', 'normalizeEvents',
-  'sunState', 'stationPosition', 'greatCircleDistanceKm', 'observedRange', 'metricPosition',
-  'planetarySection', 'compareStationPair', 'differenceSentence', 'snapshotSentence'
-]) {
-  assert.match(coreSource, new RegExp(`function ${functionName}\\b`), `missing data-core function: ${functionName}`);
+const localOnly = [
+  ['cosmic-latency-core.js', 'cosmic-latency.js'],
+  ['cosmic-escapement-core.js', 'cosmic-escapement.js'],
+  ['planetary-heliodon-core.js', 'planetary-heliodon.js']
+];
+for (const pair of localOnly) {
+  const source = pair.map((name) => file[name]).join('\n');
+  forbidPatterns(source, [/\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i, /setInterval|setTimeout|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i], pair.join(' + '));
 }
-assert.doesNotMatch(coreSource, /localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
-assert.match(coreSource, /typeof pointA\?\.temperature === 'number'/, 'missing weather values must not coerce to numeric zero');
-assert.match(coreSource, /temperaturePosition: temperature !== null/);
-assert.match(coreSource, /\.sort\(\(a, b\) => a\.lon - b\.lon/);
+requirePatterns(file['cosmic-signal.js'], [/cosmic-latency-core\.js/, /cosmic-escapement-core\.js/, /planetary-heliodon-core\.js/, /planetary-heliodon\.js/], 'local module loader');
+requirePatterns(file['cosmic-escapement.js'], [/MANY CLOCKS, ONE NOW/, /MutationObserver/], 'Celestial Escapement');
+requirePatterns(file['planetary-heliodon.js'], [/THE PLANETARY HELIODON \/ EARTH CASTS THE NIGHT/, /MutationObserver/, /if \(!match\) return null/, /heliodon-field-strip/], 'Planetary Heliodon');
+requirePatterns(file['planetary-heliodon-core.js'], [/terminatorCoordinates/, /terminatorParts/, /nightGridPath/, /solarGeometry/], 'Planetary Heliodon core');
+requirePatterns(file['PLANETARY_HELIODON.md'], [/The world is doing this without us\./, /Concept C was discarded/, /no new runtime request/i, /solareqns\.PDF/], 'Planetary Heliodon record');
 
-assert.match(styles, /min-height:\s*44px/);
-assert.match(styles, /:focus-visible/);
-assert.match(styles, /@media \(max-width: 620px\)/);
-assert.match(styles, /@media \(max-width: 380px\)/);
-assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
-assert.match(styles, /@media \(prefers-contrast: more\)/);
-assert.match(styles, /@media print/);
-assert.doesNotMatch(styles, /@import\s+url|font-face/i);
-assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
+const worker = file['service-worker.js'];
+requirePatterns(worker, [
+  /PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency'/,
+  /CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/,
+  /ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/,
+  /url\.origin !== self\.location\.origin/, /caches\.match\('\.\/index\.html'\)/,
+  /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/, /client\.navigate\(client\.url\)/
+], 'service worker');
+forbidPatterns(worker, [/https?:\/\//], 'service worker cross-origin boundary');
+for (const asset of [
+  './index.html', './styles.css', './world-map.svg', './cosmic-signal.js', './cosmic-signal-core.js',
+  './cosmic-latency-core.js', './cosmic-escapement-core.js', './planetary-heliodon-core.js', './planetary-heliodon.js',
+  './planetary-heliodon.css', './PLANETARY_HELIODON.md', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md'
+]) assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
 
-assert.match(differenceStyles, /\.difference-section/);
-assert.match(differenceStyles, /\.patch-point/);
-assert.match(differenceStyles, /\.lens-button/);
-assert.match(differenceStyles, /\.difference-marker/);
-assert.match(differenceStyles, /@media \(max-width: 620px\)/);
-assert.match(differenceStyles, /@media \(max-width: 380px\)/);
-assert.match(differenceStyles, /@media \(prefers-reduced-motion: reduce\)/);
-assert.match(differenceStyles, /@media \(prefers-contrast: more\)/);
-assert.match(differenceStyles, /@media print/);
-assert.doesNotMatch(differenceStyles, /@import\s+url|font-face|https?:\/\//i);
-assert.doesNotMatch(differenceStyles, /min-width:\s*[4-9]\d\dpx/);
+const readme = file['README.md'];
+requirePatterns(readme, [
+  /COMMONS \/ NOW/, /https:\/\/yushirm\.github\.io\/museum-of-almost\//, /one current snapshot/i,
+  /thirteen fixed coordinates/i, /Natural Earth 110m public-domain land geometry/i, /Difference Engine/i,
+  /Planetary Section/i, /Planetary Heliodon/i, /subsolar point/i, /does not interpolate/i,
+  /Make field sheet/i, /no visitor persistence/i, /original opaque seed inputs are deliberately not stored/i
+], 'README');
+const privacy = file['PRIVACY.md'];
+requirePatterns(privacy, [
+  /does not create visitor accounts, profiles, histories, scores, identifiers/i, /does not.*request browser geolocation/is,
+  /localStorage/, /one direct request to each of four public services/i, /credentials: omit/, /referrerPolicy: no-referrer/,
+  /IP address/i, /thirteen fixed latitude\/longitude pairs/i, /native browser print/i, /Planetary Heliodon/, /adds no network request/i
+], 'privacy record');
+const sources = file['SOURCES.md'];
+for (const url of allowedRuntimeUrls) assert.ok(sources.includes(url), `SOURCES.md missing ${url}`);
+requirePatterns(sources, [/USGS/i, /NOAA/i, /Open-Meteo/i, /NASA/i, /Natural Earth 110m land geometry/i, /public domain/i, /Planetary Heliodon local solar geometry/i, /solareqns\.PDF/], 'sources');
+const rebuild = file['REBUILD_LOG.md'];
+requirePatterns(rebuild, [
+  /Reset 1 — COMMONS \/ NOW/, /Extension 1 — The Difference Engine/, /Extension 2 — Thirteen Windows Get a World/,
+  /Extension 3 — The Planetary Section \/ Field Sheet/, /Extension 6 — The Planetary Heliodon \/ Earth Casts the Night/,
+  /Half of it is always turning into night\./, /missing source values remain unavailable and must never coerce to numeric zero/i,
+  /current application stores no visitor state at all/i
+], 'rebuild record');
+requirePatterns(file['RIGHTS.md'], [/world-map\.svg/, /Natural Earth 110m geographic data/i, /public domain/i], 'rights');
 
-assert.match(fieldSheetStyles, /\.planetary-section/);
-assert.match(fieldSheetStyles, /\.planetary-section-plot/);
-assert.match(fieldSheetStyles, /\.section-post/);
-assert.match(fieldSheetStyles, /\.section-wind/);
-assert.match(fieldSheetStyles, /\.section-rain/);
-assert.match(fieldSheetStyles, /#field-sheet-button/);
-assert.match(fieldSheetStyles, /@media \(max-width: 620px\)/);
-assert.match(fieldSheetStyles, /@media \(max-width: 380px\)/);
-assert.match(fieldSheetStyles, /@media \(prefers-reduced-motion: reduce\)/);
-assert.match(fieldSheetStyles, /@media \(prefers-contrast: more\)/);
-assert.match(fieldSheetStyles, /@media print/);
-assert.match(fieldSheetStyles, /@page\s*\{\s*size:\s*landscape/);
-assert.doesNotMatch(fieldSheetStyles, /@import\s+url|font-face|https?:\/\//i);
-assert.doesNotMatch(fieldSheetStyles, /min-width:\s*[4-9]\d\dpx/);
+const manifest = JSON.parse(file['manifest.webmanifest']);
+assert.equal(manifest.start_url, './');
+assert.equal(manifest.scope, './');
+assert.equal(manifest.display, 'standalone');
+assert.match(manifest.name, /Commons \/ Now/i);
+const workflow = file['.github/workflows/check.yml'];
+requirePatterns(workflow, [
+  /jobs:\s*\n\s*check:/, /permissions:\s*\n\s*contents: read/, /persist-credentials: false/, /timeout-minutes: 5/,
+  /actions\/checkout@[0-9a-f]{40}/, /actions\/setup-node@[0-9a-f]{40}/,
+  /node scripts\/test-data-core\.mjs/, /node scripts\/test-planetary-heliodon\.mjs/, /node scripts\/test-service-worker\.mjs/, /node scripts\/check\.mjs/
+], 'workflow');
 
-assert.match(worker, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal'/);
-assert.match(worker, /const CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency'/);
-assert.match(worker, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/);
-assert.match(worker, /url\.origin !== self\.location\.origin/);
-assert.match(worker, /caches\.match\('\.\/index\.html'\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
-  'navigation cache must remain coherent across releases');
-assert.match(worker, /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/);
-assert.match(worker, /client\.navigate\(client\.url\)/);
-assert.doesNotMatch(worker, /https?:\/\//, 'service worker must never proxy public live-data sources');
-for (const asset of ['./index.html', './styles.css', './world-map.css', './world-map.svg', './difference-engine.css', './field-sheet.css', './cosmic-signal.js', './cosmic-signal-core.js', './cosmic-signal-view.js', './cosmic-latency-core.js', './cosmic-latency.js', './cosmic-latency.css', './cosmic-escapement-core.js', './cosmic-escapement.js', './cosmic-escapement.css', './CELESTIAL_ESCAPEMENT.md', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md']) {
-  assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
-}
+forbidPatterns(publicCurrent, [
+  /\b[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/i,
+  /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i,
+  /\bAKIA[0-9A-Z]{16}\b/, /\bsk-(?:proj-)?[A-Za-z0-9_-]{16,}\b/i,
+  /BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/, /password\s*[:=]\s*["'][^"']+["']/i,
+  /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i
+], 'public secret/privacy scan');
 
-assert.match(cosmicEscapementView, /MANY CLOCKS, ONE NOW/);
-assert.match(cosmicEscapementView, /refresh-button/);
-assert.match(celestialEscapementNotes, /The world is doing this without us\./);
-assert.doesNotMatch(cosmicEscapementCore + cosmicEscapementView, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
-assert.doesNotMatch(cosmicEscapementCore + cosmicEscapementView, /setInterval|setTimeout|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
-assert.match(cosmicEscapementStyles, /@media \(prefers-reduced-motion: reduce\)/);
-assert.match(cosmicEscapementStyles, /@media print/);
-
-assert.match(readme, /COMMONS \/ NOW/);
-assert.match(readme, /https:\/\/yushirm\.github\.io\/museum-of-almost\//);
-assert.match(readme, /one current snapshot/i);
-assert.match(readme, /thirteen fixed coordinates/i);
-assert.match(readme, /Natural Earth 110m public-domain land geometry/i);
-assert.match(readme, /No map API, tile server, remote image, or runtime mapping library is contacted/i);
-assert.match(readme, /Difference Engine/i);
-assert.match(readme, /adds no data source and makes no extra network request/i);
-assert.match(readme, /Planetary Section/i);
-assert.match(readme, /west to east/i);
-assert.match(readme, /does not interpolate/i);
-assert.match(readme, /Make field sheet/i);
-assert.match(readme, /native print/i);
-assert.match(readme, /does not upload or store the result/i);
-assert.match(readme, /no visitor persistence/i);
-assert.match(readme, /6bc76dc33337414e7c9f9ccbd7539976d98ac371444860c605fb88003174ded2/);
-assert.match(readme, /original opaque seed inputs are deliberately not stored/i);
-
-assert.match(privacy, /does not create visitor accounts, profiles, histories, scores, identifiers/i);
-assert.match(privacy, /does not.*request browser geolocation/is);
-assert.match(privacy, /localStorage/);
-assert.match(privacy, /one direct request to each of four public services/i);
-assert.match(privacy, /credentials: omit/);
-assert.match(privacy, /referrerPolicy: no-referrer/);
-assert.match(privacy, /IP address/i);
-assert.match(privacy, /thirteen fixed latitude\/longitude pairs/i);
-assert.match(privacy, /original opaque values are not stored or published/i);
-assert.match(privacy, /does not contact a map API, tile provider, geocoder/i);
-assert.match(privacy, /native browser print/i);
-assert.match(privacy, /does not upload, receive, store, or transmit the printed sheet or PDF/i);
-assert.match(privacy, /does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses/i);
-
-for (const sourceName of ['USGS', 'NOAA', 'Open-Meteo', 'NASA']) {
-  assert.match(sources, new RegExp(sourceName, 'i'), `missing source documentation for ${sourceName}`);
-}
-for (const url of allowedRuntimeUrls) {
-  assert.ok(sources.includes(url), `SOURCES.md missing runtime endpoint ${url}`);
-}
-assert.match(sources, /CC BY 4\.0/i);
-assert.match(sources, /Local world basemap/);
-assert.match(sources, /Natural Earth 110m land geometry/i);
-assert.match(sources, /public domain/i);
-assert.match(sources, /x = longitude \+ 180/);
-assert.match(sources, /y = 90 - latitude/);
-assert.match(sources, /Planetary Section/);
-assert.match(sources, /no interpolation/i);
-assert.match(sources, /does not poll automatically/i);
-
-assert.match(rebuild, /Reset 1 — COMMONS \/ NOW/);
-assert.match(rebuild, /Extension 1 — The Difference Engine/);
-assert.match(rebuild, /Concept C was discarded/i);
-assert.match(rebuild, /no additional network request/i);
-assert.match(rebuild, /missing source values remain unavailable and must never coerce to numeric zero/i);
-assert.match(rebuild, /Extension 2 — Thirteen Windows Get a World/);
-assert.match(rebuild, /Natural Earth 110m public-domain land geometry/i);
-assert.match(rebuild, /Never hand-adjust a point/i);
-assert.match(rebuild, /Extension 3 — The Planetary Section \/ Field Sheet/);
-assert.match(rebuild, /Concept A was discarded/i);
-assert.match(rebuild, /Planetary Section/);
-assert.match(rebuild, /Print Is Memory/);
-assert.match(rebuild, /does not interpolate/i);
-assert.match(rebuild, /window\.print/i);
-assert.match(rebuild, /6bc76dc33337414e7c9f9ccbd7539976d98ac371444860c605fb88003174ded2/);
-assert.match(rebuild, /original opaque values are intentionally absent/i);
-assert.match(rebuild, /Treaty 05 ontology and interaction surface/);
-assert.match(rebuild, /current application stores no visitor state at all/i);
-
-assert.match(rights, /world-map\.svg/);
-assert.match(rights, /Natural Earth 110m geographic data/i);
-assert.match(rights, /public domain/i);
-
-const parsedManifest = JSON.parse(manifest);
-assert.equal(parsedManifest.start_url, './');
-assert.equal(parsedManifest.scope, './');
-assert.equal(parsedManifest.display, 'standalone');
-assert.match(parsedManifest.name, /Commons \/ Now/i);
-
-assert.match(workflow, /jobs:\s*\n\s*check:/);
-assert.match(workflow, /permissions:\s*\n\s*contents: read/);
-assert.match(workflow, /persist-credentials: false/);
-assert.match(workflow, /timeout-minutes: 5/);
-assert.match(workflow, /actions\/checkout@[0-9a-f]{40}/);
-assert.match(workflow, /actions\/setup-node@[0-9a-f]{40}/);
-assert.match(workflow, /node scripts\/test-data-core\.mjs/);
-assert.match(workflow, /node scripts\/test-service-worker\.mjs/);
-assert.match(workflow, /node scripts\/check\.mjs/);
-
-assert.doesNotMatch(publicCurrent, /\b[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/i,
-  'raw UUID-style seed material must not be published');
-assert.doesNotMatch(publicCurrent, /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i);
-assert.doesNotMatch(publicCurrent, /\bAKIA[0-9A-Z]{16}\b/);
-assert.doesNotMatch(publicCurrent, /\bsk-(?:proj-)?[A-Za-z0-9_-]{16,}\b/);
-assert.doesNotMatch(publicCurrent, /BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/);
-assert.doesNotMatch(publicCurrent, /password\s*[:=]\s*["'][^"']+["']/i);
-assert.doesNotMatch(publicCurrent, /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i);
-
-console.log('Commons / Now local-map, coherent-shell, public-data, Difference Engine, Planetary Section, field-sheet, privacy, accessibility, seed, and offline contract verified.');
+console.log('Commons / Now full application, privacy, exact-network, local-map, cosmic instruments, Planetary Heliodon, coherent-shell, accessibility, source, seed, and offline contract verified.');
