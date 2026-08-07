@@ -182,22 +182,53 @@
     return Math.floor((date.getTime() - start) / 86400000);
   }
 
-  function sunState(timestamp, lat, lon) {
+  function normalizeLongitude(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return null;
+    return ((number + 180) % 360 + 360) % 360 - 180;
+  }
+
+  function solarGeometry(timestamp) {
+    if (timestamp === null || timestamp === undefined || timestamp === '') return null;
     const date = new Date(timestamp);
-    if (!Number.isFinite(date.getTime())) return 'unknown';
+    if (!Number.isFinite(date.getTime())) return null;
 
     const day = dayOfYear(date);
     const declination = 23.44 * Math.sin(((360 / 365) * (284 + day) * Math.PI) / 180);
     const utcHours = date.getUTCHours() + date.getUTCMinutes() / 60 + date.getUTCSeconds() / 3600;
-    const solarHours = ((utcHours + Number(lon) / 15) % 24 + 24) % 24;
-    const hourAngle = 15 * (solarHours - 12);
-    const latRad = Number(lat) * Math.PI / 180;
-    const decRad = declination * Math.PI / 180;
+    const subsolarLongitude = normalizeLongitude((12 - utcHours) * 15);
+    if (!Number.isFinite(subsolarLongitude)) return null;
+
+    return {
+      declination,
+      subsolar: { lat: declination, lon: subsolarLongitude },
+      antisolar: {
+        lat: -declination,
+        lon: normalizeLongitude(subsolarLongitude + 180)
+      }
+    };
+  }
+
+  function solarElevation(timestamp, lat, lon) {
+    const latitude = Number(lat);
+    const longitude = Number(lon);
+    const geometry = solarGeometry(timestamp);
+    if (!geometry || !Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
+
+    const hourAngle = normalizeLongitude(longitude - geometry.subsolar.lon);
+    if (!Number.isFinite(hourAngle)) return null;
+
+    const latRad = latitude * Math.PI / 180;
+    const decRad = geometry.declination * Math.PI / 180;
     const hourRad = hourAngle * Math.PI / 180;
     const sinElevation = Math.sin(latRad) * Math.sin(decRad)
       + Math.cos(latRad) * Math.cos(decRad) * Math.cos(hourRad);
-    const elevation = Math.asin(clamp(sinElevation, -1, 1)) * 180 / Math.PI;
+    return Math.asin(clamp(sinElevation, -1, 1)) * 180 / Math.PI;
+  }
 
+  function sunState(timestamp, lat, lon) {
+    const elevation = solarElevation(timestamp, lat, lon);
+    if (!Number.isFinite(elevation)) return 'unknown';
     if (elevation > 0) return 'day';
     if (elevation > -6) return 'twilight';
     return 'night';
@@ -427,6 +458,9 @@
     normalizeSolarWind,
     normalizeWeather,
     normalizeEvents,
+    normalizeLongitude,
+    solarGeometry,
+    solarElevation,
     sunState,
     stationPosition,
     formatCoordinate,
