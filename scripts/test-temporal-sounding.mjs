@@ -87,14 +87,22 @@ assert.match(viewSource, /channel !== 'events'/);
 assert.match(viewSource, /nativeFetch\(input, init\)/);
 assert.doesNotMatch(viewSource, /\bfetch\s*\(/, 'observer must not initiate an additional fetch call');
 assert.match(viewSource, /feed-wide observation instant/i);
-
-const runtimeUrls = [...new Set(source.match(/https:\/\/[^\s"'`<>]+/g) || [])].sort();
-assert.deepEqual(runtimeUrls, [
-  'https://api.open-meteo.com',
-  'https://earthquake.usgs.gov',
-  'https://eonet.gsfc.nasa.gov',
-  'https://services.swpc.noaa.gov'
-].sort(), 'observer may recognize only the four already-approved public-service origins');
+assert.match(viewSource, /KNOWN SOURCE-TIME THICKNESS/);
+assert.match(viewSource, /url\.protocol !== 'https:'/);
+for (const hostname of [
+  'earthquake.usgs.gov',
+  'services.swpc.noaa.gov',
+  'api.open-meteo.com',
+  'eonet.gsfc.nasa.gov'
+]) assert.ok(viewSource.includes(`'${hostname}'`), `observer should recognize ${hostname}`);
+for (const path of [
+  '/earthquakes/feed/v1.0/summary/all_hour.geojson',
+  '/products/summary/solar-wind-speed.json',
+  '/products/noaa-scales.json',
+  '/v1/forecast',
+  '/api/v3/events'
+]) assert.ok(viewSource.includes(`'${path}'`), `observer should recognize ${path}`);
+assert.doesNotMatch(source, /https?:\/\//, 'observer should recognize existing hosts without introducing additional runtime URL literals');
 assert.doesNotMatch(source, /setInterval|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
 assert.doesNotMatch(source, /sendBeacon|XMLHttpRequest|WebSocket|EventSource|analytics|telemetry|dataLayer|gtag/i);
 assert.doesNotMatch(source, /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i);
@@ -107,4 +115,4 @@ assert.match(styleSource, /@media \(prefers-contrast: more\)/);
 assert.match(styleSource, /@media print/);
 assert.doesNotMatch(styleSource, /@import\s+url|font-face|https?:\/\//i);
 
-console.log('Temporal timestamp parsing, known-thickness derivation, incomparable EONET handling, passive fetch observation, exact origin boundary, load order, privacy, and accessibility verified.');
+console.log('Temporal timestamp parsing, known source-time thickness, incomparable EONET handling, passive fetch observation, exact hostname/path boundary, load order, privacy, and accessibility verified.');
