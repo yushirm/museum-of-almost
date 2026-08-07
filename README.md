@@ -4,6 +4,8 @@ A dependency-free, offline-first browser experiment currently behaving as an agr
 
 The current experience is one continuous treaty line carrying two forces in opposite directions. The visitor acts as a counterweight by suspending the line at any point. A suspension is a deliberate error: exactly one error creates temporary order, while perfect symmetry or too many errors destabilise the agreement. An erasure attempt removes an active mark but preserves that mark as the only durable fictional memory. The first erasure in a local installation also causes one field reversal that cannot repeat until local state is reset.
 
+The Museum is now in a **constructive building mode**: Treaty 05 is a stable foundation. New work should extend its behavior, expression, accessibility, and local tools rather than replacing the current experience unless a future task explicitly calls for a new direction.
+
 ## What is inside
 
 - One continuous, touchable timeline rather than destinations, layers, named slots, or feature launchers.
@@ -19,7 +21,22 @@ The current experience is one continuous treaty line carrying two forces in oppo
 - Optional local WebAudio whose pitch reflects suspension position and weight.
 - Live cross-tab refresh of the erased-memory ghost without storing or transmitting interaction history.
 - Reduced-motion support, high-contrast support, keyboard access, mobile scrolling, responsive layout, and offline service-worker behavior.
-- No framework, package install, build step, account, analytics, tracking, visitor text, remote AI, or external runtime dependency.
+
+## Constructive additions
+
+Treaty 05 also supports additive session mechanics without changing its durable state model:
+
+- **Suspension spans** connect adjacent active marks and classify their spacing as near lock, close drift, balanced interval, or wide accord.
+- A live **field ledger** reports active mark count, total weight, center, spread, and current resonance.
+- **Cast echo** mirrors the latest active mark across the treaty and complements its weight.
+- **Undo session mark** removes the latest active addition without creating erased memory.
+- **Soften latest** and **Intensify latest** edit the newest mark within the existing bounded weight range.
+- A current-visit **session record** keeps the six most recent constructive actions in memory only; it is never persisted.
+- Keyboard construction shortcuts add `[` / `]` weight editing plus `Shift+E` echo and `Shift+U` session undo.
+- **Make local postcard** downloads an SVG generated entirely in-browser from the visible fictional configuration. It uses no remote images, fonts, APIs, or install-identifying code.
+- **Print treaty** provides a dedicated print layout through the browser's local print dialog.
+
+None of those additions store active-session history. The erased ghost remains the only durable fictional visitor action.
 
 ## Run it
 
@@ -46,16 +63,17 @@ node scripts/test-service-worker.mjs
 node scripts/check.mjs
 ```
 
-The checks cover deterministic entropy-history replay, the Execution 5 seed, bounded v5 persistence, legacy migration, continuous counterweight movement, duration-sensitive suspension, exactly-one-error treaty logic, attempted-erasure memory, the once-per-installation event, unresolved measurement, scale feedback, pointer-data privacy, responsive accessibility hooks, local-only runtime behavior, and service-worker cache cleanup.
+The checks cover deterministic entropy-history replay, the Execution 5 seed, bounded v5 persistence, legacy migration, continuous counterweight movement, duration-sensitive suspension, exactly-one-error treaty logic, attempted-erasure memory, the once-per-installation event, unresolved measurement, scale feedback, constructive spans, resonance classification, echo, session undo, weight editing, postcard data, pointer-data privacy, responsive accessibility hooks, local-only runtime behavior, and service-worker cache cleanup.
 
-## Entropy records
+## Project records
 
-- `ENTROPY_LOG.md` records the inspected creative basin, reproducible seed, selections, dynamic exile, mutation thesis, state migration, authored irregularities, and adversarial audit.
-- `ENTROPY_HISTORY.md` records each execution without personal or repository identity data.
+- `ENTROPY_LOG.md` records the historical mutation executions that produced the current foundation.
+- `ENTROPY_HISTORY.md` records each entropy execution without personal or repository identity data.
+- `CONSTRUCTION_LOG.md` records additive work performed after Treaty 05 became the stable foundation.
 
 ## Privacy boundary
 
-The application stores one bounded local JSON value containing a random install seed and, optionally, the last fictional suspension the visitor attempted to erase. That ghost contains only a bounded position integer and bounded weight integer. Active suspensions, pointer coordinates, hold durations, animation phases, action histories, semantic labels, timestamps, and visitor text are not stored.
+The application stores one bounded local JSON value containing a random install seed and, optionally, the last fictional suspension the visitor attempted to erase. That ghost contains only a bounded position integer and bounded weight integer. Active suspensions, the field ledger, resonance spans, echoes, undo state, weight edits, the session record, pointer coordinates, hold durations, animation phases, postcard history, print history, timestamps, and visitor text are not stored.
 
 The public host may process ordinary connection information under its own terms. The application adds no analytics or tracking.
 
