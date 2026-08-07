@@ -211,8 +211,8 @@ assert.match(fieldSheetStyles, /@page\s*\{\s*size:\s*landscape/);
 assert.doesNotMatch(fieldSheetStyles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(fieldSheetStyles, /min-width:\s*[4-9]\d\dpx/);
 
-assert.match(worker, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v4-world-map'/);
-assert.match(worker, /const CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet'/);
+assert.match(worker, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet'/);
+assert.match(worker, /const CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal'/);
 assert.match(worker, /url\.origin !== self\.location\.origin/);
 assert.match(worker, /caches\.match\('\.\/index\.html'\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
   'navigation cache must remain coherent across releases');
