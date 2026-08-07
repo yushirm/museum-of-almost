@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 
-assert.match(source, /museum-of-almost-entropy-v2/);
+assert.match(source, /museum-of-almost-entropy-v3/);
 for (const asset of [
   './',
   './index.html',

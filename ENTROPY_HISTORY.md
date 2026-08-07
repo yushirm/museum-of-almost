@@ -45,3 +45,26 @@
 - Preservation budget: Three.
 - Resulting organising principle: Seasonal self-correction obstructed by deliberate misregistration along one touchable timeline.
 - Concise implementation outcome: The six peer knots and tension diagram were removed; delayed effects, inactivity, and memory were fused into a seasonal law where incorrect repairs preserve readable partial error.
+
+## Execution 3
+
+- Seed: `eb11a896ddf843d260cb13fac4261168f632a18964cd96724f9650e4cd4cacf8`
+- Date: 2026-08-07
+- Primary Fixation exiled: Ordered correction timeline.
+- Supporting patterns prohibited: Discrete position targeting; scalar misregistration as universal state; periodic season-driven phase changes.
+- Pattern inverted: Action causes an effect → an effect must appear before action becomes available.
+- Patterns retained: Deterministic procedural variation; local-first offline engineering.
+- Ontology selected: A translation system for things that do not have language.
+- Visitor relationship selected: Accomplice.
+- Primary verb selected: Wait.
+- Topology selected: One repeated structure whose meaning changes each time.
+- Time law selected: Actions become available only after their effects are visible.
+- Memory law selected: Retain one contradiction between visits.
+- Sensory centre selected: Rhythm.
+- Materials selected: Woven fibres; temporary construction markings.
+- Governing contradiction selected: Every successful action creates a new uncertainty.
+- Intrusion selected: A tiny ecosystem unaware of the larger interface.
+- Severe constraint selected: The core interaction must work without precise pointing.
+- Preservation budget: Inversion.
+- Resulting organising principle: One self-translating weave reveals a contradiction, briefly permits interference, and treats continued waiting as complicity.
+- Concise implementation outcome: The timeline, seasons, term targets, misregistration values, coherence calculation, and correction grammar were removed. One broad weave now changes meaning by rhythm; visible effects precede action, and persistence is reduced to one fictional contradiction.

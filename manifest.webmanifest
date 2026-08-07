@@ -1,10 +1,10 @@
 {
   "name": "The Museum of Almost",
   "short_name": "Almost",
-  "description": "A local-first browser law that becomes coherent by remaining partly broken.",
+  "description": "A local-first translation system for things that do not have language.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f1eee3",
-  "theme_color": "#f1eee3"
+  "background_color": "#efede6",
+  "theme_color": "#efede6"
 }
