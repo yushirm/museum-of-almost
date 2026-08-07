@@ -1,93 +1,143 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { selectEntropy } from './entropy-select.mjs';
+import { selectEntropy, rerollRecord, selectIndex } from './entropy-select.mjs';
+import dimensions from './entropy-dimensions.json' with { type: 'json' };
 
 const require = createRequire(import.meta.url);
 const core = require('../entropy-core.js');
-const seed = core.EXECUTION_SEED;
 
-const expected = {
-  A: 'an organism made from unfinished ideas',
-  B: 'custodian of an unstable rule',
-  C: 'contradict',
-  D: 'one continuous surface',
-  E: 'every action creates a delayed consequence',
-  F: 'retain one accidental event selected by the seed',
-  G: 'contrast between stillness and interruption',
-  H: ['wax seals', 'woven fibres'],
-  I: 'repetition produces difference',
-  J: 'a pattern that appears to anticipate the visitor',
-  K: 'no icons',
-  preservationBudget: 'Two'
-};
+const executionSeed = '18fe665945016bff2168f9c3ad6110e5c684dc9e8ef0983d9a300a8ac848782c';
+const selected = selectEntropy(executionSeed);
 
-assert.deepEqual(selectEntropy(seed), expected, 'the recorded seed must replay the recorded selections');
-assert.deepEqual(selectEntropy(seed), selectEntropy(seed), 'selection replay must be stable');
-
-const knotsA = core.buildKnots(123456789, [0, 1, 0, 2, 0, 0]);
-const knotsB = core.buildKnots(123456789, [0, 1, 0, 2, 0, 0]);
-assert.deepEqual(knotsA, knotsB, 'procedural knots must replay from the same local seed');
-assert.equal(new Set(knotsA.map((knot) => knot.basePhrase)).size, core.KNOT_COUNT, 'knot phrases must be unique');
-
-let state = core.createState(123456789, 0.5);
-assert.equal(state.tensions.length, core.KNOT_COUNT);
-assert.equal(state.pendingReturn.length, 0);
-assert.equal(state.legacyPressure, 0.5);
-
-const beforeFirst = state.tensions[0];
-const first = core.contradict(state, 0);
-state = first.state;
-const firstDelta = state.tensions[0] - beforeFirst;
-assert.equal(state.pendingReturn.length, 1, 'every action must create a delayed consequence');
-assert.notEqual(firstDelta, 0, 'a contradiction must alter the selected knot');
-assert.notEqual(state.tensions[1], core.createState(123456789, 0.5).tensions[1], 'a contradiction must affect a related knot');
-
-const beforeSecond = state.tensions[0];
-const second = core.contradict(state, 0);
-const secondDelta = second.state.tensions[0] - beforeSecond;
-assert.notEqual(Math.sign(firstDelta), Math.sign(secondDelta), 'repetition must produce a different direction of pressure');
-state = second.state;
-
-const targetBefore = state.tensions[second.consequence.target];
-const applied = core.applyConsequence(state, second.consequence);
-assert.notEqual(applied.state.tensions[second.consequence.target], targetBefore, 'delayed consequence must alter its target');
-assert.equal(applied.state.pendingReturn.some((item) => item.id === second.consequence.id), false, 'applied consequences must be removed');
-
-let returnState = core.createState(55, 0);
-returnState = core.contradict(returnState, 2).state;
-const pendingBeforeVisit = returnState.pendingReturn.length;
-const returned = core.advanceVisit(returnState);
-assert.equal(returned.returnedConsequences, pendingBeforeVisit, 'return visits must apply pending consequences');
-assert.equal(returned.state.pendingReturn.length, 0, 'return visit must consume applied consequences');
-assert.equal(returned.state.visits, 1);
-
-let memoryState = core.createState(987654321, 0);
-for (let index = 0; index < 12 && !memoryState.memory; index += 1) {
-  memoryState = core.contradict(memoryState, index % core.KNOT_COUNT).state;
-}
-assert.ok(memoryState.memory, 'the seeded accidental event must eventually occur');
-assert.equal(memoryState.memory.kind, core.accidentalKind(), 'the retained accident type must be selected by the execution seed');
-assert.match(core.memoryText(memoryState), /^The organism retains /);
-
-const idleBefore = memoryState.tensions.slice();
-const idle = core.idleShift(memoryState);
-assert.equal(idle.state.idleCycles, memoryState.idleCycles + 1);
-assert.notDeepEqual(idle.state.tensions, idleBefore, 'inactivity must change the system');
-
-const migration = core.migrateLegacy(
-  JSON.stringify({ fragments: ['fictional one', 'fictional two'], completedCollections: 3, roomIndex: 8 }),
-  JSON.stringify({ sealedIndex: 2 })
-);
-assert.equal(migration.migrated, true);
-assert.ok(migration.legacyPressure > 0 && migration.legacyPressure <= 1);
-
-const sanitized = core.sanitizeState({
-  installSeed: 7,
-  tensions: [99, -99],
-  pendingReturn: Array.from({ length: 10 }, (_, index) => ({ id: String(index), target: index, delta: 99 }))
+assert.deepEqual(selected, {
+  A: 'a law of nature that exists only in the browser',
+  B: 'obstacle',
+  C: 'repair incorrectly',
+  D: 'a timeline that can be touched',
+  E: 'the interface develops seasons',
+  F: 'remember exactly one visitor action',
+  G: 'changing density',
+  H: ['misregistered print', 'botanical diagrams'],
+  I: 'the system is more coherent when partially broken',
+  J: 'a duplicate state with one unexplained difference',
+  K: 'no images',
+  preservationBudget: 'Three'
 });
-assert.equal(sanitized.tensions.length, core.KNOT_COUNT);
-assert.ok(sanitized.tensions.every((value) => value >= -1 && value <= 1));
-assert.equal(sanitized.pendingReturn.length, core.MAX_PENDING);
 
-process.stdout.write('Entropy behavior checks passed.\n');
+const reroll = rerollRecord(executionSeed);
+assert.equal(reroll.B.offset, 2);
+assert.equal(
+  dimensions.B[selectIndex(executionSeed, 'B', dimensions.B.length, 0)],
+  'custodian of an unstable rule'
+);
+assert.equal(
+  dimensions.B[selectIndex(executionSeed, 'B', dimensions.B.length, 2)],
+  'obstacle'
+);
+
+assert.equal(core.EXECUTION_SEED, executionSeed);
+assert.equal(core.STATE_KEY, 'museum-of-almost:entropy:v2');
+assert.equal(core.TERM_COUNT, 8);
+
+const first = core.createState(12345, 0.06);
+const second = core.createState(12345, 0.06);
+assert.deepEqual(first, second);
+assert.equal(first.offsets.length, 8);
+
+const exact = core.sanitizeState({ ...first, offsets: Array(8).fill(0) }, 12345);
+const partial = core.sanitizeState({ ...first, offsets: Array(8).fill(core.TARGET_ERROR) }, 12345);
+assert.ok(core.coherence(partial) > core.coherence(exact));
+assert.ok(core.density(partial) < core.density(exact));
+
+const repaired = core.repairIncorrectly(first, 2);
+assert.equal(repaired.state.actionCount, 1);
+assert.equal(repaired.state.rememberedAction.slot, 2);
+assert.equal(repaired.state.pending.length, 1);
+assert.notEqual(repaired.state.offsets[2], first.offsets[2]);
+assert.notEqual(repaired.state.offsets[3], first.offsets[3]);
+assert.notEqual(repaired.state.offsets[2], 0);
+
+let repeated = repaired.state;
+repeated = core.repairIncorrectly(repeated, 5).state;
+assert.equal(repeated.rememberedAction.slot, 5);
+assert.equal(Object.hasOwn(repeated, 'actionHistory'), false);
+assert.equal(Object.hasOwn(repeated, 'pointerPath'), false);
+
+let four = core.createState(77, 0);
+const startingSeason = four.season;
+for (let index = 0; index < 4; index += 1) {
+  four = core.repairIncorrectly(four, index).state;
+}
+assert.equal(four.season, (startingSeason + 1) % 4);
+
+let idle = core.sanitizeState({ ...first, offsets: Array(8).fill(0.5) }, 12345);
+const idleSeason = idle.season;
+const beforeIdleMagnitude = idle.offsets.reduce((sum, value) => sum + Math.abs(value), 0);
+idle = core.idleShift(idle).state;
+idle = core.idleShift(idle).state;
+idle = core.idleShift(idle).state;
+const afterIdleMagnitude = idle.offsets.reduce((sum, value) => sum + Math.abs(value), 0);
+assert.ok(afterIdleMagnitude < beforeIdleMagnitude);
+assert.equal(idle.season, (idleSeason + 1) % 4);
+
+let duplicateState = core.createState(9001, 0);
+duplicateState = core.repairIncorrectly(duplicateState, 0).state;
+duplicateState = core.repairIncorrectly(duplicateState, 1).state;
+assert.equal(core.duplicateActive(duplicateState), true);
+const difference = core.duplicateIndex(duplicateState);
+const beforeDifference = [...duplicateState.offsets];
+const duplicateRepair = core.repairIncorrectly(duplicateState, difference);
+assert.equal(duplicateRepair.duplicate, true);
+assert.notEqual(
+  duplicateRepair.state.offsets[(difference + 2) % core.TERM_COUNT],
+  beforeDifference[(difference + 2) % core.TERM_COUNT]
+);
+
+let consequenceState = core.createState(222, 0);
+const produced = core.repairIncorrectly(consequenceState, 3);
+const applied = core.applyConsequence(produced.state, produced.consequence);
+assert.equal(applied.state.pending.length, 0);
+assert.notEqual(
+  applied.state.offsets[produced.consequence.target],
+  produced.state.offsets[produced.consequence.target]
+);
+
+let fifth = core.createState(555, 0);
+let fifthResult;
+for (let index = 0; index < 5; index += 1) {
+  fifthResult = core.repairIncorrectly(fifth, index % core.TERM_COUNT);
+  fifth = fifthResult.state;
+}
+assert.equal(fifthResult.consequence.longDelay, true);
+
+let seventh = core.createState(777, 0);
+let seventhResult;
+for (let index = 0; index < 7; index += 1) {
+  seventhResult = core.repairIncorrectly(seventh, index % core.TERM_COUNT);
+  seventh = seventhResult.state;
+}
+assert.equal(seventhResult.refuseImmediate, true);
+
+const remembered = core.sanitizeState({
+  ...core.createState(333, 0),
+  offsets: Array(8).fill(0),
+  rememberedAction: { slot: 2, delta: 0.2 },
+  pending: []
+}, 333);
+const revisited = core.advanceVisit(remembered);
+assert.ok(revisited.state.offsets[3] > 0);
+assert.equal(revisited.state.rememberedAction.slot, 2);
+
+const migrated = core.migrateLegacy(
+  JSON.stringify({ tensions: [0.5, -0.2, 0.1, 0.3, -0.1, 0.2], memory: { kind: 2 } }),
+  JSON.stringify({ fragments: ['fictional one', 'fictional two'] }),
+  JSON.stringify({ selectedIndex: 4 })
+);
+assert.equal(migrated.migrated, true);
+assert.ok(migrated.legacyBias >= -0.2 && migrated.legacyBias <= 0.2);
+
+const memoryText = core.memoryText(repaired.state);
+assert.match(memoryText, /remembers only the last repair/i);
+assert.doesNotMatch(JSON.stringify(repaired.state), /timestamp|email|name|location|pointer/i);
+
+console.log('Entropy execution 2 behavior verified.');
