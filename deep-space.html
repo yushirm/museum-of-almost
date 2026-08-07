@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070511">
+  <meta name="description" content="A local deep-space gallery about light, gravity, cosmic scale, time and the unanswered universe.">
+  <title>The Museum of Almost — Deep Space / Almost</title>
+  <link rel="stylesheet" href="deep-space.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to deep space</a>
+
+  <header class="cosmos-header">
+    <div class="cosmos-brand">
+      <small>The Museum of Almost</small>
+      <strong>DEEP SPACE / ALMOST</strong>
+    </div>
+    <nav class="cosmos-nav" aria-label="Museum galleries">
+      <a href="./">← Commons / Now</a>
+    </nav>
+  </header>
+
+  <main id="main" class="cosmos-main">
+    <section class="cosmos-hero" aria-labelledby="space-title">
+      <div>
+        <p class="eyebrow">THE SECOND GALLERY · SPACE · TIME · THE UNKNOWN</p>
+        <h1 id="space-title">Nothing here is close.</h1>
+        <p class="cosmos-hero-copy">Deep space is not a backdrop. It is a laboratory for impossible scales: light that takes years to arrive, gravity strong enough to reshape time, invisible matter that outweighs the visible, and questions our best theories still cannot close.</p>
+        <p class="hero-axiom">No live feed. No account. No location. Every instrument on this page runs locally from fixed physical constants and transparent approximations.</p>
+      </div>
+
+      <div class="orbitarium" aria-label="Abstract local diagram of nested cosmic scales">
+        <span class="orbit-ring" aria-hidden="true"></span>
+        <span class="orbit-core" aria-hidden="true"></span>
+        <span class="orbit-dot orbit-dot-a" aria-hidden="true"></span>
+        <span class="orbit-dot orbit-dot-b" aria-hidden="true"></span>
+        <span class="orbit-dot orbit-dot-c" aria-hidden="true"></span>
+        <p class="orbit-caption">A decorative local diagram, not a map. Distance is the first thing the universe refuses to draw to scale.</p>
+      </div>
+    </section>
+
+    <section class="cosmos-section" aria-labelledby="light-title">
+      <div class="section-heading">
+        <p class="eyebrow">INSTRUMENT 01 · LIGHT AS A CLOCK</p>
+        <h2 id="light-title">To look outward is to look backward.</h2>
+        <p>Light is fast enough to define the metre, but the universe is much larger than “fast” is useful. Choose a scale and the instrument converts distance into one-way light travel time.</p>
+      </div>
+
+      <div class="instrument">
+        <div class="instrument-controls" role="group" aria-label="Choose a cosmic distance">
+          <button type="button" data-scale-id="moon" data-active="false" aria-pressed="false">Moon</button>
+          <button type="button" data-scale-id="sun" data-active="true" aria-pressed="true">Sun</button>
+          <button type="button" data-scale-id="proxima" data-active="false" aria-pressed="false">Proxima</button>
+          <button type="button" data-scale-id="milky-way" data-active="false" aria-pressed="false">Milky Way</button>
+          <button type="button" data-scale-id="andromeda" data-active="false" aria-pressed="false">Andromeda</button>
+        </div>
+        <div class="instrument-body light-instrument-body">
+          <div class="light-track" aria-hidden="true">
+            <span id="scale-beam" class="light-beam"></span>
+          </div>
+          <div class="readout-grid" aria-live="polite">
+            <div class="readout"><span class="metric-label">Reference</span><strong id="scale-name" class="readout-value">Sun</strong></div>
+            <div class="readout"><span class="metric-label">Distance</span><strong id="scale-distance" class="readout-value">149.6 million km</strong></div>
+            <div class="readout"><span class="metric-label">One-way light time</span><strong id="scale-light-time" class="readout-value">8.3 minutes</strong></div>
+            <p id="scale-note" class="readout-note">One astronomical unit. Sunlight reaching Earth is already a little over eight minutes old.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cosmos-section" aria-labelledby="gravity-title">
+      <div class="section-heading">
+        <p class="eyebrow">INSTRUMENT 02 · GRAVITY AS GEOMETRY</p>
+        <h2 id="gravity-title">An event horizon is a size, not a surface.</h2>
+        <p>For a non-rotating, uncharged black hole, mass sets the Schwarzschild radius: the distance from which even light cannot return to the outside universe. Real astrophysical black holes rotate, so this is a deliberately simple reference model.</p>
+      </div>
+
+      <div class="instrument">
+        <div class="instrument-controls" role="group" aria-label="Choose a reference black hole">
+          <button type="button" data-black-hole-id="stellar" data-active="false" aria-pressed="false">10 Suns</button>
+          <button type="button" data-black-hole-id="sagittarius-a" data-active="true" aria-pressed="true">Sagittarius A*</button>
+          <button type="button" data-black-hole-id="m87" data-active="false" aria-pressed="false">M87*</button>
+        </div>
+        <div class="instrument-body gravity-body">
+          <div id="gravity-well" class="gravity-well" aria-hidden="true"></div>
+          <div class="readout-grid" aria-live="polite">
+            <div class="readout"><span class="metric-label">Reference</span><strong id="black-hole-name" class="readout-value">Sagittarius A*</strong></div>
+            <div class="readout"><span class="metric-label">Mass</span><strong id="black-hole-mass" class="readout-value">4.3 million solar masses</strong></div>
+            <div class="readout"><span class="metric-label">Schwarzschild radius</span><strong id="black-hole-radius" class="readout-value">—</strong></div>
+            <div class="readout"><span class="metric-label">Horizon diameter</span><strong id="black-hole-diameter" class="readout-value">—</strong></div>
+            <p id="black-hole-note" class="readout-note">A rounded mass reference. The radius shown uses the Schwarzschild approximation: non-rotating and uncharged.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cosmos-section" aria-labelledby="inventory-title">
+      <div class="section-heading">
+        <p class="eyebrow">INSTRUMENT 03 · COSMIC INVENTORY</p>
+        <h2 id="inventory-title">Most of the universe is named after what we do not know.</h2>
+        <p>A rounded reference cosmology: only a small fraction is ordinary atomic matter. The larger shares are inferred from how the universe gravitates and expands.</p>
+      </div>
+
+      <div class="inventory-grid" aria-label="Rounded cosmic composition">
+        <article class="inventory-card"><strong>4.9%</strong><h3>Ordinary matter</h3><p>Atoms: stars, planets, gas, dust, bodies and instruments.</p></article>
+        <article class="inventory-card"><strong>26.8%</strong><h3>Dark matter</h3><p>Detected through gravity; its particle identity remains unknown.</p></article>
+        <article class="inventory-card"><strong>68.3%</strong><h3>Dark energy</h3><p>A name for whatever drives the observed accelerated cosmic expansion.</p></article>
+      </div>
+      <p class="inventory-note">Percentages are rounded reference values from the standard cosmological model, not a live measurement or claim of final certainty.</p>
+    </section>
+
+    <section class="cosmos-section" aria-labelledby="mystery-section-title">
+      <div class="section-heading">
+        <p class="eyebrow">INSTRUMENT 04 · THE UNSOLVED ROOM</p>
+        <h2 id="mystery-section-title">The frontier is not empty. It is unfinished.</h2>
+        <p>Choose an open question. Each card separates what observations already force us to take seriously from what remains genuinely unresolved.</p>
+      </div>
+
+      <div class="mystery-layout">
+        <div class="mystery-controls" role="group" aria-label="Choose an open problem in fundamental physics and cosmology">
+          <button type="button" data-mystery-id="dark-matter" data-active="true" aria-pressed="true">Dark matter</button>
+          <button type="button" data-mystery-id="dark-energy" data-active="false" aria-pressed="false">Dark energy</button>
+          <button type="button" data-mystery-id="time" data-active="false" aria-pressed="false">Arrow of time</button>
+          <button type="button" data-mystery-id="information" data-active="false" aria-pressed="false">Black-hole information</button>
+          <button type="button" data-mystery-id="quantum-gravity" data-active="false" aria-pressed="false">Quantum gravity</button>
+        </div>
+        <article class="mystery-card" aria-live="polite">
+          <h3 id="mystery-title">What is dark matter?</h3>
+          <div class="mystery-columns">
+            <article><h4>What we know</h4><p id="mystery-known">Galaxies and clusters behave as though much more gravitating matter exists than we can see. Gravitational lensing maps the same hidden mass.</p></article>
+            <article><h4>What remains open</h4><p id="mystery-unknown">We still do not know the underlying particle or field, or whether the final explanation requires a deeper change to gravity.</p></article>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="cosmos-section" aria-labelledby="closing-title">
+      <div class="closing-panel">
+        <blockquote id="closing-title">We can measure the edge of understanding without pretending we have crossed it.</blockquote>
+        <p>Deep Space / Almost is deliberately quieter than Commons / Now: no fresh feed, no simulated certainty. Just stable constants, explicit approximations, and the strange fact that mystery can be measured.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="cosmos-footer">
+    <span>DEEP SPACE / ALMOST · LOCAL SCIENCE INSTRUMENT · NO ANALYTICS</span>
+    <a href="./">Return to Commons / Now</a>
+  </footer>
+
+  <script src="deep-space-core.js" defer></script>
+  <script src="deep-space.js" defer></script>
+</body>
+</html>
