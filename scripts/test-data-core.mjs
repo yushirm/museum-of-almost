@@ -73,6 +73,38 @@ assert.deepEqual(core.stationPosition({ lat: 90, lon: -180 }), { x: 0, y: 0 });
 assert.equal(core.formatCoordinate(-35.67, 'N', 'S'), '35.67° S');
 assert.equal(core.formatCoordinate(74.26, 'E', 'W'), '74.26° E');
 
+assert.equal(core.greatCircleDistanceKm({ lat: 0, lon: 0 }, { lat: 0, lon: 0 }), 0);
+assert.ok(Math.abs(core.greatCircleDistanceKm({ lat: 0, lon: 0 }, { lat: 0, lon: 90 }) - 10008) <= 1);
+assert.deepEqual(core.observedRange(weather.points, 'temperature'), { available: true, min: -6, max: 30 });
+assert.equal(core.metricPosition(-6, -6, 30), 0);
+assert.equal(core.metricPosition(30, -6, 30), 100);
+assert.equal(core.metricPosition(12, -6, 30), 50);
+assert.equal(core.metricPosition(5, 5, 5), 50);
+assert.equal(core.metricPosition(null, 0, 10), 50);
+assert.deepEqual(core.observedRange([{ temperature: null }, { temperature: 4 }], 'temperature'), { available: true, min: 4, max: 4 });
+const unavailableComparison = core.compareStationPair(
+  { id: 'A', lat: 0, lon: 0, temperature: null, wind: null, precipitation: null },
+  { id: 'B', lat: 0, lon: 10, temperature: 5, wind: 7, precipitation: 0 },
+  'day',
+  'night'
+);
+assert.equal(unavailableComparison.temperatureDelta, null);
+assert.match(core.differenceSentence(unavailableComparison, 'temperature'), /unavailable/);
+
+const comparison = core.compareStationPair(weather.points[0], weather.points[7], 'night', 'day');
+assert.equal(comparison.idA, '01');
+assert.equal(comparison.idB, '08');
+assert.equal(comparison.temperatureDelta, -21);
+assert.equal(comparison.windDelta, -7);
+assert.equal(comparison.precipitationDelta, 1.2);
+assert.equal(comparison.sameLight, false);
+assert.ok(comparison.distanceKm > 0);
+assert.match(core.differenceSentence(comparison, 'temperature'), /Point 01 is 21\.0°C cooler than point 08/);
+assert.match(core.differenceSentence(comparison, 'wind'), /less windy/);
+assert.match(core.differenceSentence(comparison, 'precipitation'), /wetter right now/);
+assert.match(core.differenceSentence(comparison, 'light'), /Point 01 is in night; point 08 is in day/);
+assert.match(core.differenceSentence(comparison, 'distance'), /km apart along Earth’s surface/);
+
 const sentence = core.snapshotSentence({
   earthquakes,
   solar: { available: true, speed: 487.4 },
@@ -84,4 +116,4 @@ assert.match(sentence, /487 km\/s/);
 assert.match(sentence, /13 fixed world points/);
 assert.match(sentence, /NASA EONET lists 3 open natural events/);
 
-console.log('Commons / Now data reduction, fixed sample, and daylight geometry verified.');
+console.log('Commons / Now data reduction, fixed sample, daylight geometry, and Difference Engine verified.');

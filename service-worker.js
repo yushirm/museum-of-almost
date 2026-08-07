@@ -1,10 +1,11 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-commons-now-v1';
+const CACHE_NAME = 'museum-of-almost-commons-now-v2-difference';
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
+  './difference-engine.css',
   './data-core.js',
   './app.js',
   './manifest.webmanifest',

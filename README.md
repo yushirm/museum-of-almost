@@ -16,7 +16,10 @@ The page shows:
 - NOAA SWPC current solar-wind speed near Earth;
 - current Open-Meteo temperature, wind, and precipitation at thirteen fixed coordinates distributed around the planet;
 - NASA EONET currently open natural-event counts and aggregate categories;
-- an approximate local day / twilight / night state for each fixed coordinate, calculated in the browser from UTC time and geometry.
+- an approximate local day / twilight / night state for each fixed coordinate, calculated in the browser from UTC time and geometry;
+- **The Difference Engine**, a two-point patchboard that compares any pair of the thirteen fixed windows across the same current snapshot.
+
+The Difference Engine adds no data source and makes no extra network request. It derives great-circle distance locally and compares temperature, wind, precipitation, and light between two visitor-selected fixed points. A lens control also places both points inside the observed range of the current thirteen-point snapshot. It describes difference without ranking places as better or worse.
 
 The thirteen weather points include both land and ocean. They were derived once from opaque seed material rather than selected by population, borders, visitor location, or editorial preference.
 
@@ -51,11 +54,13 @@ See `SOURCES.md` for exact endpoints and attribution.
 
 There is no visitor persistence. The application does not use `localStorage`, `sessionStorage`, IndexedDB, cookies, browser geolocation, or visitor free-text input.
 
+Difference Engine selections and lenses exist only in page memory and reset on reload. They are not sent to any external service.
+
 Live requests omit credentials and referrer and use no-store caching. Normal direct internet requests still expose network-layer information such as an IP address to the requested public service. See `PRIVACY.md` for the full boundary.
 
 ## Offline behavior
 
-The explanatory application shell is cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world sample still renders and live metrics remain visibly unavailable.
+The explanatory application shell is cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world sample and Difference Engine controls still render, while live comparison values remain visibly unavailable.
 
 ## Run locally
 
@@ -79,11 +84,11 @@ node scripts/test-service-worker.mjs
 node scripts/check.mjs
 ```
 
-The checks enforce the four-source network allowlist, thirteen fixed sampling points, no visitor storage or location access, no polling, same-origin service-worker behavior, responsive accessibility hooks, source attribution, seed privacy, and deterministic data reduction.
+The checks enforce the four-source network allowlist, thirteen fixed sampling points, truthful Difference Engine derivation, no visitor storage or location access, no polling, same-origin service-worker behavior, responsive accessibility hooks, source attribution, seed privacy, and deterministic data reduction.
 
 ## Records
 
-- `REBUILD_LOG.md` records the current product reset.
+- `REBUILD_LOG.md` records the current product reset and subsequent COMMONS / NOW extensions.
 - `CONSTRUCTION_LOG.md` records the earlier constructive Treaty period.
 - `ENTROPY_LOG.md` and `ENTROPY_HISTORY.md` record older mutation experiments.
 

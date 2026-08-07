@@ -8,6 +8,7 @@
   <title>The Museum of Almost — Commons / Now</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="difference-engine.css">
 </head>
 <body data-loading="false" data-source-count="0">
   <a class="skip-link" href="#main">Skip to the world snapshot</a>
@@ -117,6 +118,59 @@
 
       <div id="station-list" class="station-list" aria-label="All thirteen weather windows"></div>
       <p class="attribution">Weather data: Open-Meteo. Fixed coordinates only; browser location is never requested.</p>
+    </section>
+
+    <section class="difference-section" aria-labelledby="difference-title">
+      <div class="section-heading">
+        <p class="eyebrow">THE DIFFERENCE ENGINE</p>
+        <h2 id="difference-title">How different can the same planet be at the same moment?</h2>
+        <p>Patch any two fixed windows together. The circuit compares only the current snapshot: distance, temperature, wind, precipitation, and light. It does not rank places or keep a history.</p>
+      </div>
+
+      <div class="difference-console">
+        <div class="patchbay" aria-labelledby="patchbay-title">
+          <div class="patchbay-heading">
+            <span id="patchbay-title">PATCH CABLE</span>
+            <p>Choose which cable end to move, then choose a numbered socket.</p>
+          </div>
+          <div class="patch-targets" role="group" aria-label="Choose which comparison end to patch">
+            <button id="patch-a" class="patch-target" type="button" aria-pressed="true" data-active="true">END A · POINT 01</button>
+            <button id="patch-b" class="patch-target" type="button" aria-pressed="false" data-active="false">END B · POINT 09</button>
+          </div>
+          <div id="difference-points" class="patch-points" role="group" aria-label="Patch one of thirteen fixed points to the active end"></div>
+          <p id="patch-help" class="patch-help">End A is armed. Choose any fixed point below; the other end stays connected.</p>
+        </div>
+
+        <div class="difference-instrument">
+          <div class="lens-controls" role="group" aria-label="Choose a comparison lens">
+            <button class="lens-button" type="button" data-lens="temperature" data-active="true" aria-pressed="true">Temperature</button>
+            <button class="lens-button" type="button" data-lens="wind" data-active="false" aria-pressed="false">Wind</button>
+            <button class="lens-button" type="button" data-lens="precipitation" data-active="false" aria-pressed="false">Precipitation</button>
+            <button class="lens-button" type="button" data-lens="light" data-active="false" aria-pressed="false">Light</button>
+            <button class="lens-button" type="button" data-lens="distance" data-active="false" aria-pressed="false">Distance</button>
+          </div>
+
+          <p id="difference-readout" class="difference-readout" aria-live="polite">Waiting for the current weather snapshot.</p>
+
+          <div id="difference-scale" class="difference-scale" data-lens="temperature">
+            <div class="difference-track" aria-hidden="true">
+              <span id="difference-marker-a" class="difference-marker difference-marker-a" style="--position: 0%">A 01</span>
+              <span id="difference-marker-b" class="difference-marker difference-marker-b" style="--position: 100%">B 09</span>
+            </div>
+            <p id="difference-scale-label">13-point observed range</p>
+          </div>
+
+          <dl class="difference-metrics" aria-label="Current difference between patched points">
+            <div><dt>Surface distance</dt><dd id="difference-distance">—</dd></div>
+            <div><dt>Temperature A − B</dt><dd id="difference-temperature">—</dd></div>
+            <div><dt>Wind A − B</dt><dd id="difference-wind">—</dd></div>
+            <div><dt>Precipitation A − B</dt><dd id="difference-rain">—</dd></div>
+            <div><dt>Light A · B</dt><dd id="difference-light">—</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <p class="attribution">The Difference Engine derives everything from the existing thirteen-point weather snapshot and local geometry. It makes no additional network request.</p>
     </section>
 
     <section class="signal-grid" aria-label="Detailed live signals">

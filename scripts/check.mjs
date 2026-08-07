@@ -10,6 +10,7 @@ const require = createRequire(import.meta.url);
 for (const file of [
   'index.html',
   'styles.css',
+  'difference-engine.css',
   'data-core.js',
   'app.js',
   'manifest.webmanifest',
@@ -30,6 +31,7 @@ for (const file of [
 
 const index = read('index.html');
 const styles = read('styles.css');
+const differenceStyles = read('difference-engine.css');
 const coreSource = read('data-core.js');
 const app = read('app.js');
 const worker = read('service-worker.js');
@@ -39,7 +41,7 @@ const sources = read('SOURCES.md');
 const rebuild = read('REBUILD_LOG.md');
 const manifest = read('manifest.webmanifest');
 const workflow = read('.github/workflows/check.yml');
-const runtime = [index, styles, coreSource, app, worker].join('\n');
+const runtime = [index, styles, differenceStyles, coreSource, app, worker].join('\n');
 const publicCurrent = [index, coreSource, app, readme, privacy, sources, rebuild].join('\n');
 const core = require('../data-core.js');
 
@@ -72,20 +74,28 @@ for (const id of [
   'refresh-button', 'connection-state', 'live-status', 'snapshot-time', 'source-count',
   'quake-count', 'quake-strongest', 'solar-wind', 'event-count', 'weather-range',
   'world-sentence', 'station-points', 'station-list', 'station-name', 'station-temperature',
-  'station-wind', 'station-rain', 'station-light', 'event-categories', 'daylight-count'
+  'station-wind', 'station-rain', 'station-light', 'event-categories', 'daylight-count',
+  'patch-a', 'patch-b', 'difference-points', 'patch-help', 'difference-readout',
+  'difference-scale', 'difference-scale-label', 'difference-marker-a', 'difference-marker-b',
+  'difference-distance', 'difference-temperature', 'difference-wind', 'difference-rain', 'difference-light'
 ]) {
   assert.match(index, new RegExp(`id=["']${id}["']`), `missing Commons / Now interface id: ${id}`);
 }
 assert.match(index, /COMMONS \/ NOW/);
 assert.match(index, /The world is doing this without us\./);
+assert.match(index, /THE DIFFERENCE ENGINE/);
+assert.match(index, /How different can the same planet be at the same moment\?/);
+assert.match(index, /makes no additional network request/i);
 assert.match(index, /WHAT THIS ACTUALLY DOES/);
 assert.match(index, /No account\. No location\. No visitor data\./i);
 assert.match(index, /Weather data: Open-Meteo/i);
 assert.match(index, /role="status"[^>]+aria-live="polite"/);
 assert.match(index, /role="group"[^>]+aria-label="Thirteen fixed global weather points"/);
+assert.match(index, /role="group"[^>]+aria-label="Choose a comparison lens"/);
 assert.match(index, /aria-live="polite"/);
 assert.match(index, /href="SOURCES\.md"/);
 assert.match(index, /href="PRIVACY\.md"/);
+assert.match(index, /href="difference-engine\.css"/);
 assert.match(index, /src="data-core\.js"/);
 assert.match(index, /src="app\.js"/);
 
@@ -99,17 +109,24 @@ assert.match(app, /AbortController/);
 assert.match(app, /renderSnapshot\(\);\s*refreshSnapshot\(\);/);
 assert.match(app, /addEventListener\('click', refreshSnapshot\)/);
 assert.match(app, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
+assert.match(app, /comparisonAId = '01'/);
+assert.match(app, /comparisonBId = '09'/);
+assert.match(app, /function patchComparisonPoint\b/);
+assert.match(app, /function renderDifferenceEngine\b/);
+assert.match(app, /function renderDifferenceScale\b/);
 assert.doesNotMatch(app, /setInterval|requestAnimationFrame/i, 'live public data must not poll or run a data animation loop');
 assert.doesNotMatch(app, /navigator\.geolocation|\bgeolocation\b/i);
 assert.doesNotMatch(app, /localStorage|sessionStorage|indexedDB|document\.cookie/i, 'visitor state must not be persisted');
 
 for (const functionName of [
   'normalizeEarthquakes', 'normalizeSolarWind', 'normalizeWeather', 'normalizeEvents',
-  'sunState', 'stationPosition', 'snapshotSentence'
+  'sunState', 'stationPosition', 'greatCircleDistanceKm', 'observedRange', 'metricPosition',
+  'compareStationPair', 'differenceSentence', 'snapshotSentence'
 ]) {
   assert.match(coreSource, new RegExp(`function ${functionName}\\b`), `missing data-core function: ${functionName}`);
 }
 assert.doesNotMatch(coreSource, /localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
+assert.match(coreSource, /typeof pointA\?\.temperature === 'number'/, 'missing weather values must not coerce to numeric zero');
 
 assert.match(styles, /min-height:\s*44px/);
 assert.match(styles, /:focus-visible/);
@@ -121,10 +138,22 @@ assert.match(styles, /@media print/);
 assert.doesNotMatch(styles, /@import\s+url|font-face/i);
 assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
 
-assert.match(worker, /museum-of-almost-commons-now-v1/);
+assert.match(differenceStyles, /\.difference-section/);
+assert.match(differenceStyles, /\.patch-point/);
+assert.match(differenceStyles, /\.lens-button/);
+assert.match(differenceStyles, /\.difference-marker/);
+assert.match(differenceStyles, /@media \(max-width: 620px\)/);
+assert.match(differenceStyles, /@media \(max-width: 380px\)/);
+assert.match(differenceStyles, /@media \(prefers-reduced-motion: reduce\)/);
+assert.match(differenceStyles, /@media \(prefers-contrast: more\)/);
+assert.match(differenceStyles, /@media print/);
+assert.doesNotMatch(differenceStyles, /@import\s+url|font-face|https?:\/\//i);
+assert.doesNotMatch(differenceStyles, /min-width:\s*[4-9]\d\dpx/);
+
+assert.match(worker, /museum-of-almost-commons-now-v2-difference/);
 assert.match(worker, /url\.origin !== self\.location\.origin/);
 assert.doesNotMatch(worker, /https?:\/\//, 'service worker must never proxy public live-data sources');
-for (const asset of ['./index.html', './styles.css', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md']) {
+for (const asset of ['./index.html', './styles.css', './difference-engine.css', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md']) {
   assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
 }
 
@@ -132,6 +161,8 @@ assert.match(readme, /COMMONS \/ NOW/);
 assert.match(readme, /https:\/\/yushirm\.github\.io\/museum-of-almost\//);
 assert.match(readme, /one current snapshot/i);
 assert.match(readme, /thirteen fixed coordinates/i);
+assert.match(readme, /Difference Engine/i);
+assert.match(readme, /adds no data source and makes no extra network request/i);
 assert.match(readme, /no visitor persistence/i);
 assert.match(readme, /6bc76dc33337414e7c9f9ccbd7539976d98ac371444860c605fb88003174ded2/);
 assert.match(readme, /original opaque seed inputs are deliberately not stored/i);
@@ -157,6 +188,10 @@ assert.match(sources, /CC BY 4\.0/i);
 assert.match(sources, /does not poll automatically/i);
 
 assert.match(rebuild, /Reset 1 — COMMONS \/ NOW/);
+assert.match(rebuild, /Extension 1 — The Difference Engine/);
+assert.match(rebuild, /Concept C was discarded/i);
+assert.match(rebuild, /no additional network request/i);
+assert.match(rebuild, /missing source values remain unavailable and must never coerce to numeric zero/i);
 assert.match(rebuild, /6bc76dc33337414e7c9f9ccbd7539976d98ac371444860c605fb88003174ded2/);
 assert.match(rebuild, /original opaque values are intentionally absent/i);
 assert.match(rebuild, /Treaty 05 ontology and interaction surface/);
@@ -187,4 +222,4 @@ assert.doesNotMatch(publicCurrent, /BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/);
 assert.doesNotMatch(publicCurrent, /password\s*[:=]\s*["'][^"']+["']/i);
 assert.doesNotMatch(publicCurrent, /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i);
 
-console.log('Commons / Now public-data, privacy, accessibility, seed, and offline contract verified.');
+console.log('Commons / Now public-data, Difference Engine, privacy, accessibility, seed, and offline contract verified.');

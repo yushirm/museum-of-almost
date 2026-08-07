@@ -54,3 +54,51 @@ Runtime added:
 Privacy consequence:
 
 The current application stores no visitor state at all. The only persistent browser data created by the application is the same-origin static service-worker cache. Live source responses remain memory-only and are discarded on reload or close.
+
+## Extension 1 — The Difference Engine
+
+Date: 2026-08-07
+
+Design gate:
+
+Three concepts were generated before code was written.
+
+- **A — Signal Lens:** a conventional current-snapshot comparison mode across temperature, wind, precipitation, and daylight.
+- **B — World Switchboard:** an analog-hardware patchboard mechanic connecting two fixed world windows into a difference circuit.
+- **C — The Page Refuses to Scroll:** a viewport-locked interface that would replace ordinary reading and scrolling with state changes.
+
+Concept C was discarded because it spent too much accessibility and familiarity budget without adding enough meaning. Concepts A and B were merged.
+
+Feature premise:
+
+**The Difference Engine asks: How different can the same planet be at the same moment?**
+
+The visitor patches any two of the existing thirteen fixed weather points together. No new service is contacted. The feature derives:
+
+- great-circle surface distance between the two fixed coordinates;
+- current temperature difference;
+- current wind-speed difference;
+- current precipitation difference;
+- simultaneous daylight / twilight / night relationship.
+
+A lens selector emphasizes one dimension at a time and places both selected points within the current observed thirteen-point range for temperature, wind, or precipitation. Light uses its three local states; distance uses the physical maximum great-circle separation as its scale.
+
+Integrity rules:
+
+- difference is described, not scored;
+- neither point is presented as a winner or a better place;
+- missing source values remain unavailable and must never coerce to numeric zero;
+- no historical trend is implied;
+- patch selections and lens state remain memory-only;
+- no visitor state is persisted;
+- no additional network request, analytics event, or telemetry is created;
+- the existing four-source allowlist remains unchanged.
+
+Runtime changes:
+
+- `data-core.js` adds pure great-circle distance, observed-range, scale-position, pair-comparison, and plain-language comparison helpers;
+- `app.js` adds the two-ended patch cable, five comparison lenses, current-snapshot metric rendering, and local scale placement;
+- `difference-engine.css` provides the local analog-switchboard presentation layer;
+- `index.html` adds the Difference Engine section after the thirteen-window world view;
+- the service-worker cache version advances and includes the new local stylesheet;
+- reducer tests include missing-value regressions so `null` can never silently become zero.

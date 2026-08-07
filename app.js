@@ -38,14 +38,41 @@
     stationTemperature: document.querySelector('#station-temperature'),
     stationWind: document.querySelector('#station-wind'),
     stationRain: document.querySelector('#station-rain'),
-    stationLight: document.querySelector('#station-light')
+    stationLight: document.querySelector('#station-light'),
+    patchA: document.querySelector('#patch-a'),
+    patchB: document.querySelector('#patch-b'),
+    patchPoints: document.querySelector('#difference-points'),
+    patchHelp: document.querySelector('#patch-help'),
+    lensButtons: [...document.querySelectorAll('[data-lens]')],
+    differenceReadout: document.querySelector('#difference-readout'),
+    differenceScale: document.querySelector('#difference-scale'),
+    differenceScaleLabel: document.querySelector('#difference-scale-label'),
+    markerA: document.querySelector('#difference-marker-a'),
+    markerB: document.querySelector('#difference-marker-b'),
+    differenceDistance: document.querySelector('#difference-distance'),
+    differenceTemperature: document.querySelector('#difference-temperature'),
+    differenceWind: document.querySelector('#difference-wind'),
+    differenceRain: document.querySelector('#difference-rain'),
+    differenceLight: document.querySelector('#difference-light')
   };
 
   let requestController = null;
   let snapshot = emptySnapshot();
   let selectedStationId = core.STATIONS[0].id;
+  let comparisonAId = '01';
+  let comparisonBId = '09';
+  let comparisonTarget = 'a';
+  let comparisonLens = 'temperature';
 
   ui.refresh?.addEventListener('click', refreshSnapshot);
+  ui.patchA?.addEventListener('click', () => armComparisonEnd('a'));
+  ui.patchB?.addEventListener('click', () => armComparisonEnd('b'));
+  for (const button of ui.lensButtons) {
+    button.addEventListener('click', () => {
+      comparisonLens = button.dataset.lens || 'temperature';
+      renderDifferenceEngine();
+    });
+  }
   window.addEventListener('online', renderConnection);
   window.addEventListener('offline', renderConnection);
 
@@ -228,13 +255,17 @@
     }
   }
 
-  function renderStations() {
+  function lightStatesForCurrentSnapshot() {
     const now = snapshot.receivedAt || new Date();
-    const pointsById = new Map(snapshot.weather.points.map((point) => [point.id, point]));
-    const lightStates = core.STATIONS.map((station) => ({
+    return core.STATIONS.map((station) => ({
       id: station.id,
       state: core.sunState(now, station.lat, station.lon)
     }));
+  }
+
+  function renderStations() {
+    const pointsById = new Map(snapshot.weather.points.map((point) => [point.id, point]));
+    const lightStates = lightStatesForCurrentSnapshot();
     const dayCount = lightStates.filter((entry) => entry.state === 'day').length;
 
     if (ui.daylightCount) ui.daylightCount.textContent = `${dayCount}/13 in daylight`;
@@ -242,6 +273,7 @@
     renderMap(pointsById, lightStates);
     renderStationList(pointsById, lightStates);
     renderSelectedStation(pointsById, lightStates);
+    renderDifferenceEngine();
   }
 
   function renderMap(pointsById, lightStates) {
@@ -326,6 +358,147 @@
   function selectStation(id) {
     selectedStationId = id;
     renderStations();
+  }
+
+  function armComparisonEnd(target) {
+    comparisonTarget = target === 'b' ? 'b' : 'a';
+    renderDifferenceEngine();
+  }
+
+  function patchComparisonPoint(id) {
+    if (!core.STATIONS.some((station) => station.id === id)) return;
+
+    if (comparisonTarget === 'a') {
+      if (id === comparisonBId) {
+        [comparisonAId, comparisonBId] = [comparisonBId, comparisonAId];
+      } else {
+        comparisonAId = id;
+      }
+      comparisonTarget = 'b';
+    } else {
+      if (id === comparisonAId) {
+        [comparisonAId, comparisonBId] = [comparisonBId, comparisonAId];
+      } else {
+        comparisonBId = id;
+      }
+      comparisonTarget = 'a';
+    }
+
+    renderDifferenceEngine();
+  }
+
+  function renderDifferenceEngine() {
+    if (!ui.patchPoints) return;
+
+    const pointsById = new Map(snapshot.weather.points.map((point) => [point.id, point]));
+    const lightStates = new Map(lightStatesForCurrentSnapshot().map((entry) => [entry.id, entry.state]));
+    const stationA = core.STATIONS.find((station) => station.id === comparisonAId) || core.STATIONS[0];
+    const stationB = core.STATIONS.find((station) => station.id === comparisonBId) || core.STATIONS[1];
+    const pointA = pointsById.get(stationA.id) || { ...stationA, available: false };
+    const pointB = pointsById.get(stationB.id) || { ...stationB, available: false };
+    const comparison = core.compareStationPair(
+      pointA,
+      pointB,
+      lightStates.get(stationA.id) || 'unknown',
+      lightStates.get(stationB.id) || 'unknown'
+    );
+
+    if (ui.patchA) {
+      ui.patchA.textContent = `END A · POINT ${stationA.id}`;
+      ui.patchA.dataset.active = String(comparisonTarget === 'a');
+      ui.patchA.setAttribute('aria-pressed', String(comparisonTarget === 'a'));
+    }
+    if (ui.patchB) {
+      ui.patchB.textContent = `END B · POINT ${stationB.id}`;
+      ui.patchB.dataset.active = String(comparisonTarget === 'b');
+      ui.patchB.setAttribute('aria-pressed', String(comparisonTarget === 'b'));
+    }
+    if (ui.patchHelp) {
+      ui.patchHelp.textContent = `End ${comparisonTarget.toUpperCase()} is armed. Choose any fixed point below; the other end stays connected.`;
+    }
+
+    ui.patchPoints.replaceChildren();
+    for (const station of core.STATIONS) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'patch-point';
+      button.dataset.connection = station.id === comparisonAId ? 'a' : station.id === comparisonBId ? 'b' : 'none';
+      button.setAttribute('aria-label', `Patch point ${station.id} to end ${comparisonTarget.toUpperCase()}`);
+      button.addEventListener('click', () => patchComparisonPoint(station.id));
+
+      const number = document.createElement('strong');
+      number.textContent = station.id;
+      const socket = document.createElement('span');
+      socket.setAttribute('aria-hidden', 'true');
+      button.append(number, socket);
+      ui.patchPoints.append(button);
+    }
+
+    for (const button of ui.lensButtons) {
+      const active = button.dataset.lens === comparisonLens;
+      button.dataset.active = String(active);
+      button.setAttribute('aria-pressed', String(active));
+    }
+
+    if (ui.differenceReadout) ui.differenceReadout.textContent = core.differenceSentence(comparison, comparisonLens);
+    if (ui.differenceDistance) ui.differenceDistance.textContent = Number.isFinite(comparison.distanceKm)
+      ? `${comparison.distanceKm.toLocaleString('en')} km`
+      : '—';
+    if (ui.differenceTemperature) ui.differenceTemperature.textContent = formatDelta(comparison.temperatureDelta, '°C');
+    if (ui.differenceWind) ui.differenceWind.textContent = formatDelta(comparison.windDelta, ' km/h');
+    if (ui.differenceRain) ui.differenceRain.textContent = formatDelta(comparison.precipitationDelta, ' mm');
+    if (ui.differenceLight) ui.differenceLight.textContent = `${comparison.lightA.toUpperCase()} · ${comparison.lightB.toUpperCase()}`;
+
+    renderDifferenceScale(comparison, pointA, pointB);
+  }
+
+  function renderDifferenceScale(comparison, pointA, pointB) {
+    if (!ui.differenceScale || !ui.markerA || !ui.markerB || !ui.differenceScaleLabel) return;
+
+    let positionA = 0;
+    let positionB = 100;
+    let label = '';
+
+    if (comparisonLens === 'distance') {
+      positionA = 0;
+      positionB = core.metricPosition(comparison.distanceKm, 0, 20015);
+      label = '0 km · 20,015 km maximum surface separation';
+    } else if (comparisonLens === 'light') {
+      const positions = { night: 10, twilight: 50, day: 90, unknown: 50 };
+      positionA = positions[comparison.lightA] ?? 50;
+      positionB = positions[comparison.lightB] ?? 50;
+      label = 'NIGHT · TWILIGHT · DAY';
+    } else {
+      const metricKey = comparisonLens === 'wind'
+        ? 'wind'
+        : comparisonLens === 'precipitation'
+          ? 'precipitation'
+          : 'temperature';
+      const range = core.observedRange(snapshot.weather.points, metricKey);
+      const valueA = pointA?.[metricKey];
+      const valueB = pointB?.[metricKey];
+      positionA = range.available ? core.metricPosition(valueA, range.min, range.max) : 50;
+      positionB = range.available ? core.metricPosition(valueB, range.min, range.max) : 50;
+      const unit = metricKey === 'temperature' ? '°C' : metricKey === 'wind' ? ' km/h' : ' mm';
+      label = range.available
+        ? range.min === range.max
+          ? `All reporting points: ${range.min.toFixed(1)}${unit}`
+          : `13-point observed range: ${range.min.toFixed(1)}–${range.max.toFixed(1)}${unit}`
+        : 'Live weather unavailable for this lens';
+    }
+
+    ui.differenceScale.dataset.lens = comparisonLens;
+    ui.markerA.style.setProperty('--position', `${positionA}%`);
+    ui.markerB.style.setProperty('--position', `${positionB}%`);
+    ui.markerA.textContent = `A ${comparison.idA}`;
+    ui.markerB.textContent = `B ${comparison.idB}`;
+    ui.differenceScaleLabel.textContent = label;
+  }
+
+  function formatDelta(value, unit) {
+    if (!Number.isFinite(value)) return '—';
+    const sign = value > 0 ? '+' : value < 0 ? '−' : '±';
+    return `${sign}${Math.abs(value).toFixed(1)}${unit}`;
   }
 
   function stationAriaLabel(station, weather, light) {

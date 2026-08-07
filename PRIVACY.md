@@ -36,6 +36,14 @@ The Open-Meteo request contains thirteen fixed latitude/longitude pairs that are
 
 The coordinates were derived once from opaque seed material supplied for the rebuild. Only the resulting one-way build seed and fixed coordinates are retained in the repository. The original opaque values are not stored or published by the application.
 
+## Difference Engine
+
+The Difference Engine compares two of those existing fixed points. Choosing cable ends or a comparison lens does not create another network request and is not sent to USGS, NOAA, Open-Meteo, NASA, GitHub, or another service by the application.
+
+The active pair and selected lens exist only in JavaScript memory. They are not written to browser storage, encoded into the URL, placed in the service-worker cache, or retained across reloads.
+
+Distance is calculated locally from the two fixed coordinates. Temperature, wind, and precipitation differences are derived only from the already-loaded Open-Meteo snapshot. Light state is calculated locally from UTC time and geometry.
+
 ## Data handling
 
 Live responses are held in page memory only long enough to render the current snapshot. Reloading or closing the page discards them. The application does not forward source responses to another service.
