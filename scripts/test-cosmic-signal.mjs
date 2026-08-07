@@ -8,6 +8,8 @@ const source = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 
 const styles = fs.readFileSync(new URL('../cosmic-signal.css', import.meta.url), 'utf8');
 
 assert.equal(cosmic.SOURCE, 'https://services.swpc.noaa.gov/products/noaa-scales.json');
+const runtimeUrls = [...new Set(source.match(/https:\/\/[^\s"'`<>]+/g) || [])];
+assert.deepEqual(runtimeUrls, [cosmic.SOURCE], 'cosmic runtime must contact only the approved NOAA Scales endpoint');
 
 const sample = {
   '-1': {
@@ -86,9 +88,15 @@ assert.match(source, /AbortController/);
 assert.match(source, /MutationObserver/);
 assert.match(source, /reading order is not a causal timeline/i);
 assert.match(source, /No automatic polling/i);
-assert.doesNotMatch(source, /setInterval|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
-assert.doesNotMatch(source, /analytics|telemetry|sendBeacon|WebSocket|EventSource/i);
+assert.doesNotMatch(source, /setInterval|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
+assert.doesNotMatch(source, /analytics|telemetry|sendBeacon|XMLHttpRequest|WebSocket|EventSource/i);
+assert.doesNotMatch(source, /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i);
+assert.doesNotMatch(source, /\bAKIA[0-9A-Z]{16}\b|\bsk-(?:proj-)?[A-Za-z0-9_-]{16,}\b|BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/i);
+assert.doesNotMatch(source, /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i);
 
+assert.match(styles, /content:\s*"·"/);
+assert.doesNotMatch(styles, /content:\s*["'][→↓]["']/,
+  'cosmic detector separators must stay visually non-causal');
 assert.match(styles, /@media \(max-width: 760px\)/);
 assert.match(styles, /@media \(max-width: 380px\)/);
 assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
@@ -97,4 +105,4 @@ assert.match(styles, /@media print/);
 assert.doesNotMatch(styles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
 
-console.log('Cosmic Signal Chain NOAA-scale normalization, privacy boundary, accessibility hooks, and missing-value integrity verified.');
+console.log('Cosmic Signal Chain NOAA-scale normalization, network allowlist, privacy boundary, accessibility hooks, and missing-value integrity verified.');
