@@ -1,46 +1,21 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-v6';
-const STATIC_FILES = [
+const CACHE_NAME = 'museum-of-almost-entropy-v1';
+const CACHE_PREFIX = 'museum-of-almost-';
+const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
+  './entropy-core.js',
   './app.js',
-  './tomorrow-room-core.js',
-  './tomorrow-room.js',
-  './signal-vault-core.js',
-  './signal-vault.js',
-  './dreaming-wing.js',
-  './dreaming-photos.js',
-  './conservation-core.js',
-  './conservation-lab.js',
   './manifest.webmanifest',
-  './icon.svg',
-  './PRIVACY.md',
-  './PHOTO_CREDITS.md',
-  './assets/dreaming-wing/atrium.webp',
-  './assets/dreaming-wing/clouds.webp',
-  './assets/dreaming-wing/moon.webp'
+  './PRIVACY.md'
 ];
-
-async function fetchFresh(request) {
-  const response = await fetch(request, { cache: 'no-cache' });
-  if (!response || response.status !== 200 || response.type !== 'basic') return response;
-
-  try {
-    const cache = await caches.open(CACHE_NAME);
-    await cache.put(request, response.clone());
-  } catch {
-    // Cache storage is best-effort. A valid network response must still be returned.
-  }
-
-  return response;
-}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(STATIC_FILES))
+      .then((cache) => cache.addAll(APP_SHELL))
       .then(() => self.skipWaiting())
   );
 });
@@ -48,28 +23,44 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
+      .then((keys) => Promise.all(
+        keys
+          .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      ))
       .then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', (event) => {
-  const requestUrl = new URL(event.request.url);
-  if (event.request.method !== 'GET' || requestUrl.origin !== self.location.origin) return;
+  const request = event.request;
+  if (request.method !== 'GET') return;
 
-  if (event.request.mode === 'navigate') {
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (request.mode === 'navigate') {
     event.respondWith(
-      fetchFresh(event.request).catch(async () => (
-        await caches.match(event.request)
-        || await caches.match('./index.html')
-        || await caches.match('./')
-        || Response.error()
-      ))
+      fetch(request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
+          return response;
+        })
+        .catch(() => caches.match('./index.html'))
     );
     return;
   }
 
-  const network = fetchFresh(event.request);
-  event.waitUntil(network.catch(() => undefined));
-  event.respondWith(caches.match(event.request).then((cached) => cached || network));
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      if (cached) return cached;
+      return fetch(request).then((response) => {
+        if (!response || response.status !== 200 || response.type !== 'basic') return response;
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        return response;
+      });
+    })
+  );
 });

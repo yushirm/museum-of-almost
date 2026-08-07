@@ -1,28 +1,22 @@
 # The Museum of Almost
 
-A dependency-free, offline-first interactive fiction and generative art experience for the browser.
+A dependency-free, offline-first browser experience about maintaining an unstable rule.
 
-## Website
-
-[Visit The Museum of Almost](https://yushirm.github.io/museum-of-almost/)
-
-The museum procedurally creates gallery rooms filled with impossible unfinished artifacts. Visitors can examine objects, keep one fictional fragment from each room, reassemble an impossible artifact in **The Conservation Lab for Impossible Objects**, observe seven daily futures in **The Observatory of Almost Tomorrow**, tune ten impossible transmissions in **The Listening Room**, enter **The Dreaming Wing** after keeping three fragments, and unlock **The Room That Was Finished** after completing a six-fragment collection.
+The site is one continuous living weave. Six procedural unfinished ideas appear as connected wax-seal knots. The visitor contradicts the current rule by binding what must remain separate or loosening what must remain joined. Each action changes several relationships immediately and returns later as a different consequence. Repetition changes meaning rather than increasing a score.
 
 ## What is inside
 
-- Deterministic procedural rooms and exhibit writing.
-- Canvas-rendered galleries with responsive mobile and desktop layouts.
-- The Conservation Lab for Impossible Objects, a pointer and keyboard workbench for three procedural artifact fragments.
-- The Observatory of Almost Tomorrow, a daily local orrery of seven possible futures.
-- The Listening Room, a keyboard-accessible constellation of ten local fictional signals.
-- The Dreaming Wing, generated locally from the visitor's kept fragments.
-- A local wall of public-domain photographic evidence with interactive arrangements.
-- Keyboard-accessible exhibit hotspots and native dialogs.
-- A local pocket catalogue with finite collection cycles.
-- Optional browser-synthesised ambient sound.
-- Local PNG room, conservation, tomorrow and dream postcard export.
+- One shared responsive surface with no destination navigation.
+- Deterministic procedural knot labels and seeded behavior.
+- Pointer, touch, and keyboard operation through large native controls.
+- Delayed consequences that affect related knots.
+- Inactivity behavior that changes tension and anticipation.
+- One minimal fictional memory retained between visits.
+- Safe compression and removal of obsolete local state.
+- Optional browser-synthesised sound with an explicit control.
+- Reduced-motion support and visible keyboard focus.
 - A same-origin service worker for offline use.
-- No framework, package install, build step or external runtime dependency.
+- No framework, package install, build step, account, analytics, tracking, visitor text, or external runtime dependency.
 
 ## Run it
 
@@ -38,46 +32,36 @@ A local server is recommended because browsers restrict service workers when a p
 
 ```bash
 node --check app.js
-node --check conservation-core.js
-node --check conservation-lab.js
-node --check tomorrow-room-core.js
-node --check tomorrow-room.js
-node --check signal-vault-core.js
-node --check signal-vault.js
-node --check dreaming-wing.js
-node --check dreaming-photos.js
+node --check entropy-core.js
 node --check service-worker.js
-node scripts/test-conservation.mjs
-node scripts/test-tomorrow-room.mjs
-node scripts/test-signal-vault.mjs
-node scripts/test-dreaming-wing.mjs
+node --check scripts/entropy-select.mjs
+node --check scripts/test-entropy.mjs
+node --check scripts/test-service-worker.mjs
+node --check scripts/check.mjs
+node scripts/test-entropy.mjs
 node scripts/test-service-worker.mjs
 node scripts/check.mjs
-node scripts/check-conservation.mjs
 ```
 
-The repository checks verify required assets, local-only runtime references, service-worker coverage, basic accessibility structure, Conservation Lab movement and no-storage boundaries, Almost Tomorrow daily generation and storage boundaries, Listening Room entropy boundaries, Dreaming Wing behavior and common secret patterns.
+The checks cover deterministic entropy replay, state migration, delayed consequences, return visits, inactivity, repetition differences, seeded memory, privacy boundaries, local-only runtime behavior, accessibility structure, obsolete navigation removal, and service-worker cache cleanup.
+
+## Entropy records
+
+- [ENTROPY_LOG.md](ENTROPY_LOG.md) documents the inspected creative basin, seed selections, mutation thesis, migration, and adversarial audit.
+- [ENTROPY_HISTORY.md](ENTROPY_HISTORY.md) records each reproducible execution without personal or repository identity data.
 
 ## Privacy boundary
 
-The Museum application contains no personal or identifying sample data and does not accept visitor text. Progress is limited to generated fictional labels, counters and a random seed stored in local browser storage.
+The application stores only bounded fictional state: a random local install seed, numeric tension, counters, a small delayed-consequence queue, one seeded fictional accident, and a compressed numeric trace of obsolete state. It does not store visitor text, pointer paths, timestamps, names, identifiers, or behavioral profiles.
 
-The Conservation Lab reads only the existing fictional catalogue to shape a procedural object. It stores no restoration state, pointer path, completed case or postcard. Movement stays in memory until the page is closed or another case is opened.
-
-The Observatory of Almost Tomorrow uses the browser's local calendar date and the existing fictional catalogue to generate seven alternatives. It stores only the selected alternative number and its target date when a visitor seals a tomorrow. It does not store the visitor's location, timezone or free-form text, and it does not transmit the choice.
-
-The Listening Room retains only ten fixed numeric entropy values. The source seed strings are not stored. Its receiver may echo a fictional fragment already present in the visitor's local catalogue, but it does not send or upload that state.
-
-All photographs are stored inside the repository. The live application does not request remote images or contact their source sites. See [PHOTO_CREDITS.md](PHOTO_CREDITS.md) for provenance and rights.
-
-On the GitHub Pages site, GitHub provides the public hosting and may process technical connection information under its own privacy terms.
+On the GitHub Pages site, GitHub provides public hosting and may process technical connection information under its own privacy terms.
 
 See [PRIVACY.md](PRIVACY.md) for the full boundary.
 
 ## Public availability and copyright
 
-This repository is intended to be publicly viewable for transparency and to support the hosted Museum website. Public visibility does not make it an open-source project.
+This repository is publicly viewable for transparency and to support the hosted website. Public visibility does not make it an open-source project.
 
-No open-source licence is granted. The absence of a licence is deliberate, and all rights are reserved except where applicable law, GitHub's Terms of Service or the separately documented photograph rights provide otherwise. See [RIGHTS.md](RIGHTS.md) and [PHOTO_CREDITS.md](PHOTO_CREDITS.md).
+No open-source licence is granted. All rights are reserved except where applicable law or GitHub's Terms of Service provide otherwise. See [RIGHTS.md](RIGHTS.md).
 
-External contributions are not accepted unless explicitly invited by the repository owner. See [CONTRIBUTING.md](CONTRIBUTING.md).
+External contributions are not accepted unless explicitly invited. See [CONTRIBUTING.md](CONTRIBUTING.md).

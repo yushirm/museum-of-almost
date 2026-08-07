@@ -4,154 +4,55 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#11100f">
-  <meta name="description" content="An offline procedural museum of unfinished ideas, impossible artifacts, and small discoveries.">
+  <meta name="description" content="A local-first living weave made from unfinished ideas and delayed consequences.">
   <title>The Museum of Almost</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#museum">Skip to the museum</a>
-
-  <div class="page-noise" aria-hidden="true"></div>
+  <a class="skip-link" href="#organism">Skip to the living weave</a>
 
   <header class="site-header">
-    <a class="wordmark" href="#museum" aria-label="The Museum of Almost, return to current room">
-      <span class="wordmark-mark" aria-hidden="true">◇</span>
-      <span>
-        <small>THE MUSEUM OF</small>
-        <strong>ALMOST</strong>
-      </span>
-    </a>
-
-    <div class="header-actions">
-      <button class="quiet-button" id="sound-button" type="button" aria-pressed="false">
-        <span aria-hidden="true">◌</span>
-        <span class="button-copy">Sound asleep</span>
-      </button>
-      <button class="quiet-button" id="catalogue-button" type="button">
-        <span aria-hidden="true">▤</span>
-        <span>Catalogue</span>
-        <span class="count-badge" id="fragment-count">0</span>
-      </button>
+    <div class="identity" aria-label="The Museum of Almost">
+      <small>The Museum of Almost</small>
+      <strong>Temporary organism</strong>
+    </div>
+    <div class="site-controls" aria-label="Local controls">
+      <button id="sound-button" type="button" aria-pressed="false">Sound off</button>
+      <button id="reset-button" type="button">Reset local state</button>
     </div>
   </header>
 
-  <main id="museum" class="museum-shell" tabindex="-1">
-    <section class="room-card" aria-labelledby="room-title">
-      <div class="room-heading">
-        <div>
-          <p class="eyebrow" id="room-number">ROOM 001 · OPEN COLLECTION</p>
-          <h1 id="room-title">The Gallery of Borrowed Weather</h1>
-        </div>
-        <p class="room-intro" id="room-intro">The ceiling is remembering a sky it never had.</p>
-      </div>
-
-      <div class="stage" id="stage">
-        <canvas id="room-canvas" aria-label="A procedural gallery room containing three interactive exhibits"></canvas>
-        <div class="hotspots" id="hotspots" aria-label="Exhibits in this room"></div>
-        <div class="stage-vignette" aria-hidden="true"></div>
-        <p class="stage-hint" id="stage-hint">Choose an exhibit to examine it.</p>
-      </div>
-
-      <div class="room-toolbar">
-        <p class="museum-status" id="museum-status">The museum has not decided whether you are early or late.</p>
-        <div class="toolbar-actions">
-          <button class="text-button" id="postcard-button" type="button">
-            <span aria-hidden="true">⇩</span>
-            Save postcard
-          </button>
-          <button class="primary-button" id="next-room-button" type="button">
-            Walk into another wing
-            <span aria-hidden="true">→</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <section class="rules-card" aria-labelledby="rules-title">
-      <div>
-        <p class="eyebrow">VISITOR NOTICE</p>
-        <h2 id="rules-title">Nothing here needs fixing.</h2>
-      </div>
-      <p>
-        Examine what catches you. Keep one fragment from each room. After six fragments,
-        the museum may admit that one of its rooms is finished.
+  <main id="organism" class="organism" tabindex="-1" aria-labelledby="organism-title">
+    <div class="organism-copy">
+      <p class="role-line" id="role-line">Custodian shift active</p>
+      <h1 id="organism-title">Keep the rule unstable.</h1>
+      <p class="rule" aria-live="polite">
+        <span>Current rule</span>
+        <strong id="rule-text">Keep every unfinished idea separate.</strong>
       </p>
-      <div class="privacy-stamp" aria-label="Privacy promise">
-        <span aria-hidden="true">●</span>
-        Offline · no accounts · no analytics
-      </div>
+      <p class="instruction" id="instruction">Contradict any knot. Then wait for what follows.</p>
+    </div>
+
+    <section class="weave" aria-label="A connected field of unfinished ideas">
+      <canvas id="weave-canvas" aria-hidden="true"></canvas>
+      <div id="knot-field" class="knot-field"></div>
+      <p id="field-status" class="field-status" aria-live="polite">The weave is listening without recording you.</p>
+      <p id="warning" class="warning" hidden></p>
     </section>
+
+    <aside class="local-note" aria-label="Local memory notice">
+      <p id="memory-note">One fictional accident may remain between visits.</p>
+      <p>State stays in this browser and can be reset.</p>
+    </aside>
   </main>
 
   <footer class="site-footer">
-    <span>Open whenever the ordinary world becomes suspiciously complete.</span>
-    <a href="PRIVACY.md">Privacy contract</a>
+    <span>No accounts. No analytics. No visitor text.</span>
+    <a href="PRIVACY.md">Privacy boundary</a>
   </footer>
 
-  <dialog class="museum-dialog exhibit-dialog" id="exhibit-dialog" aria-labelledby="exhibit-title">
-    <form method="dialog" class="dialog-frame">
-      <button class="dialog-close" value="close" aria-label="Close exhibit details">×</button>
-      <p class="eyebrow" id="exhibit-number">OBJECT 01</p>
-      <h2 id="exhibit-title">An unfinished object</h2>
-      <p class="object-medium" id="exhibit-medium">Mixed possibility, date uncertain</p>
-      <div class="dialog-art" id="dialog-art" aria-hidden="true"></div>
-      <p class="object-story" id="exhibit-story"></p>
-      <blockquote id="exhibit-quote"></blockquote>
-      <div class="fragment-card" id="fragment-card">
-        <span>FOUND FRAGMENT</span>
-        <strong id="fragment-text"></strong>
-      </div>
-      <menu>
-        <button class="text-button" value="close">Leave it here</button>
-        <button class="primary-button" id="keep-fragment-button" value="keep">Keep this fragment</button>
-      </menu>
-    </form>
-  </dialog>
-
-  <dialog class="museum-dialog catalogue-dialog" id="catalogue-dialog" aria-labelledby="catalogue-title">
-    <form method="dialog" class="dialog-frame catalogue-frame">
-      <button class="dialog-close" value="close" aria-label="Close catalogue">×</button>
-      <p class="eyebrow">POCKET CATALOGUE</p>
-      <h2 id="catalogue-title">Things the museum let you keep</h2>
-      <p class="catalogue-intro">Stored only in this browser. The labels are small because certainty is expensive.</p>
-      <ol class="fragment-list" id="fragment-list"></ol>
-      <div class="catalogue-empty" id="catalogue-empty">
-        <span aria-hidden="true">◇</span>
-        <p>No fragments yet. The empty pocket is also part of the collection.</p>
-      </div>
-      <div class="catalogue-footer">
-        <p id="cycle-count">Completed collections: 0</p>
-        <button class="text-button danger-button" id="reset-button" value="reset">Return everything</button>
-      </div>
-    </form>
-  </dialog>
-
-  <dialog class="museum-dialog welcome-dialog" id="welcome-dialog" aria-labelledby="welcome-title">
-    <form method="dialog" class="dialog-frame welcome-frame">
-      <div class="welcome-mark" aria-hidden="true">◇</div>
-      <p class="eyebrow">ADMISSION IS COMPLIMENTARY</p>
-      <h2 id="welcome-title">Some ideas refuse to become products.</h2>
-      <p>
-        So they opened a museum instead. Walk through procedural rooms, examine impossible
-        artifacts, and keep the fragments that feel nearly true.
-      </p>
-      <p class="welcome-note">Everything stays on this device. There is no login desk.</p>
-      <button class="primary-button welcome-button" value="enter">Enter quietly</button>
-    </form>
-  </dialog>
-
-  <div class="sr-only" id="live-region" aria-live="polite"></div>
-
+  <script src="entropy-core.js" defer></script>
   <script src="app.js" defer></script>
-  <script src="tomorrow-room-core.js" defer></script>
-  <script src="tomorrow-room.js" defer></script>
-  <script src="signal-vault-core.js" defer></script>
-  <script src="signal-vault.js" defer></script>
-  <script src="dreaming-wing.js" defer></script>
-  <script src="dreaming-photos.js" defer></script>
-  <script src="conservation-core.js" defer></script>
-  <script src="conservation-lab.js" defer></script>
 </body>
 </html>
