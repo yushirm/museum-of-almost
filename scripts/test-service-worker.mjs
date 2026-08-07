@@ -6,12 +6,14 @@ const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url),
 assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/);
 assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/);
 assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-commons-now-v13-faultline-core'/);
 for (const asset of [
   './',
   './index.html',
   './styles.css',
   './sample-hold.css',
   './sounding-well.css',
+  './faultline.css',
   './world-map.css',
   './world-map.svg',
   './difference-engine.css',
@@ -28,6 +30,8 @@ for (const asset of [
   './planetary-heliodon-core.js',
   './planetary-heliodon.js',
   './planetary-heliodon.css',
+  './faultline-core.js',
+  './faultline.js',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -38,6 +42,7 @@ for (const asset of [
   './SOURCES.md',
   './SAMPLE_AND_HOLD.md',
   './SOUNDING_WELL.md',
+  './FAULTLINE_CORE.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md'
@@ -45,6 +50,8 @@ for (const asset of [
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
 }
 
+assert.match(source, /caches\.open\(CURRENT_CACHE_NAME\)/);
+assert.match(source, /key !== CURRENT_CACHE_NAME/);
 assert.match(source, /url\.origin !== self\.location\.origin/);
 assert.match(source, /request\.mode === 'navigate'/);
 assert.match(source, /caches\.match\('\.\/index\.html'\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
@@ -60,4 +67,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Commons / Now coherent offline shell, Sample-and-Hold Bus, Sounding Well, current and local cosmic instruments, Planetary Heliodon, local world map, Difference Engine, printable field sheet, and cross-origin boundary verified.');
+console.log('Commons / Now coherent offline shell, Sample-and-Hold Bus, Sounding Well, Faultline Core, current and local cosmic instruments, Planetary Heliodon, local world map, Difference Engine, printable field sheet, and cross-origin boundary verified.');
