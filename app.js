@@ -5,16 +5,11 @@
   if (!core) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const main = document.querySelector('#translator');
-  const surface = document.querySelector('#weave-surface');
-  const weave = document.querySelector('#weave');
-  const ecosystem = document.querySelector('#micro-ecosystem');
-  const sourceLabel = document.querySelector('#source-label');
-  const left = document.querySelector('#translation-left');
-  const right = document.querySelector('#translation-right');
-  const actionWindow = document.querySelector('#action-window');
+  const main = document.querySelector('#organism');
+  const surface = document.querySelector('#organism-surface');
+  const layers = [...document.querySelectorAll('.membrane')];
   const instruction = document.querySelector('#instruction');
-  const condition = document.querySelector('#condition');
+  const realitySummary = document.querySelector('#reality-summary');
   const status = document.querySelector('#status');
   const memoryNote = document.querySelector('#memory-note');
   const soundButton = document.querySelector('#sound-button');
@@ -22,12 +17,8 @@
 
   let state;
   let storageEnabled = true;
-  let phase = 'ready';
-  let cycle = 0;
-  let candidate = null;
-  let revealTimer = 0;
-  let settleTimer = 0;
-  let beatTimer = 0;
+  let idleTimer = 0;
+  let pointerStart = null;
   let soundEnabled = false;
   let audioContext = null;
 
@@ -35,10 +26,10 @@
 
   function initialise() {
     state = loadState();
-    buildWeave();
+    buildContours();
     bindEvents();
-    renderMemory();
-    renderReady('The translator is waiting for a first measure.');
+    render('The organism has mistaken you for one of its boundaries.');
+    scheduleIdle();
     registerServiceWorker();
   }
 
@@ -59,19 +50,24 @@
       storageEnabled = false;
     }
 
+    let next = null;
     if (stored) {
       try {
-        return core.sanitizeState(JSON.parse(stored), generateInstallSeed());
+        next = core.sanitizeState(JSON.parse(stored), generateInstallSeed());
       } catch {
-        // Damaged fictional state is replaced below.
+        next = null;
       }
     }
 
-    const migration = core.migrateLegacy(...legacyValues);
-    const fresh = core.createState(generateInstallSeed(), migration.contradiction);
-    persist(fresh);
+    if (!next) {
+      const migration = core.migrateLegacy(...legacyValues);
+      next = core.createState(generateInstallSeed(), migration.geometry);
+    }
+
+    next = core.advanceVisit(next);
+    persist(next);
     removeLegacy();
-    return fresh;
+    return next;
   }
 
   function persist(nextState = state) {
@@ -92,161 +88,145 @@
     }
   }
 
-  function buildWeave() {
-    weave.replaceChildren();
-    ecosystem.replaceChildren();
-    for (let index = 0; index < 12; index += 1) {
-      const strand = document.createElement('i');
-      strand.style.setProperty('--strand', String(index));
-      weave.append(strand);
-    }
-    for (let index = 0; index < 7; index += 1) {
-      const mote = document.createElement('i');
-      mote.style.setProperty('--mote', String(index));
-      ecosystem.append(mote);
-    }
+  function buildContours() {
+    layers.forEach((layer, layerIndex) => {
+      const holder = layer.querySelector('.contours');
+      holder.replaceChildren();
+      for (let index = 0; index < 8; index += 1) {
+        const line = document.createElement('i');
+        const top = 12 + index * 10;
+        const inset = 5 + ((index + layerIndex * 2) % 4) * 4;
+        line.style.top = `${top}%`;
+        line.style.left = `${inset}%`;
+        line.style.right = `${Math.max(4, 18 - inset)}%`;
+        holder.append(line);
+      }
+    });
   }
 
   function bindEvents() {
-    surface.addEventListener('click', handleSurface);
+    surface.addEventListener('pointerdown', handlePointerDown);
+    surface.addEventListener('pointerup', handlePointerUp);
+    surface.addEventListener('pointercancel', handlePointerCancel);
+    surface.addEventListener('keydown', handleKeydown);
     soundButton.addEventListener('click', toggleSound);
     resetButton.addEventListener('click', resetLocalState);
+    window.addEventListener('storage', handleStorage);
     document.addEventListener('visibilitychange', handleVisibility);
   }
 
-  function handleSurface(event) {
-    event.preventDefault();
-    if (phase === 'ready') {
-      startMeasure();
+  function handlePointerDown(event) {
+    if (event.button !== 0 && event.pointerType !== 'touch') return;
+    cancelIdle();
+    pointerStart = {
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY
+    };
+    surface.setPointerCapture?.(event.pointerId);
+    main.dataset.active = 'true';
+  }
+
+  function handlePointerUp(event) {
+    if (!pointerStart || event.pointerId !== pointerStart.id) return;
+    const dx = event.clientX - pointerStart.x;
+    const dy = event.clientY - pointerStart.y;
+    const direction = Math.max(Math.abs(dx), Math.abs(dy)) < 14
+      ? core.nextDirection(state)
+      : directionFrom(dx, dy);
+    pointerStart = null;
+    main.dataset.active = 'false';
+    performSeparation(direction);
+    surface.focus({ preventScroll: true });
+  }
+
+  function handlePointerCancel() {
+    pointerStart = null;
+    main.dataset.active = 'false';
+    scheduleIdle();
+  }
+
+  function directionFrom(dx, dy) {
+    if (Math.abs(dx) >= Math.abs(dy)) return dx >= 0 ? 'east' : 'west';
+    return dy >= 0 ? 'south' : 'north';
+  }
+
+  function handleKeydown(event) {
+    const keyDirections = {
+      ArrowUp: 'north',
+      ArrowRight: 'east',
+      ArrowDown: 'south',
+      ArrowLeft: 'west'
+    };
+
+    if (keyDirections[event.key]) {
+      event.preventDefault();
+      cancelIdle();
+      performSeparation(keyDirections[event.key]);
       return;
     }
-    if (phase === 'open') interfere();
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      cancelIdle();
+      performSeparation(core.nextDirection(state));
+    }
   }
 
-  function startMeasure() {
-    clearTimers();
-    phase = 'gather';
-    candidate = core.translationFor(state, cycle, false);
-    const micro = core.ecosystemState(state, cycle);
-    main.dataset.phase = 'gather';
-    main.dataset.meaning = candidate.source;
-    main.dataset.ecosystem = micro.name;
-    main.dataset.beat = '1';
-    surface.setAttribute('aria-disabled', 'true');
-    sourceLabel.textContent = candidate.source;
-    left.textContent = '…';
-    right.textContent = '…';
-    instruction.textContent = 'Wait. The effect must appear before action is possible.';
-    actionWindow.textContent = 'No action is available yet.';
-    condition.textContent = 'The weave is translating without asking where you touched.';
-    announce(`Translating ${candidate.source}. Wait for the effect.`);
-    playBeat(0);
-    scheduleBeats();
-    revealTimer = window.setTimeout(revealEffect, reducedMotion ? 620 : core.waitDuration(state, cycle));
-  }
-
-  function scheduleBeats() {
-    window.clearInterval(beatTimer);
-    let beat = 1;
-    beatTimer = window.setInterval(() => {
-      beat = beat % 3 + 1;
-      main.dataset.beat = String(beat);
-      playBeat(beat);
-    }, reducedMotion ? 420 : 520);
-  }
-
-  function revealEffect() {
-    window.clearInterval(beatTimer);
-    beatTimer = 0;
-    phase = 'open';
-    main.dataset.phase = 'open';
-    main.dataset.beat = '3';
-    surface.setAttribute('aria-disabled', 'false');
-    left.textContent = candidate.left;
-    right.textContent = candidate.right;
-    instruction.textContent = 'The effect is visible. Interfere anywhere, or keep waiting.';
-    actionWindow.textContent = 'Action is available now. Waiting also counts.';
-    condition.textContent = 'A successful translation has produced a contradiction.';
-    announce(`${candidate.left}, and ${candidate.right}. Action is now available.`);
-    playReveal();
-    settleTimer = window.setTimeout(() => settleCandidate(false), reducedMotion ? 900 : core.openDuration(state, cycle));
-  }
-
-  function interfere() {
-    if (phase !== 'open') return;
-    window.clearTimeout(settleTimer);
-    candidate = core.translationFor(state, cycle, true);
-    left.textContent = candidate.left;
-    right.textContent = candidate.right;
-    main.dataset.meaning = candidate.source;
-    main.dataset.ecosystem = candidate.ecosystem;
-    condition.textContent = 'Interference changed the wording, not the uncertainty.';
-    settleCandidate(true);
-  }
-
-  function settleCandidate(interfered) {
-    if (phase !== 'open') return;
-    phase = 'settled';
-    state = core.settle(state, candidate);
+  function performSeparation(direction) {
+    state = core.separate(state, direction);
     persist();
-    renderMemory();
-    main.dataset.phase = 'settled';
-    surface.setAttribute('aria-disabled', 'true');
-    instruction.textContent = 'Another meaning will use the same weave.';
-    actionWindow.textContent = interfered
-      ? 'Your interference became part of the contradiction.'
-      : 'Waiting became part of the contradiction.';
-    condition.textContent = 'Success created uncertainty, so the translator continues.';
-    announce(interfered
-      ? 'Interference accepted. A new uncertainty remains.'
-      : 'Waiting accepted. A new uncertainty remains.');
-    playSettle();
-    cycle += 1;
-    phase = 'ready';
-    surface.setAttribute('aria-disabled', 'false');
-    instruction.textContent = 'The contradiction remains. Start another measure when you choose.';
-    actionWindow.textContent = 'Touch anywhere to begin another measure.';
+    render(`The ${direction} edge separated. Time did not advance.`);
+    playSeparation(direction);
+    scheduleIdle();
   }
 
-  function renderMemory() {
+  function scheduleIdle() {
+    cancelIdle();
+    idleTimer = window.setTimeout(advanceSilence, reducedMotion ? 2600 : 3200);
+  }
+
+  function cancelIdle() {
+    window.clearTimeout(idleTimer);
+    idleTimer = 0;
+  }
+
+  function advanceSilence() {
+    idleTimer = 0;
+    const result = core.advanceSilence(state);
+    state = result.state;
+    persist();
+    render(result.warning, true);
+  }
+
+  function render(message, late = false) {
+    const meanings = core.meaningsFor(state);
+    const notes = core.notesFor(state);
+    const geometry = core.geometryFor(state);
+
+    main.dataset.late = String(late);
+    main.dataset.generation = String(Math.min(9, state.geometry.generation));
+    main.dataset.fold = String(state.geometry.fold);
+
+    layers.forEach((layer, index) => {
+      const form = geometry[index];
+      layer.style.setProperty('--tx', `${form.x}px`);
+      layer.style.setProperty('--ty', `${form.y}px`);
+      layer.style.setProperty('--rotation', `${form.rotation}deg`);
+      layer.style.setProperty('--scale', String(form.scale));
+      layer.style.zIndex = String(form.z);
+      layer.querySelector('.membrane-label').textContent = meanings[index];
+      const note = layer.querySelector('.membrane-note');
+      note.textContent = notes[index].text;
+      note.hidden = !notes[index].visible;
+    });
+
+    realitySummary.textContent = core.summaryText(state);
     memoryNote.textContent = storageEnabled
       ? core.memoryText(state)
-      : 'Local storage is unavailable. This session keeps no durable contradiction.';
-  }
-
-  function renderReady(message) {
-    phase = 'ready';
-    main.dataset.phase = 'ready';
-    main.dataset.beat = '0';
-    main.dataset.meaning = core.SOURCES[core.sessionStart(state)];
-    main.dataset.ecosystem = core.ecosystemState(state, cycle).name;
-    surface.setAttribute('aria-disabled', 'false');
-    sourceLabel.textContent = main.dataset.meaning;
-    left.textContent = state.contradiction?.left || 'untranslated';
-    right.textContent = state.contradiction?.right || 'still untranslated';
-    instruction.textContent = 'Start one measure. Then do nothing.';
-    actionWindow.textContent = 'Touch anywhere once to begin.';
-    condition.textContent = state.contradiction
-      ? 'The previous contradiction is the only durable memory.'
-      : 'Nothing has agreed to be equivalent yet.';
+      : 'Local storage is unavailable. Geometry will not survive this session.';
+    instruction.textContent = 'Separate in any direction. Then stop touching it so time can move.';
     announce(message);
-  }
-
-  function handleVisibility() {
-    if (document.hidden) {
-      clearTimers();
-      return;
-    }
-    renderReady('The translator resumes only when you are present.');
-  }
-
-  function clearTimers() {
-    window.clearTimeout(revealTimer);
-    window.clearTimeout(settleTimer);
-    window.clearInterval(beatTimer);
-    revealTimer = 0;
-    settleTimer = 0;
-    beatTimer = 0;
   }
 
   function announce(message) {
@@ -256,41 +236,63 @@
     }, 20);
   }
 
-  function toggleSound() {
-    soundEnabled = !soundEnabled;
-    soundButton.setAttribute('aria-pressed', String(soundEnabled));
-    soundButton.textContent = soundEnabled ? 'Sound on' : 'Sound off';
-    if (soundEnabled) {
-      audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
-      audioContext.resume().catch(() => {});
-      playTone(132, 0.03, 0.12);
+  function handleStorage(event) {
+    if (event.key !== core.STATE_KEY || !event.newValue) return;
+    try {
+      state = core.sanitizeState(JSON.parse(event.newValue), state.installSeed);
+      render('Another local copy changed the preserved geometry.');
+      scheduleIdle();
+    } catch {
+      // Ignore malformed local state.
     }
   }
 
-  function playBeat(beat) {
-    if (!soundEnabled) return;
-    playTone(108 + beat * 14, 0.022, 0.08);
+  function handleVisibility() {
+    if (document.hidden) {
+      cancelIdle();
+      pointerStart = null;
+      main.dataset.active = 'false';
+      return;
+    }
+    render('Hidden time was ignored. The organism resumes from the same geometry.');
+    scheduleIdle();
   }
 
-  function playReveal() {
-    if (!soundEnabled) return;
-    playTone(176, 0.035, 0.18);
-    window.setTimeout(() => playTone(181, 0.024, 0.14), 100);
+  function toggleSound() {
+    const AudioCtor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtor) {
+      soundButton.textContent = 'Sound unavailable';
+      soundButton.disabled = true;
+      return;
+    }
+
+    soundEnabled = !soundEnabled;
+    soundButton.setAttribute('aria-pressed', String(soundEnabled));
+    soundButton.textContent = soundEnabled ? 'Sound on' : 'Sound off';
+
+    if (soundEnabled) {
+      audioContext ||= new AudioCtor();
+      audioContext.resume().catch(() => {});
+      playTone(118, 0.024, 0.12);
+    }
   }
 
-  function playSettle() {
+  function playSeparation(direction) {
     if (!soundEnabled) return;
-    playTone(122, 0.028, 0.15);
+    const index = core.DIRECTIONS.indexOf(direction);
+    const base = 92 + index * 18;
+    playTone(base, 0.024, 0.11);
+    window.setTimeout(() => playTone(base * 1.5, 0.018, 0.09), 65);
   }
 
   function playTone(frequency, volume, duration) {
     if (!audioContext || !soundEnabled) return;
     const oscillator = audioContext.createOscillator();
     const gain = audioContext.createGain();
-    oscillator.type = 'sine';
+    oscillator.type = 'triangle';
     oscillator.frequency.value = frequency;
     gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
-    gain.gain.exponentialRampToValueAtTime(volume, audioContext.currentTime + 0.015);
+    gain.gain.exponentialRampToValueAtTime(volume, audioContext.currentTime + 0.012);
     gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
     oscillator.connect(gain).connect(audioContext.destination);
     oscillator.start();
@@ -298,7 +300,7 @@
   }
 
   function resetLocalState() {
-    clearTimers();
+    cancelIdle();
     try {
       localStorage.removeItem(core.STATE_KEY);
       core.LEGACY_KEYS.forEach((key) => localStorage.removeItem(key));
@@ -306,12 +308,12 @@
     } catch {
       storageEnabled = false;
     }
-    state = core.createState(generateInstallSeed());
+
+    state = core.advanceVisit(core.createState(generateInstallSeed()));
+    pointerStart = null;
     persist();
-    cycle = 0;
-    candidate = null;
-    renderMemory();
-    renderReady('Local memory cleared. No contradiction remains.');
+    render('Local geometry cleared. The meanings begin without inheritance.');
+    scheduleIdle();
     resetButton.blur();
   }
 
@@ -319,7 +321,7 @@
     if (!('serviceWorker' in navigator)) return;
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./service-worker.js').catch(() => {
-        // The translator remains usable when service workers are unavailable.
+        // The organism remains usable without service-worker support.
       });
     }, { once: true });
   }
