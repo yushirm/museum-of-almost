@@ -24,7 +24,7 @@ The Listening Room stores no additional visitor state. It retains ten fixed nume
 
 Optional ambient sound is synthesised locally by the browser and remains silent until explicitly enabled.
 
-The **Save postcard** and **Preserve workbench postcard** features generate images locally. An image leaves the visitor's device only when the visitor deliberately moves, uploads or shares it.
+The **Save postcard** feature generates an image locally. The image leaves the visitor's device only when the visitor deliberately moves, uploads or shares it.
 
 The service worker handles same-origin static files only so the Museum can work offline.
 
