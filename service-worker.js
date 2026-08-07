@@ -1,7 +1,6 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-entropy-v1';
-const CACHE_PREFIX = 'museum-of-almost-';
+const CACHE_NAME = 'museum-of-almost-entropy-v2';
 const APP_SHELL = [
   './',
   './index.html',
@@ -25,7 +24,7 @@ self.addEventListener('activate', (event) => {
     caches.keys()
       .then((keys) => Promise.all(
         keys
-          .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+          .filter((key) => key.startsWith('museum-of-almost-') && key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       ))
       .then(() => self.clients.claim())
@@ -56,7 +55,7 @@ self.addEventListener('fetch', (event) => {
     caches.match(request).then((cached) => {
       if (cached) return cached;
       return fetch(request).then((response) => {
-        if (!response || response.status !== 200 || response.type !== 'basic') return response;
+        if (!response || response.status !== 200 || response.type === 'opaque') return response;
         const copy = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
         return response;
