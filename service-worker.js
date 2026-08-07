@@ -1,8 +1,8 @@
 'use strict';
 
-const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency';
-const CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement';
-const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon';
+const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement';
+const CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon';
+const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish';
 const APP_SHELL = [
   './',
   './index.html',

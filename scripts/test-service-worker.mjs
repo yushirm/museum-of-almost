@@ -3,9 +3,9 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 
-assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency'/);
-assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/);
-assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/);
+assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/);
+assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/);
+assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/);
 for (const asset of [
   './',
   './index.html',

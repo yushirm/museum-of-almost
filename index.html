@@ -11,6 +11,10 @@
   <link rel="stylesheet" href="world-map.css">
   <link rel="stylesheet" href="difference-engine.css">
   <link rel="stylesheet" href="field-sheet.css">
+  <link rel="stylesheet" href="cosmic-signal.css" data-cosmic-styles>
+  <link rel="stylesheet" href="cosmic-latency.css" data-cosmic-latency-styles>
+  <link rel="stylesheet" href="cosmic-escapement.css" data-celestial-escapement-styles>
+  <link rel="stylesheet" href="planetary-heliodon.css" data-planetary-heliodon-styles>
 </head>
 <body data-loading="false" data-source-count="0">
   <a class="skip-link" href="#main">Skip to the world snapshot</a>
@@ -38,7 +42,7 @@
       </div>
       <div class="snapshot-meta">
         <p id="snapshot-time">No live snapshot yet</p>
-        <p id="snapshot-detail">One request per source. No automatic polling.</p>
+        <p id="snapshot-detail">Four public services · five current feeds. No automatic polling.</p>
         <strong id="source-count">0/4 SOURCES</strong>
       </div>
     </section>
@@ -81,8 +85,8 @@
     <section class="windows-section" aria-labelledby="windows-title">
       <div class="section-heading">
         <p class="eyebrow">THIRTEEN WINDOWS</p>
-        <h2 id="windows-title">A fixed sample of the whole planet.</h2>
-        <p>The sampling points were derived once from opaque seed material. They do not follow population, borders, popularity, or the visitor. Some fall on land. Some fall at sea. That is deliberate.</p>
+        <h2 id="windows-title">A fixed sample across the planet.</h2>
+        <p>The thirteen sampling points are fixed, non-personal coordinates. They do not follow population, borders, popularity, or the visitor. Some fall on land. Some fall at sea. That is deliberate.</p>
       </div>
 
       <div class="world-layout">
@@ -286,13 +290,13 @@
     <section class="plain-language" aria-labelledby="plain-title">
       <div class="section-heading">
         <p class="eyebrow">WHAT THIS ACTUALLY DOES</p>
-        <h2 id="plain-title">Four public services. One current snapshot.</h2>
+        <h2 id="plain-title">Four public services. Five current feeds.</h2>
       </div>
       <div class="plain-grid">
         <article>
           <strong>1</strong>
           <h3>Loads once.</h3>
-          <p>When the page opens, it requests one current snapshot from USGS, NOAA SWPC, Open-Meteo, and NASA EONET. It does not poll in the background.</p>
+          <p>When the page opens, it requests five current feeds across four public services: USGS, NOAA SWPC, Open-Meteo, and NASA EONET. NOAA supplies two of those feeds. It does not poll in the background.</p>
         </article>
         <article>
           <strong>2</strong>

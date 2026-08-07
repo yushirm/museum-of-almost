@@ -93,6 +93,9 @@ requirePatterns(index, [
   /COMMONS \/ NOW/, /The world is doing this without us\./, /src="world-map\.svg"/,
   /Natural Earth 110m land, public domain/i, /THE DIFFERENCE ENGINE/, /PLANETARY SECTION \/ FIELD SHEET/,
   /No connecting line\./, /native print dialog/i, /No account\. No location\. No visitor data\./i,
+  /Four public services\. Five current feeds\./, /A fixed sample across the planet\./,
+  /href="cosmic-signal\.css" data-cosmic-styles/, /href="cosmic-latency\.css" data-cosmic-latency-styles/,
+  /href="cosmic-escapement\.css" data-celestial-escapement-styles/, /href="planetary-heliodon\.css" data-planetary-heliodon-styles/,
   /role="status"[^>]+aria-live="polite"/, /src="data-core\.js"/, /src="app\.js"/
 ], 'current document');
 
@@ -135,9 +138,9 @@ requirePatterns(file['PLANETARY_HELIODON.md'], [/The world is doing this without
 
 const worker = file['service-worker.js'];
 requirePatterns(worker, [
-  /PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency'/,
-  /CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/,
-  /ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/,
+  /PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/,
+  /CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/,
+  /ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/,
   /url\.origin !== self\.location\.origin/, /caches\.match\('\.\/index\.html'\)/,
   /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/, /client\.navigate\(client\.url\)/
 ], 'service worker');
