@@ -15,6 +15,8 @@ The page shows:
 - USGS earthquakes recorded in the past hour, including the current count and strongest reported magnitude;
 - NOAA SWPC current solar-wind speed near Earth;
 - **The Cosmic Signal Chain**, an analog-instrument-inspired rack that places the existing solar-wind value beside NOAA's current geomagnetic-storm (`G`) and solar-radiation-storm (`S`) scale values without claiming a causal timeline;
+- **The Latency of Now / Cosmic Receive Desk**, a local deep-space light-delay rail that makes clear that distant light is old rather than a live telescope view;
+- **The Celestial Escapement / Many Clocks, One Now**, a frozen local mechanism driven by the snapshot instant: Earth turn, approximate Moon phase, Earth orbital mean longitude, and Jupiter orbital mean longitude;
 - current Open-Meteo temperature, wind, and precipitation at thirteen fixed coordinates distributed around the planet;
 - NASA EONET currently open natural-event counts and aggregate categories;
 - an approximate local day / twilight / night state for each fixed coordinate, calculated in the browser from UTC time and geometry;
@@ -25,6 +27,8 @@ The page shows:
 The world basemap is generated from Natural Earth 110m public-domain land geometry and stored in this repository as `world-map.svg`. It uses the same equirectangular formula as the station positions, so points are not shifted by eye. No map API, tile server, remote image, or runtime mapping library is contacted.
 
 The Cosmic Signal Chain adds one NOAA SWPC request to the current NOAA Scales product. Its first detector is a local mirror of the solar-wind reading already requested by the headline, so it does not fetch solar wind twice. The three positions are labeled **flow**, **field**, and **particles**. They are numbered for reading order only: the interface explicitly does not infer that one current reading caused another. Missing or out-of-range scale values remain unavailable rather than being guessed or clamped into the 0–5 scale.
+
+The Cosmic Receive Desk and Celestial Escapement add no runtime data source and make no extra network request. Their fixed reference constants and approximation limits are documented in `COSMIC_RECEIVE_DESK.md` and `CELESTIAL_ESCAPEMENT.md`. The escapement remains frozen until **Refresh world** captures a new instant; it deliberately has no timer loop.
 
 The Difference Engine adds no data source and makes no extra network request. It derives great-circle distance locally and compares temperature, wind, precipitation, and light between two visitor-selected fixed points. A lens control also places both points inside the observed range of the current thirteen-point snapshot. It describes difference without ranking places as better or worse.
 
@@ -57,7 +61,7 @@ The four public services are:
 - Open-Meteo;
 - NASA Earth Observatory Natural Event Tracker.
 
-The Cosmic Signal Chain's added NOAA request reads the current NOAA Space Weather Scales. The map, Difference Engine, Planetary Section, and field-sheet print action add no other live service or extra request.
+The Cosmic Signal Chain's added NOAA request reads the current NOAA Space Weather Scales. The Receive Desk, Celestial Escapement, map, Difference Engine, Planetary Section, and field-sheet print action add no other live service or extra request.
 
 No API keys, paid services, accounts, external scripts, remote fonts, remote images, analytics, ads, tracking, map APIs, or tile services are used.
 
@@ -67,7 +71,7 @@ See `SOURCES.md` for exact endpoints and attribution.
 
 There is no visitor persistence. The application does not use `localStorage`, `sessionStorage`, IndexedDB, cookies, browser geolocation, or visitor free-text input.
 
-Cosmic Signal Chain values exist only in page memory and the current DOM. The additional NOAA Scales request uses no visitor location or state. The compact field-sheet copy is created locally and is not uploaded by the Museum.
+Cosmic Signal Chain values exist only in page memory and the current DOM. Receive Desk selections and Celestial Escapement phases are also memory-only; the escapement reads only the captured device-clock instant and fixed local constants. The additional NOAA Scales request uses no visitor location or state. The compact field-sheet copy is created locally and is not uploaded by the Museum.
 
 Difference Engine selections and lenses exist only in page memory and reset on reload. They are not sent to any external service.
 
@@ -81,7 +85,7 @@ Live requests omit credentials and referrer and use no-store caching. Normal dir
 
 ## Offline behavior
 
-The explanatory application shell, local map asset, local styles, Cosmic Signal Chain code and styles, Difference Engine, and field-sheet presentation are cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world map and derived controls still render, while live scientific values remain visibly unavailable.
+The explanatory application shell, local map asset, local styles, both local cosmic reference instruments, Cosmic Signal Chain code and styles, Difference Engine, and field-sheet presentation are cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world map and derived controls still render, while live scientific values remain visibly unavailable.
 
 The service worker keeps one coherent cached shell across upgrades and reloads open pages once after a complete shell upgrade so HTML, scripts, and styles do not split across versions.
 
@@ -99,13 +103,19 @@ Then open `http://localhost:8080`.
 node --check data-core.js
 node --check app.js
 node --check cosmic-signal.js
+node --check cosmic-escapement-core.js
+node --check cosmic-escapement.js
 node --check service-worker.js
 node --check scripts/test-data-core.mjs
 node --check scripts/test-cosmic-signal.mjs
+node --check scripts/test-cosmic-latency.mjs
+node --check scripts/test-cosmic-escapement.mjs
 node --check scripts/test-service-worker.mjs
 node --check scripts/check.mjs
 node scripts/test-data-core.mjs
 node scripts/test-cosmic-signal.mjs
+node scripts/test-cosmic-latency.mjs
+node scripts/test-cosmic-escapement.mjs
 node scripts/test-service-worker.mjs
 node scripts/check.mjs
 ```

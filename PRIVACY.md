@@ -48,6 +48,12 @@ The active pair and selected lens exist only in JavaScript memory. They are not 
 
 Distance is calculated locally from the two fixed coordinates. Temperature, wind, and precipitation differences are derived only from the already-loaded Open-Meteo snapshot. Light state is calculated locally from UTC time and geometry.
 
+## Local cosmic reference instruments
+
+The **Cosmic Receive Desk** and **Celestial Escapement** use only fixed local reference constants plus the device clock already available to the page. They contact no astronomy service, telescope, ephemeris API, or location provider.
+
+The Receive Desk selection, its captured reception instant, the Escapement's selected wheel, and its four frozen phases exist only in page memory. **Refresh world** recaptures the local instant; there is no timer loop, background clock, storage, analytics, telemetry, or upload. Their compact field-sheet copies are generated locally and are not retained by the Museum.
+
 ## Cosmic Signal Chain
 
 The Cosmic Signal Chain reads the already-rendered solar-wind value in page memory and one additional NOAA SWPC current-scale response. It does not use visitor input, location, device sensors, or stored state.

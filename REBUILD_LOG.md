@@ -250,3 +250,33 @@ Runtime changes:
 Rebuild rule:
 
 Read only the current NOAA Scales record at key `0`. Treat `G` and `S` as independent current scale measurements and accept only integer levels 0–5. Mirror the existing solar-wind headline locally rather than requesting it again. Keep missing data missing. Present the three values in numbered reading order with neutral separators and explicit non-causal language. If the public scale feed fails, leave `G` and `S` unavailable. Never persist or cache the live NOAA response.
+
+
+## Extension 5 — The Celestial Escapement / Many Clocks, One Now
+
+Date: 2026-08-07
+
+Design gate:
+
+- **A — Orbital Now:** a conventional local readout for current celestial cycles.
+- **B — The Celestial Escapement:** borrow mechanical-horology grammar so one captured instant engages several independent cosmic clocks.
+- **C — The Page Refuses to Stay Still:** continuously advance orbital indicators from device time without an explicit refresh.
+
+Concept C was discarded because silent temporal drift conflicts with COMMONS / NOW's coherent-snapshot model, print evidence, reduced-motion discipline, and deliberate refresh semantics. Concepts A and B were merged.
+
+Feature premise:
+
+**The world is doing this without us, and it is keeping several clocks without us.** One captured instant drives four frozen local wheels: Earth turn, Moon synodic phase, Earth orbital mean longitude, and Jupiter orbital mean longitude. The mechanism does not tick automatically; **Refresh world** recaptures the instant.
+
+Integrity rules:
+
+- no new runtime request, telescope service, Horizons call, remote media, or runtime dependency;
+- no timer loop, animation clock, polling, persistence, geolocation, analytics, telemetry, or visitor text input;
+- Moon phase is a documented approximation based on the mean synodic month and a fixed NASA GSFC 2026 conjunction;
+- Earth and Jupiter orbital dials use JPL's published lower-accuracy J2000 mean-longitude formulae and are labeled as approximations, not apparent sky positions;
+- the field sheet receives only the same frozen phases;
+- the coherent offline shell advances to `museum-of-almost-commons-now-v8-celestial-escapement`.
+
+Rebuild rule:
+
+Capture one UTC instant, derive all four wheels locally, and freeze them until the existing refresh control recaptures time. Keep the approximation sources explicit and never add a live astronomy service merely to make the mechanism feel more animated.
