@@ -27,6 +27,7 @@
   const ledgerSpread = document.querySelector('#ledger-spread');
   const liveStatus = document.querySelector('#live-entropy-status');
   const correspondenceStatus = document.querySelector('#live-correspondence-status');
+  let serviceWorkerReady = false;
 
   const observed = [
     treatyState,
@@ -60,7 +61,12 @@
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.addEventListener('controllerchange', renderSystemHealth);
-    navigator.serviceWorker.ready.then(renderSystemHealth).catch(renderSystemHealth);
+    navigator.serviceWorker.ready
+      .then(() => {
+        serviceWorkerReady = true;
+        renderSystemHealth();
+      })
+      .catch(renderSystemHealth);
   }
 
   renderDashboard();
@@ -127,7 +133,11 @@
       worker.textContent = 'UNAVAILABLE';
       return;
     }
-    worker.textContent = navigator.serviceWorker.controller ? 'CONTROLLING' : 'READYING';
+    worker.textContent = navigator.serviceWorker.controller
+      ? 'CONTROLLING'
+      : serviceWorkerReady
+        ? 'READY'
+        : 'READYING';
   }
 
   function readNumber(value, fallback) {
