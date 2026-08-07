@@ -62,7 +62,7 @@ assert.match(record, /Concept B/);
 assert.match(record, /Concept C/);
 assert.match(record, /Concept A was discarded/);
 assert.match(record, /adds no network request/i);
-assert.match(record, /same latch/i);
+assert.match(record, /shared five-feed latch/i);
 assert.match(record, /numeric equivalence/i);
 
 console.log('Faultline Core semantic strata, refusal rules, local-only boundary, responsive styles, and design record verified.');
