@@ -1,10 +1,10 @@
 {
   "name": "The Museum of Almost",
   "short_name": "Almost",
-  "description": "A local-first living weave of unfinished ideas and delayed consequences.",
+  "description": "A local-first browser law that becomes coherent by remaining partly broken.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#11100f",
-  "theme_color": "#11100f"
+  "background_color": "#f1eee3",
+  "theme_color": "#f1eee3"
 }
