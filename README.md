@@ -6,7 +6,7 @@ Live site: https://yushirm.github.io/museum-of-almost/
 
 > What is the shared world doing right now?
 
-The page takes one current snapshot from four free public scientific services and presents it without personalization, visitor analytics, or invented history.
+The page takes one current snapshot from four free public scientific services and presents it without personalization, visitor analytics, or invented history. NOAA SWPC contributes two current public product feeds, so the complete snapshot uses five HTTP requests across those four services.
 
 ## Current experience
 
@@ -14,6 +14,7 @@ The page shows:
 
 - USGS earthquakes recorded in the past hour, including the current count and strongest reported magnitude;
 - NOAA SWPC current solar-wind speed near Earth;
+- **The Cosmic Signal Chain**, an analog-instrument-inspired rack that places the existing solar-wind value beside NOAA's current geomagnetic-storm (`G`) and solar-radiation-storm (`S`) scale values without claiming a causal timeline;
 - current Open-Meteo temperature, wind, and precipitation at thirteen fixed coordinates distributed around the planet;
 - NASA EONET currently open natural-event counts and aggregate categories;
 - an approximate local day / twilight / night state for each fixed coordinate, calculated in the browser from UTC time and geometry;
@@ -23,11 +24,13 @@ The page shows:
 
 The world basemap is generated from Natural Earth 110m public-domain land geometry and stored in this repository as `world-map.svg`. It uses the same equirectangular formula as the station positions, so points are not shifted by eye. No map API, tile server, remote image, or runtime mapping library is contacted.
 
+The Cosmic Signal Chain adds one NOAA SWPC request to the current NOAA Scales product. Its first detector is a local mirror of the solar-wind reading already requested by the headline, so it does not fetch solar wind twice. The three positions are labeled **flow**, **field**, and **particles**. They are numbered for reading order only: the interface explicitly does not infer that one current reading caused another. Missing or out-of-range scale values remain unavailable rather than being guessed or clamped into the 0–5 scale.
+
 The Difference Engine adds no data source and makes no extra network request. It derives great-circle distance locally and compares temperature, wind, precipitation, and light between two visitor-selected fixed points. A lens control also places both points inside the observed range of the current thirteen-point snapshot. It describes difference without ranking places as better or worse.
 
 The Planetary Section orders the same thirteen fixed points from west to east. Temperature controls the vertical position of each measured post inside the current thirteen-point range; wind and precipitation are separate local marks; daylight state is explicit. It deliberately **does not interpolate** between stations: there is no connecting weather curve, filled area, or implied measurement in the space between samples.
 
-**Make field sheet** invokes the browser's native print dialog. The print layout reduces the page to the current world map, the discrete Planetary Section, the thirteen values, snapshot time, source provenance, and privacy statement. A visitor can print it or choose a local PDF destination if their browser/operating system offers one. The Museum does not upload or store the result.
+**Make field sheet** invokes the browser's native print dialog. The print layout reduces the page to the current world map, the discrete Planetary Section, the thirteen values, a compact Cosmic Signal Chain strip, snapshot time, source provenance, and privacy statement. A visitor can print it or choose a local PDF destination if their browser/operating system offers one. The Museum does not upload or store the result.
 
 The thirteen weather points include both land and ocean. They were derived once from opaque seed material rather than selected by population, borders, visitor location, or editorial preference.
 
@@ -45,7 +48,7 @@ Historical design records remain in the repository as history only. They are not
 
 ## Network behavior
 
-Live data is central to the product, so the page makes one current request to each source when it opens. It does not poll automatically. **Refresh world** performs one additional manual snapshot.
+Live data is central to the product, so the page makes one current request to USGS, Open-Meteo, and NASA EONET plus two current NOAA SWPC product requests when it opens. It does not poll automatically. **Refresh world** performs one additional five-request snapshot.
 
 The four public services are:
 
@@ -54,7 +57,7 @@ The four public services are:
 - Open-Meteo;
 - NASA Earth Observatory Natural Event Tracker.
 
-The map, Difference Engine, Planetary Section, and field-sheet print action add no live service or extra request.
+The Cosmic Signal Chain's added NOAA request reads the current NOAA Space Weather Scales. The map, Difference Engine, Planetary Section, and field-sheet print action add no other live service or extra request.
 
 No API keys, paid services, accounts, external scripts, remote fonts, remote images, analytics, ads, tracking, map APIs, or tile services are used.
 
@@ -63,6 +66,8 @@ See `SOURCES.md` for exact endpoints and attribution.
 ## Privacy
 
 There is no visitor persistence. The application does not use `localStorage`, `sessionStorage`, IndexedDB, cookies, browser geolocation, or visitor free-text input.
+
+Cosmic Signal Chain values exist only in page memory and the current DOM. The additional NOAA Scales request uses no visitor location or state. The compact field-sheet copy is created locally and is not uploaded by the Museum.
 
 Difference Engine selections and lenses exist only in page memory and reset on reload. They are not sent to any external service.
 
@@ -76,7 +81,7 @@ Live requests omit credentials and referrer and use no-store caching. Normal dir
 
 ## Offline behavior
 
-The explanatory application shell, local map asset, local styles, Difference Engine, and field-sheet presentation are cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world map and derived controls still render, while live scientific values remain visibly unavailable.
+The explanatory application shell, local map asset, local styles, Cosmic Signal Chain code and styles, Difference Engine, and field-sheet presentation are cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world map and derived controls still render, while live scientific values remain visibly unavailable.
 
 The service worker keeps one coherent cached shell across upgrades and reloads open pages once after a complete shell upgrade so HTML, scripts, and styles do not split across versions.
 
@@ -93,16 +98,19 @@ Then open `http://localhost:8080`.
 ```bash
 node --check data-core.js
 node --check app.js
+node --check cosmic-signal.js
 node --check service-worker.js
 node --check scripts/test-data-core.mjs
+node --check scripts/test-cosmic-signal.mjs
 node --check scripts/test-service-worker.mjs
 node --check scripts/check.mjs
 node scripts/test-data-core.mjs
+node scripts/test-cosmic-signal.mjs
 node scripts/test-service-worker.mjs
 node scripts/check.mjs
 ```
 
-The checks enforce the four-source network allowlist, thirteen fixed sampling points, local-map projection and provenance, truthful Difference Engine derivation, west-to-east Planetary Section ordering, no interpolation between sparse samples, native-only field-sheet printing, missing-value integrity, no visitor storage or location access, no polling, coherent same-origin service-worker behavior, responsive accessibility hooks, source attribution, seed privacy, and deterministic data reduction.
+The checks enforce the established four-service network boundary, the additional approved NOAA Scales endpoint and its missing-value rules, thirteen fixed sampling points, local-map projection and provenance, truthful Difference Engine derivation, west-to-east Planetary Section ordering, no interpolation between sparse samples, native-only field-sheet printing, missing-value integrity, no visitor storage or location access, no polling, coherent same-origin service-worker behavior, responsive accessibility hooks, source attribution, seed privacy, and deterministic data reduction.
 
 ## Records
 

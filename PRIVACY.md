@@ -24,7 +24,9 @@ The current product is intentionally a live public-data instrument. When the pag
 - Open-Meteo;
 - NASA Earth Observatory Natural Event Tracker.
 
-Pressing **Refresh world** makes one new set of requests. There is no automatic polling or background refresh loop.
+NOAA SWPC is read through two current public product endpoints: one for solar-wind speed and one for the current NOAA Space Weather Scales. That means a normal current snapshot uses five HTTP requests across the four services. The second NOAA request supplies the Cosmic Signal Chain's geomagnetic (`G`) and solar-radiation (`S`) scale readings; the existing solar-wind value is mirrored locally into that instrument rather than fetched again.
+
+Pressing **Refresh world** makes one new set of those five requests. There is no automatic polling or background refresh loop.
 
 Requests use CORS mode, `credentials: omit`, `referrerPolicy: no-referrer`, and `cache: no-store`. The application does not intentionally send cookies, the Museum page URL, visitor location, or local visitor data with those requests.
 
@@ -46,6 +48,14 @@ The active pair and selected lens exist only in JavaScript memory. They are not 
 
 Distance is calculated locally from the two fixed coordinates. Temperature, wind, and precipitation differences are derived only from the already-loaded Open-Meteo snapshot. Light state is calculated locally from UTC time and geometry.
 
+## Cosmic Signal Chain
+
+The Cosmic Signal Chain reads the already-rendered solar-wind value in page memory and one additional NOAA SWPC current-scale response. It does not use visitor input, location, device sensors, or stored state.
+
+The current `G` and `S` values exist only in page memory and in the rendered DOM. They are discarded on reload or close. The instrument's left-to-right rail is a reading order only; the application does not construct a causal history or infer that one displayed measurement caused another.
+
+A compact copy of the current cosmic readings is inserted into the printable field sheet. As with the rest of the field sheet, that copy is created locally in the page and is not uploaded or retained by the Museum.
+
 ## Planetary Section and field sheet
 
 The Planetary Section is another view of the same thirteen fixed coordinates and the same current Open-Meteo response. It orders the stations west to east and derives only within-snapshot positions for temperature, wind, and precipitation. It does not request another data source or infer measurements between stations.
@@ -65,11 +75,11 @@ The page deliberately reduces source data:
 - USGS event names, nearby places, IDs, and event URLs are not displayed;
 - NASA EONET event titles and coordinates are not displayed;
 - Open-Meteo is queried only for the thirteen fixed coordinates;
-- NOAA contributes a numeric solar-wind speed.
+- NOAA contributes a numeric solar-wind speed plus the current geomagnetic and solar-radiation scale values used by the Cosmic Signal Chain.
 
 ## Offline shell
 
-A same-origin service worker caches only the Museum's static application shell, including the local world map and field-sheet stylesheet, so that the explanatory interface can still open offline. The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses.
+A same-origin service worker caches only the Museum's static application shell, including the local world map, field-sheet stylesheet, and local Cosmic Signal Chain code and stylesheet, so that the explanatory interface can still open offline. The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses.
 
 The service worker keeps one coherent static shell across upgrades. After a complete shell replacement, open Museum windows are reloaded once so HTML, scripts, styles, and local assets adopt the new version together.
 

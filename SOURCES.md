@@ -1,6 +1,6 @@
 # Data Sources
 
-**COMMONS / NOW** uses four public data services. The website makes one request to each source when the page opens and another set only when the visitor presses **Refresh world**. It does not poll automatically.
+**COMMONS / NOW** uses four public data services across five current feeds. The website makes one request to USGS, one to Open-Meteo, one to NASA EONET, and two current-product requests to NOAA SWPC when the page opens. Another set is requested only when the visitor presses **Refresh world**. It does not poll automatically.
 
 ## USGS Earthquake Hazards Program
 
@@ -22,17 +22,29 @@ The page does not reproduce event titles, nearby places, event IDs, or event lin
 
 ## NOAA Space Weather Prediction Center
 
-Current metric:
+Current metrics:
 
-- current solar-wind speed near Earth, expressed in kilometres per second.
+- current solar-wind speed near Earth, expressed in kilometres per second;
+- current NOAA geomagnetic-storm scale (`G`);
+- current NOAA solar-radiation-storm scale (`S`).
 
-Endpoint:
+Endpoints:
 
 `https://services.swpc.noaa.gov/products/summary/solar-wind-speed.json`
 
-Product directory:
+`https://services.swpc.noaa.gov/products/noaa-scales.json`
+
+Product directories and scale explanation:
 
 `https://services.swpc.noaa.gov/products/summary/`
+
+`https://services.swpc.noaa.gov/products/`
+
+`https://www.swpc.noaa.gov/noaa-scales-explanation`
+
+The **Cosmic Signal Chain** reuses the existing solar-wind value as its first detector and adds one NOAA Scales request for the current `G` and `S` values. It presents the three readings in a left-to-right instrument rack for comparison only. The rail is explicitly **not a causal timeline**: the Museum does not infer that one displayed measurement caused another.
+
+NOAA scale values outside the documented 0–5 range are treated as unavailable rather than clamped or guessed. A feed value of 0 is displayed as no active scale threshold; levels 1–5 retain NOAA's minor-through-extreme wording.
 
 ## Open-Meteo
 
@@ -101,13 +113,14 @@ The following values do not come from an additional service:
 - Difference Engine temperature, wind, and precipitation deltas are derived from the existing Open-Meteo response;
 - Planetary Section west-to-east ordering comes from each fixed point's longitude;
 - Planetary Section temperature, wind, and precipitation positions are normalized only against the current thirteen reporting points;
-- the field-sheet timestamp is the time the current snapshot was received by the page.
+- the field-sheet timestamp is the time the current snapshot was received by the page;
+- the Cosmic Signal Chain's first value is a local mirror of the already-loaded solar-wind headline rather than a duplicate NOAA request.
 
 The Planetary Section intentionally draws discrete posts rather than a connecting path. A blank span between stations means **not measured here**, not a hidden estimate.
 
 ## Field-sheet output
 
-**Make field sheet** uses the browser's native print capability. Printing is not a data source and does not contact a Museum document service. The print layout carries source provenance with the current snapshot so a paper or local-PDF copy remains interpretable outside the live page.
+**Make field sheet** uses the browser's native print capability. Printing is not a data source and does not contact a Museum document service. The print layout carries source provenance with the current snapshot so a paper or local-PDF copy remains interpretable outside the live page. The Cosmic Signal Chain adds a compact NOAA SWPC strip to the same field sheet; it does not create a second document or upload anything.
 
 ## Availability and interpretation
 
