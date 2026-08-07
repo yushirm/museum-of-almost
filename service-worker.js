@@ -1,10 +1,12 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-commons-now-v2-difference';
+const CACHE_NAME = 'museum-of-almost-commons-now-v3-map';
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
+  './world-map.css',
+  './world-map.svg',
   './difference-engine.css',
   './data-core.js',
   './app.js',
