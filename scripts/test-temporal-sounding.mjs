@@ -7,7 +7,7 @@ const core = require('../temporal-sounding-core.js');
 const coreSource = fs.readFileSync(new URL('../temporal-sounding-core.js', import.meta.url), 'utf8');
 const viewSource = fs.readFileSync(new URL('../temporal-sounding.js', import.meta.url), 'utf8');
 const styleSource = fs.readFileSync(new URL('../sounding-well.css', import.meta.url), 'utf8');
-const indexSource = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const indexSource = fs.readFileSync(new URL('../commons-now.html', import.meta.url), 'utf8');
 const source = [coreSource, viewSource].join('\n');
 
 assert.equal(core.parseUtcTimestamp('2026-08-07 19:00:00'), Date.parse('2026-08-07T19:00:00Z'));

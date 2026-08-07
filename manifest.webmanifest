@@ -1,9 +1,9 @@
 {
-  "name": "The Museum of Almost — Commons / Now",
-  "short_name": "Commons / Now",
+  "name": "The Museum of Almost",
+  "short_name": "Museum of Almost",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f2efe6",
-  "theme_color": "#f2efe6"
+  "background_color": "#0b0a10",
+  "theme_color": "#0b0a10"
 }

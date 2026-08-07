@@ -8,7 +8,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const require = createRequire(import.meta.url);
 
 const requiredFiles = [
-  'index.html', 'styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'world-map.svg', 'difference-engine.css', 'field-sheet.css',
+  'index.html', 'landing.css', 'commons-now.html', 'styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'world-map.svg', 'difference-engine.css', 'field-sheet.css',
   'cosmic-signal.js', 'cosmic-signal-core.js', 'cosmic-signal-view.js', 'cosmic-signal.css',
   'cosmic-latency-core.js', 'cosmic-latency.js', 'cosmic-latency.css',
   'cosmic-escapement-core.js', 'cosmic-escapement.js', 'cosmic-escapement.css',
@@ -25,7 +25,7 @@ for (const file of requiredFiles) assert.ok(fs.existsSync(path.join(root, file))
 const file = Object.fromEntries(requiredFiles.map((name) => [name, read(name)]));
 const core = require('../data-core.js');
 const runtimeFiles = [
-  'index.html', 'styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css',
+  'index.html', 'landing.css', 'commons-now.html', 'styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css',
   'cosmic-signal.js', 'cosmic-signal-core.js', 'cosmic-signal-view.js', 'cosmic-signal.css',
   'cosmic-latency-core.js', 'cosmic-latency.js', 'cosmic-latency.css',
   'cosmic-escapement-core.js', 'cosmic-escapement.js', 'cosmic-escapement.css',
@@ -34,7 +34,7 @@ const runtimeFiles = [
 ];
 const runtime = runtimeFiles.map((name) => file[name]).join('\n');
 const publicCurrent = [
-  'index.html', 'data-core.js', 'temporal-sounding-core.js', 'temporal-sounding.js', 'app.js',
+  'index.html', 'commons-now.html', 'data-core.js', 'temporal-sounding-core.js', 'temporal-sounding.js', 'app.js',
   'README.md', 'PRIVACY.md', 'SOURCES.md', 'SAMPLE_AND_HOLD.md', 'SOUNDING_WELL.md', 'REBUILD_LOG.md', 'RIGHTS.md'
 ].map((name) => file[name]).join('\n');
 
@@ -59,13 +59,25 @@ forbidPatterns(runtime, [
   /\b(gtag|dataLayer|mixpanel|segment|plausible|amplitude|hotjar)\b/i,
   /google-analytics|googletagmanager|analytics\.js|facebook\.com\/tr|doubleclick/i
 ], 'runtime privacy boundary');
-forbidPatterns(file['index.html'], [
-  /<script[^>]+src=["'](?:https?:)?\/\//i,
-  /<link[^>]+href=["'](?:https?:)?\/\//i,
-  /<img[^>]+src=["'](?:https?:)?\/\//i,
-  /<(input|textarea|select)\b|contenteditable/i,
-  /<iframe\b/i
-], 'document boundary');
+for (const documentSource of [file['index.html'], file['commons-now.html']]) {
+  forbidPatterns(documentSource, [
+    /<script[^>]+src=["'](?:https?:)?\/\//i,
+    /<link[^>]+href=["'](?:https?:)?\/\//i,
+    /<img[^>]+src=["'](?:https?:)?\/\//i,
+    /<(input|textarea|select)\b|contenteditable/i,
+    /<iframe\b/i
+  ], 'document boundary');
+}
+
+const landing = file['index.html'];
+requirePatterns(landing, [
+  /THE MUSEUM OF ALMOST/, /MUSEUM ENTRANCE/, /Choose what to stand beside\./,
+  /COMMONS \/ NOW/, /DEEP SPACE \/ ALMOST/,
+  /href="commons-now\.html"/, /href="deep-space\.html"/, /href="landing\.css"/,
+  /The world is doing this without us\./, /Nothing here is close\./,
+  /NO ACCOUNT · NO ANALYTICS · NO TRACKING/
+], 'museum entrance');
+forbidPatterns(landing, [/<script\b/i, /https?:\/\//i], 'museum entrance local-only boundary');
 
 assert.equal(core.BUILD_SEED, '6bc76dc33337414e7c9f9ccbd7539976d98ac371444860c605fb88003174ded2');
 assert.equal(core.STATIONS.length, 13);
@@ -83,7 +95,7 @@ for (const name of [
 assert.equal(core.solarGeometry(null), null, 'missing snapshot time must fail closed');
 assert.equal(core.sunState(null, 0, 0), 'unknown', 'missing snapshot must never become a fabricated daylight state');
 
-const index = file['index.html'];
+const index = file['commons-now.html'];
 for (const id of [
   'refresh-button', 'connection-state', 'live-status', 'snapshot-time', 'source-count',
   'sample-hold-panel', 'sample-phase', 'sample-cycle', 'sample-status',
@@ -133,11 +145,12 @@ forbidPatterns(sounding, [
   /https?:\/\//
 ], 'Sounding Well passive observer');
 
-for (const styleName of ['styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css', 'cosmic-signal.css', 'cosmic-latency.css', 'cosmic-escapement.css', 'planetary-heliodon.css']) {
+for (const styleName of ['landing.css', 'styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css', 'cosmic-signal.css', 'cosmic-latency.css', 'cosmic-escapement.css', 'planetary-heliodon.css']) {
   const css = file[styleName];
   assert.match(css, /@media/, `${styleName} must include responsive or environment handling`);
   forbidPatterns(css, [/@import\s+url|font-face|https?:\/\//i], styleName);
 }
+requirePatterns(file['landing.css'], [/min-height:\s*44px/, /:focus-visible/, /max-width:\s*620px/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/], 'museum entrance accessibility');
 requirePatterns(file['styles.css'], [/min-height:\s*44px/, /:focus-visible/, /prefers-reduced-motion/, /prefers-contrast/], 'base accessibility');
 requirePatterns(file['sample-hold.css'], [/max-width: 620px/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/], 'sample-and-hold styles');
 requirePatterns(file['sounding-well.css'], [/max-width: 620px/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/], 'Sounding Well styles');
@@ -170,15 +183,17 @@ requirePatterns(worker, [
   /PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/,
   /CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/,
   /ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now'/,
+  /CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer'/,
   /url\.origin !== self\.location\.origin/, /caches\.match\('\.\/index\.html'\)/,
   /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/, /client\.navigate\(client\.url\)/
 ], 'service worker');
 forbidPatterns(worker, [/https?:\/\//], 'service worker cross-origin boundary');
 for (const asset of [
-  './index.html', './styles.css', './sample-hold.css', './sounding-well.css', './world-map.svg',
+  './index.html', './landing.css', './commons-now.html', './styles.css', './sample-hold.css', './sounding-well.css', './world-map.svg',
   './temporal-sounding-core.js', './temporal-sounding.js', './SOUNDING_WELL.md', './SAMPLE_AND_HOLD.md',
   './cosmic-signal.js', './cosmic-signal-core.js', './cosmic-latency-core.js', './cosmic-escapement-core.js',
   './planetary-heliodon-core.js', './planetary-heliodon.js', './planetary-heliodon.css', './PLANETARY_HELIODON.md',
+  './deep-space.html', './deep-space.css', './deep-space-core.js', './deep-space.js',
   './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md'
 ]) assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
 
@@ -217,7 +232,7 @@ const manifest = JSON.parse(file['manifest.webmanifest']);
 assert.equal(manifest.start_url, './');
 assert.equal(manifest.scope, './');
 assert.equal(manifest.display, 'standalone');
-assert.match(manifest.name, /Commons \/ Now/i);
+assert.equal(manifest.name, 'The Museum of Almost');
 const workflow = file['.github/workflows/check.yml'];
 requirePatterns(workflow, [
   /jobs:\s*\n\s*check:/, /permissions:\s*\n\s*contents: read/, /persist-credentials: false/, /timeout-minutes: 5/,
@@ -234,4 +249,4 @@ forbidPatterns(publicCurrent, [
   /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i
 ], 'public secret/privacy scan');
 
-console.log('Commons / Now full application, shared five-feed latch, passive source-time Sounding Well, privacy, exact-network, local-map, cosmic instruments, Planetary Heliodon, coherent-shell, accessibility, source, seed, and offline contract verified.');
+console.log('Museum entrance, unchanged Commons / Now application, privacy, exact-network boundary, local galleries, accessibility, and coherent offline shell verified.');
