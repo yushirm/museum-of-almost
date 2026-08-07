@@ -40,6 +40,14 @@ const APP_SHELL = [
   './deep-space.css',
   './deep-space-core.js',
   './deep-space.js',
+  './almost-online.html',
+  './web1.css',
+  './web1.js',
+  './assets/web1/stars.gif',
+  './assets/web1/comet.gif',
+  './assets/web1/construction.gif',
+  './assets/web1/hand-coded.gif',
+  './assets/web1/alien.gif',
   './manifest.webmanifest',
   './PRIVACY.md',
   './SOURCES.md',
@@ -49,7 +57,8 @@ const APP_SHELL = [
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
-  './DEEP_SPACE.md'
+  './DEEP_SPACE.md',
+  './WEB1_HOME.md'
 ];
 
 self.addEventListener('install', (event) => {

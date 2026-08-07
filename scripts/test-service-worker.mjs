@@ -43,6 +43,14 @@ for (const asset of [
   './deep-space.css',
   './deep-space-core.js',
   './deep-space.js',
+  './almost-online.html',
+  './web1.css',
+  './web1.js',
+  './assets/web1/stars.gif',
+  './assets/web1/comet.gif',
+  './assets/web1/construction.gif',
+  './assets/web1/hand-coded.gif',
+  './assets/web1/alien.gif',
   './manifest.webmanifest',
   './PRIVACY.md',
   './SOURCES.md',
@@ -52,7 +60,8 @@ for (const asset of [
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
-  './DEEP_SPACE.md'
+  './DEEP_SPACE.md',
+  './WEB1_HOME.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
 }
@@ -62,7 +71,7 @@ assert.match(source, /key !== CURRENT_CACHE_NAME/);
 assert.match(source, /url\.origin !== self\.location\.origin/);
 assert.match(source, /request\.mode === 'navigate'/);
 assert.match(source, /request\.mode === 'navigate'[\s\S]+caches\.match\(request\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
-  'navigations should use the requested cached document so the foyer and galleries remain distinct offline');
+  'navigations should use the requested cached document so the foyer and all galleries remain distinct offline');
 assert.match(source, /caches\.match\('\.\/index\.html'\)/,
   'root-scope navigation should retain the museum entrance as its index fallback');
 assert.match(source, /caches\.match\(request\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
@@ -76,4 +85,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Museum foyer, Commons / Now, and Deep Space / Almost coherent multi-page offline shell and cross-origin boundary verified.');
+console.log('Museum foyer, Commons / Now, Deep Space / Almost, and Almost Online! coherent multi-page offline shell and cross-origin boundary verified.');
