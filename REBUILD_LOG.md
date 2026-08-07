@@ -102,3 +102,29 @@ Runtime changes:
 - `index.html` adds the Difference Engine section after the thirteen-window world view;
 - the service-worker cache version advances and includes the new local stylesheet;
 - reducer tests include missing-value regressions so `null` can never silently become zero.
+
+## Extension 2 — Thirteen Windows Get a World
+
+Date: 2026-08-07
+
+Reason:
+
+The original thirteen-window field used truthful longitude and latitude placement, but the empty graticule made visitors mentally reconstruct the planet around the points. The next step was not another metric; it was geographic context.
+
+Implementation:
+
+- `world-map.svg` is generated from Natural Earth 110m public-domain land geometry;
+- the geometry is simplified locally but not redrawn or repositioned by eye;
+- the SVG uses a 360 × 180 equirectangular coordinate space;
+- the map uses exactly the same projection as the station points: `x = longitude + 180`, `y = 90 - latitude`;
+- `world-map.css` locks the geographic field to a 2:1 aspect ratio and places the map beneath the existing grid and interactive station buttons;
+- a visible provenance note states that the basemap is local and that no map or tile service is contacted;
+- the map asset and stylesheet are included in the same-origin offline shell.
+
+Boundary:
+
+The map does not introduce a fifth data source, mapping API, tile server, geocoder, remote image, runtime library, visitor location request, persistence, analytics, or polling. It changes context, not collection.
+
+Rebuild rule:
+
+To rebuild the basemap, start from Natural Earth 110m land geometry in WGS84, simplify only the geometry, project every longitude/latitude pair with the formulas above into a 360 × 180 SVG, store the result locally as `world-map.svg`, and keep the interactive station positions on the identical projection. Never hand-adjust a point to make the map look better.
