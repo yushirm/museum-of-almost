@@ -1,0 +1,87 @@
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const core = require('../data-core.js');
+
+assert.equal(core.BUILD_SEED, '6bc76dc33337414e7c9f9ccbd7539976d98ac371444860c605fb88003174ded2');
+assert.equal(core.STATIONS.length, 13);
+assert.deepEqual(core.STATIONS[0], { id: '01', lat: -35.67, lon: 74.26 });
+assert.deepEqual(core.STATIONS[12], { id: '13', lat: 27.22, lon: 103.15 });
+assert.equal(new Set(core.STATIONS.map((station) => station.id)).size, 13);
+
+const earthquakes = core.normalizeEarthquakes({
+  features: [
+    { properties: { type: 'earthquake', mag: 1.2 }, geometry: { coordinates: [1, 2, 10] } },
+    { properties: { type: 'earthquake', mag: 5.1 }, geometry: { coordinates: [1, 2, 30] } },
+    { properties: { type: 'quarry blast', mag: 2.2 }, geometry: { coordinates: [1, 2, 5] } }
+  ]
+});
+assert.deepEqual(earthquakes, {
+  available: true,
+  count: 2,
+  strongest: 5.1,
+  meanDepth: 20,
+  significant: 1
+});
+
+assert.deepEqual(
+  core.normalizeSolarWind({ TimeStamp: '2026-08-07T00:00:00Z', SolarWindSpeed: '487.4' }),
+  { available: true, speed: 487.4, state: 'steady' }
+);
+assert.deepEqual(
+  core.normalizeSolarWind([['time_tag', 'speed'], ['2026-08-07 00:00:00', '721']]),
+  { available: true, speed: 721, state: 'very fast' }
+);
+assert.equal(core.normalizeSolarWind({ nope: 'x' }).available, false);
+
+const weatherPayload = core.STATIONS.map((station, index) => ({
+  latitude: station.lat,
+  longitude: station.lon,
+  current: {
+    temperature_2m: -6 + index * 3,
+    wind_speed_10m: 5 + index,
+    precipitation: index % 4 === 0 ? 1.2 : 0
+  }
+}));
+const weather = core.normalizeWeather(weatherPayload);
+assert.equal(weather.available, true);
+assert.equal(weather.availableCount, 13);
+assert.equal(weather.minTemp, -6);
+assert.equal(weather.maxTemp, 30);
+assert.equal(weather.raining, 4);
+assert.equal(weather.points[5].id, '06');
+assert.equal(weather.points[5].temperature, 9);
+
+const events = core.normalizeEvents({
+  events: [
+    { categories: [{ id: 'wildfires', title: 'Wildfires' }] },
+    { categories: [{ id: 'wildfires', title: 'Wildfires' }, { id: 'severeStorms', title: 'Severe Storms' }] },
+    { categories: [{ id: 'volcanoes', title: 'Volcanoes' }] }
+  ]
+});
+assert.equal(events.count, 3);
+assert.deepEqual(events.categories[0], { title: 'Wildfires', count: 2 });
+assert.equal(events.capped, false);
+
+assert.equal(core.sunState('2026-03-20T12:00:00Z', 0, 0), 'day');
+assert.equal(core.sunState('2026-03-20T00:00:00Z', 0, 0), 'night');
+assert.equal(core.sunState('invalid', 0, 0), 'unknown');
+
+assert.deepEqual(core.stationPosition({ lat: 0, lon: 0 }), { x: 50, y: 50 });
+assert.deepEqual(core.stationPosition({ lat: 90, lon: -180 }), { x: 0, y: 0 });
+assert.equal(core.formatCoordinate(-35.67, 'N', 'S'), '35.67° S');
+assert.equal(core.formatCoordinate(74.26, 'E', 'W'), '74.26° E');
+
+const sentence = core.snapshotSentence({
+  earthquakes,
+  solar: { available: true, speed: 487.4 },
+  weather,
+  events
+});
+assert.match(sentence, /2 earthquakes/);
+assert.match(sentence, /487 km\/s/);
+assert.match(sentence, /13 fixed world points/);
+assert.match(sentence, /NASA EONET lists 3 open natural events/);
+
+console.log('Commons / Now data reduction, fixed sample, and daylight geometry verified.');

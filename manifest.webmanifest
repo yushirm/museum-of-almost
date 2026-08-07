@@ -1,10 +1,9 @@
 {
-  "name": "The Museum of Almost",
-  "short_name": "Almost",
-  "description": "A local-first agreement between impossible forces.",
+  "name": "The Museum of Almost — Commons / Now",
+  "short_name": "Commons / Now",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#101317",
-  "theme_color": "#101317"
+  "background_color": "#f2efe6",
+  "theme_color": "#f2efe6"
 }

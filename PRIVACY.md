@@ -1,95 +1,60 @@
 # Privacy Boundary
 
-The Museum of Almost is a static, local-first browser experience. Its core treaty remains fully usable without a network connection.
+The Museum of Almost is a static website. **COMMONS / NOW** does not create visitor accounts, profiles, histories, scores, identifiers, or personalized views.
 
-## The application does not
+## What the application does not collect
 
-- create accounts or profiles;
-- accept visitor text;
-- use analytics, advertising, telemetry, tracking, fingerprinting, or remote AI;
-- request third-party scripts, fonts, media, or images at runtime;
-- request browser location, microphone, camera, contacts, or other personal-device data;
-- transmit local treaty state to any remote service;
-- store names, contact details, locations, timestamps, routines, or personal content.
+The application does not:
 
-The only intentional cross-origin runtime data requests are the two optional public scientific feeds described under **Live entropy** below.
+- ask for a name, email address, account, or free-text input;
+- request browser geolocation;
+- access contacts, camera, microphone, files, or sensors;
+- use analytics, advertising, telemetry, fingerprinting, pixels, or behavioral tracking;
+- create cookies;
+- write visitor state to `localStorage`, `sessionStorage`, or IndexedDB;
+- store previous live snapshots;
+- send visitor actions or Museum state to a remote service.
 
-## Local state
+## Live public data requests
 
-The application may store one JSON value under `museum-of-almost:entropy:v5`.
+The current product is intentionally a live public-data instrument. When the page opens it makes one direct request to each of four public services:
 
-It contains only bounded fictional and technical state:
+- USGS Earthquake Hazards Program;
+- NOAA Space Weather Prediction Center;
+- Open-Meteo;
+- NASA Earth Observatory Natural Event Tracker.
 
-- a random numeric install seed;
-- optionally, the last fictional suspension the visitor attempted to erase, represented by one bounded position integer and one bounded weight integer.
+Pressing **Refresh world** makes one new set of requests. There is no automatic polling or background refresh loop.
 
-Active suspensions are session-only and are not stored. The constructive field ledger, resonance spans, mirrored echoes, session undo state, weight edits, current-visit journal, dashboard summary, dashboard source cells, and dashboard system-status cells are also not stored. Hold durations and pointer coordinates exist only transiently in memory while a gesture is being interpreted. Pointer paths, action histories, visit counters, timestamps, semantic labels, movement histories, sound choices, postcard history, print history, live entropy responses, live pressure, and animation phases are not stored.
+Requests use CORS mode, `credentials: omit`, `referrerPolicy: no-referrer`, and `cache: no-store`. The application does not intentionally send cookies, the Museum page URL, visitor location, or local visitor data with those requests.
 
-The once-per-installation field reversal is inferred from whether an attempted-erasure ghost already exists. It does not require a separate tracking flag. Using **Reset local state** intentionally clears that local installation memory and permits the fictional one-time event to occur again.
+As with any direct internet request, the requested service and ordinary network infrastructure can see network-layer information such as the visitor's IP address. Each provider may process connection information under its own policies. The Museum does not receive their server logs.
 
-The stored data is inspectable in browser storage, remains on the device, and can be removed with the visible reset control or browser storage controls. If storage is unavailable, the current session continues in memory only.
+## Fixed world sample
 
-## Live entropy
+The Open-Meteo request contains thirteen fixed latitude/longitude pairs that are built into the application. They are the same for every visitor. They are not generated from browser location, IP address, language, timezone, or any other visitor characteristic.
 
-Live entropy is off by default. Nothing outside the same-origin application is requested until the visitor presses **Invite live entropy**.
+The coordinates were derived once from opaque seed material supplied for the rebuild. Only the resulting one-way build seed and fixed coordinates are retained in the repository. The original opaque values are not stored or published by the application.
 
-One invitation makes at most one direct request to each of these fixed public scientific endpoints:
+## Data handling
 
-- USGS Earthquake Hazards Program: the public all-earthquakes GeoJSON summary for the past hour;
-- NOAA Space Weather Prediction Center: the public current solar-wind-speed summary.
+Live responses are held in page memory only long enough to render the current snapshot. Reloading or closing the page discards them. The application does not forward source responses to another service.
 
-The request URLs are fixed in application code. Local treaty state, the install seed, active marks, erased memory, visitor input, and browser location are not added to either request.
+The page deliberately reduces source data:
 
-For both requests the application explicitly uses `credentials: omit`, `referrerPolicy: no-referrer`, `cache: no-store`, and CORS mode. Credentials are omitted and the referrer is omitted. The application therefore does not intentionally send cookies or the Museum page URL. A normal direct internet request still necessarily exposes network-layer information such as the visitor's IP address to USGS or NOAA and to ordinary network infrastructure. Those services may process connection information under their own policies; the Museum does not receive their server logs.
+- USGS event names, nearby places, IDs, and event URLs are not displayed;
+- NASA EONET event titles and coordinates are not displayed;
+- Open-Meteo is queried only for the thirteen fixed coordinates;
+- NOAA contributes a numeric solar-wind speed.
 
-The Museum does not poll these services automatically. Pressing **Refresh live entropy** makes a new explicit pair of requests. Pressing **Release influence**, closing the page, or reloading removes the live influence from memory.
+## Offline shell
 
-Raw source data is reduced immediately to a small fictional influence:
+A same-origin service worker caches only the Museum's static application shell so that the explanatory interface can still open offline. The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses.
 
-- USGS contributes only aggregate earthquake count, strongest magnitude, and aggregate depth calculations; event names, places, identifiers, coordinates, URLs, and timestamps are ignored;
-- NOAA contributes only the current numeric solar-wind speed;
-- those values become bounded pressure, bias, scale, and a position on the existing treaty line.
-
-The reduced values and raw responses are not written to local storage, IndexedDB, cookies, the postcard, or the service-worker cache. They are not forwarded to another service. If one source fails, the other may contribute alone. If both fail or the visitor is offline, the local treaty continues unchanged.
-
-## Operations dashboard
-
-The operations dashboard is a local presentation layer over existing Treaty state. It performs no network requests itself and creates no local storage, session storage, IndexedDB records, cookies, timers, polling loops, or analytics events.
-
-It may display:
-
-- the current qualitative agreement state;
-- active mark count, total weight, center, spread, and resonance already present in the session;
-- whether an erased ghost is currently present;
-- the bounded live snapshot values already produced after explicit live-entropy activation: aggregate earthquake count, strongest magnitude, solar-wind speed, source count, world-pressure value, and correspondence classification;
-- browser online/offline state;
-- whether the existing local durable store is available;
-- whether the same-origin service worker is ready or controlling the page.
-
-The dashboard does not receive raw earthquake records, locations, feed identifiers, timestamps, the installation seed, visitor history, or server logs. It does not retain prior dashboard states and therefore does not create historical charts or trends.
-
-## Local postcard and printing
-
-**Make local postcard** generates an SVG file entirely in the browser from the currently visible fictional treaty state. It includes bounded mark positions and weights, the visible unresolved measurement, the current resonance classification, whether an erased ghost is visible, and an installation-neutral code derived from the postcard's fictional configuration. It does not include the install seed, visitor text, timestamps, browser details, network information, or live entropy. The generated file is not uploaded or transmitted by the application.
-
-**Print treaty** opens the browser's local print dialog. The application does not receive printer information or a copy of the printed output.
-
-## State migration
-
-The application may read obsolete Museum keys only to preserve an existing random install seed when one is safely available. Previous geometry, labels, contradictions, translations, offsets, seasons, action counts, fragments, selections, timing, pointer data, and other fictional state are discarded. Obsolete keys are then removed.
-
-## Sound
-
-Sound is off by default. When explicitly enabled, brief tones are generated locally with browser WebAudio for suspensions, constructive edits, erasure attempts, and the one-time fictional reversal. The application does not record audio, request microphone access, upload sound, or fetch remote media.
-
-## Motion
-
-The two fictional forces move only as a local visual animation. Animation phase is never stored. Reduced-motion preferences replace continuous movement with a stable equivalent state while preserving all interaction and information. Live entropy changes bounded scale and position variables but does not override reduced-motion behavior.
-
-## Offline support
-
-A same-origin service worker caches the small static application files, including the local live-entropy and dashboard code and styles. It ignores cross-origin requests, does not cache or proxy the USGS or NOAA responses, and removes obsolete Museum cache versions during activation.
+When offline, live values are shown as unavailable. The page does not display stale live values from storage.
 
 ## Hosting
 
-The public host may process ordinary technical connection information under its own terms. The application does not add analytics or tracking on top of that hosting.
+GitHub Pages and the public data providers may process ordinary technical connection information under their own terms. The Museum adds no analytics or tracking on top of that hosting.
+
+See `SOURCES.md` for the exact public endpoints and source documentation.

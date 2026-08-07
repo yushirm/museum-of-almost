@@ -3,252 +3,203 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#101317">
-  <meta name="description" content="A live and local dashboard for an agreement between impossible forces.">
-  <title>The Museum of Almost</title>
+  <meta name="theme-color" content="#f2efe6">
+  <meta name="description" content="A live public snapshot of shared planetary conditions from free scientific data services.">
+  <title>The Museum of Almost — Commons / Now</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="live-entropy.css">
-  <link rel="stylesheet" href="dashboard.css">
 </head>
-<body>
-  <a class="skip-link" href="#treaty">Skip to the treaty dashboard</a>
+<body data-loading="false" data-source-count="0">
+  <a class="skip-link" href="#main">Skip to the world snapshot</a>
 
   <header class="site-header">
-    <div class="identity" aria-label="The Museum of Almost">
+    <div class="brand">
       <small>The Museum of Almost</small>
-      <strong>Treaty 05 · Live operations dashboard</strong>
+      <strong>COMMONS / NOW</strong>
     </div>
-    <div class="site-controls" aria-label="Local controls">
-      <button id="sound-button" type="button" aria-pressed="false">Sound off</button>
-      <button id="reset-button" type="button">Reset local state</button>
+    <div class="header-actions">
+      <span id="connection-state" class="connection-state">NETWORK AVAILABLE</span>
+      <button id="refresh-button" type="button">Refresh world</button>
     </div>
   </header>
 
-  <main id="treaty" class="treaty dashboard" tabindex="-1" data-order="too-exact" data-holding="false" data-event="false">
-    <div class="treaty-heading">
-      <p class="registration">IMPOSSIBLE TREATY / DASHBOARD 05</p>
-      <h1>Watch the agreement while you change it.</h1>
-      <p id="instruction" class="instruction">Hold anywhere on the line. Arrow keys move the keyboard counterweight.</p>
-    </div>
-
-    <section class="dashboard-summary" aria-label="Treaty dashboard summary">
-      <article class="dashboard-kpi">
-        <span class="dashboard-kpi-label">Agreement</span>
-        <strong id="dashboard-agreement">TOO EXACT</strong>
-        <small id="dashboard-agreement-detail">The forces match too perfectly to agree.</small>
-      </article>
-      <article class="dashboard-kpi">
-        <span class="dashboard-kpi-label">World pressure</span>
-        <strong id="dashboard-pressure">LOCAL BASELINE</strong>
-        <small id="dashboard-pressure-detail">No outside signal is currently applied.</small>
-        <span class="dashboard-pressure-track" aria-hidden="true"></span>
-      </article>
-      <article class="dashboard-kpi">
-        <span class="dashboard-kpi-label">Session load</span>
-        <strong id="dashboard-session-load">0 / 0</strong>
-        <small id="dashboard-session-detail">0 active marks · total weight 0 · spread 0.0%.</small>
-      </article>
-      <article class="dashboard-kpi">
-        <span class="dashboard-kpi-label">Durable memory</span>
-        <strong id="dashboard-memory">EMPTY</strong>
-        <small id="dashboard-memory-detail">Nothing attempted to erase has been preserved yet.</small>
-      </article>
-    </section>
-
-    <div
-      id="treaty-surface"
-      class="treaty-surface"
-      tabindex="0"
-      role="application"
-      aria-label="A continuous timeline carrying two opposing forces. Hold or press Space to suspend a force. Use left and right arrows to move the keyboard counterweight. Press Delete to attempt erasure."
-      aria-describedby="instruction treaty-state measurement memory-note ledger-summary live-correspondence-status status"
-    >
-      <div id="construction-marks" class="construction-marks" aria-hidden="true"></div>
-      <div id="field-lines" class="field-lines" aria-hidden="true"></div>
-
-      <div class="timeline-rail" aria-hidden="true"></div>
-
-      <div id="force-a" class="force force-a" aria-hidden="true">
-        <span class="force-line"></span>
-        <span class="force-head"></span>
-        <small>FORCE A · OUTWARD</small>
-      </div>
-
-      <div id="force-b" class="force force-b" aria-hidden="true">
-        <span class="force-line"></span>
-        <span class="force-head"></span>
-        <small>FORCE B · RETURNING</small>
-      </div>
-
-      <div id="suspension-spans" class="suspension-spans" aria-hidden="true"></div>
-      <div id="suspensions" class="suspensions" aria-hidden="true"></div>
-      <div id="ghost-mark" class="ghost-mark" aria-hidden="true" hidden>
-        <span></span>
-        <small>ERASED / RETAINED</small>
-      </div>
-
-      <div id="live-entropy-marker" class="live-entropy-marker" aria-hidden="true" hidden>
-        <small>OUTSIDE PRESSURE</small>
-      </div>
-
-      <div id="counterweight" class="counterweight" aria-hidden="true">
-        <span></span>
-        <small>COUNTERWEIGHT</small>
-      </div>
-
-      <div id="once-event" class="once-event" aria-hidden="true" hidden>
-        <strong>FIELD REVERSAL</strong>
-        <small>This event belongs to one installation only.</small>
-      </div>
-
-      <p class="surface-instruction" aria-hidden="true">HOLD TO SUSPEND · RELEASE TO LEAVE AN ERROR</p>
-    </div>
-
-    <div class="action-strip" role="group" aria-label="Treaty construction controls">
-      <div class="action-group">
-        <button id="erase-button" type="button" disabled>Attempt erase</button>
-        <button id="echo-button" type="button" disabled>Cast echo</button>
-        <button id="undo-button" type="button" disabled>Undo session mark</button>
-        <button id="soften-button" type="button" disabled>Soften latest</button>
-        <button id="intensify-button" type="button" disabled>Intensify latest</button>
-      </div>
-      <div class="action-group action-group-secondary">
-        <button id="postcard-button" type="button">Make local postcard</button>
-        <button id="print-button" type="button">Print treaty</button>
-      </div>
-      <p>Session additions stay local and temporary. Erasure remains the only durable fictional memory.</p>
-    </div>
-
-    <div class="readout" aria-label="Treaty instrument readout">
-      <p id="treaty-state">The forces match too perfectly to agree.</p>
-      <p id="measurement">Measured: 11 q? · unit unresolved</p>
-      <p id="memory-note">Nothing attempted to erase has been preserved yet.</p>
-      <p id="ledger-summary">No active marks. The session ledger is unwritten.</p>
-    </div>
-
-    <section id="live-entropy" class="live-entropy" aria-labelledby="live-entropy-title">
-      <div class="live-entropy-heading">
-        <p class="registration">LIVE ENTROPY</p>
-        <h2 id="live-entropy-title">Outside pressure</h2>
-      </div>
-      <div class="live-entropy-body">
-        <div class="dashboard-live-metrics" aria-label="Current live source metrics">
-          <div class="dashboard-live-metric">
-            <span>Earthquakes / hour</span>
-            <strong id="dashboard-quakes">—</strong>
-          </div>
-          <div class="dashboard-live-metric">
-            <span>Strongest</span>
-            <strong id="dashboard-magnitude">—</strong>
-          </div>
-          <div class="dashboard-live-metric">
-            <span>Solar wind</span>
-            <strong id="dashboard-solar">—</strong>
-          </div>
-          <div class="dashboard-live-metric">
-            <span>Correspondence</span>
-            <strong id="dashboard-correspondence">LOCAL ONLY</strong>
-          </div>
-        </div>
-
-        <div class="live-entropy-controls" role="group" aria-label="Live entropy controls">
-          <button id="live-invite-button" type="button">Invite live entropy</button>
-          <button id="live-release-button" type="button" disabled>Release influence</button>
-        </div>
-        <p id="live-entropy-status" class="live-entropy-status">No outside signal is influencing the treaty. Nothing will be requested until invited.</p>
-        <div class="live-entropy-grid">
-          <p id="live-quake-status">USGS: not requested.</p>
-          <p id="live-solar-status">NOAA SWPC: not requested.</p>
-          <p id="live-vector-status">World pressure: local-only baseline.</p>
-          <p id="live-correspondence-status">The treaty is answering only its own session state.</p>
-        </div>
-        <p class="live-entropy-note">Inviting live entropy makes one direct request to each public scientific source. No location is requested. Credentials and referrer are omitted. Values remain in memory only and are never polled automatically.</p>
-      </div>
-    </section>
-
-    <section class="field-ledger" aria-labelledby="ledger-title">
-      <div class="ledger-heading">
-        <p class="registration">FIELD LEDGER</p>
-        <h2 id="ledger-title">Session structure</h2>
-      </div>
-      <dl class="ledger-grid">
-        <div>
-          <dt>Active marks</dt>
-          <dd id="ledger-count">0</dd>
-        </div>
-        <div>
-          <dt>Total weight</dt>
-          <dd id="ledger-weight">0</dd>
-        </div>
-        <div>
-          <dt>Center</dt>
-          <dd id="ledger-center">—</dd>
-        </div>
-        <div>
-          <dt>Spread</dt>
-          <dd id="ledger-spread">0</dd>
-        </div>
-      </dl>
-      <p id="resonance-summary" class="resonance-summary">Resonance: unwritten.</p>
-    </section>
-
-    <section class="session-record" aria-labelledby="record-title">
+  <main id="main">
+    <section class="hero" aria-labelledby="page-title">
       <div>
-        <p class="registration">SESSION RECORD</p>
-        <h2 id="record-title">Current-visit activity</h2>
+        <p class="eyebrow">PUBLIC SNAPSHOT · NO ACCOUNT · NO LOCATION</p>
+        <h1 id="page-title">The world is doing this without us.</h1>
       </div>
-      <ol id="session-journal" class="session-journal">
-        <li>The treaty opened without an active suspension.</li>
-      </ol>
+      <div class="hero-copy">
+        <p>A current portrait built from public scientific feeds and thirteen fixed points spread across the planet. Earth moves. Solar wind arrives. Weather differs. Natural events remain open.</p>
+        <p>No account. No location. No visitor data. Nothing here is personalized.</p>
+      </div>
+      <div class="snapshot-meta">
+        <p id="snapshot-time">No live snapshot yet</p>
+        <p id="snapshot-detail">One request per source. No automatic polling.</p>
+        <strong id="source-count">0/4 SOURCES</strong>
+      </div>
     </section>
 
-    <section class="dashboard-system" aria-labelledby="dashboard-system-title">
-      <span class="dashboard-panel-label">SYSTEM</span>
-      <h2 id="dashboard-system-title">Local operating state</h2>
-      <dl>
-        <div>
-          <dt>Network</dt>
-          <dd id="dashboard-network">AVAILABLE</dd>
-        </div>
-        <div>
-          <dt>Durable store</dt>
-          <dd id="dashboard-storage">LOCAL</dd>
-        </div>
-        <div>
-          <dt>Offline shell</dt>
-          <dd id="dashboard-worker">READYING</dd>
-        </div>
-        <div>
-          <dt>Live requests</dt>
-          <dd id="dashboard-live">IDLE</dd>
-        </div>
-      </dl>
+    <section class="headline-grid" aria-label="Current world headline metrics">
+      <article class="headline-card headline-earth">
+        <span>EARTHQUAKES · PAST HOUR</span>
+        <strong id="quake-count">—</strong>
+        <p><b id="quake-strongest">—</b> strongest</p>
+        <small id="quake-depth">No earthquake snapshot</small>
+      </article>
+
+      <article class="headline-card headline-sky">
+        <span>SOLAR WIND · NOW</span>
+        <strong id="solar-wind">—</strong>
+        <p id="solar-state">No space-weather snapshot</p>
+        <small>NOAA Space Weather Prediction Center</small>
+      </article>
+
+      <article class="headline-card headline-events">
+        <span>OPEN NATURAL EVENTS</span>
+        <strong id="event-count">—</strong>
+        <p>currently listed in this snapshot</p>
+        <small>NASA Earth Observatory Natural Event Tracker</small>
+      </article>
+
+      <article class="headline-card headline-weather">
+        <span>13-POINT WEATHER RANGE</span>
+        <strong id="weather-range">—</strong>
+        <p id="weather-wind">No weather snapshot</p>
+        <small id="weather-rain">—</small>
+      </article>
     </section>
 
-    <details class="shortcut-help">
-      <summary>Keyboard and construction help</summary>
-      <div class="shortcut-grid">
-        <p><kbd>←</kbd> <kbd>→</kbd> move the counterweight. <kbd>Home</kbd> and <kbd>End</kbd> move to the edges.</p>
-        <p>Hold <kbd>Space</kbd> to create a weighted suspension, or press <kbd>Enter</kbd> for a medium suspension.</p>
-        <p><kbd>Delete</kbd> attempts erasure. <kbd>[</kbd> and <kbd>]</kbd> soften or intensify the latest mark.</p>
-        <p><kbd>Shift</kbd> + <kbd>E</kbd> casts a mirrored echo. <kbd>Shift</kbd> + <kbd>U</kbd> undoes the latest session-only mark.</p>
-      </div>
-    </details>
+    <section class="world-sentence-panel" aria-labelledby="world-sentence-title">
+      <span id="world-sentence-title">RIGHT NOW, IN ONE SENTENCE</span>
+      <p id="world-sentence">Reading the commons…</p>
+    </section>
 
-    <p id="status" class="status" role="status" aria-live="polite">The treaty is waiting for a counterweight.</p>
-    <p class="privacy-line">Local state only by default. Live entropy is explicit, temporary, and never stored.</p>
+    <section class="windows-section" aria-labelledby="windows-title">
+      <div class="section-heading">
+        <p class="eyebrow">THIRTEEN WINDOWS</p>
+        <h2 id="windows-title">A fixed sample of the whole planet.</h2>
+        <p>The sampling points were derived once from opaque seed material. They do not follow population, borders, popularity, or the visitor. Some fall on land. Some fall at sea. That is deliberate.</p>
+      </div>
+
+      <div class="world-layout">
+        <div class="world-map-wrap">
+          <div class="world-map" aria-label="Equirectangular world sampling field">
+            <div class="world-map-grid" aria-hidden="true"></div>
+            <div class="equator" aria-hidden="true"></div>
+            <div class="prime-meridian" aria-hidden="true"></div>
+            <div id="station-points" class="station-points" role="group" aria-label="Thirteen fixed global weather points"></div>
+            <span class="map-label map-label-n">90°N</span>
+            <span class="map-label map-label-s">90°S</span>
+            <span class="map-label map-label-w">180°W</span>
+            <span class="map-label map-label-e">180°E</span>
+          </div>
+          <div class="map-legend" aria-label="Map legend">
+            <span><i class="legend-dot legend-day"></i> daylight</span>
+            <span><i class="legend-dot legend-twilight"></i> twilight</span>
+            <span><i class="legend-dot legend-night"></i> night</span>
+            <strong id="daylight-count">—</strong>
+          </div>
+        </div>
+
+        <aside class="station-detail" aria-live="polite">
+          <span class="eyebrow">SELECTED WINDOW</span>
+          <h3 id="station-name">POINT 01</h3>
+          <p id="station-coordinates">35.67° S · 74.26° E</p>
+          <dl>
+            <div><dt>Temperature</dt><dd id="station-temperature">—</dd></div>
+            <div><dt>Wind</dt><dd id="station-wind">—</dd></div>
+            <div><dt>Precipitation</dt><dd id="station-rain">—</dd></div>
+            <div><dt>Light</dt><dd id="station-light">—</dd></div>
+          </dl>
+        </aside>
+      </div>
+
+      <div id="station-list" class="station-list" aria-label="All thirteen weather windows"></div>
+      <p class="attribution">Weather data: Open-Meteo. Fixed coordinates only; browser location is never requested.</p>
+    </section>
+
+    <section class="signal-grid" aria-label="Detailed live signals">
+      <article class="signal-panel">
+        <div class="signal-heading">
+          <span>EARTH</span>
+          <h2>Movement is ordinary.</h2>
+        </div>
+        <p>The earthquake count is a rolling past-hour feed from the USGS. Small events are included because the point is not disaster spectacle; it is the constant movement of the crust.</p>
+        <div class="signal-number-row">
+          <span>strongest now</span>
+          <strong id="quake-strongest-copy">See headline above</strong>
+        </div>
+      </article>
+
+      <article class="signal-panel">
+        <div class="signal-heading">
+          <span>SKY</span>
+          <h2>The Sun is touching Earth.</h2>
+        </div>
+        <p>Solar wind is a stream of charged particles arriving from the Sun. The value above is the current speed reported by NOAA SWPC, not a forecast or score.</p>
+        <div class="signal-number-row">
+          <span>measurement</span>
+          <strong>km/s</strong>
+        </div>
+      </article>
+
+      <article class="signal-panel signal-events-panel">
+        <div class="signal-heading">
+          <span>ACTIVE EVENTS</span>
+          <h2>Some conditions remain open.</h2>
+        </div>
+        <p>NASA EONET groups currently open natural events from multiple reporting sources. The list below shows only aggregate categories; event titles and coordinates are not reproduced here.</p>
+        <ul id="event-categories" class="event-categories">
+          <li>No category snapshot</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="plain-language" aria-labelledby="plain-title">
+      <div class="section-heading">
+        <p class="eyebrow">WHAT THIS ACTUALLY DOES</p>
+        <h2 id="plain-title">Four public services. One current snapshot.</h2>
+      </div>
+      <div class="plain-grid">
+        <article>
+          <strong>1</strong>
+          <h3>Loads once.</h3>
+          <p>When the page opens, it requests one current snapshot from USGS, NOAA SWPC, Open-Meteo, and NASA EONET. It does not poll in the background.</p>
+        </article>
+        <article>
+          <strong>2</strong>
+          <h3>Samples fixed places.</h3>
+          <p>The weather request uses thirteen coordinates baked into the site. They are unrelated to whoever is visiting.</p>
+        </article>
+        <article>
+          <strong>3</strong>
+          <h3>Stores no visitor history.</h3>
+          <p>No local visitor profile, action log, location, identifier, score, or previous snapshot is kept by the application.</p>
+        </article>
+        <article>
+          <strong>4</strong>
+          <h3>Fails visibly.</h3>
+          <p>If a public service is unavailable, its metric shows as unavailable. The page does not invent a replacement number.</p>
+        </article>
+      </div>
+    </section>
+
+    <p id="live-status" class="live-status" role="status" aria-live="polite">Preparing the fixed world sample.</p>
   </main>
 
   <footer class="site-footer">
-    <a href="PRIVACY.md">Privacy boundary</a>
-    <span>Live signals describe the present. Local memory keeps only attempted erasure.</span>
+    <div>
+      <strong>COMMONS / NOW</strong>
+      <span>A live public instrument. No analytics. No account. No personal location.</span>
+    </div>
+    <nav aria-label="Project information">
+      <a href="SOURCES.md">Sources</a>
+      <a href="PRIVACY.md">Privacy</a>
+    </nav>
   </footer>
 
-  <script src="entropy-core.js" defer></script>
+  <script src="data-core.js" defer></script>
   <script src="app.js" defer></script>
-  <script src="live-entropy-core.js" defer></script>
-  <script src="live-entropy.js" defer></script>
-  <script src="dashboard.js" defer></script>
 </body>
 </html>
