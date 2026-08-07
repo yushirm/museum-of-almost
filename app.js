@@ -525,8 +525,8 @@
     }
     if (ui.sectionPlotDesc) {
       ui.sectionPlotDesc.textContent = section.ranges.temperature.available
-        ? `Thirteen discrete posts ordered west to east. ${reporting} have current weather. Temperature ranges from ${section.ranges.temperature.min.toFixed(1)} to ${section.ranges.temperature.max.toFixed(1)} degrees Celsius. Wind and precipitation are separate local marks. No values are interpolated between posts.`
-        : `Thirteen discrete posts ordered west to east. Live weather is unavailable; light state is calculated locally. No values are interpolated between posts.`;
+        ? `Thirteen discrete posts ordered west to east. ${reporting} have current weather. Temperature ranges from ${section.ranges.temperature.min.toFixed(1)} to ${section.ranges.temperature.max.toFixed(1)} degrees Celsius. Wind and precipitation are separate local marks. Missing temperatures are marked at the baseline, not placed on the temperature scale. No values are interpolated between posts.`
+        : `Thirteen discrete posts ordered west to east. Live weather is unavailable; light state is calculated locally. Missing temperatures stay off the temperature scale. No values are interpolated between posts.`;
     }
 
     ui.sectionGuides.replaceChildren();
@@ -553,30 +553,46 @@
 
     for (const point of section.points) {
       const x = left + (point.longitudePosition / 100) * (right - left);
-      const temperatureY = point.temperaturePosition === null
-        ? (top + bottom) / 2
-        : bottom - (point.temperaturePosition / 100) * (bottom - top);
+      const temperatureAvailable = point.temperaturePosition !== null;
+      const temperatureY = temperatureAvailable
+        ? bottom - (point.temperaturePosition / 100) * (bottom - top)
+        : baseline - 14;
 
-      const post = appendSvgLine(ui.sectionPosts, x, temperatureY, x, baseline, 'section-post');
+      const post = appendSvgLine(
+        ui.sectionPosts,
+        x,
+        temperatureY,
+        x,
+        baseline,
+        temperatureAvailable ? 'section-post' : 'section-post section-post-missing'
+      );
       post.dataset.light = point.light;
 
-      const node = document.createElementNS(SVG_NS, 'circle');
-      node.setAttribute('cx', x.toFixed(2));
-      node.setAttribute('cy', temperatureY.toFixed(2));
-      node.setAttribute('r', point.temperature === null ? '4' : '6');
-      node.setAttribute('class', 'section-temperature-node');
-      node.dataset.light = point.light;
-      ui.sectionPosts.append(node);
+      if (temperatureAvailable) {
+        const node = document.createElementNS(SVG_NS, 'circle');
+        node.setAttribute('cx', x.toFixed(2));
+        node.setAttribute('cy', temperatureY.toFixed(2));
+        node.setAttribute('r', '6');
+        node.setAttribute('class', 'section-temperature-node');
+        node.dataset.light = point.light;
+        ui.sectionPosts.append(node);
+      } else {
+        appendSvgLine(ui.sectionPosts, x - 4, temperatureY - 4, x + 4, temperatureY + 4, 'section-missing');
+        appendSvgLine(ui.sectionPosts, x - 4, temperatureY + 4, x + 4, temperatureY - 4, 'section-missing');
+      }
 
       if (point.windPosition !== null) {
         const windLength = 8 + (point.windPosition / 100) * 28;
         const direction = x > 920 ? -1 : 1;
+        const windY = temperatureAvailable
+          ? Math.min(baseline - 18, temperatureY + 16)
+          : baseline - 34;
         appendSvgLine(
           ui.sectionPosts,
           x,
-          Math.min(baseline - 18, temperatureY + 16),
+          windY,
           x + windLength * direction,
-          Math.min(baseline - 18, temperatureY + 16),
+          windY,
           'section-wind'
         );
       }
@@ -589,8 +605,8 @@
       appendSvgText(
         ui.sectionPosts,
         x,
-        Math.max(20, temperatureY - 11),
-        point.temperature === null ? '—' : `${point.temperature.toFixed(1)}°`,
+        temperatureAvailable ? Math.max(20, temperatureY - 11) : baseline - 25,
+        temperatureAvailable ? `${point.temperature.toFixed(1)}°` : '—',
         'section-temperature-label',
         'middle'
       );
