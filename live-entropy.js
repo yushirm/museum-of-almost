@@ -38,6 +38,7 @@
     requestController = new AbortController();
     const timeout = window.setTimeout(() => requestController.abort(), 6500);
 
+    main.dataset.liveRequest = 'requesting';
     inviteButton.disabled = true;
     inviteButton.textContent = 'Listening outside…';
     liveStatus.textContent = 'Requesting one current aggregate from USGS and one current solar-wind value from NOAA SWPC.';
@@ -97,6 +98,7 @@
   }
 
   function applyLiveEntropy() {
+    main.dataset.liveRequest = 'active';
     main.dataset.liveEntropy = 'true';
     main.style.setProperty('--live-force-a-scale', String(currentEntropy.scaleA));
     main.style.setProperty('--live-force-b-scale', String(currentEntropy.scaleB));
@@ -134,6 +136,7 @@
     currentEntropy = null;
     currentEarthquakes = null;
     currentSolarWind = null;
+    delete main.dataset.liveRequest;
     delete main.dataset.liveEntropy;
     delete main.dataset.correspondence;
     delete main.dataset.worldPressure;
