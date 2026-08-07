@@ -24,7 +24,6 @@ const privacy = read('PRIVACY.md');
 const history = read('ENTROPY_HISTORY.md');
 const log = read('ENTROPY_LOG.md');
 const workflow = read('.github/workflows/check.yml');
-const rerolls = read('scripts/entropy-rerolls.json');
 const runtime = [index, app, core, styles, worker].join('\n');
 
 assert.doesNotMatch(runtime, /https?:\/\//i, 'runtime must not contact remote origins');
@@ -33,30 +32,37 @@ assert.doesNotMatch(runtime, /\b(gtag|dataLayer|mixpanel|segment|plausible|ampli
 assert.doesNotMatch(runtime, /google-analytics|googletagmanager|analytics\.js|sendBeacon\s*\(/i);
 assert.doesNotMatch(index, /<script[^>]+src=["'](?:https?:)?\/\//i);
 assert.doesNotMatch(index, /<link[^>]+href=["'](?:https?:)?\/\//i);
-assert.doesNotMatch(index, /<(input|textarea)\b|contenteditable/i);
+assert.doesNotMatch(index, /<(input|textarea)\b|contenteditable/i, 'visitor free text is prohibited');
 
-assert.doesNotMatch(index, /<(img|picture|svg|canvas)\b/i, 'severe constraint: no images');
-assert.doesNotMatch(styles, /background-image\s*:|url\(/i, 'severe constraint: no image CSS');
-assert.doesNotMatch(app, /Image\s*\(|createElement\(['"]img|drawImage|canvas/i);
-
-assert.match(index, /id="organism-surface"/);
+assert.match(index, /id="treaty-surface"/);
 assert.match(index, /role="application"/);
 assert.match(index, /tabindex="0"/);
 assert.match(index, /id="status"[^>]+aria-live="polite"/);
 assert.match(index, /id="sound-button"[^>]+aria-pressed="false"/);
+assert.match(index, /id="erase-button"/);
 assert.match(index, /id="reset-button"/);
+assert.match(index, /id="once-event"/);
+assert.match(index, /id="ghost-mark"/);
+assert.match(index, /unit unresolved/i);
+
 assert.match(app, /addEventListener\('pointerdown'/);
+assert.match(app, /addEventListener\('pointermove'/);
 assert.match(app, /addEventListener\('pointerup'/);
 assert.match(app, /addEventListener\('keydown'/);
-assert.match(app, /core\.separate/);
-assert.match(app, /core\.advanceSilence/);
-assert.match(app, /window\.setTimeout\(advanceSilence/);
+assert.match(app, /addEventListener\('keyup'/);
+assert.match(app, /core\.suspend/);
+assert.match(app, /core\.attemptErase/);
+assert.match(app, /core\.moveCursor/);
+assert.match(app, /requestAnimationFrame/);
 assert.match(app, /event\.clientX/);
-assert.match(app, /event\.clientY/);
-assert.doesNotMatch(core, /clientX|clientY|pointerStart|pointerPath/i, 'pointer coordinates must never enter durable core state');
+assert.match(app, /performance\.now\(\)/);
+assert.doesNotMatch(core, /clientX|clientY|pointerStart|pointerPath|performance\.now|Date\.|timestamp/i,
+  'transient gesture data and clocks must never enter durable core state');
+
 assert.match(styles, /min-height:\s*44px/);
 assert.match(styles, /touch-action:\s*pan-y/);
 assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);
+assert.match(styles, /@media \(prefers-contrast: more\)/);
 assert.match(styles, /@media \(max-width: 520px\)/);
 assert.match(styles, /@media \(max-width: 360px\)/);
 assert.match(styles, /:focus-visible/);
@@ -65,45 +71,59 @@ assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
 const facing = index.toLowerCase();
 for (const word of [
   'room', 'wing', 'gallery', 'catalogue', 'collection', 'archive', 'inventory', 'unlock',
-  'knot', 'tension', 'bind', 'loosen', 'timeline', 'season', 'repair', 'misregistration',
-  'coherence', 'weave', 'translation', 'contradiction', 'measure', 'untranslated'
+  'knot', 'tension', 'bind', 'loosen', 'season', 'repair', 'misregistration', 'coherence',
+  'membrane', 'organism', 'reality', 'separate', 'translation', 'contradiction', 'untranslated'
 ]) {
   assert.equal(new RegExp(`\\b${word}\\b`, 'i').test(facing), false, `exiled vocabulary leaked into index: ${word}`);
 }
-assert.doesNotMatch(facing, /\b(score|percentage|progress bar|achievement|level)\b/);
+assert.doesNotMatch(facing, /\b(score|percentage|progress bar|achievement|level|leaderboard)\b/);
+assert.doesNotMatch(index, /href=["'][^"']*(?:#.*room|gallery|archive|collection)/i);
 
-assert.match(core, /museum-of-almost:entropy:v4/);
-assert.match(core, /geometry/);
-assert.match(core, /advanceVisit/);
-assert.match(core, /advanceSilence/);
-assert.match(core, /meaningsFor/);
-assert.match(core, /geometryFor/);
-assert.match(core, /function separate/);
+assert.match(core, /museum-of-almost:entropy:v5/);
+assert.match(core, /function suspend/);
+assert.match(core, /function attemptErase/);
+assert.match(core, /function treatyState/);
+assert.match(core, /function forceState/);
+assert.match(core, /function measurementFor/);
+assert.match(core, /function timelinePositions/);
+assert.match(core, /UNKNOWN_UNITS/);
+assert.match(core, /ghost/);
 for (const removed of [
-  'CONTRADICTIONS', 'translationFor', 'waitDuration', 'openDuration', 'ecosystemState',
-  'TARGET_ERROR', 'offsets', 'repairIncorrectly', 'idleShift', 'duplicateIndex'
+  'meaningsFor', 'advanceSilence', 'geometryFor', 'function separate', 'CONTRADICTIONS',
+  'translationFor', 'waitDuration', 'openDuration', 'ecosystemState', 'TARGET_ERROR',
+  'offsets', 'repairIncorrectly', 'idleShift', 'duplicateIndex'
 ]) {
   assert.equal(core.includes(removed), false, `old state grammar remains in core: ${removed}`);
 }
+
 assert.match(app, /localStorage\.setItem\(core\.STATE_KEY, JSON\.stringify\(nextState\)\)/);
 assert.match(app, /localStorage\.removeItem\(core\.STATE_KEY\)/);
 assert.match(app, /core\.LEGACY_KEYS\.forEach/);
 assert.match(app, /serviceWorker\.register\('\.\/service-worker\.js'\)/);
+assert.doesNotMatch(app, /localStorage\.setItem\([^,]+,\s*JSON\.stringify\(session\)/,
+  'session suspensions must not be persisted');
 
-assert.match(privacy, /museum-of-almost:entropy:v4/);
-assert.match(privacy, /preserved geometry/i);
-assert.match(privacy, /pointer coordinates are not stored/i);
-assert.match(privacy, /No action history/i);
-assert.match(history, /## Execution 4/);
-assert.match(history, /Primary Fixation exiled: Timed contradiction pulse/i);
-assert.match(log, /## Execution 4/);
-assert.match(log, /Original seed: `800cbe27a5b38bddb19ba0b4eb8a65dea8507e39afeeb06b77aa54043e5424b9`/);
-assert.match(log, /Timed contradiction pulse/i);
-assert.match(rerolls, /800cbe27a5b38bddb19ba0b4eb8a65dea8507e39afeeb06b77aa54043e5424b9/);
-assert.match(rerolls, /"C":\s*\{[\s\S]*?"offset": 1/);
-assert.match(rerolls, /"K":\s*\{[\s\S]*?"offset": 1/);
+const renderSection = app.slice(app.indexOf('function render(message)'), app.indexOf('function renderCursor()'));
+for (const effect of [
+  'force-a-scale', 'force-b-scale', 'field-scale', 'renderCursor()', 'renderSuspensions()',
+  'renderGhost()', 'treatyState.textContent', 'measurement.textContent', 'memoryNote.textContent'
+]) {
+  assert.ok(renderSection.includes(effect), `render must update visible treaty state: ${effect}`);
+}
 
-assert.match(worker, /museum-of-almost-entropy-v4/);
+assert.match(privacy, /museum-of-almost:entropy:v5/);
+assert.match(privacy, /last fictional suspension the visitor attempted to erase/i);
+assert.match(privacy, /Active suspensions are session-only/i);
+assert.match(privacy, /Hold durations and pointer coordinates exist only transiently/i);
+assert.match(privacy, /does not require a separate tracking flag/i);
+assert.match(history, /## Execution 5/);
+assert.match(history, /Primary Fixation exiled: Parallel membrane field/i);
+assert.match(log, /## Execution 5/);
+assert.match(log, /Original seed: `679e472a1e31e8c20074426565d9ed6ccc2f5115266f731bc3acd03470b35c02`/);
+assert.match(log, /Parallel membrane field/i);
+assert.match(log, /Rerolls: None/i);
+
+assert.match(worker, /museum-of-almost-entropy-v5/);
 assert.match(worker, /url\.origin !== self\.location\.origin/);
 assert.match(workflow, /jobs:\s*\n\s*check:/);
 assert.match(workflow, /permissions:\s*\n\s*contents: read/);
@@ -122,4 +142,4 @@ assert.doesNotMatch(publicText, /BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/);
 assert.doesNotMatch(publicText, /password\s*[:=]\s*["'][^"']+["']/i);
 assert.doesNotMatch(publicText, /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i);
 
-console.log('Privacy, accessibility, no-image runtime, entropy v4, and anti-convergence contract verified.');
+console.log('Privacy, accessibility, entropy v5 treaty, erasure-only memory, and anti-convergence contract verified.');
