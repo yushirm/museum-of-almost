@@ -3,8 +3,11 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const cosmic = require('../cosmic-signal.js');
-const source = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
+const cosmic = require('../cosmic-signal-core.js');
+const coreSource = fs.readFileSync(new URL('../cosmic-signal-core.js', import.meta.url), 'utf8');
+const viewSource = fs.readFileSync(new URL('../cosmic-signal-view.js', import.meta.url), 'utf8');
+const loaderSource = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
+const source = [coreSource, viewSource, loaderSource].join('\n');
 const styles = fs.readFileSync(new URL('../cosmic-signal.css', import.meta.url), 'utf8');
 
 assert.equal(cosmic.SOURCE, 'https://services.swpc.noaa.gov/products/noaa-scales.json');

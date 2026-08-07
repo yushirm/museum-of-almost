@@ -2,6 +2,7 @@
 
 const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet';
 const CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal';
+const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency';
 const APP_SHELL = [
   './',
   './index.html',
@@ -11,17 +12,23 @@ const APP_SHELL = [
   './difference-engine.css',
   './field-sheet.css',
   './cosmic-signal.css',
+  './cosmic-signal-core.js',
+  './cosmic-signal-view.js',
+  './cosmic-latency-core.js',
+  './cosmic-latency.js',
+  './cosmic-latency.css',
   './data-core.js',
   './app.js',
   './cosmic-signal.js',
   './manifest.webmanifest',
   './PRIVACY.md',
-  './SOURCES.md'
+  './SOURCES.md',
+  './COSMIC_RECEIVE_DESK.md'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches.open(ACTIVE_CACHE_NAME)
       .then((cache) => cache.addAll(APP_SHELL))
       .then(() => self.skipWaiting())
   );
@@ -30,11 +37,11 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    const isUpgrade = keys.some((key) => key.startsWith('museum-of-almost-') && key !== CACHE_NAME);
+    const isUpgrade = keys.some((key) => key.startsWith('museum-of-almost-') && key !== ACTIVE_CACHE_NAME);
 
     await Promise.all(
       keys
-        .filter((key) => key.startsWith('museum-of-almost-') && key !== CACHE_NAME)
+        .filter((key) => key.startsWith('museum-of-almost-') && key !== ACTIVE_CACHE_NAME)
         .map((key) => caches.delete(key))
     );
     await self.clients.claim();
@@ -62,7 +69,7 @@ self.addEventListener('fetch', (event) => {
         return fetch(request).then((response) => {
           if (!response || response.status !== 200 || response.type === 'opaque') return response;
           const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
+          caches.open(ACTIVE_CACHE_NAME).then((cache) => cache.put('./index.html', copy));
           return response;
         });
       })
@@ -76,7 +83,7 @@ self.addEventListener('fetch', (event) => {
       return fetch(request).then((response) => {
         if (!response || response.status !== 200 || response.type === 'opaque') return response;
         const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        caches.open(ACTIVE_CACHE_NAME).then((cache) => cache.put(request, copy));
         return response;
       });
     })

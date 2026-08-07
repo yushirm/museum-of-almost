@@ -28,11 +28,13 @@ jobs:
         with:
           node-version: 22
       - name: Check JavaScript syntax
-        run: node --check data-core.js && node --check app.js && node --check cosmic-signal.js && node --check service-worker.js && node --check scripts/test-data-core.mjs && node --check scripts/test-cosmic-signal.mjs && node --check scripts/test-service-worker.mjs && node --check scripts/check.mjs
+        run: node --check data-core.js && node --check app.js && node --check cosmic-signal.js && node --check cosmic-signal-core.js && node --check cosmic-signal-view.js && node --check cosmic-latency-core.js && node --check cosmic-latency.js && node --check service-worker.js && node --check scripts/test-data-core.mjs && node --check scripts/test-cosmic-signal.mjs && node --check scripts/test-cosmic-latency.mjs && node --check scripts/test-service-worker.mjs && node --check scripts/check.mjs
       - name: Test public data reduction
         run: node scripts/test-data-core.mjs
       - name: Test cosmic signal reduction
         run: node scripts/test-cosmic-signal.mjs
+      - name: Test cosmic latency reduction
+        run: node scripts/test-cosmic-latency.mjs
       - name: Test service worker lifecycle and boundary
         run: node scripts/test-service-worker.mjs
       - name: Check privacy and application contract
