@@ -3,8 +3,8 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 
-assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v3-coherent-shell'/);
-assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v4-world-map'/);
+assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v4-world-map'/);
+assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet'/);
 for (const asset of [
   './',
   './index.html',
@@ -12,6 +12,7 @@ for (const asset of [
   './world-map.css',
   './world-map.svg',
   './difference-engine.css',
+  './field-sheet.css',
   './data-core.js',
   './app.js',
   './manifest.webmanifest',
@@ -36,4 +37,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Commons / Now coherent offline shell, local world map, Difference Engine asset, and cross-origin boundary verified.');
+console.log('Commons / Now coherent offline shell, local world map, Difference Engine, printable field sheet, and cross-origin boundary verified.');

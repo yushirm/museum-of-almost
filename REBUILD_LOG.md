@@ -128,3 +128,67 @@ The map does not introduce a fifth data source, mapping API, tile server, geocod
 Rebuild rule:
 
 To rebuild the basemap, start from Natural Earth 110m land geometry in WGS84, simplify only the geometry, project every longitude/latitude pair with the formulas above into a 360 × 180 SVG, store the result locally as `world-map.svg`, and keep the interactive station positions on the identical projection. Never hand-adjust a point to make the map look better.
+
+## Extension 3 — The Planetary Section / Field Sheet
+
+Date: 2026-08-07
+
+Design gate:
+
+The map was completed, merged, deployed, and archived before any code for this extension was written. Then three fresh concepts were evaluated against the core goal: make the shared world legible right now without personalization, fake history, hidden scoring, or puzzle language.
+
+- **A — Sample Extremes:** conventionally highlight the hottest, coldest, windiest, and wettest of the thirteen current samples.
+- **B — Planetary Section:** borrow the architectural section drawing. Order the fixed points west to east and represent each as a discrete measured post, with temperature height, wind flag, precipitation mark, and explicit light state.
+- **C — Print Is Memory:** deliberately invert the normal web model. The application continues to store no history, but a user-controlled print action can turn one current moment into a local paper/PDF field sheet.
+
+Concept A was discarded. It mostly repackaged information already available in the range and Difference Engine, risked leaderboard/dashboard semantics, and could encourage a thirteen-point sample to be mistaken for a true global extreme.
+
+Concepts B and C were merged.
+
+Feature premise:
+
+**The Planetary Section / Field Sheet asks visitors to cut through the planet as it is now.**
+
+The section presents the thirteen fixed stations in actual west-to-east longitude order. Each station remains an individual measurement:
+
+- temperature controls vertical post position only within the current thirteen-point observed range;
+- wind is a separate local flag whose length is normalized only within the current snapshot;
+- precipitation is a separate local mark;
+- day, twilight, or night is derived locally from UTC time and geometry;
+- longitude controls horizontal position;
+- an accessible table repeats every value explicitly.
+
+The section **does not interpolate** between stations. There is no line, curve, filled area, or hidden estimate joining the posts. Unmeasured space stays unmeasured.
+
+Print Is Memory:
+
+The application still stores no visitor history. **Make field sheet** calls `window.print()` and relies only on the browser's native print surface. The print layout reduces the current experience to the local world map, Planetary Section, values, snapshot time, source provenance, and privacy statement.
+
+The Museum does not generate or upload a remote PDF, choose a destination, retain a print record, or store the sheet. If the browser or operating system offers a local PDF destination, that file is created under the visitor's own browser/device control rather than Museum application state.
+
+Integrity rules:
+
+- no interpolation between sparse samples;
+- no “global hottest/coldest” claim from thirteen points;
+- missing measurements remain missing and are not mapped to fake zero values;
+- the section derives from the already-loaded Open-Meteo snapshot and local geometry only;
+- field-sheet creation makes no network request;
+- `window.print()` is the only print mechanism;
+- no PDF library, screenshot uploader, document service, storage layer, account, analytics, or telemetry is introduced;
+- the four-source runtime allowlist remains unchanged;
+- the map and station projection remain unchanged;
+- the coherent offline-shell upgrade lifecycle is preserved.
+
+Runtime changes:
+
+- `data-core.js` adds a pure `planetarySection` reducer that sorts canonical stations by longitude and derives within-snapshot positions while preserving `null` for missing values;
+- `app.js` renders SVG using only discrete `line`, `circle`, and `text` marks and renders an authoritative HTML table;
+- `field-sheet.css` provides the on-screen architectural instrument and a landscape native-print layout;
+- `index.html` adds the Planetary Section / Field Sheet after the Difference Engine;
+- **Make field sheet** uses `window.print()`;
+- the service-worker shell advances from `museum-of-almost-commons-now-v4-world-map` to `museum-of-almost-commons-now-v5-field-sheet` and includes the new stylesheet;
+- tests verify exact west-to-east station order, missing-value integrity, no interpolating SVG path/polyline/polygon, native-only printing, responsive/print behavior, and the unchanged four-source network boundary.
+
+Rebuild rule:
+
+Start with the thirteen canonical station coordinates and one current normalized weather snapshot. Sort a copy of the station list by longitude. Derive temperature, wind, and precipitation ranges only from numeric readings in that same snapshot. Keep every missing value and derived position `null`. Render one post per station at its true longitude position; do not draw connecting geometry. Add an explicit values table. For preservation, use native browser print CSS and `window.print()` only. Keep the map and section source provenance on the printed sheet and do not add application persistence in order to create history.

@@ -82,6 +82,36 @@ assert.equal(core.metricPosition(12, -6, 30), 50);
 assert.equal(core.metricPosition(5, 5, 5), 50);
 assert.equal(core.metricPosition(null, 0, 10), 50);
 assert.deepEqual(core.observedRange([{ temperature: null }, { temperature: 4 }], 'temperature'), { available: true, min: 4, max: 4 });
+
+const section = core.planetarySection(weather, '2026-03-20T12:00:00Z');
+assert.equal(section.available, true);
+assert.equal(section.points.length, 13);
+assert.deepEqual(
+  section.points.map((point) => point.id),
+  ['03', '11', '10', '07', '06', '02', '08', '05', '12', '04', '01', '13', '09']
+);
+assert.deepEqual(section.ranges.temperature, { available: true, min: -6, max: 30 });
+assert.deepEqual(section.ranges.wind, { available: true, min: 5, max: 17 });
+assert.equal(section.points[0].lon, -175.28);
+assert.equal(section.points.at(-1).lon, 175.71);
+assert.ok(section.points.every((point, index, points) => index === 0 || point.longitudePosition >= points[index - 1].longitudePosition));
+assert.equal(section.points.find((point) => point.id === '01').temperaturePosition, 0);
+assert.equal(section.points.find((point) => point.id === '13').temperaturePosition, 100);
+
+const missingSectionWeather = {
+  points: weather.points.map((point) => point.id === '03'
+    ? { ...point, temperature: null, wind: null, precipitation: null, available: false }
+    : point)
+};
+const missingSection = core.planetarySection(missingSectionWeather, '2026-03-20T12:00:00Z');
+const missingPost = missingSection.points.find((point) => point.id === '03');
+assert.equal(missingPost.temperature, null);
+assert.equal(missingPost.wind, null);
+assert.equal(missingPost.precipitation, null);
+assert.equal(missingPost.temperaturePosition, null);
+assert.equal(missingPost.windPosition, null);
+assert.equal(missingPost.precipitationPosition, null);
+
 const unavailableComparison = core.compareStationPair(
   { id: 'A', lat: 0, lon: 0, temperature: null, wind: null, precipitation: null },
   { id: 'B', lat: 0, lon: 10, temperature: 5, wind: 7, precipitation: 0 },
@@ -116,4 +146,4 @@ assert.match(sentence, /487 km\/s/);
 assert.match(sentence, /13 fixed world points/);
 assert.match(sentence, /NASA EONET lists 3 open natural events/);
 
-console.log('Commons / Now data reduction, fixed sample, daylight geometry, and Difference Engine verified.');
+console.log('Commons / Now data reduction, fixed sample, daylight geometry, Difference Engine, and Planetary Section verified.');

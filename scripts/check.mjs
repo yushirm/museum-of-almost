@@ -13,6 +13,7 @@ for (const file of [
   'world-map.css',
   'world-map.svg',
   'difference-engine.css',
+  'field-sheet.css',
   'data-core.js',
   'app.js',
   'manifest.webmanifest',
@@ -36,6 +37,7 @@ const styles = read('styles.css');
 const mapStyles = read('world-map.css');
 const worldMap = read('world-map.svg');
 const differenceStyles = read('difference-engine.css');
+const fieldSheetStyles = read('field-sheet.css');
 const coreSource = read('data-core.js');
 const app = read('app.js');
 const worker = read('service-worker.js');
@@ -46,7 +48,7 @@ const rebuild = read('REBUILD_LOG.md');
 const rights = read('RIGHTS.md');
 const manifest = read('manifest.webmanifest');
 const workflow = read('.github/workflows/check.yml');
-const runtime = [index, styles, mapStyles, differenceStyles, coreSource, app, worker].join('\n');
+const runtime = [index, styles, mapStyles, differenceStyles, fieldSheetStyles, coreSource, app, worker].join('\n');
 const publicCurrent = [index, coreSource, app, readme, privacy, sources, rebuild, rights].join('\n');
 const core = require('../data-core.js');
 
@@ -83,7 +85,9 @@ for (const id of [
   'station-wind', 'station-rain', 'station-light', 'event-categories', 'daylight-count',
   'patch-a', 'patch-b', 'difference-points', 'patch-help', 'difference-readout',
   'difference-scale', 'difference-scale-label', 'difference-marker-a', 'difference-marker-b',
-  'difference-distance', 'difference-temperature', 'difference-wind', 'difference-rain', 'difference-light'
+  'difference-distance', 'difference-temperature', 'difference-wind', 'difference-rain', 'difference-light',
+  'section-status', 'planetary-section-plot', 'section-plot-desc', 'section-guides', 'section-posts',
+  'section-table-body', 'field-sheet-time', 'field-sheet-button'
 ]) {
   assert.match(index, new RegExp(`id=["']${id}["']`), `missing Commons / Now interface id: ${id}`);
 }
@@ -97,12 +101,21 @@ assert.match(index, /No map or tile service is contacted/i);
 assert.match(index, /THE DIFFERENCE ENGINE/);
 assert.match(index, /How different can the same planet be at the same moment\?/);
 assert.match(index, /makes no additional network request/i);
+assert.match(index, /PLANETARY SECTION \/ FIELD SHEET/);
+assert.match(index, /Cut through the planet as it is now\./);
+assert.match(index, /No connecting line\./);
+assert.match(index, /Unmeasured space stays unmeasured\./);
+assert.match(index, /Make field sheet/);
+assert.match(index, /native print dialog/i);
+assert.match(index, /does not upload or save the sheet/i);
+assert.match(index, /href="field-sheet\.css"/);
 assert.match(index, /WHAT THIS ACTUALLY DOES/);
 assert.match(index, /No account\. No location\. No visitor data\./i);
 assert.match(index, /Weather data: Open-Meteo/i);
 assert.match(index, /role="status"[^>]+aria-live="polite"/);
 assert.match(index, /role="group"[^>]+aria-label="Thirteen fixed global weather points"/);
 assert.match(index, /role="group"[^>]+aria-label="Choose a comparison lens"/);
+assert.match(index, /role="img"[^>]+aria-labelledby="section-plot-title section-plot-desc"/);
 assert.match(index, /aria-live="polite"/);
 assert.match(index, /href="SOURCES\.md"/);
 assert.match(index, /href="PRIVACY\.md"/);
@@ -139,6 +152,12 @@ assert.match(app, /comparisonBId = '09'/);
 assert.match(app, /function patchComparisonPoint\b/);
 assert.match(app, /function renderDifferenceEngine\b/);
 assert.match(app, /function renderDifferenceScale\b/);
+assert.match(app, /function renderPlanetarySection\b/);
+assert.match(app, /fieldSheetButton\?\.addEventListener\('click', \(\) => window\.print\(\)\)/);
+assert.match(app, /createElementNS\(SVG_NS, 'line'\)/);
+assert.match(app, /createElementNS\(SVG_NS, 'circle'\)/);
+assert.doesNotMatch(app, /createElementNS\(SVG_NS, ['"](?:path|polyline|polygon)['"]\)/,
+  'planetary section must not connect sparse station samples into invented continuity');
 assert.doesNotMatch(app, /setInterval|requestAnimationFrame/i, 'live public data must not poll or run a data animation loop');
 assert.doesNotMatch(app, /navigator\.geolocation|\bgeolocation\b/i);
 assert.doesNotMatch(app, /localStorage|sessionStorage|indexedDB|document\.cookie/i, 'visitor state must not be persisted');
@@ -146,12 +165,14 @@ assert.doesNotMatch(app, /localStorage|sessionStorage|indexedDB|document\.cookie
 for (const functionName of [
   'normalizeEarthquakes', 'normalizeSolarWind', 'normalizeWeather', 'normalizeEvents',
   'sunState', 'stationPosition', 'greatCircleDistanceKm', 'observedRange', 'metricPosition',
-  'compareStationPair', 'differenceSentence', 'snapshotSentence'
+  'planetarySection', 'compareStationPair', 'differenceSentence', 'snapshotSentence'
 ]) {
   assert.match(coreSource, new RegExp(`function ${functionName}\\b`), `missing data-core function: ${functionName}`);
 }
 assert.doesNotMatch(coreSource, /localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
 assert.match(coreSource, /typeof pointA\?\.temperature === 'number'/, 'missing weather values must not coerce to numeric zero');
+assert.match(coreSource, /temperaturePosition: temperature !== null/);
+assert.match(coreSource, /\.sort\(\(a, b\) => a\.lon - b\.lon/);
 
 assert.match(styles, /min-height:\s*44px/);
 assert.match(styles, /:focus-visible/);
@@ -175,15 +196,30 @@ assert.match(differenceStyles, /@media print/);
 assert.doesNotMatch(differenceStyles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(differenceStyles, /min-width:\s*[4-9]\d\dpx/);
 
-assert.match(worker, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v3-coherent-shell'/);
-assert.match(worker, /const CACHE_NAME = 'museum-of-almost-commons-now-v4-world-map'/);
+assert.match(fieldSheetStyles, /\.planetary-section/);
+assert.match(fieldSheetStyles, /\.planetary-section-plot/);
+assert.match(fieldSheetStyles, /\.section-post/);
+assert.match(fieldSheetStyles, /\.section-wind/);
+assert.match(fieldSheetStyles, /\.section-rain/);
+assert.match(fieldSheetStyles, /#field-sheet-button/);
+assert.match(fieldSheetStyles, /@media \(max-width: 620px\)/);
+assert.match(fieldSheetStyles, /@media \(max-width: 380px\)/);
+assert.match(fieldSheetStyles, /@media \(prefers-reduced-motion: reduce\)/);
+assert.match(fieldSheetStyles, /@media \(prefers-contrast: more\)/);
+assert.match(fieldSheetStyles, /@media print/);
+assert.match(fieldSheetStyles, /@page\s*\{\s*size:\s*landscape/);
+assert.doesNotMatch(fieldSheetStyles, /@import\s+url|font-face|https?:\/\//i);
+assert.doesNotMatch(fieldSheetStyles, /min-width:\s*[4-9]\d\dpx/);
+
+assert.match(worker, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v4-world-map'/);
+assert.match(worker, /const CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet'/);
 assert.match(worker, /url\.origin !== self\.location\.origin/);
 assert.match(worker, /caches\.match\('\.\/index\.html'\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
   'navigation cache must remain coherent across releases');
 assert.match(worker, /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/);
 assert.match(worker, /client\.navigate\(client\.url\)/);
 assert.doesNotMatch(worker, /https?:\/\//, 'service worker must never proxy public live-data sources');
-for (const asset of ['./index.html', './styles.css', './world-map.css', './world-map.svg', './difference-engine.css', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md']) {
+for (const asset of ['./index.html', './styles.css', './world-map.css', './world-map.svg', './difference-engine.css', './field-sheet.css', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md']) {
   assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
 }
 
@@ -195,6 +231,12 @@ assert.match(readme, /Natural Earth 110m public-domain land geometry/i);
 assert.match(readme, /No map API, tile server, remote image, or runtime mapping library is contacted/i);
 assert.match(readme, /Difference Engine/i);
 assert.match(readme, /adds no data source and makes no extra network request/i);
+assert.match(readme, /Planetary Section/i);
+assert.match(readme, /west to east/i);
+assert.match(readme, /does not interpolate/i);
+assert.match(readme, /Make field sheet/i);
+assert.match(readme, /native print/i);
+assert.match(readme, /does not upload or store the result/i);
 assert.match(readme, /no visitor persistence/i);
 assert.match(readme, /6bc76dc33337414e7c9f9ccbd7539976d98ac371444860c605fb88003174ded2/);
 assert.match(readme, /original opaque seed inputs are deliberately not stored/i);
@@ -209,6 +251,8 @@ assert.match(privacy, /IP address/i);
 assert.match(privacy, /thirteen fixed latitude\/longitude pairs/i);
 assert.match(privacy, /original opaque values are not stored or published/i);
 assert.match(privacy, /does not contact a map API, tile provider, geocoder/i);
+assert.match(privacy, /native browser print/i);
+assert.match(privacy, /does not upload, receive, store, or transmit the printed sheet or PDF/i);
 assert.match(privacy, /does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses/i);
 
 for (const sourceName of ['USGS', 'NOAA', 'Open-Meteo', 'NASA']) {
@@ -223,6 +267,8 @@ assert.match(sources, /Natural Earth 110m land geometry/i);
 assert.match(sources, /public domain/i);
 assert.match(sources, /x = longitude \+ 180/);
 assert.match(sources, /y = 90 - latitude/);
+assert.match(sources, /Planetary Section/);
+assert.match(sources, /no interpolation/i);
 assert.match(sources, /does not poll automatically/i);
 
 assert.match(rebuild, /Reset 1 — COMMONS \/ NOW/);
@@ -233,6 +279,12 @@ assert.match(rebuild, /missing source values remain unavailable and must never c
 assert.match(rebuild, /Extension 2 — Thirteen Windows Get a World/);
 assert.match(rebuild, /Natural Earth 110m public-domain land geometry/i);
 assert.match(rebuild, /Never hand-adjust a point/i);
+assert.match(rebuild, /Extension 3 — The Planetary Section \/ Field Sheet/);
+assert.match(rebuild, /Concept A was discarded/i);
+assert.match(rebuild, /Planetary Section/);
+assert.match(rebuild, /Print Is Memory/);
+assert.match(rebuild, /does not interpolate/i);
+assert.match(rebuild, /window\.print/i);
 assert.match(rebuild, /6bc76dc33337414e7c9f9ccbd7539976d98ac371444860c605fb88003174ded2/);
 assert.match(rebuild, /original opaque values are intentionally absent/i);
 assert.match(rebuild, /Treaty 05 ontology and interaction surface/);
@@ -267,4 +319,4 @@ assert.doesNotMatch(publicCurrent, /BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/);
 assert.doesNotMatch(publicCurrent, /password\s*[:=]\s*["'][^"']+["']/i);
 assert.doesNotMatch(publicCurrent, /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i);
 
-console.log('Commons / Now local-map, coherent-shell, public-data, Difference Engine, privacy, accessibility, seed, and offline contract verified.');
+console.log('Commons / Now local-map, coherent-shell, public-data, Difference Engine, Planetary Section, field-sheet, privacy, accessibility, seed, and offline contract verified.');

@@ -256,6 +256,58 @@
     return round(clamp((number - low) / (high - low), 0, 1) * 100, 2);
   }
 
+  function planetarySection(weather, timestamp) {
+    const weatherPoints = Array.isArray(weather?.points) ? weather.points : [];
+    const pointsById = new Map(weatherPoints.map((point) => [point?.id, point]));
+    const temperatureRange = observedRange(weatherPoints, 'temperature');
+    const windRange = observedRange(weatherPoints, 'wind');
+    const precipitationRange = observedRange(weatherPoints, 'precipitation');
+
+    const points = STATIONS
+      .slice()
+      .sort((a, b) => a.lon - b.lon || a.id.localeCompare(b.id))
+      .map((station) => {
+        const weatherPoint = pointsById.get(station.id) || {};
+        const temperature = typeof weatherPoint.temperature === 'number' && Number.isFinite(weatherPoint.temperature)
+          ? weatherPoint.temperature
+          : null;
+        const wind = typeof weatherPoint.wind === 'number' && Number.isFinite(weatherPoint.wind)
+          ? weatherPoint.wind
+          : null;
+        const precipitation = typeof weatherPoint.precipitation === 'number' && Number.isFinite(weatherPoint.precipitation)
+          ? weatherPoint.precipitation
+          : null;
+
+        return {
+          ...station,
+          longitudePosition: stationPosition(station).x,
+          temperature,
+          wind,
+          precipitation,
+          temperaturePosition: temperature !== null && temperatureRange.available
+            ? metricPosition(temperature, temperatureRange.min, temperatureRange.max)
+            : null,
+          windPosition: wind !== null && windRange.available
+            ? metricPosition(wind, windRange.min, windRange.max)
+            : null,
+          precipitationPosition: precipitation !== null && precipitationRange.available
+            ? metricPosition(precipitation, precipitationRange.min, precipitationRange.max)
+            : null,
+          light: sunState(timestamp, station.lat, station.lon)
+        };
+      });
+
+    return {
+      available: points.some((point) => point.temperature !== null || point.wind !== null || point.precipitation !== null),
+      points,
+      ranges: {
+        temperature: temperatureRange,
+        wind: windRange,
+        precipitation: precipitationRange
+      }
+    };
+  }
+
   function compareStationPair(pointA, pointB, lightA = 'unknown', lightB = 'unknown') {
     const temperatureA = typeof pointA?.temperature === 'number' ? pointA.temperature : Number.NaN;
     const temperatureB = typeof pointB?.temperature === 'number' ? pointB.temperature : Number.NaN;
@@ -381,6 +433,7 @@
     greatCircleDistanceKm,
     observedRange,
     metricPosition,
+    planetarySection,
     compareStationPair,
     differenceSentence,
     snapshotSentence

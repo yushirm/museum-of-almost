@@ -46,6 +46,16 @@ The active pair and selected lens exist only in JavaScript memory. They are not 
 
 Distance is calculated locally from the two fixed coordinates. Temperature, wind, and precipitation differences are derived only from the already-loaded Open-Meteo snapshot. Light state is calculated locally from UTC time and geometry.
 
+## Planetary Section and field sheet
+
+The Planetary Section is another view of the same thirteen fixed coordinates and the same current Open-Meteo response. It orders the stations west to east and derives only within-snapshot positions for temperature, wind, and precipitation. It does not request another data source or infer measurements between stations.
+
+The section and its table exist only in the page DOM and memory. They are not stored as Museum history.
+
+Pressing **Make field sheet** calls the native browser print function. The Museum application does not create a remote document, call a PDF service, upload a screenshot, send the print job to a server, or write a file itself. It does not upload, receive, store, or transmit the printed sheet or PDF.
+
+A browser or operating system may offer destinations such as a local printer or local PDF file. Any print history, printer queue, PDF destination, or operating-system file behavior is controlled by that browser/device and is outside the Museum application's data handling.
+
 ## Data handling
 
 Live responses are held in page memory only long enough to render the current snapshot. Reloading or closing the page discards them. The application does not forward source responses to another service.
@@ -59,7 +69,9 @@ The page deliberately reduces source data:
 
 ## Offline shell
 
-A same-origin service worker caches only the Museum's static application shell, including the local world map, so that the explanatory interface can still open offline. The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses.
+A same-origin service worker caches only the Museum's static application shell, including the local world map and field-sheet stylesheet, so that the explanatory interface can still open offline. The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses.
+
+The service worker keeps one coherent static shell across upgrades. After a complete shell replacement, open Museum windows are reloaded once so HTML, scripts, styles, and local assets adopt the new version together.
 
 When offline, live values are shown as unavailable. The page does not display stale live values from storage.
 
