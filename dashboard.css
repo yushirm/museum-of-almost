@@ -1,0 +1,404 @@
+:root {
+  --dashboard-panel: rgba(238, 241, 234, 0.035);
+  --dashboard-panel-strong: rgba(238, 241, 234, 0.06);
+  --dashboard-line: rgba(167, 173, 167, 0.34);
+  --dashboard-pressure: 0%;
+}
+
+body {
+  background:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px),
+    var(--field);
+  background-size: 32px 32px;
+}
+
+.site-header,
+.site-footer,
+.treaty {
+  width: min(1480px, calc(100% - 2rem));
+}
+
+.site-header {
+  min-height: 72px;
+}
+
+.identity strong {
+  font-size: 1.05rem;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+  padding-top: 1.5rem;
+}
+
+.dashboard > * {
+  min-width: 0;
+}
+
+.dashboard .treaty-heading {
+  grid-column: 1 / -1;
+  margin-bottom: 0.25rem;
+  padding: 1rem 0 1.25rem;
+}
+
+.dashboard-summary {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--dashboard-line);
+  background: rgba(16, 19, 23, 0.78);
+}
+
+.dashboard-kpi {
+  position: relative;
+  min-height: 132px;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.dashboard-kpi + .dashboard-kpi {
+  border-left: 1px solid var(--dashboard-line);
+}
+
+.dashboard-kpi-label,
+.dashboard-panel-label,
+.dashboard-system dt,
+.dashboard-live-metric span {
+  display: block;
+  margin: 0 0 0.55rem;
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 760;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dashboard-kpi strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-family: ui-serif, Georgia, serif;
+  font-size: clamp(1.55rem, 3vw, 2.65rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.dashboard-kpi small {
+  display: block;
+  max-width: 30ch;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.dashboard-pressure-track {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  height: 3px;
+  overflow: hidden;
+  background: rgba(167, 173, 167, 0.18);
+}
+
+.dashboard-pressure-track::after {
+  content: "";
+  display: block;
+  width: var(--dashboard-pressure);
+  height: 100%;
+  background: var(--mark);
+  transition: width 240ms ease;
+}
+
+.dashboard .treaty-surface {
+  grid-column: 1 / span 8;
+  grid-row: auto;
+  min-height: clamp(500px, 62vh, 690px);
+  border: 1px solid var(--dashboard-line);
+  background: rgba(16, 19, 23, 0.72);
+}
+
+.dashboard .action-strip {
+  grid-column: 1 / span 8;
+  padding: 0.8rem;
+  border: 1px solid var(--dashboard-line);
+  background: var(--dashboard-panel);
+}
+
+.dashboard .readout {
+  grid-column: 1 / span 8;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--dashboard-line);
+  background: var(--dashboard-panel);
+}
+
+.dashboard .readout p {
+  min-height: 92px;
+  margin: 0;
+  padding: 0.9rem;
+  display: flex;
+  align-items: flex-end;
+  border: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.dashboard .readout p + p {
+  border-left: 1px solid var(--dashboard-line);
+}
+
+.dashboard .live-entropy,
+.dashboard .field-ledger,
+.dashboard .dashboard-system,
+.dashboard .session-record,
+.dashboard .shortcut-help {
+  margin: 0;
+  border: 1px solid var(--dashboard-line);
+  background: var(--dashboard-panel);
+}
+
+.dashboard .live-entropy {
+  grid-column: 9 / -1;
+  grid-row: 3 / span 2;
+  align-self: stretch;
+  padding: 1rem;
+}
+
+.dashboard .live-entropy-heading {
+  margin-bottom: 1rem;
+}
+
+.dashboard .live-entropy-body {
+  display: grid;
+  gap: 1rem;
+}
+
+.dashboard-live-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--dashboard-line);
+}
+
+.dashboard-live-metric {
+  min-height: 92px;
+  padding: 0.75rem;
+}
+
+.dashboard-live-metric:nth-child(even) {
+  border-left: 1px solid var(--dashboard-line);
+}
+
+.dashboard-live-metric:nth-child(n+3) {
+  border-top: 1px solid var(--dashboard-line);
+}
+
+.dashboard-live-metric strong {
+  display: block;
+  font-family: ui-serif, Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.dashboard .live-entropy-grid {
+  grid-template-columns: 1fr;
+}
+
+.dashboard .field-ledger {
+  grid-column: 9 / -1;
+  padding: 1rem;
+}
+
+.dashboard .ledger-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboard .session-record {
+  grid-column: 1 / span 8;
+  padding: 1rem;
+}
+
+.dashboard-system {
+  grid-column: 9 / -1;
+  padding: 1rem;
+}
+
+.dashboard-system h2 {
+  margin-bottom: 1rem;
+}
+
+.dashboard-system dl {
+  margin: 0;
+  border-top: 1px solid var(--dashboard-line);
+}
+
+.dashboard-system div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--dashboard-line);
+}
+
+.dashboard-system dt,
+.dashboard-system dd {
+  margin: 0;
+}
+
+.dashboard-system dd {
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 720;
+  letter-spacing: 0.06em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.dashboard .shortcut-help {
+  grid-column: 1 / span 8;
+}
+
+.dashboard > .status,
+.dashboard > .privacy-line {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.dashboard > .status {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--dashboard-line);
+  background: var(--dashboard-panel-strong);
+}
+
+.dashboard > .privacy-line {
+  padding-top: 0.4rem;
+}
+
+.treaty[data-order="holding"] #dashboard-agreement { color: var(--mark); }
+.treaty[data-order="overwritten"] #dashboard-agreement { color: var(--error); }
+.treaty[data-live-entropy="true"] #dashboard-pressure { color: var(--mark); }
+.treaty[data-correspondence="accord"] #dashboard-correspondence,
+.treaty[data-correspondence="near"] #dashboard-correspondence { color: var(--force-a); }
+.treaty[data-correspondence="resistance"] #dashboard-correspondence { color: var(--force-b); }
+
+@media (max-width: 1080px) {
+  .dashboard .treaty-surface,
+  .dashboard .action-strip,
+  .dashboard .readout,
+  .dashboard .session-record,
+  .dashboard .shortcut-help {
+    grid-column: 1 / span 7;
+  }
+
+  .dashboard .live-entropy,
+  .dashboard .field-ledger,
+  .dashboard .dashboard-system {
+    grid-column: 8 / -1;
+  }
+}
+
+@media (max-width: 820px) {
+  .dashboard-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-kpi:nth-child(3) {
+    border-left: 0;
+    border-top: 1px solid var(--dashboard-line);
+  }
+
+  .dashboard-kpi:nth-child(4) {
+    border-top: 1px solid var(--dashboard-line);
+  }
+
+  .dashboard .treaty-surface,
+  .dashboard .action-strip,
+  .dashboard .readout,
+  .dashboard .live-entropy,
+  .dashboard .field-ledger,
+  .dashboard .session-record,
+  .dashboard .dashboard-system,
+  .dashboard .shortcut-help {
+    grid-column: 1 / -1;
+  }
+
+  .dashboard .live-entropy {
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header,
+  .site-footer,
+  .treaty {
+    width: min(100% - 1rem, 1480px);
+  }
+
+  .dashboard {
+    gap: 0.65rem;
+  }
+
+  .dashboard-summary,
+  .dashboard .readout,
+  .dashboard-live-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-kpi + .dashboard-kpi,
+  .dashboard-live-metric:nth-child(even),
+  .dashboard .readout p + p {
+    border-left: 0;
+  }
+
+  .dashboard-kpi + .dashboard-kpi,
+  .dashboard-live-metric:nth-child(n+2),
+  .dashboard .readout p + p {
+    border-top: 1px solid var(--dashboard-line);
+  }
+
+  .dashboard .treaty-surface {
+    min-height: 460px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-pressure-track::after {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --dashboard-line: rgba(238, 241, 234, 0.72);
+  }
+
+  .dashboard-kpi,
+  .dashboard .live-entropy,
+  .dashboard .field-ledger,
+  .dashboard .dashboard-system,
+  .dashboard .session-record {
+    background: var(--field);
+  }
+}
+
+@media print {
+  body { background: #fff; }
+  .dashboard {
+    display: block;
+  }
+  .dashboard-summary,
+  .dashboard .treaty-surface,
+  .dashboard .readout,
+  .dashboard .live-entropy,
+  .dashboard .field-ledger,
+  .dashboard .session-record,
+  .dashboard .dashboard-system {
+    margin-bottom: 1rem;
+    break-inside: avoid;
+  }
+}
