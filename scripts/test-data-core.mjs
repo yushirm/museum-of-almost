@@ -147,3 +147,18 @@ assert.match(sentence, /13 fixed world points/);
 assert.match(sentence, /NASA EONET lists 3 open natural events/);
 
 console.log('Commons / Now data reduction, fixed sample, daylight geometry, Difference Engine, and Planetary Section verified.');
+
+const noonSolstice = core.solarGeometry('2026-06-21T12:00:00Z');
+assert.ok(noonSolstice);
+assert.ok(Math.abs(noonSolstice.subsolar.lat - 23.44) < 0.2);
+assert.ok(Math.abs(noonSolstice.subsolar.lon) < 0.01);
+assert.ok(Math.abs(noonSolstice.antisolar.lat + noonSolstice.subsolar.lat) < 1e-9);
+assert.ok(Math.abs(Math.abs(noonSolstice.antisolar.lon) - 180) < 0.01);
+assert.ok(core.solarElevation('2026-06-21T12:00:00Z', noonSolstice.subsolar.lat, noonSolstice.subsolar.lon) > 89.9);
+assert.ok(core.solarElevation('2026-06-21T12:00:00Z', noonSolstice.antisolar.lat, noonSolstice.antisolar.lon) < -89.9);
+assert.equal(core.normalizeLongitude(190), -170);
+assert.equal(core.normalizeLongitude(-190), 170);
+assert.equal(core.solarGeometry('invalid'), null);
+
+assert.equal(core.solarGeometry(null), null);
+assert.equal(core.sunState(null, 0, 0), 'unknown');
