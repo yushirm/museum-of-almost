@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#11100f">
-  <meta name="description" content="A local-first living weave of unfinished ideas and delayed consequences.">
+  <meta name="theme-color" content="#f1eee3">
+  <meta name="description" content="A local-first browser law that becomes coherent by remaining partly broken.">
   <title>The Museum of Almost</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#organism">Skip to the living weave</a>
+  <a class="skip-link" href="#law">Skip to the law</a>
 
   <header class="site-header">
     <div class="identity" aria-label="The Museum of Almost">
       <small>The Museum of Almost</small>
-      <strong>Temporary organism</strong>
+      <strong>Law 02 · Productive error</strong>
     </div>
     <div class="site-controls" aria-label="Local controls">
       <button id="sound-button" type="button" aria-pressed="false">Sound off</button>
@@ -23,33 +23,39 @@
     </div>
   </header>
 
-  <main id="organism" class="organism" tabindex="-1" aria-labelledby="organism-title">
-    <div class="organism-copy">
-      <p class="role-line" id="role-line">Custodian shift active</p>
-      <h1 id="organism-title">Keep the rule unstable.</h1>
-      <p class="rule" aria-live="polite">
-        <span>Current rule</span>
-        <strong id="rule-text">Keep every unfinished idea separate.</strong>
-      </p>
-      <p class="instruction" id="instruction">Contradict any knot. Then wait for what follows.</p>
+  <main id="law" class="law" tabindex="-1" data-season="0" data-duplicate="quiet" data-withheld="false">
+    <div class="law-heading">
+      <p class="season-line"><span>Season</span><strong id="season-text">Spring</strong></p>
+      <h1>Repair it wrongly.</h1>
+      <p class="law-statement" id="law-text">A repair is valid only while one error remains.</p>
+      <p class="instruction" id="instruction">Touch the timeline. Repair the break incorrectly.</p>
     </div>
 
-    <section class="weave" aria-label="A connected field of unfinished ideas">
-      <canvas id="weave-canvas" aria-hidden="true"></canvas>
-      <div id="knot-field" class="knot-field"></div>
-      <p id="field-status" class="field-status" aria-live="polite">The weave is listening without recording you.</p>
-      <p id="warning" class="warning" hidden></p>
+    <section
+      id="timeline-surface"
+      class="timeline-surface"
+      tabindex="0"
+      role="application"
+      aria-label="Touchable timeline. Use arrow keys to choose a term, then Enter or Space to repair it incorrectly."
+      aria-activedescendant="term-1"
+    >
+      <div id="duplicate-track" class="timeline-track duplicate-track" aria-hidden="true" hidden></div>
+      <div id="primary-track" class="timeline-track primary-track"></div>
+      <div class="timeline-axis" aria-hidden="true"></div>
     </section>
 
-    <aside class="local-note" aria-label="Local memory notice">
-      <p id="memory-note">One fictional accident may remain between visits.</p>
-      <p>State stays in this browser and can be reset.</p>
-    </aside>
+    <div class="readout">
+      <p id="condition">The law is holding, but exactness is approaching.</p>
+      <p id="status" aria-live="polite">The browser is attempting to correct itself.</p>
+      <p id="memory-note">No visitor action is remembered yet.</p>
+    </div>
+
+    <p class="privacy-line">Local state only. No accounts, analytics, visitor text, or remote runtime calls.</p>
   </main>
 
   <footer class="site-footer">
-    <span>No accounts. No analytics. No visitor text.</span>
     <a href="PRIVACY.md">Privacy boundary</a>
+    <span>The title survives as a fossil, not a floor plan.</span>
   </footer>
 
   <script src="entropy-core.js" defer></script>
