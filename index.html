@@ -4,19 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#101317">
-  <meta name="description" content="A local-first agreement between impossible forces.">
+  <meta name="description" content="A live and local dashboard for an agreement between impossible forces.">
   <title>The Museum of Almost</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="live-entropy.css">
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-  <a class="skip-link" href="#treaty">Skip to the treaty</a>
+  <a class="skip-link" href="#treaty">Skip to the treaty dashboard</a>
 
   <header class="site-header">
     <div class="identity" aria-label="The Museum of Almost">
       <small>The Museum of Almost</small>
-      <strong>Treaty 05 · Counterweight protocol</strong>
+      <strong>Treaty 05 · Live operations dashboard</strong>
     </div>
     <div class="site-controls" aria-label="Local controls">
       <button id="sound-button" type="button" aria-pressed="false">Sound off</button>
@@ -24,12 +25,36 @@
     </div>
   </header>
 
-  <main id="treaty" class="treaty" tabindex="-1" data-order="too-exact" data-holding="false" data-event="false">
+  <main id="treaty" class="treaty dashboard" tabindex="-1" data-order="too-exact" data-holding="false" data-event="false">
     <div class="treaty-heading">
-      <p class="registration">IMPOSSIBLE TREATY / 05</p>
-      <h1>Suspend one force so both can agree.</h1>
+      <p class="registration">IMPOSSIBLE TREATY / DASHBOARD 05</p>
+      <h1>Watch the agreement while you change it.</h1>
       <p id="instruction" class="instruction">Hold anywhere on the line. Arrow keys move the keyboard counterweight.</p>
     </div>
+
+    <section class="dashboard-summary" aria-label="Treaty dashboard summary">
+      <article class="dashboard-kpi">
+        <span class="dashboard-kpi-label">Agreement</span>
+        <strong id="dashboard-agreement">TOO EXACT</strong>
+        <small id="dashboard-agreement-detail">The forces match too perfectly to agree.</small>
+      </article>
+      <article class="dashboard-kpi">
+        <span class="dashboard-kpi-label">World pressure</span>
+        <strong id="dashboard-pressure">LOCAL BASELINE</strong>
+        <small id="dashboard-pressure-detail">No outside signal is currently applied.</small>
+        <span class="dashboard-pressure-track" aria-hidden="true"></span>
+      </article>
+      <article class="dashboard-kpi">
+        <span class="dashboard-kpi-label">Session load</span>
+        <strong id="dashboard-session-load">0 / 0</strong>
+        <small id="dashboard-session-detail">0 active marks · total weight 0 · spread 0.0%.</small>
+      </article>
+      <article class="dashboard-kpi">
+        <span class="dashboard-kpi-label">Durable memory</span>
+        <strong id="dashboard-memory">EMPTY</strong>
+        <small id="dashboard-memory-detail">Nothing attempted to erase has been preserved yet.</small>
+      </article>
+    </section>
 
     <div
       id="treaty-surface"
@@ -95,7 +120,7 @@
       <p>Session additions stay local and temporary. Erasure remains the only durable fictional memory.</p>
     </div>
 
-    <div class="readout">
+    <div class="readout" aria-label="Treaty instrument readout">
       <p id="treaty-state">The forces match too perfectly to agree.</p>
       <p id="measurement">Measured: 11 q? · unit unresolved</p>
       <p id="memory-note">Nothing attempted to erase has been preserved yet.</p>
@@ -105,9 +130,28 @@
     <section id="live-entropy" class="live-entropy" aria-labelledby="live-entropy-title">
       <div class="live-entropy-heading">
         <p class="registration">LIVE ENTROPY</p>
-        <h2 id="live-entropy-title">Let the outside world lean on the treaty.</h2>
+        <h2 id="live-entropy-title">Outside pressure</h2>
       </div>
       <div class="live-entropy-body">
+        <div class="dashboard-live-metrics" aria-label="Current live source metrics">
+          <div class="dashboard-live-metric">
+            <span>Earthquakes / hour</span>
+            <strong id="dashboard-quakes">—</strong>
+          </div>
+          <div class="dashboard-live-metric">
+            <span>Strongest</span>
+            <strong id="dashboard-magnitude">—</strong>
+          </div>
+          <div class="dashboard-live-metric">
+            <span>Solar wind</span>
+            <strong id="dashboard-solar">—</strong>
+          </div>
+          <div class="dashboard-live-metric">
+            <span>Correspondence</span>
+            <strong id="dashboard-correspondence">LOCAL ONLY</strong>
+          </div>
+        </div>
+
         <div class="live-entropy-controls" role="group" aria-label="Live entropy controls">
           <button id="live-invite-button" type="button">Invite live entropy</button>
           <button id="live-release-button" type="button" disabled>Release influence</button>
@@ -126,7 +170,7 @@
     <section class="field-ledger" aria-labelledby="ledger-title">
       <div class="ledger-heading">
         <p class="registration">FIELD LEDGER</p>
-        <h2 id="ledger-title">What this session has accumulated.</h2>
+        <h2 id="ledger-title">Session structure</h2>
       </div>
       <dl class="ledger-grid">
         <div>
@@ -152,11 +196,34 @@
     <section class="session-record" aria-labelledby="record-title">
       <div>
         <p class="registration">SESSION RECORD</p>
-        <h2 id="record-title">Only the current visit remembers these actions.</h2>
+        <h2 id="record-title">Current-visit activity</h2>
       </div>
       <ol id="session-journal" class="session-journal">
         <li>The treaty opened without an active suspension.</li>
       </ol>
+    </section>
+
+    <section class="dashboard-system" aria-labelledby="dashboard-system-title">
+      <span class="dashboard-panel-label">SYSTEM</span>
+      <h2 id="dashboard-system-title">Local operating state</h2>
+      <dl>
+        <div>
+          <dt>Network</dt>
+          <dd id="dashboard-network">AVAILABLE</dd>
+        </div>
+        <div>
+          <dt>Durable store</dt>
+          <dd id="dashboard-storage">LOCAL</dd>
+        </div>
+        <div>
+          <dt>Offline shell</dt>
+          <dd id="dashboard-worker">READYING</dd>
+        </div>
+        <div>
+          <dt>Live requests</dt>
+          <dd id="dashboard-live">IDLE</dd>
+        </div>
+      </dl>
     </section>
 
     <details class="shortcut-help">
@@ -175,12 +242,13 @@
 
   <footer class="site-footer">
     <a href="PRIVACY.md">Privacy boundary</a>
-    <span>The title remains. Agreement is temporary. Construction is additive.</span>
+    <span>Live signals describe the present. Local memory keeps only attempted erasure.</span>
   </footer>
 
   <script src="entropy-core.js" defer></script>
   <script src="app.js" defer></script>
   <script src="live-entropy-core.js" defer></script>
   <script src="live-entropy.js" defer></script>
+  <script src="dashboard.js" defer></script>
 </body>
 </html>
