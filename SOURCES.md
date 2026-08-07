@@ -54,6 +54,8 @@ Open-Meteo provides no-key access for non-commercial use and requires attributio
 
 The Difference Engine reuses this same thirteen-point response. It makes no second Open-Meteo request: pair deltas and the observed comparison range are calculated locally from the current snapshot already in page memory.
 
+The **Planetary Section** also reuses this exact response. It orders the fixed stations west to east and derives temperature height, wind-flag length, and precipitation marks only from the thirteen values already in memory. There is **no interpolation** between samples, no smoothing, and no additional weather request.
+
 ## NASA Earth Observatory Natural Event Tracker (EONET)
 
 Current metrics:
@@ -96,10 +98,19 @@ The following values do not come from an additional service:
 
 - daylight, twilight, and night at each fixed point are approximated locally from UTC time and geometry;
 - Difference Engine surface distance is calculated locally as great-circle distance between two fixed coordinates;
-- Difference Engine temperature, wind, and precipitation deltas are derived from the existing Open-Meteo response.
+- Difference Engine temperature, wind, and precipitation deltas are derived from the existing Open-Meteo response;
+- Planetary Section west-to-east ordering comes from each fixed point's longitude;
+- Planetary Section temperature, wind, and precipitation positions are normalized only against the current thirteen reporting points;
+- the field-sheet timestamp is the time the current snapshot was received by the page.
+
+The Planetary Section intentionally draws discrete posts rather than a connecting path. A blank span between stations means **not measured here**, not a hidden estimate.
+
+## Field-sheet output
+
+**Make field sheet** uses the browser's native print capability. Printing is not a data source and does not contact a Museum document service. The print layout carries source provenance with the current snapshot so a paper or local-PDF copy remains interpretable outside the live page.
 
 ## Availability and interpretation
 
 These are third-party public services. Their availability, update cadence, definitions, and terms are controlled by their respective providers. A missing or failed response is shown as unavailable rather than replaced with a guessed value.
 
-No API key, paid service, account, analytics provider, tracking service, map API, or tile provider is used by the Museum.
+No API key, paid service, account, analytics provider, tracking service, map API, tile provider, PDF service, or document-storage service is used by the Museum.
