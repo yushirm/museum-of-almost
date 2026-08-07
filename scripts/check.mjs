@@ -14,6 +14,17 @@ for (const file of [
   'world-map.svg',
   'difference-engine.css',
   'field-sheet.css',
+  'cosmic-signal.js',
+  'cosmic-signal-core.js',
+  'cosmic-signal-view.js',
+  'cosmic-signal.css',
+  'cosmic-latency-core.js',
+  'cosmic-latency.js',
+  'cosmic-latency.css',
+  'cosmic-escapement-core.js',
+  'cosmic-escapement.js',
+  'cosmic-escapement.css',
+  'CELESTIAL_ESCAPEMENT.md',
   'data-core.js',
   'app.js',
   'manifest.webmanifest',
@@ -38,6 +49,17 @@ const mapStyles = read('world-map.css');
 const worldMap = read('world-map.svg');
 const differenceStyles = read('difference-engine.css');
 const fieldSheetStyles = read('field-sheet.css');
+const cosmicSignalLoader = read('cosmic-signal.js');
+const cosmicSignalCore = read('cosmic-signal-core.js');
+const cosmicSignalView = read('cosmic-signal-view.js');
+const cosmicSignalStyles = read('cosmic-signal.css');
+const cosmicLatencyCore = read('cosmic-latency-core.js');
+const cosmicLatencyView = read('cosmic-latency.js');
+const cosmicLatencyStyles = read('cosmic-latency.css');
+const cosmicEscapementCore = read('cosmic-escapement-core.js');
+const cosmicEscapementView = read('cosmic-escapement.js');
+const cosmicEscapementStyles = read('cosmic-escapement.css');
+const celestialEscapementNotes = read('CELESTIAL_ESCAPEMENT.md');
 const coreSource = read('data-core.js');
 const app = read('app.js');
 const worker = read('service-worker.js');
@@ -48,7 +70,7 @@ const rebuild = read('REBUILD_LOG.md');
 const rights = read('RIGHTS.md');
 const manifest = read('manifest.webmanifest');
 const workflow = read('.github/workflows/check.yml');
-const runtime = [index, styles, mapStyles, differenceStyles, fieldSheetStyles, coreSource, app, worker].join('\n');
+const runtime = [index, styles, mapStyles, differenceStyles, fieldSheetStyles, cosmicSignalLoader, cosmicSignalCore, cosmicSignalView, cosmicSignalStyles, cosmicLatencyCore, cosmicLatencyView, cosmicLatencyStyles, cosmicEscapementCore, cosmicEscapementView, cosmicEscapementStyles, coreSource, app, worker].join('\n');
 const publicCurrent = [index, coreSource, app, readme, privacy, sources, rebuild, rights].join('\n');
 const core = require('../data-core.js');
 
@@ -56,10 +78,11 @@ const allowedRuntimeUrls = [
   'https://api.open-meteo.com/v1/forecast',
   'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson',
   'https://eonet.gsfc.nasa.gov/api/v3/events?status=open&limit=500',
+  'https://services.swpc.noaa.gov/products/noaa-scales.json',
   'https://services.swpc.noaa.gov/products/summary/solar-wind-speed.json'
 ].sort();
 const runtimeUrls = [...new Set(runtime.match(/https:\/\/[^\s"'`<>]+/g) || [])].sort();
-assert.deepEqual(runtimeUrls, allowedRuntimeUrls, 'runtime network origins must stay limited to the four approved public data endpoints');
+assert.deepEqual(runtimeUrls, allowedRuntimeUrls, 'runtime network URLs must stay limited to the five approved current requests across four services');
 
 assert.doesNotMatch(runtime, /\b(XMLHttpRequest|sendBeacon|WebSocket|EventSource)\b/i);
 assert.doesNotMatch(runtime, /\b(gtag|dataLayer|mixpanel|segment|plausible|amplitude|hotjar)\b/i);
@@ -211,17 +234,26 @@ assert.match(fieldSheetStyles, /@page\s*\{\s*size:\s*landscape/);
 assert.doesNotMatch(fieldSheetStyles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(fieldSheetStyles, /min-width:\s*[4-9]\d\dpx/);
 
-assert.match(worker, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet'/);
-assert.match(worker, /const CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal'/);
+assert.match(worker, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal'/);
+assert.match(worker, /const CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency'/);
+assert.match(worker, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/);
 assert.match(worker, /url\.origin !== self\.location\.origin/);
 assert.match(worker, /caches\.match\('\.\/index\.html'\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
   'navigation cache must remain coherent across releases');
 assert.match(worker, /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/);
 assert.match(worker, /client\.navigate\(client\.url\)/);
 assert.doesNotMatch(worker, /https?:\/\//, 'service worker must never proxy public live-data sources');
-for (const asset of ['./index.html', './styles.css', './world-map.css', './world-map.svg', './difference-engine.css', './field-sheet.css', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md']) {
+for (const asset of ['./index.html', './styles.css', './world-map.css', './world-map.svg', './difference-engine.css', './field-sheet.css', './cosmic-signal.js', './cosmic-signal-core.js', './cosmic-signal-view.js', './cosmic-latency-core.js', './cosmic-latency.js', './cosmic-latency.css', './cosmic-escapement-core.js', './cosmic-escapement.js', './cosmic-escapement.css', './CELESTIAL_ESCAPEMENT.md', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md']) {
   assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
 }
+
+assert.match(cosmicEscapementView, /MANY CLOCKS, ONE NOW/);
+assert.match(cosmicEscapementView, /refresh-button/);
+assert.match(celestialEscapementNotes, /The world is doing this without us\./);
+assert.doesNotMatch(cosmicEscapementCore + cosmicEscapementView, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
+assert.doesNotMatch(cosmicEscapementCore + cosmicEscapementView, /setInterval|setTimeout|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
+assert.match(cosmicEscapementStyles, /@media \(prefers-reduced-motion: reduce\)/);
+assert.match(cosmicEscapementStyles, /@media print/);
 
 assert.match(readme, /COMMONS \/ NOW/);
 assert.match(readme, /https:\/\/yushirm\.github\.io\/museum-of-almost\//);

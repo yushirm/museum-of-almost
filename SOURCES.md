@@ -104,6 +104,20 @@ The Museum simplifies the public-domain geometry locally and projects it into a 
 
 The SVG is committed to the repository and cached with the static application shell. The browser does not contact Natural Earth, a map API, a tile server, or a geocoder at runtime.
 
+## Local celestial reference calculations
+
+The **Cosmic Receive Desk** and **Celestial Escapement** add no runtime source. Their reference pages are documentation only and are not fetched by the browser.
+
+The Celestial Escapement uses:
+
+- NASA Earth facts for the approximate 24-hour day and 365.25-day year: `https://science.nasa.gov/earth/facts/`
+- NASA GSFC's mean synodic month of 29.53059 days: `https://eclipse.gsfc.nasa.gov/SEhelp/moonorbit.html`
+- NASA GSFC's 2026-08-12 ecliptic conjunction at 17:36:42.1 UT as the fixed lunar phase anchor: `https://eclipse.gsfc.nasa.gov/SEbeselm/SEbeselm2001/SE2026Aug12Tbeselm.html`
+- JPL Solar System Dynamics lower-accuracy J2000 mean-longitude elements for the Earth–Moon barycenter and Jupiter: `https://ssd.jpl.nasa.gov/planets/approx_pos.html`
+- NASA Jupiter facts for the roughly 4,333-Earth-day Jovian year: `https://science.nasa.gov/jupiter/jupiter-facts/`
+
+The dials are approximation instruments, not a substitute for JPL Horizons or a precision lunar ephemeris. They freeze at one captured instant until the established refresh action is used.
+
 ## Local derived values
 
 The following values do not come from an additional service:

@@ -27,7 +27,11 @@
   load('./cosmic-signal-core.js', 'cosmicSignalCore', () => {
     load('./cosmic-signal-view.js', 'cosmicSignalView', () => {
       load('./cosmic-latency-core.js', 'cosmicLatencyCore', () => {
-        load('./cosmic-latency.js', 'cosmicLatencyView');
+        load('./cosmic-latency.js', 'cosmicLatencyView', () => {
+          load('./cosmic-escapement-core.js', 'celestialEscapementCore', () => {
+            load('./cosmic-escapement.js', 'celestialEscapementView');
+          });
+        });
       });
     });
   });

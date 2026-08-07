@@ -1,8 +1,8 @@
 'use strict';
 
-const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet';
-const CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal';
-const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency';
+const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal';
+const CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency';
+const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement';
 const APP_SHELL = [
   './',
   './index.html',
@@ -17,13 +17,17 @@ const APP_SHELL = [
   './cosmic-latency-core.js',
   './cosmic-latency.js',
   './cosmic-latency.css',
+  './cosmic-escapement-core.js',
+  './cosmic-escapement.js',
+  './cosmic-escapement.css',
   './data-core.js',
   './app.js',
   './cosmic-signal.js',
   './manifest.webmanifest',
   './PRIVACY.md',
   './SOURCES.md',
-  './COSMIC_RECEIVE_DESK.md'
+  './COSMIC_RECEIVE_DESK.md',
+  './CELESTIAL_ESCAPEMENT.md'
 ];
 
 self.addEventListener('install', (event) => {
