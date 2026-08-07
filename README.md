@@ -13,6 +13,7 @@ The page takes one current snapshot from four free public scientific services an
 The page shows:
 
 - **The Sample-and-Hold Bus / One Now, Latched**, an analog-electronics-inspired view of the five-feed acquisition cycle: the current exhibits stay on the previous held sample while all five requests settle, then the new snapshot is committed as one shared state;
+- **The Sounding Well / The Thickness of Now**, a maritime-sounding-inspired provenance instrument that compares trustworthy source timestamps with that latch and refuses to invent a feed-wide timestamp where the source does not provide one;
 - USGS earthquakes recorded in the past hour, including the current count and strongest reported magnitude;
 - NOAA SWPC current solar-wind speed near Earth;
 - **The Cosmic Signal Chain**, an analog-instrument-inspired rack that places the existing solar-wind value beside NOAA's current geomagnetic-storm (`G`) and solar-radiation-storm (`S`) scale values without claiming a causal timeline;
@@ -27,6 +28,8 @@ The page shows:
 - **The Planetary Section / Field Sheet**, a west-to-east architectural section of the thirteen discrete measurements with a user-controlled native print/PDF path for preserving one snapshot outside the application.
 
 The Sample-and-Hold Bus is a real acquisition rule, not only a visual metaphor. The five approved requests enter one `Promise.allSettled` barrier. During a refresh, the previous measurements remain visible while the bus shows **ACQUIRE**. Only after every request has either answered or failed does the application replace the in-memory snapshot, render the new measurements, and expose **HOLD**. A failed channel stays explicitly unavailable in that same latched sample. The application does not keep the discarded prior sample as history.
+
+The Sounding Well adds no request. A local observer loads before `app.js`, calls the browser's original `fetch` exactly once for each existing request, and reads timestamp metadata from cloned USGS, NOAA, and Open-Meteo responses before returning the original response unchanged. It renders only after the shared snapshot latch event. USGS feed-generation time, NOAA solar-wind time, NOAA current-scale time, and Open-Meteo current-valid time can be compared with the UTC latch. NASA EONET geometry dates describe individual event geometries rather than one feed-wide observation instant, so EONET is deliberately left unsounded. The deepest comparable past timestamp defines the current **known time thickness**; depth is not a quality score or uncertainty estimate.
 
 The world basemap is generated from Natural Earth 110m public-domain land geometry and stored in this repository as `world-map.svg`. It uses the same equirectangular formula as the station positions, so points are not shifted by eye. No map API, tile server, remote image, or runtime mapping library is contacted.
 
@@ -65,7 +68,7 @@ The four public services are:
 - Open-Meteo;
 - NASA Earth Observatory Natural Event Tracker.
 
-The NOAA Scales feed supplies the Cosmic Signal Chain's current `G` and `S` readings. The Receive Desk, Celestial Escapement, Planetary Heliodon, map, Difference Engine, Planetary Section, Sample-and-Hold presentation, and field-sheet print action add no other live service or extra request.
+The NOAA Scales feed supplies the Cosmic Signal Chain's current `G` and `S` readings. The Sounding Well observes timestamp metadata from the existing responses and never starts another request. The Receive Desk, Celestial Escapement, Planetary Heliodon, map, Difference Engine, Planetary Section, Sample-and-Hold presentation, Sounding Well presentation, and field-sheet print action add no other live service or extra request.
 
 No API keys, paid services, accounts, external scripts, remote fonts, remote images, analytics, ads, tracking, map APIs, or tile services are used.
 
@@ -75,7 +78,7 @@ See `SOURCES.md` for exact endpoints and attribution.
 
 There is no visitor persistence. The application does not use `localStorage`, `sessionStorage`, IndexedDB, cookies, browser geolocation, or visitor free-text input.
 
-The Sample-and-Hold Bus stores only the current in-memory acquisition result. Refreshing replaces that result rather than adding a historical record. Cosmic Signal Chain values exist only in page memory and the current DOM. Receive Desk selections, Celestial Escapement phases, and Planetary Heliodon geometry are also memory-only; the local cosmic instruments read only the captured device-clock instant and fixed local constants. The NOAA Scales request uses no visitor location or state. The compact field-sheet copy is created locally and is not uploaded by the Museum.
+The Sample-and-Hold Bus stores only the current in-memory acquisition result. Refreshing replaces that result rather than adding a historical record. The Sounding Well temporarily reads public timestamp metadata from cloned versions of four already-requested scientific responses; it skips cloning the EONET body because no feed-wide timestamp is derived from it. Those temporary records are discarded after the current latch is rendered and are never uploaded or stored. Cosmic Signal Chain values exist only in page memory and the current DOM. Receive Desk selections, Celestial Escapement phases, and Planetary Heliodon geometry are also memory-only; the local cosmic instruments read only the captured device-clock instant and fixed local constants. The NOAA Scales request uses no visitor location or state. The compact field-sheet copy is created locally and is not uploaded by the Museum.
 
 Difference Engine selections and lenses exist only in page memory and reset on reload. They are not sent to any external service.
 
@@ -89,7 +92,7 @@ Live requests omit credentials and referrer and use no-store caching. Normal dir
 
 ## Offline behavior
 
-The explanatory application shell, Sample-and-Hold presentation, local map asset, local styles, the local cosmic reference instruments, Planetary Heliodon, Cosmic Signal Chain code and styles, Difference Engine, and field-sheet presentation are cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world map and derived controls still render, while live scientific values remain visibly unavailable.
+The explanatory application shell, Sample-and-Hold presentation, Sounding Well code and presentation, local map asset, local styles, the local cosmic reference instruments, Planetary Heliodon, Cosmic Signal Chain code and styles, Difference Engine, and field-sheet presentation are cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world map and derived controls still render, while live scientific values and temporal sounding remain visibly unavailable.
 
 The service worker keeps one coherent cached shell across upgrades and reloads open pages once after a complete shell upgrade so HTML, scripts, and styles do not split across versions.
 
@@ -105,6 +108,8 @@ Then open `http://localhost:8080`.
 
 ```bash
 node --check data-core.js
+node --check temporal-sounding-core.js
+node --check temporal-sounding.js
 node --check app.js
 node --check cosmic-signal.js
 node --check cosmic-escapement-core.js
@@ -113,6 +118,7 @@ node --check planetary-heliodon-core.js
 node --check planetary-heliodon.js
 node --check service-worker.js
 node --check scripts/test-data-core.mjs
+node --check scripts/test-temporal-sounding.mjs
 node --check scripts/test-cosmic-signal.mjs
 node --check scripts/test-cosmic-latency.mjs
 node --check scripts/test-cosmic-escapement.mjs
@@ -120,6 +126,7 @@ node --check scripts/test-planetary-heliodon.mjs
 node --check scripts/test-service-worker.mjs
 node --check scripts/check.mjs
 node scripts/test-data-core.mjs
+node scripts/test-temporal-sounding.mjs
 node scripts/test-cosmic-signal.mjs
 node scripts/test-cosmic-latency.mjs
 node scripts/test-cosmic-escapement.mjs
@@ -128,12 +135,13 @@ node scripts/test-service-worker.mjs
 node scripts/check.mjs
 ```
 
-The checks enforce the established four-service/five-feed network boundary, one shared acquisition barrier, stale-refresh rejection, NOAA two-feed service accounting, the approved NOAA Scales endpoint and its missing-value rules, thirteen fixed sampling points, local-map projection and provenance, truthful Difference Engine derivation, west-to-east Planetary Section ordering, no interpolation between sparse samples, native-only field-sheet printing, missing-value integrity, no visitor storage or location access, no polling, coherent same-origin service-worker behavior, responsive accessibility hooks, one shared approximate solar-geometry model for station light and the Planetary Heliodon, source attribution, seed privacy, and deterministic data reduction.
+The checks enforce the established four-service/five-feed network boundary, one shared acquisition barrier, passive timestamp observation without an extra request, timestamp-semantic integrity, explicit EONET incomparability, stale-refresh rejection, NOAA two-feed service accounting, the approved NOAA Scales endpoint and its missing-value rules, thirteen fixed sampling points, local-map projection and provenance, truthful Difference Engine derivation, west-to-east Planetary Section ordering, no interpolation between sparse samples, native-only field-sheet printing, missing-value integrity, no visitor storage or location access, no polling, coherent same-origin service-worker behavior, responsive accessibility hooks, one shared approximate solar-geometry model for station light and the Planetary Heliodon, source attribution, seed privacy, and deterministic data reduction.
 
 ## Records
 
 - `REBUILD_LOG.md` records the current product reset and prior COMMONS / NOW extensions.
 - `SAMPLE_AND_HOLD.md` records the design gate and technical contract for the shared snapshot latch.
+- `SOUNDING_WELL.md` records the design gate, source-time semantics, and passive-observation contract for the Thickness of Now.
 - `CONSTRUCTION_LOG.md` records the earlier constructive Treaty period.
 - `ENTROPY_LOG.md` and `ENTROPY_HISTORY.md` record older mutation experiments.
 
