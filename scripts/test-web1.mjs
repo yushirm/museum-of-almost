@@ -22,7 +22,9 @@ const html = read('almost-online.html');
 const css = read('web1.css');
 const js = read('web1.js');
 const notes = read('WEB1_HOME.md');
+const entrance = read('index.html');
 const runtimeText = [html, css, js].join('\n');
+const publicText = [html, css, js, notes].join('\n');
 
 for (const pattern of [
   /ALMOST ONLINE!/,
@@ -42,6 +44,13 @@ for (const pattern of [
   /href="deep-space\.html"/,
   /src="web1\.js"/
 ]) assert.match(html, pattern);
+
+for (const pattern of [
+  /GALLERY 03 · PERSONAL HOMEPAGE/,
+  /ALMOST ONLINE!/,
+  /href="almost-online\.html"/,
+  /Welcome to my homepage!!!/
+]) assert.match(entrance, pattern, `museum entrance should expose Gallery 03: ${pattern}`);
 
 for (const asset of [
   'assets/web1/stars.gif',
@@ -79,6 +88,16 @@ for (const asset of required.filter((name) => name.endsWith('.gif'))) {
   const controlBlocks = bytes.toString('latin1').split('\x21\xF9\x04').length - 1;
   assert.ok(controlBlocks >= 2, `${asset} should contain multiple animation frames`);
 }
+
+for (const pattern of [
+  /\b[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/i,
+  /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i,
+  /\bAKIA[0-9A-Z]{16}\b/,
+  /\bsk-(?:proj-)?[A-Za-z0-9_-]{16,}\b/i,
+  /BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/,
+  /password\s*[:=]\s*["'][^"']+["']/i,
+  /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i
+]) assert.doesNotMatch(publicText, pattern, `Almost Online public privacy scan: forbidden ${pattern}`);
 
 assert.match(notes, /personal homepage and weblog/i);
 assert.match(notes, /No third-party runtime scripts, fonts, images, embeds, APIs, hotlinks, trackers, analytics, ads, or telemetry/i);
