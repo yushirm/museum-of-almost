@@ -1,56 +1,45 @@
-# Privacy
+# Privacy Boundary
 
-The Museum of Almost is designed to collect as little information as possible.
+The Museum of Almost is a static, local-first browser experience.
 
-## The application
+## The application does not
 
-The Museum itself:
+- create accounts or profiles;
+- accept visitor text;
+- use analytics, advertising, telemetry, tracking, fingerprinting, or remote AI;
+- request third-party scripts, fonts, media, or APIs at runtime;
+- transmit local state;
+- store names, contact details, locations, timestamps, pointer paths, routines, or personal content.
 
-- does not require an account or login;
-- does not contain forms or free-form text entry;
-- does not use analytics, advertising, tracking pixels or behavioural telemetry;
-- does not use cookies;
-- does not contact external APIs;
-- does not load third-party scripts, fonts or media;
-- does not collect names, email addresses, locations or device identifiers.
+## Local state
 
-The pocket catalogue stores only generated fictional fragment labels, progress counters and a random seed in the visitor's browser storage.
+The application may store one JSON value under `museum-of-almost:entropy:v1`.
 
-The Conservation Lab reads only the existing fictional catalogue and local calendar date to generate an impossible object. It stores no restoration state, pointer movement, completed case or postcard. Fragment positions exist only in memory until the page is closed or another case is opened.
+It contains only bounded fictional and technical state:
 
-The Observatory of Almost Tomorrow reads the browser's local calendar date and the existing fictional catalogue to generate seven alternatives on the device. When a visitor seals one alternative, it stores only the target date and a number from zero to six in browser storage. The Observatory does not store location, timezone, calendar events or free-form text, and it does not transmit the selection.
+- a random numeric install seed;
+- a visit counter;
+- a contradiction counter;
+- six numeric tension values;
+- bounded repetition and mutation counters;
+- up to four fictional delayed consequences;
+- one seeded fictional accident;
+- one bounded numeric pressure value produced while migrating obsolete fictional state.
 
-The Listening Room stores no additional visitor state. It retains ten fixed numeric entropy values in the application source; the source seed identifiers are not stored. Its receiver reads the existing fictional catalogue locally to choose an echo and does not transmit that catalogue.
+The data is inspectable in browser storage, remains on the device, and can be removed with the visible **Reset local state** control or browser storage controls. If storage is unavailable, the current visit continues in memory only.
 
-Optional ambient sound is synthesised locally by the browser and remains silent until explicitly enabled.
+## State migration
 
-The **Save postcard** feature generates an image locally. The image leaves the visitor's device only when the visitor deliberately moves, uploads or shares it.
+The application reads the obsolete keys `museum-of-almost:v1` and `museum-of-almost:tomorrow:v1` only to derive one bounded pressure number. It does not retain old generated text, labels, room identifiers, catalogue entries, or sealed selections. After successful migration, those obsolete keys are removed.
 
-The service worker handles same-origin static files only so the Museum can work offline.
+## Sound
+
+Sound is off by default. When explicitly enabled, tones are generated locally with browser WebAudio. No recording, microphone access, uploaded audio, or remote media is used.
+
+## Offline support
+
+A same-origin service worker caches the small static application files. It ignores cross-origin requests and removes obsolete Museum cache versions during activation.
 
 ## Hosting
 
-When GitHub Pages is enabled, GitHub provides the public website hosting.
-
-Although the Museum application does not collect or transmit visitor information, GitHub may process technical connection information, including visitors' IP addresses, for security and operational purposes. GitHub's own privacy terms apply to its repository and hosting services.
-
-## Repository visibility
-
-When the repository is public, its source code, commit history, pull requests and automated workflow results are publicly visible through GitHub.
-
-Do not add personal information about any person to this repository. This prohibition applies to:
-
-- source code;
-- documentation;
-- examples and fixtures;
-- screenshots and generated artifacts;
-- commit messages;
-- issues and pull requests;
-- review comments;
-- workflow output.
-
-Do not add credentials, tokens, private keys, private URLs, personal correspondence, real addresses, real phone numbers or identifying sample data. Use fictional and generic material only.
-
-## Scope
-
-Statements that the Museum does not collect personal information refer to the application itself. They do not override data processing performed independently by GitHub as the repository and website hosting provider.
+The public site is hosted by GitHub Pages. GitHub may process technical connection information under its own privacy terms. The application does not add analytics or tracking on top of that hosting.
