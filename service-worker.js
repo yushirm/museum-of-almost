@@ -3,10 +3,12 @@
 const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish';
 const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold';
 const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v14-deep-space';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer';
 const APP_SHELL = [
   './',
   './index.html',
+  './landing.css',
+  './commons-now.html',
   './styles.css',
   './sample-hold.css',
   './sounding-well.css',

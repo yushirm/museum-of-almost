@@ -3,362 +3,70 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f2efe6">
-  <meta name="description" content="A live public snapshot of shared planetary conditions from free scientific data services.">
-  <title>The Museum of Almost — Commons / Now</title>
+  <meta name="theme-color" content="#0b0a10">
+  <meta name="description" content="The Museum of Almost — choose between a live portrait of Earth and a local gallery about deep space, time and the unknown.">
+  <title>The Museum of Almost — Entrance</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="sample-hold.css">
-  <link rel="stylesheet" href="world-map.css">
-  <link rel="stylesheet" href="difference-engine.css">
-  <link rel="stylesheet" href="field-sheet.css">
-  <link rel="stylesheet" href="cosmic-signal.css" data-cosmic-styles>
-  <link rel="stylesheet" href="cosmic-latency.css" data-cosmic-latency-styles>
-  <link rel="stylesheet" href="cosmic-escapement.css" data-celestial-escapement-styles>
-  <link rel="stylesheet" href="planetary-heliodon.css" data-planetary-heliodon-styles>
+  <link rel="stylesheet" href="landing.css">
 </head>
-<body data-loading="false" data-source-count="0">
-  <a class="skip-link" href="#main">Skip to the world snapshot</a>
+<body>
+  <a class="skip-link" href="#galleries">Skip to the galleries</a>
 
-  <header class="site-header">
-    <div class="brand">
-      <small>The Museum of Almost</small>
-      <strong>COMMONS / NOW</strong>
+  <header class="museum-header">
+    <div class="museum-mark">
+      <small>AN EXPERIMENTAL PUBLIC MUSEUM</small>
+      <strong>THE MUSEUM OF ALMOST</strong>
     </div>
-    <div class="header-actions">
-      <span id="connection-state" class="connection-state">NETWORK AVAILABLE</span>
-      <button id="refresh-button" type="button">Refresh world</button>
-    </div>
+    <p>Two galleries. Two scales of almost.</p>
   </header>
 
-  <main id="main">
-    <section class="hero" aria-labelledby="page-title">
-      <div>
-        <p class="eyebrow">PUBLIC SNAPSHOT · NO ACCOUNT · NO LOCATION</p>
-        <h1 id="page-title">The world is doing this without us.</h1>
-      </div>
-      <div class="hero-copy">
-        <p>A current portrait built from public scientific feeds and thirteen fixed points spread across the planet. Earth moves. Solar wind arrives. Weather differs. Natural events remain open.</p>
-        <p>No account. No location. No visitor data. Nothing here is personalized.</p>
-      </div>
-      <div class="snapshot-meta">
-        <p id="snapshot-time">No live snapshot yet</p>
-        <p id="snapshot-detail">Four public services · five current feeds. No automatic polling.</p>
-        <strong id="source-count">0/4 SOURCES</strong>
-      </div>
+  <main class="entrance" id="galleries">
+    <section class="entrance-copy" aria-labelledby="entrance-title">
+      <p class="eyebrow">MUSEUM ENTRANCE</p>
+      <h1 id="entrance-title">Choose what to stand beside.</h1>
+      <p>One gallery holds a single shared moment on Earth. The other leaves the planet behind and works with light, gravity, time and unfinished physics.</p>
     </section>
 
-    <section class="sample-hold-section" aria-labelledby="sample-hold-title">
-      <div class="sample-hold-copy">
-        <p class="eyebrow">THE SAMPLE-AND-HOLD BUS</p>
-        <h2 id="sample-hold-title">One now, latched.</h2>
-        <p>Borrowed from analog electronics: acquire changing signals, then hold one stable sample for everything downstream. COMMONS / NOW keeps the previous visible snapshot in place while all five current feeds settle, then commits the new world in one pass.</p>
-      </div>
-      <div id="sample-hold-panel" class="sample-hold-panel" data-phase="hold">
-        <div class="sample-hold-state">
-          <span>BUS STATE</span>
-          <strong id="sample-phase">HOLD</strong>
-          <small id="sample-cycle">No sample latched yet.</small>
+    <nav class="gallery-grid" aria-label="Museum galleries">
+      <a class="gallery-card gallery-commons" href="commons-now.html">
+        <span class="gallery-number">GALLERY 01 · LIVE PUBLIC INSTRUMENT</span>
+        <div class="gallery-visual commons-visual" aria-hidden="true">
+          <span class="earth-disc"></span>
+          <span class="earth-line earth-line-a"></span>
+          <span class="earth-line earth-line-b"></span>
+          <span class="earth-pulse"></span>
         </div>
-        <ol class="sample-feed-list" aria-label="Five feeds in the current sample-and-hold cycle">
-          <li data-sample-feed="earthquakes" data-state="waiting"><span>01 · USGS</span><strong>EARTH</strong><small>awaiting first sample</small></li>
-          <li data-sample-feed="solar" data-state="waiting"><span>02 · NOAA</span><strong>FLOW</strong><small>awaiting first sample</small></li>
-          <li data-sample-feed="scales" data-state="waiting"><span>03 · NOAA</span><strong>SCALES</strong><small>awaiting first sample</small></li>
-          <li data-sample-feed="weather" data-state="waiting"><span>04 · OPEN-METEO</span><strong>WEATHER</strong><small>awaiting first sample</small></li>
-          <li data-sample-feed="events" data-state="waiting"><span>05 · NASA</span><strong>EVENTS</strong><small>awaiting first sample</small></li>
-        </ol>
-        <p id="sample-status" class="sample-hold-status" role="status" aria-live="polite">Five public channels will settle before the first visible snapshot is committed.</p>
-      </div>
-      <p class="sample-hold-note">This is a current-state latch, not a history. Refreshing replaces the held sample; the application does not keep the previous one.</p>
-    </section>
-
-    <section class="headline-grid" aria-label="Current world headline metrics">
-      <article class="headline-card headline-earth">
-        <span>EARTHQUAKES · PAST HOUR</span>
-        <strong id="quake-count">—</strong>
-        <p><b id="quake-strongest">—</b> strongest</p>
-        <small id="quake-depth">No earthquake snapshot</small>
-      </article>
-
-      <article class="headline-card headline-sky">
-        <span>SOLAR WIND · NOW</span>
-        <strong id="solar-wind">—</strong>
-        <p id="solar-state">No space-weather snapshot</p>
-        <small>NOAA Space Weather Prediction Center</small>
-      </article>
-
-      <article class="headline-card headline-events">
-        <span>OPEN NATURAL EVENTS</span>
-        <strong id="event-count">—</strong>
-        <p>currently listed in this snapshot</p>
-        <small>NASA Earth Observatory Natural Event Tracker</small>
-      </article>
-
-      <article class="headline-card headline-weather">
-        <span>13-POINT WEATHER RANGE</span>
-        <strong id="weather-range">—</strong>
-        <p id="weather-wind">No weather snapshot</p>
-        <small id="weather-rain">—</small>
-      </article>
-    </section>
-
-    <section class="world-sentence-panel" aria-labelledby="world-sentence-title">
-      <span id="world-sentence-title">RIGHT NOW, IN ONE SENTENCE</span>
-      <p id="world-sentence">Reading the commons…</p>
-    </section>
-
-    <section class="windows-section" aria-labelledby="windows-title">
-      <div class="section-heading">
-        <p class="eyebrow">THIRTEEN WINDOWS</p>
-        <h2 id="windows-title">A fixed sample across the planet.</h2>
-        <p>The thirteen sampling points are fixed, non-personal coordinates. They do not follow population, borders, popularity, or the visitor. Some fall on land. Some fall at sea. That is deliberate.</p>
-      </div>
-
-      <div class="world-layout">
-        <div class="world-map-wrap">
-          <div class="world-map" aria-label="Equirectangular world map with thirteen fixed global weather points">
-            <img class="world-map-image" src="world-map.svg" alt="" aria-hidden="true">
-            <div class="world-map-grid" aria-hidden="true"></div>
-            <div class="equator" aria-hidden="true"></div>
-            <div class="prime-meridian" aria-hidden="true"></div>
-            <div id="station-points" class="station-points" role="group" aria-label="Thirteen fixed global weather points"></div>
-            <span class="map-label map-label-n">90°N</span>
-            <span class="map-label map-label-s">90°S</span>
-            <span class="map-label map-label-w">180°W</span>
-            <span class="map-label map-label-e">180°E</span>
-          </div>
-          <div class="map-legend" aria-label="Map legend">
-            <span><i class="legend-dot legend-day"></i> daylight</span>
-            <span><i class="legend-dot legend-twilight"></i> twilight</span>
-            <span><i class="legend-dot legend-night"></i> night</span>
-            <strong id="daylight-count">—</strong>
-          </div>
-          <p class="map-source-note">Basemap: Natural Earth 110m land, public domain, simplified and stored locally. No map or tile service is contacted.</p>
+        <div class="gallery-copy">
+          <h2>COMMONS / NOW</h2>
+          <p class="gallery-thesis">The world is doing this without us.</p>
+          <p>Five current scientific feeds. Thirteen fixed windows. One shared planetary snapshot, latched without personalization.</p>
         </div>
+        <strong class="enter-label">ENTER THE PRESENT <span aria-hidden="true">→</span></strong>
+      </a>
 
-        <aside class="station-detail" aria-live="polite">
-          <span class="eyebrow">SELECTED WINDOW</span>
-          <h3 id="station-name">POINT 01</h3>
-          <p id="station-coordinates">35.67° S · 74.26° E</p>
-          <dl>
-            <div><dt>Temperature</dt><dd id="station-temperature">—</dd></div>
-            <div><dt>Wind</dt><dd id="station-wind">—</dd></div>
-            <div><dt>Precipitation</dt><dd id="station-rain">—</dd></div>
-            <div><dt>Light</dt><dd id="station-light">—</dd></div>
-          </dl>
-        </aside>
-      </div>
-
-      <div id="station-list" class="station-list" aria-label="All thirteen weather windows"></div>
-      <p class="attribution">Weather data: Open-Meteo. Fixed coordinates only; browser location is never requested.</p>
-    </section>
-
-    <section class="difference-section" aria-labelledby="difference-title">
-      <div class="section-heading">
-        <p class="eyebrow">THE DIFFERENCE ENGINE</p>
-        <h2 id="difference-title">How different can the same planet be at the same moment?</h2>
-        <p>Patch any two fixed windows together. The circuit compares only the current snapshot: distance, temperature, wind, precipitation, and light. It does not rank places or keep a history.</p>
-      </div>
-
-      <div class="difference-console">
-        <div class="patchbay" aria-labelledby="patchbay-title">
-          <div class="patchbay-heading">
-            <span id="patchbay-title">PATCH CABLE</span>
-            <p>Choose which cable end to move, then choose a numbered socket.</p>
-          </div>
-          <div class="patch-targets" role="group" aria-label="Choose which comparison end to patch">
-            <button id="patch-a" class="patch-target" type="button" aria-pressed="true" data-active="true">END A · POINT 01</button>
-            <button id="patch-b" class="patch-target" type="button" aria-pressed="false" data-active="false">END B · POINT 09</button>
-          </div>
-          <div id="difference-points" class="patch-points" role="group" aria-label="Patch one of thirteen fixed points to the active end"></div>
-          <p id="patch-help" class="patch-help">End A is armed. Choose any fixed point below; the other end stays connected.</p>
+      <a class="gallery-card gallery-space" href="deep-space.html">
+        <span class="gallery-number">GALLERY 02 · LOCAL COSMIC INSTRUMENT</span>
+        <div class="gallery-visual space-visual" aria-hidden="true">
+          <span class="space-orbit space-orbit-a"></span>
+          <span class="space-orbit space-orbit-b"></span>
+          <span class="space-core"></span>
+          <span class="space-star space-star-a"></span>
+          <span class="space-star space-star-b"></span>
+          <span class="space-star space-star-c"></span>
         </div>
-
-        <div class="difference-instrument">
-          <div class="lens-controls" role="group" aria-label="Choose a comparison lens">
-            <button class="lens-button" type="button" data-lens="temperature" data-active="true" aria-pressed="true">Temperature</button>
-            <button class="lens-button" type="button" data-lens="wind" data-active="false" aria-pressed="false">Wind</button>
-            <button class="lens-button" type="button" data-lens="precipitation" data-active="false" aria-pressed="false">Precipitation</button>
-            <button class="lens-button" type="button" data-lens="light" data-active="false" aria-pressed="false">Light</button>
-            <button class="lens-button" type="button" data-lens="distance" data-active="false" aria-pressed="false">Distance</button>
-          </div>
-
-          <p id="difference-readout" class="difference-readout" aria-live="polite">Waiting for the current weather snapshot.</p>
-
-          <div id="difference-scale" class="difference-scale" data-lens="temperature">
-            <div class="difference-track" aria-hidden="true">
-              <span id="difference-marker-a" class="difference-marker difference-marker-a" style="--position: 0%">A 01</span>
-              <span id="difference-marker-b" class="difference-marker difference-marker-b" style="--position: 100%">B 09</span>
-            </div>
-            <p id="difference-scale-label">13-point observed range</p>
-          </div>
-
-          <dl class="difference-metrics" aria-label="Current difference between patched points">
-            <div><dt>Surface distance</dt><dd id="difference-distance">—</dd></div>
-            <div><dt>Temperature A − B</dt><dd id="difference-temperature">—</dd></div>
-            <div><dt>Wind A − B</dt><dd id="difference-wind">—</dd></div>
-            <div><dt>Precipitation A − B</dt><dd id="difference-rain">—</dd></div>
-            <div><dt>Light A · B</dt><dd id="difference-light">—</dd></div>
-          </dl>
+        <div class="gallery-copy">
+          <h2>DEEP SPACE / ALMOST</h2>
+          <p class="gallery-thesis">Nothing here is close.</p>
+          <p>Light as a clock. Gravity as geometry. Cosmic composition. The questions our best theories still cannot close.</p>
         </div>
-      </div>
-
-      <p class="attribution">The Difference Engine derives everything from the existing thirteen-point weather snapshot and local geometry. It makes no additional network request.</p>
-    </section>
-
-    <section class="planetary-section" aria-labelledby="planetary-section-title">
-      <div class="section-heading">
-        <p class="eyebrow">PLANETARY SECTION / FIELD SHEET</p>
-        <h2 id="planetary-section-title">Cut through the planet as it is now.</h2>
-        <p>Architecture uses a section drawing to reveal what a plan view hides. Here the thirteen fixed stations become discrete measured posts from west to east. The page does not interpolate the unmeasured space between them.</p>
-      </div>
-
-      <div class="field-sheet-print-title" aria-hidden="true">
-        <strong>COMMONS / NOW — PLANETARY FIELD SHEET</strong>
-        <span>The page forgets. This sheet can remember one snapshot.</span>
-      </div>
-
-      <div id="field-sheet" class="field-sheet">
-        <div class="field-sheet-header">
-          <strong>13 FIXED POSTS · WEST → EAST</strong>
-          <span id="section-status">Waiting for current weather.</span>
-        </div>
-
-        <div class="section-instrument">
-          <svg id="planetary-section-plot" class="planetary-section-plot" viewBox="0 0 1000 360" role="img" aria-labelledby="section-plot-title section-plot-desc">
-            <title id="section-plot-title">Planetary section through thirteen fixed world samples</title>
-            <desc id="section-plot-desc">Thirteen discrete posts ordered west to east. Temperature controls post height; wind and precipitation are separate marks; light is labeled. No values are interpolated between posts.</desc>
-            <g id="section-guides" aria-hidden="true"></g>
-            <g id="section-posts" aria-hidden="true"></g>
-          </svg>
-        </div>
-
-        <div class="section-legend" aria-label="Planetary section legend">
-          <strong>READING KEY</strong>
-          <span>post height = temperature within this 13-point snapshot</span>
-          <span><i class="legend-wind"></i> flag length = wind within this snapshot</span>
-          <span><i class="legend-rain"></i> rain mark = current precipitation</span>
-          <span>post tone = day / twilight / night</span>
-        </div>
-
-        <p class="section-no-interpolation"><strong>No connecting line.</strong> The stations are measurements, not a continuous weather transect. Unmeasured space stays unmeasured.</p>
-
-        <div class="section-table-wrap">
-          <table class="section-table">
-            <thead>
-              <tr>
-                <th>Point</th>
-                <th>Longitude</th>
-                <th>Temperature</th>
-                <th>Wind</th>
-                <th>Precipitation</th>
-                <th>Light</th>
-              </tr>
-            </thead>
-            <tbody id="section-table-body">
-              <tr><td colspan="6">Waiting for the current snapshot.</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="field-sheet-meta">
-          <span><strong id="field-sheet-time">No live snapshot yet</strong></span>
-          <span>Sources: USGS · NOAA SWPC · Open-Meteo · NASA EONET</span>
-          <span>Weather: 13 fixed coordinates · Open-Meteo</span>
-          <span>No account · no location · no stored visitor history</span>
-        </div>
-      </div>
-
-      <div class="field-sheet-actions">
-        <button id="field-sheet-button" type="button">Make field sheet</button>
-        <p class="field-sheet-help">This opens the browser’s native print dialog. Print on paper or choose a local PDF destination if your browser provides one. The Museum does not upload or save the sheet.</p>
-      </div>
-    </section>
-
-    <section class="signal-grid" aria-label="Detailed live signals">
-      <article class="signal-panel">
-        <div class="signal-heading">
-          <span>EARTH</span>
-          <h2>Movement is ordinary.</h2>
-        </div>
-        <p>The earthquake count is a rolling past-hour feed from the USGS. Small events are included because the point is not disaster spectacle; it is the constant movement of the crust.</p>
-        <div class="signal-number-row">
-          <span>strongest now</span>
-          <strong id="quake-strongest-copy">See headline above</strong>
-        </div>
-      </article>
-
-      <article class="signal-panel">
-        <div class="signal-heading">
-          <span>SKY</span>
-          <h2>The Sun is touching Earth.</h2>
-        </div>
-        <p>Solar wind is a stream of charged particles arriving from the Sun. The value above is the current speed reported by NOAA SWPC, not a forecast or score.</p>
-        <div class="signal-number-row">
-          <span>measurement</span>
-          <strong>km/s</strong>
-        </div>
-      </article>
-
-      <article class="signal-panel signal-events-panel">
-        <div class="signal-heading">
-          <span>ACTIVE EVENTS</span>
-          <h2>Some conditions remain open.</h2>
-        </div>
-        <p>NASA EONET groups currently open natural events from multiple reporting sources. The list below shows only aggregate categories; event titles and coordinates are not reproduced here.</p>
-        <ul id="event-categories" class="event-categories">
-          <li>No category snapshot</li>
-        </ul>
-      </article>
-    </section>
-
-    <section class="plain-language" aria-labelledby="plain-title">
-      <div class="section-heading">
-        <p class="eyebrow">WHAT THIS ACTUALLY DOES</p>
-        <h2 id="plain-title">Four public services. Five current feeds.</h2>
-      </div>
-      <div class="plain-grid">
-        <article>
-          <strong>1</strong>
-          <h3>Loads once.</h3>
-          <p>When the page opens, it requests five current feeds across four public services: USGS, NOAA SWPC, Open-Meteo, and NASA EONET. NOAA supplies two of those feeds. It does not poll in the background.</p>
-        </article>
-        <article>
-          <strong>2</strong>
-          <h3>Samples fixed places.</h3>
-          <p>The weather request uses thirteen coordinates baked into the site. They are unrelated to whoever is visiting.</p>
-        </article>
-        <article>
-          <strong>3</strong>
-          <h3>Stores no visitor history.</h3>
-          <p>No local visitor profile, action log, location, identifier, score, or previous snapshot is kept by the application.</p>
-        </article>
-        <article>
-          <strong>4</strong>
-          <h3>Fails visibly.</h3>
-          <p>If a public service is unavailable, its metric shows as unavailable. The page does not invent a replacement number.</p>
-        </article>
-      </div>
-    </section>
-
-    <p id="live-status" class="live-status" role="status" aria-live="polite">Preparing the fixed world sample.</p>
+        <strong class="enter-label">ENTER DEEP SPACE <span aria-hidden="true">→</span></strong>
+      </a>
+    </nav>
   </main>
 
-  <footer class="site-footer">
-    <div>
-      <strong>COMMONS / NOW</strong>
-      <span>A live public instrument. No analytics. No account. No personal location.</span>
-    </div>
-    <nav aria-label="Project information">
-      <a href="SOURCES.md">Sources</a>
-      <a href="PRIVACY.md">Privacy</a>
-    </nav>
+  <footer class="museum-footer">
+    <span>NO ACCOUNT · NO ANALYTICS · NO TRACKING</span>
+    <p>The entrance makes no live-data request. Each gallery keeps its own scientific contract.</p>
   </footer>
-
-  <script src="data-core.js" defer></script>
-  <script src="temporal-sounding-core.js" defer></script>
-  <script src="temporal-sounding.js" defer></script>
-  <script src="app.js" defer></script>
-  <script src="cosmic-signal.js" defer></script>
 </body>
 </html>

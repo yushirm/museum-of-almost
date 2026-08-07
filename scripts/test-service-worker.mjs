@@ -6,10 +6,12 @@ const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url),
 assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/);
 assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/);
 assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v14-deep-space'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer'/);
 for (const asset of [
   './',
   './index.html',
+  './landing.css',
+  './commons-now.html',
   './styles.css',
   './sample-hold.css',
   './sounding-well.css',
@@ -60,9 +62,9 @@ assert.match(source, /key !== CURRENT_CACHE_NAME/);
 assert.match(source, /url\.origin !== self\.location\.origin/);
 assert.match(source, /request\.mode === 'navigate'/);
 assert.match(source, /request\.mode === 'navigate'[\s\S]+caches\.match\(request\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
-  'navigations should use the requested cached document so multiple pages remain distinct offline');
+  'navigations should use the requested cached document so the foyer and galleries remain distinct offline');
 assert.match(source, /caches\.match\('\.\/index\.html'\)/,
-  'root-scope navigation should retain an index fallback');
+  'root-scope navigation should retain the museum entrance as its index fallback');
 assert.match(source, /caches\.match\(request\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
   'same-origin assets should remain cache-first for offline-first behavior');
 assert.match(source, /clients\.claim\(\)/);
@@ -74,4 +76,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Commons / Now and Deep Space / Almost coherent multi-page offline shell and cross-origin boundary verified.');
+console.log('Museum foyer, Commons / Now, and Deep Space / Almost coherent multi-page offline shell and cross-origin boundary verified.');
