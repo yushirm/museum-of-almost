@@ -11,6 +11,7 @@
   const fieldLines = document.querySelector('#field-lines');
   const forceA = document.querySelector('#force-a');
   const forceB = document.querySelector('#force-b');
+  const suspensionSpans = document.querySelector('#suspension-spans');
   const suspensions = document.querySelector('#suspensions');
   const ghostMark = document.querySelector('#ghost-mark');
   const counterweight = document.querySelector('#counterweight');
@@ -19,8 +20,21 @@
   const treatyState = document.querySelector('#treaty-state');
   const measurement = document.querySelector('#measurement');
   const memoryNote = document.querySelector('#memory-note');
+  const ledgerSummary = document.querySelector('#ledger-summary');
+  const ledgerCount = document.querySelector('#ledger-count');
+  const ledgerWeight = document.querySelector('#ledger-weight');
+  const ledgerCenter = document.querySelector('#ledger-center');
+  const ledgerSpread = document.querySelector('#ledger-spread');
+  const resonanceSummary = document.querySelector('#resonance-summary');
+  const sessionJournal = document.querySelector('#session-journal');
   const status = document.querySelector('#status');
   const eraseButton = document.querySelector('#erase-button');
+  const echoButton = document.querySelector('#echo-button');
+  const undoButton = document.querySelector('#undo-button');
+  const softenButton = document.querySelector('#soften-button');
+  const intensifyButton = document.querySelector('#intensify-button');
+  const postcardButton = document.querySelector('#postcard-button');
+  const printButton = document.querySelector('#print-button');
   const soundButton = document.querySelector('#sound-button');
   const resetButton = document.querySelector('#reset-button');
 
@@ -35,6 +49,7 @@
   let animationOrigin = performance.now();
   let frozenPhase = null;
   let eventTimer = 0;
+  let journalEntries = ['The treaty opened without an active suspension.'];
 
   initialise();
 
@@ -128,6 +143,12 @@
     surface.addEventListener('keydown', handleKeydown);
     surface.addEventListener('keyup', handleKeyup);
     eraseButton.addEventListener('click', attemptErase);
+    echoButton.addEventListener('click', castEcho);
+    undoButton.addEventListener('click', undoSessionMark);
+    softenButton.addEventListener('click', () => adjustLatest(-1));
+    intensifyButton.addEventListener('click', () => adjustLatest(1));
+    postcardButton.addEventListener('click', makePostcard);
+    printButton.addEventListener('click', printTreaty);
     soundButton.addEventListener('click', toggleSound);
     resetButton.addEventListener('click', resetLocalState);
     window.addEventListener('storage', handleStorage);
@@ -182,6 +203,24 @@
   }
 
   function handleKeydown(event) {
+    if (event.shiftKey && !event.repeat && event.key.toLowerCase() === 'e') {
+      event.preventDefault();
+      castEcho();
+      return;
+    }
+
+    if (event.shiftKey && !event.repeat && event.key.toLowerCase() === 'u') {
+      event.preventDefault();
+      undoSessionMark();
+      return;
+    }
+
+    if (event.key === '[' || event.key === ']') {
+      event.preventDefault();
+      adjustLatest(event.key === '[' ? -1 : 1);
+      return;
+    }
+
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       event.preventDefault();
       const delta = event.key === 'ArrowLeft' ? -50 : 50;
@@ -230,8 +269,51 @@
 
   function performSuspend(position, duration, origin) {
     session = core.suspend(state, session, position, duration);
+    const latest = session.suspensions.at(-1);
+    recordJournal(`${origin} left a weight-${latest?.weight || 1} mark at ${Math.round(position / 10)}%.`);
     render(`${origin} accepted. The agreement now contains ${session.suspensions.length === 1 ? 'one error' : 'another error'}.`);
-    playSuspension(position, session.suspensions.at(-1)?.weight || 1);
+    playSuspension(position, latest?.weight || 1);
+  }
+
+  function castEcho() {
+    const result = core.echoLatest(state, session);
+    if (!result.echoed) {
+      announce('Create a suspension before casting an echo.');
+      return;
+    }
+    session = result.session;
+    recordJournal(`An echo mirrored the latest mark to ${Math.round(result.echoed.position / 10)}%.`);
+    render('The latest suspension cast a mirrored echo across the treaty.');
+    playEcho(result.echoed.position, result.echoed.weight);
+  }
+
+  function undoSessionMark() {
+    const result = core.undoLatest(state, session);
+    if (!result.removed) {
+      announce('There is no session-only mark to undo.');
+      return;
+    }
+    session = result.session;
+    recordJournal(`A session-only mark at ${Math.round(result.removed.position / 10)}% was undone without becoming memory.`);
+    render('The latest session mark was undone. Durable erased memory was untouched.');
+    playUndo(result.removed.weight);
+  }
+
+  function adjustLatest(delta) {
+    const before = session.suspensions.at(-1);
+    const result = core.adjustLatestWeight(state, session, delta);
+    if (!result.changed || !before) {
+      announce('Create a suspension before changing its weight.');
+      return;
+    }
+    session = result.session;
+    if (result.changed.weight === before.weight) {
+      announce(delta < 0 ? 'The latest mark is already at minimum weight.' : 'The latest mark is already at maximum weight.');
+      return;
+    }
+    recordJournal(`The latest mark changed from weight ${before.weight} to ${result.changed.weight}.`);
+    render(delta < 0 ? 'The latest suspension softened.' : 'The latest suspension intensified.');
+    playAdjustment(result.changed.weight);
   }
 
   function attemptErase() {
@@ -244,6 +326,7 @@
     state = result.state;
     session = result.session;
     persist();
+    recordJournal(`Erasure removed an active mark at ${Math.round(result.erased.position / 10)}% and preserved its ghost.`);
     render('Erasure failed as designed. The removed mark became the only durable memory.');
     playErase(result.erased.weight);
 
@@ -255,6 +338,7 @@
     main.dataset.event = 'true';
     onceEvent.hidden = false;
     renderForcePositions();
+    recordJournal('The installation used its one field reversal.');
     announce('A one-time field reversal occurred. It cannot repeat while this local installation remains.');
     playOnceEvent();
     eventTimer = window.setTimeout(() => {
@@ -268,6 +352,7 @@
     const force = core.forceState(state, session);
     const measured = core.measurementFor(state, session);
     const order = core.treatyState(state, session);
+    const latest = session.suspensions.at(-1);
 
     main.dataset.order = order;
     main.style.setProperty('--force-a-scale', String(force.scaleA));
@@ -275,16 +360,23 @@
     main.style.setProperty('--field-scale', String(force.fieldScale));
 
     renderCursor();
+    renderSpans();
     renderSuspensions();
     renderGhost();
+    renderLedger();
+    renderJournal();
     treatyState.textContent = core.statusText(state, session);
     measurement.textContent = `Measured: ${measured.value} ${measured.unit} · unit unresolved`;
     memoryNote.textContent = storageEnabled
       ? core.memoryText(state)
       : 'Local storage is unavailable. Attempted erasure will not survive this session.';
     eraseButton.disabled = session.suspensions.length === 0;
+    echoButton.disabled = session.suspensions.length === 0;
+    undoButton.disabled = session.suspensions.length === 0;
+    softenButton.disabled = !latest || latest.weight <= 1;
+    intensifyButton.disabled = !latest || latest.weight >= 5;
     instruction.textContent = session.suspensions.length === 1
-      ? 'One error holds the treaty. Add another, or attempt to erase this one.'
+      ? 'One error holds the treaty. Build around it, echo it, edit its weight, or attempt erasure.'
       : 'Hold anywhere on the line. Arrow keys move the keyboard counterweight.';
     renderForcePositions();
     announce(message);
@@ -309,6 +401,18 @@
     });
   }
 
+  function renderSpans() {
+    suspensionSpans.replaceChildren();
+    core.spanState(state, session).forEach((span) => {
+      const element = document.createElement('i');
+      element.className = 'suspension-span';
+      element.style.setProperty('--span-left', `${span.from / 10}%`);
+      element.style.setProperty('--span-width', `${span.distance / 10}%`);
+      element.dataset.resonance = span.resonance;
+      suspensionSpans.append(element);
+    });
+  }
+
   function renderGhost() {
     if (!state.ghost) {
       ghostMark.hidden = true;
@@ -316,6 +420,31 @@
     }
     ghostMark.hidden = false;
     ghostMark.style.setProperty('--ghost-x', `${state.ghost.position / 10}%`);
+  }
+
+  function renderLedger() {
+    const ledger = core.ledgerFor(state, session);
+    ledgerCount.textContent = String(ledger.count);
+    ledgerWeight.textContent = String(ledger.totalWeight);
+    ledgerCenter.textContent = ledger.count ? `${(ledger.averagePosition / 10).toFixed(1)}%` : '—';
+    ledgerSpread.textContent = `${(ledger.spread / 10).toFixed(1)}%`;
+    resonanceSummary.textContent = `Resonance: ${ledger.resonance}.`;
+    ledgerSummary.textContent = ledger.count
+      ? `${ledger.count} active ${ledger.count === 1 ? 'mark' : 'marks'}, total weight ${ledger.totalWeight}, ${ledger.resonance}.`
+      : 'No active marks. The session ledger is unwritten.';
+  }
+
+  function recordJournal(entry) {
+    journalEntries = [...journalEntries, entry].slice(-6);
+  }
+
+  function renderJournal() {
+    sessionJournal.replaceChildren();
+    journalEntries.forEach((entry) => {
+      const item = document.createElement('li');
+      item.textContent = entry;
+      sessionJournal.append(item);
+    });
   }
 
   function startMotion() {
@@ -384,6 +513,23 @@
     window.setTimeout(() => playTone(frequency * 0.75, 0.015, 0.11, 'sine'), 55);
   }
 
+  function playEcho(position, weight) {
+    if (!soundEnabled) return;
+    const frequency = 108 + (position / 1000) * 150;
+    playTone(frequency, 0.017 + weight * 0.003, 0.12, 'sine');
+    window.setTimeout(() => playTone(frequency * 1.25, 0.013, 0.09, 'triangle'), 70);
+  }
+
+  function playAdjustment(weight) {
+    if (!soundEnabled) return;
+    playTone(115 + weight * 24, 0.016, 0.09, 'triangle');
+  }
+
+  function playUndo(weight) {
+    if (!soundEnabled) return;
+    playTone(142 - weight * 9, 0.014, 0.08, 'sine');
+  }
+
   function playErase(weight) {
     if (!soundEnabled) return;
     playTone(82 + weight * 7, 0.022, 0.16, 'sine');
@@ -410,10 +556,57 @@
     oscillator.stop(audioContext.currentTime + duration + 0.03);
   }
 
+  function makePostcard() {
+    const data = core.postcardData(state, session);
+    const marks = session.suspensions.map((mark) => {
+      const x = 80 + (mark.position / 1000) * 640;
+      const height = 36 + mark.weight * 9;
+      return `<line x1="${x.toFixed(1)}" y1="${260 - height}" x2="${x.toFixed(1)}" y2="${260 + height}" stroke="#df9e58" stroke-width="${1 + mark.weight}" />`;
+    }).join('');
+    const ghost = state.ghost
+      ? `<line x1="${(80 + (state.ghost.position / 1000) * 640).toFixed(1)}" y1="180" x2="${(80 + (state.ghost.position / 1000) * 640).toFixed(1)}" y2="340" stroke="#a7ada7" stroke-width="1" stroke-dasharray="6 5" />`
+      : '';
+    const namespace = ['http:', '//www.w3.org/2000/svg'].join('');
+    const svg = `<svg xmlns="${namespace}" width="800" height="520" viewBox="0 0 800 520">
+  <rect width="800" height="520" fill="#101317"/>
+  <text x="64" y="64" fill="#eef1ea" font-family="Georgia, serif" font-size="28">The Museum of Almost</text>
+  <text x="64" y="96" fill="#a7ada7" font-family="system-ui, sans-serif" font-size="13" letter-spacing="2">TREATY 05 · LOCAL POSTCARD · ${data.code}</text>
+  <line x1="80" y1="260" x2="720" y2="260" stroke="#616b68" stroke-width="1"/>
+  <line x1="80" y1="205" x2="720" y2="205" stroke="#77b8b2" stroke-width="${Math.max(1, data.scaleA * 2).toFixed(2)}"/>
+  <line x1="80" y1="315" x2="720" y2="315" stroke="#c98772" stroke-width="${Math.max(1, data.scaleB * 2).toFixed(2)}"/>
+  ${ghost}${marks}
+  <text x="64" y="408" fill="#eef1ea" font-family="Georgia, serif" font-size="20">${data.order.replace('-', ' ')}</text>
+  <text x="64" y="438" fill="#a7ada7" font-family="system-ui, sans-serif" font-size="14">${data.count} active marks · weight ${data.totalWeight} · ${data.resonance}</text>
+  <text x="64" y="465" fill="#a7ada7" font-family="system-ui, sans-serif" font-size="14">Measured ${data.measurement} · unit unresolved · erased ghost ${data.ghost ? 'present' : 'absent'}</text>
+  <text x="64" y="496" fill="#e3c765" font-family="system-ui, sans-serif" font-size="11" letter-spacing="1.5">GENERATED LOCALLY · NO VISITOR TEXT · NO REMOTE ASSETS</text>
+</svg>`;
+    const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+    const objectUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = objectUrl;
+    link.download = 'museum-of-almost-treaty.svg';
+    link.hidden = true;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+    recordJournal('A local postcard was generated from the current visible treaty state.');
+    renderJournal();
+    announce('Local postcard generated. No network request was used.');
+  }
+
+  function printTreaty() {
+    recordJournal('The current treaty was prepared for local printing.');
+    renderJournal();
+    announce('Opening the browser print dialog.');
+    window.print();
+  }
+
   function handleStorage(event) {
     if (event.key !== core.STATE_KEY || !event.newValue) return;
     try {
       state = core.sanitizeState(JSON.parse(event.newValue), state.installSeed);
+      recordJournal('Another local copy changed the erased ghost; this session kept its active marks.');
       render('Another local copy changed the erased memory. Active suspensions here were left alone.');
     } catch {
       // Ignore malformed local state.
@@ -450,6 +643,7 @@
     keyboardHoldStarted = 0;
     frozenPhase = null;
     animationOrigin = performance.now();
+    journalEntries = ['Local treaty state and this session record were cleared.'];
     persist();
     render('Local treaty state cleared. The one-time event is possible again.');
     resetButton.blur();
