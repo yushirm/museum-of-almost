@@ -192,3 +192,61 @@ Runtime changes:
 Rebuild rule:
 
 Start with the thirteen canonical station coordinates and one current normalized weather snapshot. Sort a copy of the station list by longitude. Derive temperature, wind, and precipitation ranges only from numeric readings in that same snapshot. Keep every missing value and derived position `null`. Render one post per station at its true longitude position; do not draw connecting geometry. Add an explicit values table. For preservation, use native browser print CSS and `window.print()` only. Keep the map and section source provenance on the printed sheet and do not add application persistence in order to create history.
+
+## Extension 4 — Cosmic Signal Chain
+
+Date: 2026-08-07
+
+Design gate:
+
+Three concepts were generated before code was written and evaluated against COMMONS / NOW's core job: reveal a shared current world with scientific provenance, minimal interpretation, no personalization, and no invented history.
+
+- **A — Fifth Card: Cosmic Weather:** conventionally add geomagnetic and radiation conditions beside the existing solar-wind card.
+- **B — Cosmic Signal Chain:** borrow the visual grammar of analog instrumentation and control racks. Place independent current near-Earth space-weather measurements into one compact readout so the visitor can compare them without turning the page into another dashboard row.
+- **C — The Page Becomes the Detector:** break the normal section model by allowing cosmic conditions to alter the page's global tick density, pulse cadence, and field-sheet marginalia.
+
+Concept C was discarded. Making the interface itself react to scientific data would turn measurement into ambience, spend accessibility budget, and make interpretation harder to distinguish from physics.
+
+Concepts A and B were merged.
+
+Feature premise:
+
+**The Cosmic Signal Chain asks what is arriving at and registering around Earth right now.**
+
+The instrument has three numbered detectors:
+
+1. **Flow** — the already-loaded NOAA SWPC solar-wind speed near Earth.
+2. **Field** — the current NOAA geomagnetic-storm scale (`G`).
+3. **Particles** — the current NOAA solar-radiation-storm scale (`S`).
+
+The numbering is reading order, not a causal timeline. The rack uses neutral separators rather than arrows so the interface does not imply that one displayed current value caused the next.
+
+Network consequence:
+
+The feature adds one request to NOAA SWPC's public `noaa-scales.json` product. It does not add a fifth service or fetch solar wind twice. A normal snapshot therefore uses five HTTP requests across the existing four public services.
+
+Integrity rules:
+
+- current record `0` is used for the NOAA `G` and `S` readings; historical maximum `-1` and forecast records are not presented as current;
+- scale values are accepted only as integers from 0 through 5;
+- invalid or out-of-range values become unavailable rather than being clamped or guessed;
+- level 0 is retained as a real “none” state rather than being confused with missing data;
+- each detector may fail independently;
+- the rack explicitly states that reading order is not a causal timeline;
+- the new request uses CORS, `credentials: omit`, `referrerPolicy: no-referrer`, and `cache: no-store`;
+- no automatic polling, visitor storage, visitor location, analytics, telemetry, account, or new runtime dependency is added;
+- cross-origin NOAA responses remain outside the service-worker cache.
+
+Runtime changes:
+
+- `cosmic-signal.js` isolates NOAA Scales normalization, current-record selection, missing-value handling, one-shot fetching, solar-wind mirroring, DOM rendering, and the compact field-sheet copy;
+- `cosmic-signal.css` supplies the analog-rack presentation, mobile stack, higher-contrast treatment, reduced-motion boundary, print strip, and deliberately non-directional detector separators;
+- `index.html` loads the local cosmic module after the established application;
+- the same-origin offline shell caches only the new local JavaScript and CSS, never the NOAA response;
+- `scripts/test-cosmic-signal.mjs` pins the added network allowlist to the single NOAA Scales endpoint and verifies scale reduction, missing-value integrity, privacy constraints, secret patterns, accessibility media hooks, and non-causal presentation;
+- the required `check` job runs the new cosmic reducer contract alongside the existing repository gates;
+- the printed Planetary Field Sheet carries a compact current Cosmic Signal Chain without adding application persistence or a document service.
+
+Rebuild rule:
+
+Read only the current NOAA Scales record at key `0`. Treat `G` and `S` as independent current scale measurements and accept only integer levels 0–5. Mirror the existing solar-wind headline locally rather than requesting it again. Keep missing data missing. Present the three values in numbered reading order with neutral separators and explicit non-causal language. If the public scale feed fails, leave `G` and `S` unavailable. Never persist or cache the live NOAA response.
