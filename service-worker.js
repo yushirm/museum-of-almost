@@ -1,8 +1,8 @@
 'use strict';
 
-const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal';
-const CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency';
-const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement';
+const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency';
+const CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement';
+const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon';
 const APP_SHELL = [
   './',
   './index.html',
@@ -20,6 +20,9 @@ const APP_SHELL = [
   './cosmic-escapement-core.js',
   './cosmic-escapement.js',
   './cosmic-escapement.css',
+  './planetary-heliodon-core.js',
+  './planetary-heliodon.js',
+  './planetary-heliodon.css',
   './data-core.js',
   './app.js',
   './cosmic-signal.js',
@@ -27,7 +30,8 @@ const APP_SHELL = [
   './PRIVACY.md',
   './SOURCES.md',
   './COSMIC_RECEIVE_DESK.md',
-  './CELESTIAL_ESCAPEMENT.md'
+  './CELESTIAL_ESCAPEMENT.md',
+  './PLANETARY_HELIODON.md'
 ];
 
 self.addEventListener('install', (event) => {
