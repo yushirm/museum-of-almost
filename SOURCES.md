@@ -141,3 +141,14 @@ The Planetary Section intentionally draws discrete posts rather than a connectin
 These are third-party public services. Their availability, update cadence, definitions, and terms are controlled by their respective providers. A missing or failed response is shown as unavailable rather than replaced with a guessed value.
 
 No API key, paid service, account, analytics provider, tracking service, map API, tile provider, PDF service, or document-storage service is used by the Museum.
+
+## Planetary Heliodon local solar geometry
+
+The **Planetary Heliodon / Earth Casts the Night** makes no runtime request. It derives an approximate subsolar point, antisolar point, and day/night terminator from the Museum's captured UTC snapshot instant and the same simplified seasonal solar-declination model already used for the thirteen station light states.
+
+Reference for the standard solar-position relationship between declination, hour angle, latitude, and zenith/elevation:
+
+- NOAA Global Monitoring Laboratory — General Solar Position Calculations: `https://gml.noaa.gov/grad/solcalc/solareqns.PDF`
+- NOAA Global Monitoring Laboratory — Solar Calculator and accuracy caveat: `https://gml.noaa.gov/grad/solcalc/`
+
+These references are documentation only and are **not contacted at runtime**. The Museum intentionally does not claim NOAA-calculator precision: the Heliodon preserves the application's existing approximate daylight model so station light states and the map boundary cannot disagree because of two different local algorithms. See `PLANETARY_HELIODON.md` for the design gate and approximation boundary.
