@@ -93,20 +93,13 @@
   }
 
   function meaningIndex(state, slot) {
-    return hashString(
-      `${EXECUTION_SEED}:${state.installSeed}:${state.visit}:${state.geometry.generation}:${slot}:meaning`
-    ) % MEANINGS.length;
+    const base = hashString(`${EXECUTION_SEED}:${state.installSeed}:meaning-base`) % MEANINGS.length;
+    return (base + state.visit + state.geometry.generation + slot * 4) % MEANINGS.length;
   }
 
   function meaningsFor(inputState) {
     const state = sanitizeState(inputState, inputState?.installSeed || 1);
-    const used = new Set();
-    return Array.from({ length: 3 }, (_, slot) => {
-      let index = meaningIndex(state, slot);
-      while (used.has(index)) index = (index + 1) % MEANINGS.length;
-      used.add(index);
-      return MEANINGS[index];
-    });
+    return Array.from({ length: 3 }, (_, slot) => MEANINGS[meaningIndex(state, slot)]);
   }
 
   function notesFor(inputState) {
@@ -137,7 +130,7 @@
     const axis = DIRECTIONS.indexOf(direction);
     const spread = Math.min(4, state.geometry.spread + 1);
     const fold = state.geometry.spread >= 4
-      ? (state.geometry.fold + 1 + axis) % 3
+      ? (state.geometry.fold + 1 + (axis % 2)) % 3
       : state.geometry.fold;
 
     return {
