@@ -2,9 +2,11 @@
   'use strict';
   const core = root.MuseumCosmicSignalCore;
   if (!core || !root.document) return;
-  const { SOURCE, normalizeNoaaScales, cosmicSentence } = core;
+  const { normalizeNoaaScales, cosmicSentence } = core;
+  const SNAPSHOT_EVENT = 'museum:commons-snapshot';
+
   function mount(document, host) {
-    if (!document?.querySelector || !host?.fetch) return;
+    if (!document?.querySelector) return;
     if (document.querySelector('#cosmic-signal')) return;
 
     installStylesheet(document);
@@ -37,7 +39,6 @@
       fieldRadiation: document.querySelector('#cosmic-field-radiation')
     };
 
-    let controller = null;
     let scales = normalizeNoaaScales(null);
 
     const syncSolarWind = () => {
@@ -71,50 +72,37 @@
       ui.sentence.textContent = cosmicSentence(solarText, scales);
     };
 
-    async function refreshScales() {
-      controller?.abort();
-      controller = new host.AbortController();
-      const activeController = controller;
-      const timeout = host.setTimeout(() => activeController.abort(), 9000);
-      scales = normalizeNoaaScales(null);
+    const applyLatchedSnapshot = (sample) => {
+      const scaleFeed = sample?.scales;
+      scales = normalizeNoaaScales(scaleFeed?.available ? scaleFeed.value : null);
+      syncSolarWind();
       renderScales();
-      if (ui.status) ui.status.textContent = 'Reading NOAA SWPC current space-weather scales…';
 
-      try {
-        const response = await host.fetch(SOURCE, {
-          method: 'GET',
-          mode: 'cors',
-          cache: 'no-store',
-          credentials: 'omit',
-          referrerPolicy: 'no-referrer',
-          signal: activeController.signal
-        });
-        if (!response.ok) throw new Error(`Source returned ${response.status}`);
-        scales = normalizeNoaaScales(await response.json());
-        if (ui.status) {
-          ui.status.textContent = scales.available
-            ? `NOAA SWPC scale feed answered${scales.observedAt ? ` · ${scales.observedAt}` : ''}.`
-            : 'NOAA SWPC answered without a usable current scale value.';
-        }
-      } catch {
-        scales = normalizeNoaaScales(null);
-        if (ui.status) ui.status.textContent = 'NOAA SWPC scale feed did not answer. Cosmic scale values stay unavailable.';
-      } finally {
-        host.clearTimeout(timeout);
-        if (controller === activeController) controller = null;
-        renderScales();
+      if (!ui.status) return;
+      if (!sample?.receivedAt) {
+        ui.status.textContent = 'Waiting for the shared five-feed sample.';
+      } else if (!scaleFeed?.available) {
+        ui.status.textContent = 'NOAA SWPC scale feed did not answer in this latched sample. Cosmic scale values stay unavailable.';
+      } else if (!scales.available) {
+        ui.status.textContent = 'NOAA SWPC answered in this latched sample without a usable current scale value.';
+      } else {
+        ui.status.textContent = `Latched with the shared snapshot${scales.observedAt ? ` · NOAA observation ${scales.observedAt}` : ''}.`;
       }
-    }
+    };
+
+    const onSnapshot = (event) => {
+      applyLatchedSnapshot(event.detail?.snapshot || host.MuseumCommonsSnapshot || null);
+    };
 
     const solarSource = document.querySelector('#solar-wind');
     if (solarSource && host.MutationObserver) {
       new host.MutationObserver(syncSolarWind).observe(solarSource, { childList: true, characterData: true, subtree: true });
     }
 
-    document.querySelector('#refresh-button')?.addEventListener('click', refreshScales);
+    document.addEventListener(SNAPSHOT_EVENT, onSnapshot);
     syncSolarWind();
     renderScales();
-    refreshScales();
+    applyLatchedSnapshot(host.MuseumCommonsSnapshot || null);
   }
 
   function installStylesheet(document) {
@@ -159,9 +147,9 @@
       </ol>
       <div class="cosmic-readout">
         <p id="cosmic-sentence">Cosmic measurements are unavailable in this snapshot.</p>
-        <p id="cosmic-status" role="status" aria-live="polite">Preparing the cosmic scale feed.</p>
+        <p id="cosmic-status" role="status" aria-live="polite">Waiting for the shared five-feed sample.</p>
       </div>
-      <p class="attribution">NOAA Space Weather Prediction Center. The G and S values use NOAA's current public scales; level 0 means no scale threshold is active. No automatic polling.</p>
+      <p class="attribution">NOAA Space Weather Prediction Center. The G and S values use NOAA's current public scales; level 0 means no scale threshold is active. The scale feed is latched with the same five-feed snapshot as the rest of COMMONS / NOW. No automatic polling.</p>
     `;
     return section;
   }
@@ -189,7 +177,6 @@
       stageNode.dataset.alert = String(Number.isInteger(scale) && scale > 0);
     }
   }
-
 
   root.MuseumCosmicSignalView = Object.freeze({ mount });
   mount(root.document, root);

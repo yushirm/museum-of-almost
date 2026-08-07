@@ -7,12 +7,20 @@ const cosmic = require('../cosmic-signal-core.js');
 const coreSource = fs.readFileSync(new URL('../cosmic-signal-core.js', import.meta.url), 'utf8');
 const viewSource = fs.readFileSync(new URL('../cosmic-signal-view.js', import.meta.url), 'utf8');
 const loaderSource = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
+const appSource = fs.readFileSync(new URL('../app.js', import.meta.url), 'utf8');
 const source = [coreSource, viewSource, loaderSource].join('\n');
 const styles = fs.readFileSync(new URL('../cosmic-signal.css', import.meta.url), 'utf8');
 
 assert.equal(cosmic.SOURCE, 'https://services.swpc.noaa.gov/products/noaa-scales.json');
-const runtimeUrls = [...new Set(source.match(/https:\/\/[^\s"'`<>]+/g) || [])];
-assert.deepEqual(runtimeUrls, [cosmic.SOURCE], 'cosmic runtime must contact only the approved NOAA Scales endpoint');
+assert.ok(appSource.includes(cosmic.SOURCE), 'the shared snapshot acquisition must own the approved NOAA Scales request');
+assert.match(appSource, /Promise\.allSettled\([\s\S]*SOURCES\.earthquakes[\s\S]*SOURCES\.solar[\s\S]*SOURCES\.scales[\s\S]*weatherUrl[\s\S]*SOURCES\.events/,
+  'all five current feeds must cross the same acquisition barrier');
+assert.match(appSource, /MuseumCommonsSnapshot/);
+assert.match(appSource, /museum:commons-snapshot/);
+assert.match(viewSource, /museum:commons-snapshot/);
+assert.match(viewSource, /MuseumCommonsSnapshot/);
+assert.doesNotMatch(viewSource, /\bfetch\s*\(/,
+  'the Cosmic Signal Chain must consume the shared latch rather than create an independent refresh cycle');
 
 const sample = {
   '-1': {
@@ -83,11 +91,11 @@ assert.equal(
   'Cosmic measurements are unavailable in this snapshot.'
 );
 
-assert.match(source, /credentials:\s*'omit'/);
-assert.match(source, /referrerPolicy:\s*'no-referrer'/);
-assert.match(source, /cache:\s*'no-store'/);
-assert.match(source, /mode:\s*'cors'/);
-assert.match(source, /AbortController/);
+assert.match(appSource, /credentials:\s*'omit'/);
+assert.match(appSource, /referrerPolicy:\s*'no-referrer'/);
+assert.match(appSource, /cache:\s*'no-store'/);
+assert.match(appSource, /mode:\s*'cors'/);
+assert.match(appSource, /AbortController/);
 assert.match(source, /MutationObserver/);
 assert.match(source, /reading order is not a causal timeline/i);
 assert.match(source, /No automatic polling/i);
@@ -108,4 +116,4 @@ assert.match(styles, /@media print/);
 assert.doesNotMatch(styles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
 
-console.log('Cosmic Signal Chain NOAA-scale normalization, network allowlist, privacy boundary, accessibility hooks, and missing-value integrity verified.');
+console.log('Cosmic Signal Chain normalization, shared five-feed latch, privacy boundary, accessibility hooks, and missing-value integrity verified.');
