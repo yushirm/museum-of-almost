@@ -3,11 +3,13 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 
-assert.match(source, /museum-of-almost-commons-now-v2-difference/);
+assert.match(source, /museum-of-almost-commons-now-v3-map/);
 for (const asset of [
   './',
   './index.html',
   './styles.css',
+  './world-map.css',
+  './world-map.svg',
   './difference-engine.css',
   './data-core.js',
   './app.js',
@@ -26,4 +28,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Commons / Now offline shell, Difference Engine asset, and cross-origin boundary verified.');
+console.log('Commons / Now offline shell, local world map, Difference Engine asset, and cross-origin boundary verified.');
