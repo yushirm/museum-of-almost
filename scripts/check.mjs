@@ -174,8 +174,13 @@ assert.match(differenceStyles, /@media print/);
 assert.doesNotMatch(differenceStyles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(differenceStyles, /min-width:\s*[4-9]\d\dpx/);
 
-assert.match(worker, /museum-of-almost-commons-now-v3-map/);
+assert.match(worker, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v3-coherent-shell'/);
+assert.match(worker, /const CACHE_NAME = 'museum-of-almost-commons-now-v4-world-map'/);
 assert.match(worker, /url\.origin !== self\.location\.origin/);
+assert.match(worker, /caches\.match\('\.\/index\.html'\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
+  'navigation cache must remain coherent across releases');
+assert.match(worker, /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/);
+assert.match(worker, /client\.navigate\(client\.url\)/);
 assert.doesNotMatch(worker, /https?:\/\//, 'service worker must never proxy public live-data sources');
 for (const asset of ['./index.html', './styles.css', './world-map.css', './world-map.svg', './difference-engine.css', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md']) {
   assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
@@ -261,4 +266,4 @@ assert.doesNotMatch(publicCurrent, /BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/);
 assert.doesNotMatch(publicCurrent, /password\s*[:=]\s*["'][^"']+["']/i);
 assert.doesNotMatch(publicCurrent, /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i);
 
-console.log('Commons / Now local-map, public-data, Difference Engine, privacy, accessibility, seed, and offline contract verified.');
+console.log('Commons / Now local-map, coherent-shell, public-data, Difference Engine, privacy, accessibility, seed, and offline contract verified.');
