@@ -39,4 +39,8 @@
       });
     });
   });
+
+  load('./faultline-core.js', 'faultlineCore', () => {
+    load('./faultline.js', 'faultlineView');
+  });
 })(typeof globalThis !== 'undefined' ? globalThis : this);
