@@ -40,7 +40,7 @@ One invitation makes at most one direct request to each of these fixed public sc
 
 The request URLs are fixed in application code. Local treaty state, the install seed, active marks, erased memory, visitor input, and browser location are not added to either request.
 
-For both requests the application explicitly uses `credentials: omit`, `referrerPolicy: no-referrer`, `cache: no-store`, and CORS mode. The application therefore does not intentionally send cookies or the Museum page URL. A normal direct internet request still necessarily exposes network-layer information such as the visitor's IP address to USGS or NOAA and to ordinary network infrastructure. Those services may process connection information under their own policies; the Museum does not receive their server logs.
+For both requests the application explicitly uses `credentials: omit`, `referrerPolicy: no-referrer`, `cache: no-store`, and CORS mode. Credentials are omitted and the referrer is omitted. The application therefore does not intentionally send cookies or the Museum page URL. A normal direct internet request still necessarily exposes network-layer information such as the visitor's IP address to USGS or NOAA and to ordinary network infrastructure. Those services may process connection information under their own policies; the Museum does not receive their server logs.
 
 The Museum does not poll these services automatically. Pressing **Refresh live entropy** makes a new explicit pair of requests. Pressing **Release influence**, closing the page, or reloading removes the live influence from memory.
 
