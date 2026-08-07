@@ -1,6 +1,7 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-commons-now-v3-map';
+const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v3-coherent-shell';
+const CACHE_NAME = 'museum-of-almost-commons-now-v4-world-map';
 const APP_SHELL = [
   './',
   './index.html',
@@ -24,15 +25,24 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys()
-      .then((keys) => Promise.all(
-        keys
-          .filter((key) => key.startsWith('museum-of-almost-') && key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
-      ))
-      .then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    const isUpgrade = keys.some((key) => key.startsWith('museum-of-almost-') && key !== CACHE_NAME);
+
+    await Promise.all(
+      keys
+        .filter((key) => key.startsWith('museum-of-almost-') && key !== CACHE_NAME)
+        .map((key) => caches.delete(key))
+    );
+    await self.clients.claim();
+
+    if (!isUpgrade) return;
+    const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    await Promise.all(windows.map((client) => {
+      if (typeof client.navigate !== 'function') return null;
+      return client.navigate(client.url).catch(() => null);
+    }));
+  })());
 });
 
 self.addEventListener('fetch', (event) => {
@@ -44,13 +54,15 @@ self.addEventListener('fetch', (event) => {
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request)
-        .then((response) => {
+      caches.match('./index.html').then((cached) => {
+        if (cached) return cached;
+        return fetch(request).then((response) => {
+          if (!response || response.status !== 200 || response.type === 'opaque') return response;
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
           return response;
-        })
-        .catch(() => caches.match('./index.html'))
+        });
+      })
     );
     return;
   }
