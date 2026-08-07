@@ -105,6 +105,7 @@ assert.deepEqual(rerollRecord(execution5Seed), {});
 
 assert.equal(core.EXECUTION_SEED, execution5Seed);
 assert.equal(core.STATE_KEY, 'museum-of-almost:entropy:v5');
+assert.equal(core.RESONANCES.length, 4);
 
 const seed = 123456;
 const empty = core.createState(seed);
@@ -142,6 +143,57 @@ assert.deepEqual(measure1, measure1Again);
 assert.ok(measure1.value >= 11 && measure1.value <= 97);
 assert.ok(core.UNKNOWN_UNITS.includes(measure1.unit));
 
+const echoed = core.echoLatest(empty, suspended1);
+assert.deepEqual(echoed.echoed, { id: 2, position: 300, weight: 3 });
+assert.equal(echoed.session.suspensions.length, 2);
+assert.equal(core.treatyState(empty, echoed.session), 'overwritten');
+const echoedSpans = core.spanState(empty, echoed.session);
+assert.deepEqual(echoedSpans, [{
+  from: 300,
+  to: 700,
+  distance: 400,
+  weightDelta: 0,
+  resonance: 'balanced interval'
+}]);
+assert.deepEqual(core.ledgerFor(empty, echoed.session), {
+  count: 2,
+  totalWeight: 6,
+  averagePosition: 500,
+  spread: 400,
+  resonance: 'balanced interval'
+});
+
+const intensified = core.adjustLatestWeight(empty, echoed.session, 1);
+assert.equal(intensified.changed.weight, 4);
+assert.equal(intensified.session.suspensions.at(-1).weight, 4);
+const softened = core.adjustLatestWeight(empty, intensified.session, -10);
+assert.equal(softened.changed.weight, 1, 'weight editing must stay bounded');
+
+const undone = core.undoLatest(empty, echoed.session);
+assert.deepEqual(undone.removed, echoed.echoed);
+assert.deepEqual(undone.session.suspensions, suspended1.suspensions);
+assert.equal(undone.session.sequence, echoed.session.sequence, 'undo must not reuse sequence ids');
+assert.equal(core.undoLatest(empty, session0).removed, null);
+assert.equal(core.echoLatest(empty, session0).echoed, null);
+
+assert.equal(core.resonanceForDistance(30), 'near lock');
+assert.equal(core.resonanceForDistance(200), 'close drift');
+assert.equal(core.resonanceForDistance(450), 'balanced interval');
+assert.equal(core.resonanceForDistance(800), 'wide accord');
+
+const postcard = core.postcardData(empty, echoed.session);
+assert.equal(postcard.count, 2);
+assert.equal(postcard.totalWeight, 6);
+assert.equal(postcard.resonance, 'balanced interval');
+assert.equal(postcard.order, 'overwritten');
+assert.equal(postcard.ghost, false);
+assert.match(postcard.code, /^[0-9A-Z]{7}$/);
+assert.equal(
+  core.sessionCodeFor(empty, echoed.session),
+  core.sessionCodeFor(core.createState(987654), echoed.session),
+  'shareable postcard code must not encode the installation seed'
+);
+
 const suspended2 = core.suspend(empty, suspended1, 260, 300);
 assert.equal(suspended2.suspensions.length, 2);
 assert.equal(core.treatyState(empty, suspended2), 'overwritten');
@@ -178,6 +230,22 @@ for (let index = 0; index < 10; index += 1) {
 }
 assert.equal(capped.suspensions.length, core.MAX_SUSPENSIONS);
 assert.equal(capped.sequence, 10);
+assert.ok(core.spanState(empty, capped).length <= core.MAX_SUSPENSIONS - 1);
+
+const sanitizedSession = core.sanitizeSession({
+  cursor: 9999,
+  suspensions: [{ id: 0, position: -5, weight: 99, note: 'discard me' }],
+  inversion: 'yes',
+  sequence: 99999,
+  journal: ['discard me'],
+  postcard: 'discard me'
+}, empty);
+assert.equal(sanitizedSession.cursor, 1000);
+assert.deepEqual(sanitizedSession.suspensions, [{ id: 1, position: 0, weight: 5 }]);
+assert.equal(sanitizedSession.inversion, true);
+assert.equal(sanitizedSession.sequence, 9999);
+assert.equal('journal' in sanitizedSession, false);
+assert.equal('postcard' in sanitizedSession, false);
 
 const sanitized = core.sanitizeState({
   version: 999,
@@ -188,7 +256,9 @@ const sanitized = core.sanitizeState({
   actionHistory: ['must disappear'],
   pointerPath: [[1, 2]],
   duration: 9000,
-  timestamp: 123
+  timestamp: 123,
+  ledger: { count: 9 },
+  journal: ['must disappear']
 });
 assert.deepEqual(sanitized, {
   version: 5,
@@ -213,7 +283,7 @@ const noLegacy = core.migrateLegacy(null, null, null, null);
 assert.deepEqual(noLegacy, { migrated: false, installSeed: null });
 
 const persisted = JSON.stringify(erasedFirst.state);
-assert.doesNotMatch(persisted, /timestamp|email|name|location|pointer|client[xy]|duration|history|visit|geometry/i);
+assert.doesNotMatch(persisted, /timestamp|email|name|location|pointer|client[xy]|duration|history|visit|geometry|ledger|journal|postcard/i);
 assert.match(core.memoryText(empty), /Nothing attempted to erase/i);
 
-console.log('Entropy history replay, v5 treaty, suspension weight, erasure-only memory, and one-time reversal verified.');
+console.log('Entropy replay plus constructive treaty spans, ledger, echo, undo, postcard data, and erasure-only memory verified.');
