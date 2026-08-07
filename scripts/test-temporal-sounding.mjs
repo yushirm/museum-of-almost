@@ -4,9 +4,11 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const core = require('../temporal-sounding-core.js');
+const coreSource = fs.readFileSync(new URL('../temporal-sounding-core.js', import.meta.url), 'utf8');
 const viewSource = fs.readFileSync(new URL('../temporal-sounding.js', import.meta.url), 'utf8');
 const styleSource = fs.readFileSync(new URL('../sounding-well.css', import.meta.url), 'utf8');
 const indexSource = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const source = [coreSource, viewSource].join('\n');
 
 assert.equal(core.parseUtcTimestamp('2026-08-07 19:00:00'), Date.parse('2026-08-07T19:00:00Z'));
 assert.equal(core.parseUtcTimestamp('2026-08-07T19:00:00Z'), Date.parse('2026-08-07T19:00:00Z'));
@@ -83,10 +85,21 @@ assert.match(viewSource, /museum:commons-snapshot/);
 assert.match(viewSource, /response\.clone\(\)\.json\(\)/);
 assert.match(viewSource, /channel !== 'events'/);
 assert.match(viewSource, /nativeFetch\(input, init\)/);
-assert.doesNotMatch(viewSource, /setInterval|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
-assert.doesNotMatch(viewSource, /sendBeacon|XMLHttpRequest|WebSocket|EventSource|analytics|telemetry/i);
 assert.doesNotMatch(viewSource, /\bfetch\s*\(/, 'observer must not initiate an additional fetch call');
 assert.match(viewSource, /feed-wide observation instant/i);
+
+const runtimeUrls = [...new Set(source.match(/https:\/\/[^\s"'`<>]+/g) || [])].sort();
+assert.deepEqual(runtimeUrls, [
+  'https://api.open-meteo.com',
+  'https://earthquake.usgs.gov',
+  'https://eonet.gsfc.nasa.gov',
+  'https://services.swpc.noaa.gov'
+].sort(), 'observer may recognize only the four already-approved public-service origins');
+assert.doesNotMatch(source, /setInterval|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
+assert.doesNotMatch(source, /sendBeacon|XMLHttpRequest|WebSocket|EventSource|analytics|telemetry|dataLayer|gtag/i);
+assert.doesNotMatch(source, /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i);
+assert.doesNotMatch(source, /\bAKIA[0-9A-Z]{16}\b|\bsk-(?:proj-)?[A-Za-z0-9_-]{16,}\b|BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/i);
+assert.doesNotMatch(source, /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i);
 
 assert.match(styleSource, /@media \(max-width: 620px\)/);
 assert.match(styleSource, /@media \(prefers-reduced-motion: reduce\)/);
@@ -94,4 +107,4 @@ assert.match(styleSource, /@media \(prefers-contrast: more\)/);
 assert.match(styleSource, /@media print/);
 assert.doesNotMatch(styleSource, /@import\s+url|font-face|https?:\/\//i);
 
-console.log('Temporal timestamp parsing, known-thickness derivation, incomparable EONET handling, passive fetch observation, load order, and accessibility boundaries verified.');
+console.log('Temporal timestamp parsing, known-thickness derivation, incomparable EONET handling, passive fetch observation, exact origin boundary, load order, privacy, and accessibility verified.');
