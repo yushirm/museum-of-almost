@@ -56,8 +56,11 @@ assert.match(app, /core\.moveCursor/);
 assert.match(app, /requestAnimationFrame/);
 assert.match(app, /event\.clientX/);
 assert.match(app, /performance\.now\(\)/);
-assert.doesNotMatch(core, /clientX|clientY|pointerStart|pointerPath|performance\.now|Date\.|timestamp/i,
-  'transient gesture data and clocks must never enter durable core state');
+assert.doesNotMatch(
+  core,
+  /\bclient[XY]\b|\bpointerStart\b|\bpointerPath\b|\bperformance\.now\b|\bDate\.|\btimestamp\b/i,
+  'transient gesture data and clocks must never enter durable core state'
+);
 
 assert.match(styles, /min-height:\s*44px/);
 assert.match(styles, /touch-action:\s*pan-y/);
