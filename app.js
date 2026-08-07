@@ -116,7 +116,6 @@
       ui.refresh.textContent = 'Reading the world…';
     }
     if (ui.liveStatus) ui.liveStatus.textContent = 'Acquiring one five-feed snapshot from four public services.';
-    if (ui.snapshotDetail) ui.snapshotDetail.textContent = 'ACQUIRE · the visible Museum stays on the previous held sample until all five feeds settle.';
     document.body.dataset.loading = 'true';
     renderSampleAcquire();
 
@@ -130,7 +129,8 @@
     ]);
 
     window.clearTimeout(timeout);
-    if (requestController === activeController) requestController = null;
+    if (requestController !== activeController) return;
+    requestController = null;
 
     const [quakeResult, solarResult, scalesResult, weatherResult, eventResult] = results;
     snapshot = {
