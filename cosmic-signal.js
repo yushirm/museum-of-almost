@@ -33,10 +33,10 @@
 
   function selectCurrentRecord(payload) {
     if (!payload || typeof payload !== 'object') return null;
-    if (payload['0'] && typeof payload['0'] === 'object') return payload['0'];
     if (Array.isArray(payload)) {
       return payload.find((entry) => entry && typeof entry === 'object' && (entry.G || entry.S || entry.R)) || null;
     }
+    if (payload['0'] && typeof payload['0'] === 'object') return payload['0'];
     if (payload.G || payload.S || payload.R) return payload;
     return Object.values(payload).find((entry) => entry && typeof entry === 'object' && (entry.G || entry.S || entry.R)) || null;
   }
