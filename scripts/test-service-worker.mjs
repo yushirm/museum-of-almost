@@ -3,9 +3,9 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 
-assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal'/);
-assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency'/);
-assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/);
+assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v7-cosmic-latency'/);
+assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/);
+assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/);
 for (const asset of [
   './',
   './index.html',
@@ -23,6 +23,9 @@ for (const asset of [
   './cosmic-escapement-core.js',
   './cosmic-escapement.js',
   './cosmic-escapement.css',
+  './planetary-heliodon-core.js',
+  './planetary-heliodon.js',
+  './planetary-heliodon.css',
   './data-core.js',
   './app.js',
   './cosmic-signal.js',
@@ -30,7 +33,8 @@ for (const asset of [
   './PRIVACY.md',
   './SOURCES.md',
   './COSMIC_RECEIVE_DESK.md',
-  './CELESTIAL_ESCAPEMENT.md'
+  './CELESTIAL_ESCAPEMENT.md',
+  './PLANETARY_HELIODON.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
 }
@@ -50,4 +54,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Commons / Now coherent offline shell, current and local cosmic instruments, local world map, Difference Engine, printable field sheet, and cross-origin boundary verified.');
+console.log('Commons / Now coherent offline shell, current and local cosmic instruments, Planetary Heliodon, local world map, Difference Engine, printable field sheet, and cross-origin boundary verified.');
