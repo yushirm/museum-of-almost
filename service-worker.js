@@ -1,7 +1,7 @@
 'use strict';
 
-const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v4-world-map';
-const CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet';
+const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v5-field-sheet';
+const CACHE_NAME = 'museum-of-almost-commons-now-v6-cosmic-signal';
 const APP_SHELL = [
   './',
   './index.html',
