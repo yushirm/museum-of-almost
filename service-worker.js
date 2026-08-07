@@ -1,13 +1,14 @@
 'use strict';
 
-const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon';
-const CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish';
-const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold';
+const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish';
+const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold';
+const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now';
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
   './sample-hold.css',
+  './sounding-well.css',
   './world-map.css',
   './world-map.svg',
   './difference-engine.css',
@@ -25,11 +26,15 @@ const APP_SHELL = [
   './planetary-heliodon.js',
   './planetary-heliodon.css',
   './data-core.js',
+  './temporal-sounding-core.js',
+  './temporal-sounding.js',
   './app.js',
   './cosmic-signal.js',
   './manifest.webmanifest',
   './PRIVACY.md',
   './SOURCES.md',
+  './SAMPLE_AND_HOLD.md',
+  './SOUNDING_WELL.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md'
