@@ -64,11 +64,11 @@
     const phase = section.querySelector('#escapement-detail-phase');
     const note = section.querySelector('#escapement-detail-note');
     const status = section.querySelector('#escapement-status');
-    let capturedMs = now(host);
+    let capturedMs = snapshotTime(document, host);
     let selectedId = 'moon-month';
 
-    function render(resetTime = false) {
-      if (resetTime) capturedMs = now(host);
+    function render(nextCapturedMs = null) {
+      if (Number.isFinite(nextCapturedMs)) capturedMs = nextCapturedMs;
       const wheels = core.clocks(capturedMs);
       const selected = wheels.find((wheel) => wheel.id === selectedId) || wheels[0];
       if (!selected) return;
@@ -115,11 +115,17 @@
       const button = event.target?.closest?.('[data-escapement-id]');
       if (!button || !section.contains(button)) return;
       selectedId = button.dataset.escapementId;
-      render(false);
+      render();
     });
 
-    document.querySelector('#refresh-button')?.addEventListener('click', () => render(true));
-    render(false);
+    const snapshotTimeNode = document.querySelector('#snapshot-time');
+    if (snapshotTimeNode && typeof root.MutationObserver === 'function') {
+      const observer = new root.MutationObserver(() => render(snapshotTime(document, host)));
+      observer.observe(snapshotTimeNode, { childList: true, characterData: true, subtree: true });
+    } else {
+      document.querySelector('#refresh-button')?.addEventListener('click', () => render(snapshotTime(document, host)));
+    }
+    render();
   }
 
   function ensureFieldStrip(document) {
@@ -147,9 +153,20 @@
     return strip;
   }
 
-  function now(host) {
+  function snapshotTime(document, host) {
     const HostDate = host?.Date || Date;
-    return HostDate.now();
+    const nowMs = HostDate.now();
+    const text = document.querySelector('#snapshot-time')?.textContent || '';
+    const match = text.match(/Snapshot received (\d{2}):(\d{2}):(\d{2}) UTC/);
+    if (!match) return nowMs;
+
+    const now = new HostDate(nowMs);
+    const hour = Number(match[1]);
+    const minute = Number(match[2]);
+    const second = Number(match[3]);
+    const day = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hour, minute, second);
+    return [day - 86400000, day, day + 86400000]
+      .sort((a, b) => Math.abs(a - nowMs) - Math.abs(b - nowMs))[0];
   }
 
   function formatUtc(ms) {

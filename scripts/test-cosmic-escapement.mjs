@@ -33,7 +33,9 @@ for(const clock of clocks){
 assert.match(clocks[1].readout,/waning crescent/i);
 assert.match(viewSource,/MANY CLOCKS, ONE NOW/);
 assert.match(viewSource,/section\.id = 'celestial-escapement'/);
-assert.match(viewSource,/refresh-button/);
+assert.match(viewSource,/MutationObserver/);
+assert.match(viewSource,/snapshot-time/);
+assert.match(viewSource,/Snapshot received/);
 assert.match(viewSource,/Frozen local approximation/i);
 assert.match(loader,/cosmic-escapement-core\.js/);
 assert.match(loader,/cosmic-escapement\.js/);
