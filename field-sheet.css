@@ -64,6 +64,7 @@
 .section-post[data-light="day"] { stroke: var(--gold); }
 .section-post[data-light="twilight"] { stroke: var(--red); }
 .section-post[data-light="night"] { stroke: var(--night); }
+.section-post-missing { stroke: var(--muted) !important; stroke-dasharray: 3 3; }
 
 .section-temperature-node {
   fill: var(--paper);
@@ -75,6 +76,12 @@
 .section-temperature-node[data-light="day"] { color: var(--gold); }
 .section-temperature-node[data-light="twilight"] { color: var(--red); }
 .section-temperature-node[data-light="night"] { color: var(--night); fill: var(--night); }
+
+.section-missing {
+  stroke: var(--muted);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
 
 .section-wind {
   stroke: var(--blue);
@@ -193,7 +200,8 @@
   .field-sheet { border-width: 2px; }
   .section-post,
   .section-wind,
-  .section-rain { stroke-width: 4; }
+  .section-rain,
+  .section-missing { stroke-width: 4; }
 }
 
 @media print {
