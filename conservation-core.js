@@ -204,7 +204,7 @@ globalThis.MuseumConservationCore = (() => {
   function buildCase(dateLike, rawState, variation = 0) {
     const state = normalizeState(rawState);
     const key = dateKey(dateLike);
-    const safeVariation = Number.isFinite(variation) ? Math.max(0, Math.floor(variation)) : 0;
+    const safeVariation = Number.isFinite(variation) ? Math.min(98, Math.max(0, Math.floor(variation))) : 0;
     const signature = state.fragments.map((fragment) => `${fragment.text}:${fragment.source}`).join('|');
     const seed = hashString([key, state.seed, state.cycle, state.completedCollections, signature, safeVariation].join('::'));
     const random = mulberry32(seed);

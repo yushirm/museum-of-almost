@@ -201,7 +201,7 @@
   }
 
   function beginAnotherCase() {
-    variation += 1;
+    variation = (variation + 1) % 99;
     buildCase();
     announce(`Opened ${caseFile.caseId}.`);
   }

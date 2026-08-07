@@ -30,7 +30,8 @@ for (const marker of [
   'rotatePiece',
   'snapPiece',
   'targetPieces',
-  'startPieces'
+  'startPieces',
+  'Math.min(98'
 ]) {
   if (!core.includes(marker)) fail(`conservation-core.js is missing expected behavior: ${marker}`);
 }
@@ -46,6 +47,7 @@ for (const marker of [
   'Let the lab guide this fragment',
   'Preserve workbench postcard',
   'localStorage.getItem(MUSEUM_STORAGE_KEY)',
+  'variation = (variation + 1) % 99',
   'toBlob'
 ]) {
   if (!controller.includes(marker)) fail(`conservation-lab.js is missing expected behavior: ${marker}`);
@@ -93,4 +95,4 @@ for (const boundary of [
 }
 
 if (failed) process.exit(1);
-console.log('Conservation Lab accessibility, no-storage, local-only, documentation and offline boundaries passed.');
+console.log('Conservation Lab accessibility, bounded-cases, no-storage, local-only, documentation and offline boundaries passed.');
