@@ -1,8 +1,9 @@
 'use strict';
 
-const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold';
-const CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now';
-const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v13-faultline-core';
+const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish';
+const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold';
+const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now';
+const CURRENT_CACHE_NAME = 'museum-of-almost-commons-now-v13-faultline-core';
 const APP_SHELL = [
   './',
   './index.html',
@@ -46,7 +47,7 @@ const APP_SHELL = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(ACTIVE_CACHE_NAME)
+    caches.open(CURRENT_CACHE_NAME)
       .then((cache) => cache.addAll(APP_SHELL))
       .then(() => self.skipWaiting())
   );
@@ -55,11 +56,11 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    const isUpgrade = keys.some((key) => key.startsWith('museum-of-almost-') && key !== ACTIVE_CACHE_NAME);
+    const isUpgrade = keys.some((key) => key.startsWith('museum-of-almost-') && key !== CURRENT_CACHE_NAME);
 
     await Promise.all(
       keys
-        .filter((key) => key.startsWith('museum-of-almost-') && key !== ACTIVE_CACHE_NAME)
+        .filter((key) => key.startsWith('museum-of-almost-') && key !== CURRENT_CACHE_NAME)
         .map((key) => caches.delete(key))
     );
     await self.clients.claim();
@@ -87,7 +88,7 @@ self.addEventListener('fetch', (event) => {
         return fetch(request).then((response) => {
           if (!response || response.status !== 200 || response.type === 'opaque') return response;
           const copy = response.clone();
-          caches.open(ACTIVE_CACHE_NAME).then((cache) => cache.put('./index.html', copy));
+          caches.open(CURRENT_CACHE_NAME).then((cache) => cache.put('./index.html', copy));
           return response;
         });
       })
@@ -101,7 +102,7 @@ self.addEventListener('fetch', (event) => {
       return fetch(request).then((response) => {
         if (!response || response.status !== 200 || response.type === 'opaque') return response;
         const copy = response.clone();
-        caches.open(ACTIVE_CACHE_NAME).then((cache) => cache.put(request, copy));
+        caches.open(CURRENT_CACHE_NAME).then((cache) => cache.put(request, copy));
         return response;
       });
     })
