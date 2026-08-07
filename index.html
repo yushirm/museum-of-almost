@@ -8,6 +8,7 @@
   <title>The Museum of Almost</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="live-entropy.css">
 </head>
 <body>
   <a class="skip-link" href="#treaty">Skip to the treaty</a>
@@ -36,7 +37,7 @@
       tabindex="0"
       role="application"
       aria-label="A continuous timeline carrying two opposing forces. Hold or press Space to suspend a force. Use left and right arrows to move the keyboard counterweight. Press Delete to attempt erasure."
-      aria-describedby="instruction treaty-state measurement memory-note ledger-summary status"
+      aria-describedby="instruction treaty-state measurement memory-note ledger-summary live-correspondence-status status"
     >
       <div id="construction-marks" class="construction-marks" aria-hidden="true"></div>
       <div id="field-lines" class="field-lines" aria-hidden="true"></div>
@@ -60,6 +61,10 @@
       <div id="ghost-mark" class="ghost-mark" aria-hidden="true" hidden>
         <span></span>
         <small>ERASED / RETAINED</small>
+      </div>
+
+      <div id="live-entropy-marker" class="live-entropy-marker" aria-hidden="true" hidden>
+        <small>OUTSIDE PRESSURE</small>
       </div>
 
       <div id="counterweight" class="counterweight" aria-hidden="true">
@@ -96,6 +101,27 @@
       <p id="memory-note">Nothing attempted to erase has been preserved yet.</p>
       <p id="ledger-summary">No active marks. The session ledger is unwritten.</p>
     </div>
+
+    <section id="live-entropy" class="live-entropy" aria-labelledby="live-entropy-title">
+      <div class="live-entropy-heading">
+        <p class="registration">LIVE ENTROPY</p>
+        <h2 id="live-entropy-title">Let the outside world lean on the treaty.</h2>
+      </div>
+      <div class="live-entropy-body">
+        <div class="live-entropy-controls" role="group" aria-label="Live entropy controls">
+          <button id="live-invite-button" type="button">Invite live entropy</button>
+          <button id="live-release-button" type="button" disabled>Release influence</button>
+        </div>
+        <p id="live-entropy-status" class="live-entropy-status">No outside signal is influencing the treaty. Nothing will be requested until invited.</p>
+        <div class="live-entropy-grid">
+          <p id="live-quake-status">USGS: not requested.</p>
+          <p id="live-solar-status">NOAA SWPC: not requested.</p>
+          <p id="live-vector-status">World pressure: local-only baseline.</p>
+          <p id="live-correspondence-status">The treaty is answering only its own session state.</p>
+        </div>
+        <p class="live-entropy-note">Inviting live entropy makes one direct request to each public scientific source. No location is requested. Credentials and referrer are omitted. Values remain in memory only and are never polled automatically.</p>
+      </div>
+    </section>
 
     <section class="field-ledger" aria-labelledby="ledger-title">
       <div class="ledger-heading">
@@ -144,7 +170,7 @@
     </details>
 
     <p id="status" class="status" role="status" aria-live="polite">The treaty is waiting for a counterweight.</p>
-    <p class="privacy-line">Local state only. No accounts, analytics, visitor text, or remote runtime calls.</p>
+    <p class="privacy-line">Local state only by default. Live entropy is explicit, temporary, and never stored.</p>
   </main>
 
   <footer class="site-footer">
@@ -154,5 +180,7 @@
 
   <script src="entropy-core.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="live-entropy-core.js" defer></script>
+  <script src="live-entropy.js" defer></script>
 </body>
 </html>
