@@ -165,6 +165,8 @@ body {
 .dashboard .live-entropy {
   grid-column: 9 / -1;
   grid-row: 3 / span 2;
+  grid-template-columns: 1fr;
+  gap: 1rem;
   align-self: stretch;
   padding: 1rem;
 }
@@ -211,7 +213,13 @@ body {
 
 .dashboard .field-ledger {
   grid-column: 9 / -1;
+  grid-template-columns: 1fr;
+  gap: 1rem;
   padding: 1rem;
+}
+
+.dashboard .field-ledger .resonance-summary {
+  grid-column: 1;
 }
 
 .dashboard .ledger-grid {
