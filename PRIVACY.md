@@ -16,6 +16,8 @@ The Museum itself:
 
 The pocket catalogue stores only generated fictional fragment labels, progress counters and a random seed in the visitor's browser storage.
 
+The Conservation Lab reads only the existing fictional catalogue and local calendar date to generate an impossible object. It stores no restoration state, pointer movement, completed case or postcard. Fragment positions exist only in memory until the page is closed or another case is opened.
+
 Museum After Dark adds three bounded local storage values:
 
 - The Corridor That Remembers stores only the last eight fictional gallery titles and room labels. It stores no timestamps, routes or visitor identity.

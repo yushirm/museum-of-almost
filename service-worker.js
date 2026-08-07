@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_NAME = 'museum-of-almost-v6';
+const CACHE_NAME = 'museum-of-almost-v7';
 const STATIC_FILES = [
   './',
   './index.html',
@@ -14,6 +14,8 @@ const STATIC_FILES = [
   './dreaming-photos.js',
   './after-dark-core.js',
   './after-dark.js',
+  './conservation-core.js',
+  './conservation-lab.js',
   './manifest.webmanifest',
   './icon.svg',
   './PRIVACY.md',
