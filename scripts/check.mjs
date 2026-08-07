@@ -8,15 +8,15 @@ const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const require = createRequire(import.meta.url);
 
 const requiredFiles = [
-  'index.html', 'styles.css', 'sample-hold.css', 'world-map.css', 'world-map.svg', 'difference-engine.css', 'field-sheet.css',
+  'index.html', 'styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'world-map.svg', 'difference-engine.css', 'field-sheet.css',
   'cosmic-signal.js', 'cosmic-signal-core.js', 'cosmic-signal-view.js', 'cosmic-signal.css',
   'cosmic-latency-core.js', 'cosmic-latency.js', 'cosmic-latency.css',
   'cosmic-escapement-core.js', 'cosmic-escapement.js', 'cosmic-escapement.css',
   'planetary-heliodon-core.js', 'planetary-heliodon.js', 'planetary-heliodon.css',
-  'COSMIC_RECEIVE_DESK.md', 'CELESTIAL_ESCAPEMENT.md', 'PLANETARY_HELIODON.md',
-  'data-core.js', 'app.js', 'manifest.webmanifest', 'service-worker.js',
+  'COSMIC_RECEIVE_DESK.md', 'CELESTIAL_ESCAPEMENT.md', 'PLANETARY_HELIODON.md', 'SAMPLE_AND_HOLD.md', 'SOUNDING_WELL.md',
+  'data-core.js', 'temporal-sounding-core.js', 'temporal-sounding.js', 'app.js', 'manifest.webmanifest', 'service-worker.js',
   'README.md', 'PRIVACY.md', 'SOURCES.md', 'REBUILD_LOG.md', 'RIGHTS.md', 'CONTRIBUTING.md',
-  'scripts/test-data-core.mjs', 'scripts/test-cosmic-signal.mjs', 'scripts/test-cosmic-latency.mjs',
+  'scripts/test-data-core.mjs', 'scripts/test-temporal-sounding.mjs', 'scripts/test-cosmic-signal.mjs', 'scripts/test-cosmic-latency.mjs',
   'scripts/test-cosmic-escapement.mjs', 'scripts/test-planetary-heliodon.mjs', 'scripts/test-service-worker.mjs',
   'scripts/check.mjs', '.github/workflows/check.yml'
 ];
@@ -25,16 +25,18 @@ for (const file of requiredFiles) assert.ok(fs.existsSync(path.join(root, file))
 const file = Object.fromEntries(requiredFiles.map((name) => [name, read(name)]));
 const core = require('../data-core.js');
 const runtimeFiles = [
-  'index.html', 'styles.css', 'sample-hold.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css',
+  'index.html', 'styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css',
   'cosmic-signal.js', 'cosmic-signal-core.js', 'cosmic-signal-view.js', 'cosmic-signal.css',
   'cosmic-latency-core.js', 'cosmic-latency.js', 'cosmic-latency.css',
   'cosmic-escapement-core.js', 'cosmic-escapement.js', 'cosmic-escapement.css',
   'planetary-heliodon-core.js', 'planetary-heliodon.js', 'planetary-heliodon.css',
-  'data-core.js', 'app.js', 'service-worker.js'
+  'data-core.js', 'temporal-sounding-core.js', 'temporal-sounding.js', 'app.js', 'service-worker.js'
 ];
 const runtime = runtimeFiles.map((name) => file[name]).join('\n');
-const publicCurrent = ['index.html', 'data-core.js', 'app.js', 'README.md', 'PRIVACY.md', 'SOURCES.md', 'REBUILD_LOG.md', 'RIGHTS.md']
-  .map((name) => file[name]).join('\n');
+const publicCurrent = [
+  'index.html', 'data-core.js', 'temporal-sounding-core.js', 'temporal-sounding.js', 'app.js',
+  'README.md', 'PRIVACY.md', 'SOURCES.md', 'SAMPLE_AND_HOLD.md', 'SOUNDING_WELL.md', 'REBUILD_LOG.md', 'RIGHTS.md'
+].map((name) => file[name]).join('\n');
 
 function requirePatterns(source, patterns, label) {
   for (const pattern of patterns) assert.match(source, pattern, `${label}: missing ${pattern}`);
@@ -98,6 +100,7 @@ requirePatterns(index, [
   /Four public services\. Five current feeds\./, /A fixed sample across the planet\./,
   /href="sample-hold\.css"/, /href="cosmic-signal\.css" data-cosmic-styles/, /href="cosmic-latency\.css" data-cosmic-latency-styles/,
   /href="cosmic-escapement\.css" data-celestial-escapement-styles/, /href="planetary-heliodon\.css" data-planetary-heliodon-styles/,
+  /src="temporal-sounding-core\.js"[\s\S]+src="temporal-sounding\.js"[\s\S]+src="app\.js"/,
   /role="status"[^>]+aria-live="polite"/, /src="data-core\.js"/, /src="app\.js"/
 ], 'current document');
 
@@ -117,13 +120,27 @@ forbidPatterns(app, [/setInterval|requestAnimationFrame/i, /navigator\.geolocati
 requirePatterns(file['cosmic-signal-view.js'], [/museum:commons-snapshot/, /MuseumCommonsSnapshot/, /Latched with the shared snapshot/], 'Cosmic Signal shared latch');
 forbidPatterns(file['cosmic-signal-view.js'], [/\bfetch\s*\(/], 'Cosmic Signal shared latch');
 
-for (const styleName of ['styles.css', 'sample-hold.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css', 'cosmic-signal.css', 'cosmic-latency.css', 'cosmic-escapement.css', 'planetary-heliodon.css']) {
+const sounding = [file['temporal-sounding-core.js'], file['temporal-sounding.js']].join('\n');
+requirePatterns(sounding, [
+  /museum:commons-snapshot/, /response\.clone\(\)\.json\(\)/, /channel !== 'events'/,
+  /nativeFetch\(input, init\)/, /KNOWN SOURCE-TIME THICKNESS/, /feed-wide observation instant/i,
+  /url\.protocol !== 'https:'/,
+  /earthquake\.usgs\.gov/, /services\.swpc\.noaa\.gov/, /api\.open-meteo\.com/, /eonet\.gsfc\.nasa\.gov/
+], 'Sounding Well passive observer');
+forbidPatterns(sounding, [
+  /\bfetch\s*\(/, /setInterval|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i,
+  /sendBeacon|XMLHttpRequest|WebSocket|EventSource|analytics|telemetry/i,
+  /https?:\/\//
+], 'Sounding Well passive observer');
+
+for (const styleName of ['styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css', 'cosmic-signal.css', 'cosmic-latency.css', 'cosmic-escapement.css', 'planetary-heliodon.css']) {
   const css = file[styleName];
   assert.match(css, /@media/, `${styleName} must include responsive or environment handling`);
   forbidPatterns(css, [/@import\s+url|font-face|https?:\/\//i], styleName);
 }
 requirePatterns(file['styles.css'], [/min-height:\s*44px/, /:focus-visible/, /prefers-reduced-motion/, /prefers-contrast/], 'base accessibility');
 requirePatterns(file['sample-hold.css'], [/max-width: 620px/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/], 'sample-and-hold styles');
+requirePatterns(file['sounding-well.css'], [/max-width: 620px/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/], 'Sounding Well styles');
 requirePatterns(file['field-sheet.css'], [/@media print/, /@page\s*\{\s*size:\s*landscape/], 'field sheet');
 requirePatterns(file['planetary-heliodon.css'], [/max-width: 620px/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/, /pointer-events:\s*none/], 'heliodon styles');
 
@@ -141,25 +158,34 @@ requirePatterns(file['cosmic-escapement.js'], [/MANY CLOCKS, ONE NOW/, /Mutation
 requirePatterns(file['planetary-heliodon.js'], [/THE PLANETARY HELIODON \/ EARTH CASTS THE NIGHT/, /MutationObserver/, /if \(!match\) return null/, /heliodon-field-strip/], 'Planetary Heliodon');
 requirePatterns(file['planetary-heliodon-core.js'], [/terminatorCoordinates/, /terminatorParts/, /nightGridPath/, /solarGeometry/], 'Planetary Heliodon core');
 requirePatterns(file['PLANETARY_HELIODON.md'], [/The world is doing this without us\./, /Concept C was discarded/, /no new runtime request/i, /solareqns\.PDF/], 'Planetary Heliodon record');
+requirePatterns(file['SAMPLE_AND_HOLD.md'], [/Concept C was discarded/, /Promise\.allSettled/, /reject obsolete acquisition cycles/i], 'Sample-and-Hold record');
+requirePatterns(file['SOUNDING_WELL.md'], [
+  /Concept A/, /Concept B/, /Concept C/, /Concept A was discarded/, /The Sounding Well \/ The Thickness of Now/,
+  /adds no request/i, /feed-wide observation timestamp/i, /response metadata/i,
+  /https:\/\/open-meteo\.com\/en\/docs/, /https:\/\/eonet\.gsfc\.nasa\.gov\/docs\/v3/
+], 'Sounding Well record');
 
 const worker = file['service-worker.js'];
 requirePatterns(worker, [
-  /PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/,
-  /CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/,
-  /ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/,
+  /PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/,
+  /CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/,
+  /ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now'/,
   /url\.origin !== self\.location\.origin/, /caches\.match\('\.\/index\.html'\)/,
   /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/, /client\.navigate\(client\.url\)/
 ], 'service worker');
 forbidPatterns(worker, [/https?:\/\//], 'service worker cross-origin boundary');
 for (const asset of [
-  './index.html', './styles.css', './sample-hold.css', './world-map.svg', './cosmic-signal.js', './cosmic-signal-core.js',
-  './cosmic-latency-core.js', './cosmic-escapement-core.js', './planetary-heliodon-core.js', './planetary-heliodon.js',
-  './planetary-heliodon.css', './PLANETARY_HELIODON.md', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md'
+  './index.html', './styles.css', './sample-hold.css', './sounding-well.css', './world-map.svg',
+  './temporal-sounding-core.js', './temporal-sounding.js', './SOUNDING_WELL.md', './SAMPLE_AND_HOLD.md',
+  './cosmic-signal.js', './cosmic-signal-core.js', './cosmic-latency-core.js', './cosmic-escapement-core.js',
+  './planetary-heliodon-core.js', './planetary-heliodon.js', './planetary-heliodon.css', './PLANETARY_HELIODON.md',
+  './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md'
 ]) assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
 
 const readme = file['README.md'];
 requirePatterns(readme, [
   /COMMONS \/ NOW/, /https:\/\/yushirm\.github\.io\/museum-of-almost\//, /one current snapshot/i,
+  /Sounding Well/i, /source-time thickness/i, /EONET is deliberately left unsounded/i,
   /thirteen fixed coordinates/i, /Natural Earth 110m public-domain land geometry/i, /Difference Engine/i,
   /Planetary Section/i, /Planetary Heliodon/i, /subsolar point/i, /does not interpolate/i,
   /Make field sheet/i, /no visitor persistence/i, /original opaque seed inputs are deliberately not stored/i
@@ -167,12 +193,17 @@ requirePatterns(readme, [
 const privacy = file['PRIVACY.md'];
 requirePatterns(privacy, [
   /does not create visitor accounts, profiles, histories, scores, identifiers/i, /does not.*request browser geolocation/is,
-  /localStorage/, /one direct request to each of four public services/i, /credentials: omit/, /referrerPolicy: no-referrer/,
-  /IP address/i, /thirteen fixed latitude\/longitude pairs/i, /native browser print/i, /Planetary Heliodon/, /adds no network request/i
+  /localStorage/, /five direct HTTP requests across four public services/i, /credentials: omit/, /referrerPolicy: no-referrer/,
+  /IP address/i, /Sounding Well/, /adds no network request/i, /does not store sounding history/i,
+  /thirteen fixed latitude\/longitude pairs/i, /native browser print/i, /Planetary Heliodon/
 ], 'privacy record');
 const sources = file['SOURCES.md'];
 for (const url of allowedRuntimeUrls) assert.ok(sources.includes(url), `SOURCES.md missing ${url}`);
-requirePatterns(sources, [/USGS/i, /NOAA/i, /Open-Meteo/i, /NASA/i, /Natural Earth 110m land geometry/i, /public domain/i, /Planetary Heliodon local solar geometry/i, /solareqns\.PDF/], 'sources');
+requirePatterns(sources, [
+  /USGS/i, /NOAA/i, /Open-Meteo/i, /NASA/i, /Sounding Well/i, /metadata\.generated/,
+  /event geometry/i, /source-time/i, /Natural Earth 110m land geometry/i, /public domain/i,
+  /Planetary Heliodon local solar geometry/i, /solareqns\.PDF/
+], 'sources');
 const rebuild = file['REBUILD_LOG.md'];
 requirePatterns(rebuild, [
   /Reset 1 — COMMONS \/ NOW/, /Extension 1 — The Difference Engine/, /Extension 2 — Thirteen Windows Get a World/,
@@ -191,7 +222,8 @@ const workflow = file['.github/workflows/check.yml'];
 requirePatterns(workflow, [
   /jobs:\s*\n\s*check:/, /permissions:\s*\n\s*contents: read/, /persist-credentials: false/, /timeout-minutes: 5/,
   /actions\/checkout@[0-9a-f]{40}/, /actions\/setup-node@[0-9a-f]{40}/,
-  /node scripts\/test-data-core\.mjs/, /node scripts\/test-planetary-heliodon\.mjs/, /node scripts\/test-service-worker\.mjs/, /node scripts\/check\.mjs/
+  /node scripts\/test-data-core\.mjs/, /node scripts\/test-temporal-sounding\.mjs/,
+  /node scripts\/test-planetary-heliodon\.mjs/, /node scripts\/test-service-worker\.mjs/, /node scripts\/check\.mjs/
 ], 'workflow');
 
 forbidPatterns(publicCurrent, [
@@ -202,4 +234,4 @@ forbidPatterns(publicCurrent, [
   /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i
 ], 'public secret/privacy scan');
 
-console.log('Commons / Now full application, shared five-feed Sample-and-Hold latch, privacy, exact-network, local-map, cosmic instruments, Planetary Heliodon, coherent-shell, accessibility, source, seed, and offline contract verified.');
+console.log('Commons / Now full application, shared five-feed latch, passive source-time Sounding Well, privacy, exact-network, local-map, cosmic instruments, Planetary Heliodon, coherent-shell, accessibility, source, seed, and offline contract verified.');

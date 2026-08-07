@@ -17,20 +17,43 @@ The application does not:
 
 ## Live public data requests
 
-The current product is intentionally a live public-data instrument. When the page opens it makes one direct request to each of four public services:
+The current product is intentionally a live public-data instrument. When the page opens it makes five direct HTTP requests across four public services:
 
 - USGS Earthquake Hazards Program;
 - NOAA Space Weather Prediction Center;
 - Open-Meteo;
 - NASA Earth Observatory Natural Event Tracker.
 
-NOAA SWPC is read through two current public product endpoints: one for solar-wind speed and one for the current NOAA Space Weather Scales. That means a normal current snapshot uses five HTTP requests across the four services. The second NOAA request supplies the Cosmic Signal Chain's geomagnetic (`G`) and solar-radiation (`S`) scale readings; the existing solar-wind value is mirrored locally into that instrument rather than fetched again.
+NOAA SWPC is read through two current public product endpoints: one for solar-wind speed and one for the current NOAA Space Weather Scales. The scale response supplies the Cosmic Signal Chain's geomagnetic (`G`) and solar-radiation (`S`) readings; the existing solar-wind value is mirrored locally into that instrument rather than fetched again.
 
-Pressing **Refresh world** makes one new set of those five requests. There is no automatic polling or background refresh loop.
+All five requests share the Sample-and-Hold Bus acquisition barrier. Pressing **Refresh world** makes one new set of those same five requests. There is no automatic polling or background refresh loop.
 
 Requests use CORS mode, `credentials: omit`, `referrerPolicy: no-referrer`, and `cache: no-store`. The application does not intentionally send cookies, the Museum page URL, visitor location, or local visitor data with those requests.
 
 As with any direct internet request, the requested service and ordinary network infrastructure can see network-layer information such as the visitor's IP address. Each provider may process connection information under its own policies. The Museum does not receive their server logs.
+
+## Sample-and-Hold Bus
+
+The Sample-and-Hold Bus coordinates the existing requests in page memory. While a refresh is in flight, the previously committed measurements remain visible. After all five requests settle, one replacement snapshot is committed. The discarded snapshot is not stored as history.
+
+The bus does not create a new request, identifier, cookie, storage entry, URL parameter, analytics event, or background timer.
+
+## Sounding Well / The Thickness of Now
+
+The Sounding Well adds no network request. Its local observer loads before the existing application acquisition and wraps the browser's `fetch` function only so it can observe the five already-approved requests.
+
+For recognized USGS, NOAA, and Open-Meteo responses, it reads timestamp metadata from a cloned response while returning the original response to the application unchanged. It does **not** clone or parse the NASA EONET body because EONET event geometry dates are not treated as a feed-wide observation timestamp.
+
+The observer temporarily holds only public scientific response metadata needed for the current latch. It groups those records by the existing request `AbortSignal`, renders after the shared snapshot event, and then discards the temporary raw records. It does not store sounding history, forward response data, derive visitor information, or create another retry or polling path.
+
+The Sounding Well reads:
+
+- USGS feed-generation time;
+- NOAA solar-wind observation time when supplied;
+- NOAA current Space Weather Scales timestamp;
+- Open-Meteo current-valid time for the thirteen fixed locations.
+
+NASA EONET remains explicitly unsounded because its geometry dates belong to individual events rather than one feed-wide current instant. The application does not infer or manufacture a replacement timestamp.
 
 ## Fixed world sample and map
 
@@ -56,7 +79,7 @@ The Receive Desk selection, its captured reception instant, the Escapement's sel
 
 ## Cosmic Signal Chain
 
-The Cosmic Signal Chain reads the already-rendered solar-wind value in page memory and one additional NOAA SWPC current-scale response. It does not use visitor input, location, device sensors, or stored state.
+The Cosmic Signal Chain reads the already-rendered solar-wind value and the NOAA current-scale response from the same shared five-feed latch. It does not issue an independent NOAA request and does not use visitor input, location, device sensors, or stored state.
 
 The current `G` and `S` values exist only in page memory and in the rendered DOM. They are discarded on reload or close. The instrument's left-to-right rail is a reading order only; the application does not construct a causal history or infer that one displayed measurement caused another.
 
@@ -74,22 +97,23 @@ A browser or operating system may offer destinations such as a local printer or 
 
 ## Data handling
 
-Live responses are held in page memory only long enough to render the current snapshot. Reloading or closing the page discards them. The application does not forward source responses to another service.
+Live responses are held in page memory only long enough to render the current snapshot and any local derived instruments. Reloading or closing the page discards them. The application does not forward source responses to another service.
 
 The page deliberately reduces source data:
 
 - USGS event names, nearby places, IDs, and event URLs are not displayed;
 - NASA EONET event titles and coordinates are not displayed;
 - Open-Meteo is queried only for the thirteen fixed coordinates;
-- NOAA contributes a numeric solar-wind speed plus the current geomagnetic and solar-radiation scale values used by the Cosmic Signal Chain.
+- NOAA contributes a numeric solar-wind speed plus the current geomagnetic and solar-radiation scale values used by the Cosmic Signal Chain;
+- the Sounding Well exposes only source-time semantics, UTC timestamp text, and derived time offsets, not raw scientific payloads.
 
 ## Offline shell
 
-A same-origin service worker caches only the Museum's static application shell, including the local world map, field-sheet stylesheet, and local Cosmic Signal Chain code and stylesheet, so that the explanatory interface can still open offline. The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses.
+A same-origin service worker caches only the Museum's static application shell, including the local world map, Sample-and-Hold and Sounding Well code/styles, field-sheet stylesheet, and local cosmic instrument code/styles, so that the explanatory interface can still open offline. The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses.
 
 The service worker keeps one coherent static shell across upgrades. After a complete shell replacement, open Museum windows are reloaded once so HTML, scripts, styles, and local assets adopt the new version together.
 
-When offline, live values are shown as unavailable. The page does not display stale live values from storage.
+When offline, live values and temporal sounding are shown as unavailable. The page does not display stale live values from storage.
 
 ## Hosting
 

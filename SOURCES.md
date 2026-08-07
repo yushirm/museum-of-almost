@@ -2,6 +2,8 @@
 
 **COMMONS / NOW** uses four public data services across five current feeds. The website makes one request to USGS, one to Open-Meteo, one to NASA EONET, and two current-product requests to NOAA SWPC when the page opens. Another set is requested only when the visitor presses **Refresh world**. It does not poll automatically.
 
+The **Sample-and-Hold Bus** commits those five responses together. The **Sounding Well / The Thickness of Now** adds no request: it passively reads timestamp metadata already present in the existing responses, where the provider exposes source-time semantics that can honestly be offset from the Museum's UTC latch.
+
 ## USGS Earthquake Hazards Program
 
 Current metric:
@@ -19,6 +21,8 @@ Documentation:
 `https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php`
 
 The page does not reproduce event titles, nearby places, event IDs, or event links.
+
+For temporal sounding, the response's `metadata.generated` value is labeled **feed generated**. It is not represented as the event time of every earthquake in the rolling past-hour feed.
 
 ## NOAA Space Weather Prediction Center
 
@@ -42,9 +46,11 @@ Product directories and scale explanation:
 
 `https://www.swpc.noaa.gov/noaa-scales-explanation`
 
-The **Cosmic Signal Chain** reuses the existing solar-wind value as its first detector and adds one NOAA Scales request for the current `G` and `S` values. It presents the three readings in a left-to-right instrument rack for comparison only. The rail is explicitly **not a causal timeline**: the Museum does not infer that one displayed measurement caused another.
+The **Cosmic Signal Chain** reuses both NOAA responses from the shared five-feed latch. It mirrors the existing solar-wind value as its first detector and reads current `G` and `S` values from the already-acquired NOAA Scales response. It does not issue an independent request. The three readings appear in a left-to-right instrument rack for comparison only. The rail is explicitly **not a causal timeline**: the Museum does not infer that one displayed measurement caused another.
 
 NOAA scale values outside the documented 0–5 range are treated as unavailable rather than clamped or guessed. A feed value of 0 is displayed as no active scale threshold; levels 1–5 retain NOAA's minor-through-extreme wording.
+
+For temporal sounding, the solar-wind product's timestamp is labeled **solar-wind observation**. The NOAA Scales timestamp is read only from the current record at key `0` and labeled **space-weather scale observation**; historical maximum and forecast records are not treated as the current instant.
 
 ## Open-Meteo
 
@@ -63,6 +69,8 @@ Documentation:
 `https://open-meteo.com/en/docs`
 
 Open-Meteo provides no-key access for non-commercial use and requires attribution for its CC BY 4.0 data. The visible website includes the required Open-Meteo attribution. The coordinates are fixed in source code and are not derived from visitor location.
+
+Open-Meteo documents that each `current` object contains `time`, the moment at which the current data is valid. The Museum requests `timezone=UTC`. The Sounding Well therefore offsets those current-valid timestamps from the UTC latch. If the thirteen locations do not return the exact same valid time, the instrument retains the oldest and newest valid time and uses the oldest as that channel's temporal depth.
 
 The Difference Engine reuses this same thirteen-point response. It makes no second Open-Meteo request: pair deltas and the observed comparison range are calculated locally from the current snapshot already in page memory.
 
@@ -84,6 +92,8 @@ Documentation:
 `https://eonet.gsfc.nasa.gov/docs/v3`
 
 The page intentionally aggregates categories rather than reproducing event titles, coordinates, or source links.
+
+EONET documents each event geometry as a pairing of a date/time with a particular event location and notes that the time will commonly be `00:00Z` unless an upstream source supplied a particular time. That is not one feed-wide observation instant. The Sounding Well therefore leaves EONET **unsounded** rather than using the newest event geometry to manufacture a feed age.
 
 ## Local world basemap
 
@@ -128,7 +138,10 @@ The following values do not come from an additional service:
 - Planetary Section west-to-east ordering comes from each fixed point's longitude;
 - Planetary Section temperature, wind, and precipitation positions are normalized only against the current thirteen reporting points;
 - the field-sheet timestamp is the time the current snapshot was received by the page;
-- the Cosmic Signal Chain's first value is a local mirror of the already-loaded solar-wind headline rather than a duplicate NOAA request.
+- the Cosmic Signal Chain's first value is a local mirror of the already-loaded solar-wind headline rather than a duplicate NOAA request;
+- the Sounding Well's known **source-time thickness** is the largest non-negative difference between the UTC latch and the oldest comparable source timestamp in the current acquisition.
+
+The Sounding Well's hanging-line lengths are normalized only within the current latch. Written durations, UTC times, and each channel's timestamp-semantic label are authoritative. Visual depth is not a fixed time scale, provider score, confidence score, uncertainty estimate, or claim that all source timestamps mean the same thing.
 
 The Planetary Section intentionally draws discrete posts rather than a connecting path. A blank span between stations means **not measured here**, not a hidden estimate.
 
@@ -136,9 +149,11 @@ The Planetary Section intentionally draws discrete posts rather than a connectin
 
 **Make field sheet** uses the browser's native print capability. Printing is not a data source and does not contact a Museum document service. The print layout carries source provenance with the current snapshot so a paper or local-PDF copy remains interpretable outside the live page. The Cosmic Signal Chain adds a compact NOAA SWPC strip to the same field sheet; it does not create a second document or upload anything.
 
+The Sounding Well is intentionally omitted from the field-sheet print surface. It describes acquisition provenance for the live latch rather than another measured world variable.
+
 ## Availability and interpretation
 
-These are third-party public services. Their availability, update cadence, definitions, and terms are controlled by their respective providers. A missing or failed response is shown as unavailable rather than replaced with a guessed value.
+These are third-party public services. Their availability, update cadence, definitions, timestamp semantics, and terms are controlled by their respective providers. A missing or failed response is shown as unavailable rather than replaced with a guessed value. A missing or incomparable timestamp is likewise left missing or incomparable.
 
 No API key, paid service, account, analytics provider, tracking service, map API, tile provider, PDF service, or document-storage service is used by the Museum.
 
