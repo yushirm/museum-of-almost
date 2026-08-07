@@ -45,6 +45,7 @@
     attributes: true,
     attributeFilter: [
       'data-order',
+      'data-live-request',
       'data-live-entropy',
       'data-correspondence',
       'data-world-pressure',
@@ -116,9 +117,11 @@
       ? correspondenceLabel(main.dataset.correspondence)
       : 'LOCAL ONLY';
 
-    live.textContent = liveActive
-      ? `${main.dataset.liveSourceCount || '0'} SOURCE${main.dataset.liveSourceCount === '1' ? '' : 'S'}`
-      : 'IDLE';
+    live.textContent = main.dataset.liveRequest === 'requesting'
+      ? 'LISTENING'
+      : liveActive
+        ? `${main.dataset.liveSourceCount || '0'} SOURCE${main.dataset.liveSourceCount === '1' ? '' : 'S'}`
+        : 'IDLE';
 
     renderSystemHealth();
   }
