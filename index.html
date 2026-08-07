@@ -8,6 +8,7 @@
   <title>The Museum of Almost — Commons / Now</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="world-map.css">
   <link rel="stylesheet" href="difference-engine.css">
 </head>
 <body data-loading="false" data-source-count="0">
@@ -85,7 +86,8 @@
 
       <div class="world-layout">
         <div class="world-map-wrap">
-          <div class="world-map" aria-label="Equirectangular world sampling field">
+          <div class="world-map" aria-label="Equirectangular world map with thirteen fixed global weather points">
+            <img class="world-map-image" src="world-map.svg" alt="" aria-hidden="true">
             <div class="world-map-grid" aria-hidden="true"></div>
             <div class="equator" aria-hidden="true"></div>
             <div class="prime-meridian" aria-hidden="true"></div>
@@ -101,6 +103,7 @@
             <span><i class="legend-dot legend-night"></i> night</span>
             <strong id="daylight-count">—</strong>
           </div>
+          <p class="map-source-note">Basemap: Natural Earth 110m land, public domain, simplified and stored locally. No map or tile service is contacted.</p>
         </div>
 
         <aside class="station-detail" aria-live="polite">
