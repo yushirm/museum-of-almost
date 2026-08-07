@@ -48,7 +48,7 @@ The fixed local landmarks are documented against NASA references; none of these 
 - the rail is logarithmic because the span runs from seconds to billions of years;
 - mathematical rail positions are not shifted to avoid label collisions; labels use separate display lanes instead;
 - selection and reception time remain memory-only;
-- **Refresh world** updates the local reception reference without adding a network request;
+- **Refresh world** also updates the local reception reference without adding any request beyond the Museum’s existing refresh requests;
 - no timer loop, polling, storage, geolocation, analytics, telemetry, or visitor text input;
 - the field sheet receives only a local compact latency note.
 
