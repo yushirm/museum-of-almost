@@ -8,7 +8,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const require = createRequire(import.meta.url);
 
 const requiredFiles = [
-  'index.html', 'styles.css', 'world-map.css', 'world-map.svg', 'difference-engine.css', 'field-sheet.css',
+  'index.html', 'styles.css', 'sample-hold.css', 'world-map.css', 'world-map.svg', 'difference-engine.css', 'field-sheet.css',
   'cosmic-signal.js', 'cosmic-signal-core.js', 'cosmic-signal-view.js', 'cosmic-signal.css',
   'cosmic-latency-core.js', 'cosmic-latency.js', 'cosmic-latency.css',
   'cosmic-escapement-core.js', 'cosmic-escapement.js', 'cosmic-escapement.css',
@@ -25,7 +25,7 @@ for (const file of requiredFiles) assert.ok(fs.existsSync(path.join(root, file))
 const file = Object.fromEntries(requiredFiles.map((name) => [name, read(name)]));
 const core = require('../data-core.js');
 const runtimeFiles = [
-  'index.html', 'styles.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css',
+  'index.html', 'styles.css', 'sample-hold.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css',
   'cosmic-signal.js', 'cosmic-signal-core.js', 'cosmic-signal-view.js', 'cosmic-signal.css',
   'cosmic-latency-core.js', 'cosmic-latency.js', 'cosmic-latency.css',
   'cosmic-escapement-core.js', 'cosmic-escapement.js', 'cosmic-escapement.css',
@@ -84,6 +84,7 @@ assert.equal(core.sunState(null, 0, 0), 'unknown', 'missing snapshot must never 
 const index = file['index.html'];
 for (const id of [
   'refresh-button', 'connection-state', 'live-status', 'snapshot-time', 'source-count',
+  'sample-hold-panel', 'sample-phase', 'sample-cycle', 'sample-status',
   'quake-count', 'quake-strongest', 'solar-wind', 'event-count', 'weather-range', 'world-sentence',
   'station-points', 'station-list', 'station-name', 'station-temperature', 'station-wind', 'station-rain', 'station-light',
   'patch-a', 'patch-b', 'difference-points', 'difference-readout', 'difference-scale',
@@ -91,10 +92,11 @@ for (const id of [
 ]) assert.match(index, new RegExp(`id=["']${id}["']`), `missing interface id ${id}`);
 requirePatterns(index, [
   /COMMONS \/ NOW/, /The world is doing this without us\./, /src="world-map\.svg"/,
-  /Natural Earth 110m land, public domain/i, /THE DIFFERENCE ENGINE/, /PLANETARY SECTION \/ FIELD SHEET/,
+  /Natural Earth 110m land, public domain/i, /THE SAMPLE-AND-HOLD BUS/, /One now, latched\./,
+  /THE DIFFERENCE ENGINE/, /PLANETARY SECTION \/ FIELD SHEET/,
   /No connecting line\./, /native print dialog/i, /No account\. No location\. No visitor data\./i,
   /Four public services\. Five current feeds\./, /A fixed sample across the planet\./,
-  /href="cosmic-signal\.css" data-cosmic-styles/, /href="cosmic-latency\.css" data-cosmic-latency-styles/,
+  /href="sample-hold\.css"/, /href="cosmic-signal\.css" data-cosmic-styles/, /href="cosmic-latency\.css" data-cosmic-latency-styles/,
   /href="cosmic-escapement\.css" data-celestial-escapement-styles/, /href="planetary-heliodon\.css" data-planetary-heliodon-styles/,
   /role="status"[^>]+aria-live="polite"/, /src="data-core\.js"/, /src="app\.js"/
 ], 'current document');
@@ -105,19 +107,23 @@ forbidPatterns(map, [/<script\b|<foreignObject\b|\b(?:href|xlink:href)=["'](?:ht
 
 const app = file['app.js'];
 requirePatterns(app, [
-  /Promise\.allSettled/, /fetch\(url/, /credentials:\s*'omit'/, /referrerPolicy:\s*'no-referrer'/,
+  /Promise\.allSettled/, /SOURCES\.scales/, /museum:commons-snapshot/, /MuseumCommonsSnapshot/,
+  /fetch\(url/, /credentials:\s*'omit'/, /referrerPolicy:\s*'no-referrer'/,
   /cache:\s*'no-store'/, /mode:\s*'cors'/, /AbortController/, /addEventListener\('click', refreshSnapshot\)/,
-  /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/, /function renderDifferenceEngine\b/,
-  /function renderPlanetarySection\b/, /window\.print\(\)/
+  /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/, /function renderSampleAcquire\b/, /function renderSampleHold\b/,
+  /function renderDifferenceEngine\b/, /function renderPlanetarySection\b/, /window\.print\(\)/
 ], 'application');
 forbidPatterns(app, [/setInterval|requestAnimationFrame/i, /navigator\.geolocation|\bgeolocation\b/i, /localStorage|sessionStorage|indexedDB|document\.cookie/i], 'application');
+requirePatterns(file['cosmic-signal-view.js'], [/museum:commons-snapshot/, /MuseumCommonsSnapshot/, /Latched with the shared snapshot/], 'Cosmic Signal shared latch');
+forbidPatterns(file['cosmic-signal-view.js'], [/\bfetch\s*\(/], 'Cosmic Signal shared latch');
 
-for (const styleName of ['styles.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css', 'cosmic-signal.css', 'cosmic-latency.css', 'cosmic-escapement.css', 'planetary-heliodon.css']) {
+for (const styleName of ['styles.css', 'sample-hold.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css', 'cosmic-signal.css', 'cosmic-latency.css', 'cosmic-escapement.css', 'planetary-heliodon.css']) {
   const css = file[styleName];
   assert.match(css, /@media/, `${styleName} must include responsive or environment handling`);
   forbidPatterns(css, [/@import\s+url|font-face|https?:\/\//i], styleName);
 }
 requirePatterns(file['styles.css'], [/min-height:\s*44px/, /:focus-visible/, /prefers-reduced-motion/, /prefers-contrast/], 'base accessibility');
+requirePatterns(file['sample-hold.css'], [/max-width: 620px/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/], 'sample-and-hold styles');
 requirePatterns(file['field-sheet.css'], [/@media print/, /@page\s*\{\s*size:\s*landscape/], 'field sheet');
 requirePatterns(file['planetary-heliodon.css'], [/max-width: 620px/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/, /pointer-events:\s*none/], 'heliodon styles');
 
@@ -138,15 +144,15 @@ requirePatterns(file['PLANETARY_HELIODON.md'], [/The world is doing this without
 
 const worker = file['service-worker.js'];
 requirePatterns(worker, [
-  /PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/,
-  /CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/,
-  /ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/,
+  /PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/,
+  /CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/,
+  /ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/,
   /url\.origin !== self\.location\.origin/, /caches\.match\('\.\/index\.html'\)/,
   /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/, /client\.navigate\(client\.url\)/
 ], 'service worker');
 forbidPatterns(worker, [/https?:\/\//], 'service worker cross-origin boundary');
 for (const asset of [
-  './index.html', './styles.css', './world-map.svg', './cosmic-signal.js', './cosmic-signal-core.js',
+  './index.html', './styles.css', './sample-hold.css', './world-map.svg', './cosmic-signal.js', './cosmic-signal-core.js',
   './cosmic-latency-core.js', './cosmic-escapement-core.js', './planetary-heliodon-core.js', './planetary-heliodon.js',
   './planetary-heliodon.css', './PLANETARY_HELIODON.md', './data-core.js', './app.js', './SOURCES.md', './PRIVACY.md'
 ]) assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
@@ -196,4 +202,4 @@ forbidPatterns(publicCurrent, [
   /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i
 ], 'public secret/privacy scan');
 
-console.log('Commons / Now full application, privacy, exact-network, local-map, cosmic instruments, Planetary Heliodon, coherent-shell, accessibility, source, seed, and offline contract verified.');
+console.log('Commons / Now full application, shared five-feed Sample-and-Hold latch, privacy, exact-network, local-map, cosmic instruments, Planetary Heliodon, coherent-shell, accessibility, source, seed, and offline contract verified.');

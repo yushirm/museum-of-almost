@@ -5,9 +5,11 @@
   if (!core) return;
 
   const SVG_NS = 'http://www.w3.org/2000/svg';
+  const SNAPSHOT_EVENT = 'museum:commons-snapshot';
   const SOURCES = Object.freeze({
     earthquakes: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson',
     solar: 'https://services.swpc.noaa.gov/products/summary/solar-wind-speed.json',
+    scales: 'https://services.swpc.noaa.gov/products/noaa-scales.json',
     weather: 'https://api.open-meteo.com/v1/forecast',
     events: 'https://eonet.gsfc.nasa.gov/api/v3/events?status=open&limit=500'
   });
@@ -20,6 +22,11 @@
     snapshotDetail: document.querySelector('#snapshot-detail'),
     worldSentence: document.querySelector('#world-sentence'),
     sourceCount: document.querySelector('#source-count'),
+    samplePanel: document.querySelector('#sample-hold-panel'),
+    samplePhase: document.querySelector('#sample-phase'),
+    sampleCycle: document.querySelector('#sample-cycle'),
+    sampleStatus: document.querySelector('#sample-status'),
+    sampleFeeds: [...document.querySelectorAll('[data-sample-feed]')],
     quakeCount: document.querySelector('#quake-count'),
     quakeStrongest: document.querySelector('#quake-strongest'),
     quakeDepth: document.querySelector('#quake-depth'),
@@ -66,6 +73,7 @@
 
   let requestController = null;
   let snapshot = emptySnapshot();
+  globalThis.MuseumCommonsSnapshot = snapshot;
   let selectedStationId = core.STATIONS[0].id;
   let comparisonAId = '01';
   let comparisonBId = '09';
@@ -88,6 +96,7 @@
   renderConnection();
   renderStations();
   renderSnapshot();
+  renderSampleHold();
   refreshSnapshot();
 
   if ('serviceWorker' in navigator) {
@@ -99,28 +108,31 @@
   async function refreshSnapshot() {
     requestController?.abort();
     requestController = new AbortController();
-    const timeout = window.setTimeout(() => requestController?.abort(), 9000);
+    const activeController = requestController;
+    const timeout = window.setTimeout(() => activeController.abort(), 9000);
 
     if (ui.refresh) {
       ui.refresh.disabled = true;
       ui.refresh.textContent = 'Reading the world…';
     }
-    if (ui.liveStatus) ui.liveStatus.textContent = 'Requesting one current snapshot from four public services.';
-    if (ui.snapshotDetail) ui.snapshotDetail.textContent = 'USGS · NOAA SWPC · Open-Meteo · NASA EONET';
+    if (ui.liveStatus) ui.liveStatus.textContent = 'Acquiring one five-feed snapshot from four public services.';
     document.body.dataset.loading = 'true';
+    renderSampleAcquire();
 
     const weatherUrl = buildWeatherUrl();
     const results = await Promise.allSettled([
-      fetchJson(SOURCES.earthquakes, requestController.signal),
-      fetchJson(SOURCES.solar, requestController.signal),
-      fetchJson(weatherUrl, requestController.signal),
-      fetchJson(SOURCES.events, requestController.signal)
+      fetchJson(SOURCES.earthquakes, activeController.signal),
+      fetchJson(SOURCES.solar, activeController.signal),
+      fetchJson(SOURCES.scales, activeController.signal),
+      fetchJson(weatherUrl, activeController.signal),
+      fetchJson(SOURCES.events, activeController.signal)
     ]);
 
     window.clearTimeout(timeout);
+    if (requestController !== activeController) return;
     requestController = null;
 
-    const [quakeResult, solarResult, weatherResult, eventResult] = results;
+    const [quakeResult, solarResult, scalesResult, weatherResult, eventResult] = results;
     snapshot = {
       earthquakes: quakeResult.status === 'fulfilled'
         ? core.normalizeEarthquakes(quakeResult.value)
@@ -128,18 +140,31 @@
       solar: solarResult.status === 'fulfilled'
         ? core.normalizeSolarWind(solarResult.value)
         : { available: false, speed: null, state: 'unavailable' },
+      scales: scalesResult.status === 'fulfilled'
+        ? { available: true, value: scalesResult.value }
+        : { available: false, value: null },
       weather: weatherResult.status === 'fulfilled'
         ? core.normalizeWeather(weatherResult.value)
         : core.normalizeWeather(null),
       events: eventResult.status === 'fulfilled'
         ? core.normalizeEvents(eventResult.value)
         : { available: false, count: null, capped: false, categories: [] },
+      feeds: {
+        earthquakes: quakeResult.status === 'fulfilled',
+        solar: solarResult.status === 'fulfilled',
+        scales: scalesResult.status === 'fulfilled',
+        weather: weatherResult.status === 'fulfilled',
+        events: eventResult.status === 'fulfilled'
+      },
       receivedAt: new Date()
     };
 
+    globalThis.MuseumCommonsSnapshot = snapshot;
     document.body.dataset.loading = 'false';
     renderSnapshot();
     renderStations();
+    renderSampleHold();
+    document.dispatchEvent(new CustomEvent(SNAPSHOT_EVENT, { detail: { snapshot } }));
 
     if (ui.refresh) {
       ui.refresh.disabled = false;
@@ -173,15 +198,67 @@
     return {
       earthquakes: { available: false, count: null, strongest: null, meanDepth: null, significant: null },
       solar: { available: false, speed: null, state: 'unavailable' },
+      scales: { available: false, value: null },
       weather: core.normalizeWeather(null),
       events: { available: false, count: null, capped: false, categories: [] },
+      feeds: { earthquakes: false, solar: false, scales: false, weather: false, events: false },
       receivedAt: null
     };
   }
 
+  function renderSampleAcquire() {
+    if (ui.samplePanel) ui.samplePanel.dataset.phase = 'acquire';
+    if (ui.samplePhase) ui.samplePhase.textContent = 'ACQUIRE';
+    if (ui.sampleCycle) {
+      ui.sampleCycle.textContent = snapshot.receivedAt
+        ? `Holding ${formatUtc(snapshot.receivedAt)} while the next five-feed sample settles.`
+        : 'Acquiring the first five-feed sample.';
+    }
+    for (const feed of ui.sampleFeeds) {
+      feed.dataset.state = 'acquiring';
+      const state = feed.querySelector('small');
+      if (state) state.textContent = 'sampling…';
+    }
+    if (ui.sampleStatus) {
+      ui.sampleStatus.textContent = 'The visible exhibits do not partially update during acquisition.';
+    }
+  }
+
+  function renderSampleHold() {
+    const answeredFeeds = Object.values(snapshot.feeds).filter(Boolean).length;
+    if (ui.samplePanel) ui.samplePanel.dataset.phase = 'hold';
+    if (ui.samplePhase) ui.samplePhase.textContent = 'HOLD';
+    if (ui.sampleCycle) {
+      ui.sampleCycle.textContent = snapshot.receivedAt
+        ? `Latched ${formatUtc(snapshot.receivedAt)} · ${answeredFeeds}/5 feeds returned data.`
+        : 'No sample latched yet.';
+    }
+    for (const feed of ui.sampleFeeds) {
+      const key = feed.dataset.sampleFeed;
+      const answered = Boolean(snapshot.feeds[key]);
+      feed.dataset.state = snapshot.receivedAt ? (answered ? 'latched' : 'unavailable') : 'waiting';
+      const state = feed.querySelector('small');
+      if (state) {
+        state.textContent = snapshot.receivedAt
+          ? (answered ? 'latched in this sample' : 'unavailable in this sample')
+          : 'awaiting first sample';
+      }
+    }
+    if (ui.sampleStatus) {
+      ui.sampleStatus.textContent = snapshot.receivedAt
+        ? `All five channels settled before commit. ${answeredFeeds} returned data; missing feeds remain explicitly unavailable.`
+        : 'Five public channels will settle before the first visible snapshot is committed.';
+    }
+  }
+
   function renderSnapshot() {
-    const availableSources = [snapshot.earthquakes, snapshot.solar, snapshot.weather, snapshot.events]
-      .filter((source) => source.available).length;
+    const availableSources = [
+      snapshot.feeds.earthquakes,
+      snapshot.feeds.solar || snapshot.feeds.scales,
+      snapshot.feeds.weather,
+      snapshot.feeds.events
+    ].filter(Boolean).length;
+    const answeredFeeds = Object.values(snapshot.feeds).filter(Boolean).length;
 
     document.body.dataset.sourceCount = String(availableSources);
     if (ui.sourceCount) ui.sourceCount.textContent = `${availableSources}/4 SOURCES`;
@@ -231,13 +308,13 @@
         : 'No live snapshot yet';
     }
     if (ui.snapshotDetail) {
-      ui.snapshotDetail.textContent = availableSources === 4
-        ? 'All four public services answered. No automatic polling.'
-        : `${availableSources} of 4 public services answered. Missing sources stay visibly unavailable.`;
+      ui.snapshotDetail.textContent = answeredFeeds === 5
+        ? 'All five feeds across four public services answered. No automatic polling.'
+        : `${answeredFeeds} of 5 current feeds answered. Missing feeds stay visibly unavailable.`;
     }
     if (ui.liveStatus) {
-      ui.liveStatus.textContent = availableSources
-        ? `Current snapshot ready: ${availableSources} of 4 sources answered.`
+      ui.liveStatus.textContent = answeredFeeds
+        ? `Current snapshot ready: ${answeredFeeds} of 5 feeds answered across ${availableSources} of 4 public services.`
         : 'No live source answered. The fixed world sample remains available; try Refresh world when connected.';
     }
   }

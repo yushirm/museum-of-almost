@@ -12,6 +12,7 @@ The page takes one current snapshot from four free public scientific services an
 
 The page shows:
 
+- **The Sample-and-Hold Bus / One Now, Latched**, an analog-electronics-inspired view of the five-feed acquisition cycle: the current exhibits stay on the previous held sample while all five requests settle, then the new snapshot is committed as one shared state;
 - USGS earthquakes recorded in the past hour, including the current count and strongest reported magnitude;
 - NOAA SWPC current solar-wind speed near Earth;
 - **The Cosmic Signal Chain**, an analog-instrument-inspired rack that places the existing solar-wind value beside NOAA's current geomagnetic-storm (`G`) and solar-radiation-storm (`S`) scale values without claiming a causal timeline;
@@ -25,9 +26,11 @@ The page shows:
 - **The Difference Engine**, a two-point patchboard that compares any pair of the thirteen fixed windows across the same current snapshot;
 - **The Planetary Section / Field Sheet**, a west-to-east architectural section of the thirteen discrete measurements with a user-controlled native print/PDF path for preserving one snapshot outside the application.
 
+The Sample-and-Hold Bus is a real acquisition rule, not only a visual metaphor. The five approved requests enter one `Promise.allSettled` barrier. During a refresh, the previous measurements remain visible while the bus shows **ACQUIRE**. Only after every request has either answered or failed does the application replace the in-memory snapshot, render the new measurements, and expose **HOLD**. A failed channel stays explicitly unavailable in that same latched sample. The application does not keep the discarded prior sample as history.
+
 The world basemap is generated from Natural Earth 110m public-domain land geometry and stored in this repository as `world-map.svg`. It uses the same equirectangular formula as the station positions, so points are not shifted by eye. No map API, tile server, remote image, or runtime mapping library is contacted.
 
-The Cosmic Signal Chain adds one NOAA SWPC request to the current NOAA Scales product. Its first detector is a local mirror of the solar-wind reading already requested by the headline, so it does not fetch solar wind twice. The three positions are labeled **flow**, **field**, and **particles**. They are numbered for reading order only: the interface explicitly does not infer that one current reading caused another. Missing or out-of-range scale values remain unavailable rather than being guessed or clamped into the 0–5 scale.
+The Cosmic Signal Chain uses the NOAA Scales response from that shared five-feed latch. Its first detector is a local mirror of the solar-wind reading already requested by the headline, so it does not fetch solar wind twice and no longer owns a separate refresh cycle. The three positions are labeled **flow**, **field**, and **particles**. They are numbered for reading order only: the interface explicitly does not infer that one current reading caused another. Missing or out-of-range scale values remain unavailable rather than being guessed or clamped into the 0–5 scale.
 
 The Cosmic Receive Desk, Celestial Escapement, and Planetary Heliodon add no runtime data source and make no extra network request. Their fixed reference constants and approximation limits are documented in `COSMIC_RECEIVE_DESK.md`, `CELESTIAL_ESCAPEMENT.md`, and `PLANETARY_HELIODON.md`. The escapement and heliodon remain frozen until **Refresh world** captures a new instant; neither has a timer loop. The Heliodon reuses the same local solar geometry that already classifies the thirteen fixed stations, so the map boundary and station light states share one approximation rather than competing definitions.
 
@@ -53,7 +56,7 @@ Historical design records remain in the repository as history only. They are not
 
 ## Network behavior
 
-Live data is central to the product, so the page makes one current request to USGS, Open-Meteo, and NASA EONET plus two current NOAA SWPC product requests when it opens. It does not poll automatically. **Refresh world** performs one additional five-request snapshot.
+Live data is central to the product, so the page makes one current request to USGS, Open-Meteo, and NASA EONET plus two current NOAA SWPC product requests when it opens. All five requests share one acquisition barrier; there is no second module-owned fetch cycle. It does not poll automatically. **Refresh world** performs one additional five-request snapshot and does not partially replace the held measurements while those requests are in flight.
 
 The four public services are:
 
@@ -62,7 +65,7 @@ The four public services are:
 - Open-Meteo;
 - NASA Earth Observatory Natural Event Tracker.
 
-The Cosmic Signal Chain's added NOAA request reads the current NOAA Space Weather Scales. The Receive Desk, Celestial Escapement, Planetary Heliodon, map, Difference Engine, Planetary Section, and field-sheet print action add no other live service or extra request.
+The NOAA Scales feed supplies the Cosmic Signal Chain's current `G` and `S` readings. The Receive Desk, Celestial Escapement, Planetary Heliodon, map, Difference Engine, Planetary Section, Sample-and-Hold presentation, and field-sheet print action add no other live service or extra request.
 
 No API keys, paid services, accounts, external scripts, remote fonts, remote images, analytics, ads, tracking, map APIs, or tile services are used.
 
@@ -72,7 +75,7 @@ See `SOURCES.md` for exact endpoints and attribution.
 
 There is no visitor persistence. The application does not use `localStorage`, `sessionStorage`, IndexedDB, cookies, browser geolocation, or visitor free-text input.
 
-Cosmic Signal Chain values exist only in page memory and the current DOM. Receive Desk selections, Celestial Escapement phases, and Planetary Heliodon geometry are also memory-only; the local cosmic instruments read only the captured device-clock instant and fixed local constants. The additional NOAA Scales request uses no visitor location or state. The compact field-sheet copy is created locally and is not uploaded by the Museum.
+The Sample-and-Hold Bus stores only the current in-memory acquisition result. Refreshing replaces that result rather than adding a historical record. Cosmic Signal Chain values exist only in page memory and the current DOM. Receive Desk selections, Celestial Escapement phases, and Planetary Heliodon geometry are also memory-only; the local cosmic instruments read only the captured device-clock instant and fixed local constants. The NOAA Scales request uses no visitor location or state. The compact field-sheet copy is created locally and is not uploaded by the Museum.
 
 Difference Engine selections and lenses exist only in page memory and reset on reload. They are not sent to any external service.
 
@@ -86,7 +89,7 @@ Live requests omit credentials and referrer and use no-store caching. Normal dir
 
 ## Offline behavior
 
-The explanatory application shell, local map asset, local styles, the local cosmic reference instruments, Planetary Heliodon, Cosmic Signal Chain code and styles, Difference Engine, and field-sheet presentation are cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world map and derived controls still render, while live scientific values remain visibly unavailable.
+The explanatory application shell, Sample-and-Hold presentation, local map asset, local styles, the local cosmic reference instruments, Planetary Heliodon, Cosmic Signal Chain code and styles, Difference Engine, and field-sheet presentation are cached same-origin by a service worker. Cross-origin live responses are never cached by the Museum. If the page is offline, the fixed world map and derived controls still render, while live scientific values remain visibly unavailable.
 
 The service worker keeps one coherent cached shell across upgrades and reloads open pages once after a complete shell upgrade so HTML, scripts, and styles do not split across versions.
 
@@ -125,11 +128,12 @@ node scripts/test-service-worker.mjs
 node scripts/check.mjs
 ```
 
-The checks enforce the established four-service network boundary, the additional approved NOAA Scales endpoint and its missing-value rules, thirteen fixed sampling points, local-map projection and provenance, truthful Difference Engine derivation, west-to-east Planetary Section ordering, no interpolation between sparse samples, native-only field-sheet printing, missing-value integrity, no visitor storage or location access, no polling, coherent same-origin service-worker behavior, responsive accessibility hooks, one shared approximate solar-geometry model for station light and the Planetary Heliodon, source attribution, seed privacy, and deterministic data reduction.
+The checks enforce the established four-service/five-feed network boundary, one shared acquisition barrier, stale-refresh rejection, NOAA two-feed service accounting, the approved NOAA Scales endpoint and its missing-value rules, thirteen fixed sampling points, local-map projection and provenance, truthful Difference Engine derivation, west-to-east Planetary Section ordering, no interpolation between sparse samples, native-only field-sheet printing, missing-value integrity, no visitor storage or location access, no polling, coherent same-origin service-worker behavior, responsive accessibility hooks, one shared approximate solar-geometry model for station light and the Planetary Heliodon, source attribution, seed privacy, and deterministic data reduction.
 
 ## Records
 
-- `REBUILD_LOG.md` records the current product reset and subsequent COMMONS / NOW extensions.
+- `REBUILD_LOG.md` records the current product reset and prior COMMONS / NOW extensions.
+- `SAMPLE_AND_HOLD.md` records the design gate and technical contract for the shared snapshot latch.
 - `CONSTRUCTION_LOG.md` records the earlier constructive Treaty period.
 - `ENTROPY_LOG.md` and `ENTROPY_HISTORY.md` record older mutation experiments.
 

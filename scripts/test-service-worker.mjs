@@ -3,13 +3,14 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 
-assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v8-celestial-escapement'/);
-assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/);
-assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/);
+assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v9-planetary-heliodon'/);
+assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/);
+assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/);
 for (const asset of [
   './',
   './index.html',
   './styles.css',
+  './sample-hold.css',
   './world-map.css',
   './world-map.svg',
   './difference-engine.css',
@@ -54,4 +55,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Commons / Now coherent offline shell, current and local cosmic instruments, Planetary Heliodon, local world map, Difference Engine, printable field sheet, and cross-origin boundary verified.');
+console.log('Commons / Now coherent offline shell, Sample-and-Hold Bus, current and local cosmic instruments, Planetary Heliodon, local world map, Difference Engine, printable field sheet, and cross-origin boundary verified.');
