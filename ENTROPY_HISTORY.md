@@ -91,3 +91,26 @@
 - Preservation budget: Three.
 - Resulting organising principle: Three simultaneous membranes preserve geometry while separation changes their relationship and silence alone advances generation, reinterprets meaning, and reveals more information.
 - Concise implementation outcome: The timed measure, contradiction pair, tiny ecosystem, wait-as-action grammar, and effect-gated response window were removed. One shared organism now supports direct separation, silence-only time, mutable semantics, late warnings, and bounded geometry persistence.
+
+## Execution 5
+
+- Seed: `679e472a1e31e8c20074426565d9ed6ccc2f5115266f731bc3acd03470b35c02`
+- Date: 2026-08-07
+- Primary Fixation exiled: Parallel membrane field.
+- Supporting patterns prohibited: Triplicate peer layers; directional separation as the universal action; inactivity-driven generation as the universal clock.
+- Pattern inverted: Preserve geometry while changing meaning → active state disappears, while only an attempted erasure may persist.
+- Patterns retained: Deterministic procedural variation; local-first offline engineering.
+- Ontology selected: An agreement between impossible forces.
+- Visitor relationship selected: Counterweight.
+- Primary verb selected: Suspend.
+- Topology selected: A timeline that can be touched.
+- Time law selected: One small event occurs only once per browser installation.
+- Memory law selected: Preserve only what the visitor attempted to erase.
+- Sensory centre selected: Scale.
+- Materials selected: Temporary construction markings; magnetic fields.
+- Governing contradiction selected: Order can be created only by introducing one deliberate error.
+- Intrusion selected: A measurement with no known unit.
+- Severe constraint selected: Every state change must affect at least two visible elements.
+- Preservation budget: One.
+- Resulting organising principle: Two impossible forces traverse one continuous treaty line; the visitor suspends them as counterweight, exactly one deliberate error creates temporary order, and attempted erasure becomes the only durable fictional memory.
+- Concise implementation outcome: The three-layer membrane stack, directional separation, silence-generated meaning, and preserved geometry were removed. A continuous opposing-force treaty now supports duration-weighted suspension, qualitative one-error order, erasure ghosts, one installation-only reversal, unresolved measurement, scale feedback, keyboard parity, optional local sound, and offline persistence.
