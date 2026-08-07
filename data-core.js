@@ -217,6 +217,135 @@
     return `${Math.abs(number).toFixed(2)}° ${direction}`;
   }
 
+  function greatCircleDistanceKm(pointA, pointB) {
+    const latA = Number(pointA?.lat);
+    const lonA = Number(pointA?.lon);
+    const latB = Number(pointB?.lat);
+    const lonB = Number(pointB?.lon);
+    if (![latA, lonA, latB, lonB].every(Number.isFinite)) return null;
+
+    const toRadians = (degrees) => degrees * Math.PI / 180;
+    const phiA = toRadians(latA);
+    const phiB = toRadians(latB);
+    const deltaPhi = toRadians(latB - latA);
+    const deltaLambda = toRadians(lonB - lonA);
+    const a = Math.sin(deltaPhi / 2) ** 2
+      + Math.cos(phiA) * Math.cos(phiB) * Math.sin(deltaLambda / 2) ** 2;
+    const centralAngle = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
+    return round(6371.0088 * centralAngle, 0);
+  }
+
+  function observedRange(points, key) {
+    const values = (Array.isArray(points) ? points : [])
+      .map((point) => point?.[key])
+      .filter((value) => typeof value === 'number' && Number.isFinite(value));
+    if (!values.length) return { available: false, min: null, max: null };
+    return {
+      available: true,
+      min: round(Math.min(...values), 1),
+      max: round(Math.max(...values), 1)
+    };
+  }
+
+  function metricPosition(value, min, max) {
+    const number = typeof value === 'number' ? value : Number.NaN;
+    const low = typeof min === 'number' ? min : Number.NaN;
+    const high = typeof max === 'number' ? max : Number.NaN;
+    if (![number, low, high].every(Number.isFinite)) return 50;
+    if (high === low) return 50;
+    return round(clamp((number - low) / (high - low), 0, 1) * 100, 2);
+  }
+
+  function compareStationPair(pointA, pointB, lightA = 'unknown', lightB = 'unknown') {
+    const temperatureA = typeof pointA?.temperature === 'number' ? pointA.temperature : Number.NaN;
+    const temperatureB = typeof pointB?.temperature === 'number' ? pointB.temperature : Number.NaN;
+    const windA = typeof pointA?.wind === 'number' ? pointA.wind : Number.NaN;
+    const windB = typeof pointB?.wind === 'number' ? pointB.wind : Number.NaN;
+    const precipitationA = typeof pointA?.precipitation === 'number' ? pointA.precipitation : Number.NaN;
+    const precipitationB = typeof pointB?.precipitation === 'number' ? pointB.precipitation : Number.NaN;
+
+    return {
+      idA: pointA?.id || 'A',
+      idB: pointB?.id || 'B',
+      distanceKm: greatCircleDistanceKm(pointA, pointB),
+      temperatureDelta: Number.isFinite(temperatureA) && Number.isFinite(temperatureB)
+        ? round(temperatureA - temperatureB, 1)
+        : null,
+      windDelta: Number.isFinite(windA) && Number.isFinite(windB)
+        ? round(windA - windB, 1)
+        : null,
+      precipitationDelta: Number.isFinite(precipitationA) && Number.isFinite(precipitationB)
+        ? round(precipitationA - precipitationB, 1)
+        : null,
+      temperatureA: Number.isFinite(temperatureA) ? temperatureA : null,
+      temperatureB: Number.isFinite(temperatureB) ? temperatureB : null,
+      windA: Number.isFinite(windA) ? windA : null,
+      windB: Number.isFinite(windB) ? windB : null,
+      precipitationA: Number.isFinite(precipitationA) ? precipitationA : null,
+      precipitationB: Number.isFinite(precipitationB) ? precipitationB : null,
+      lightA,
+      lightB,
+      sameLight: lightA === lightB && lightA !== 'unknown'
+    };
+  }
+
+  function signedDifferenceSentence(idA, idB, delta, unit, positiveWord, negativeWord, equalText) {
+    if (!Number.isFinite(delta)) return `Live data is unavailable for one or both patched points.`;
+    if (delta === 0) return `Points ${idA} and ${idB} ${equalText}.`;
+    const amount = Math.abs(delta).toFixed(1);
+    const direction = delta > 0 ? positiveWord : negativeWord;
+    return `Point ${idA} is ${amount}${unit} ${direction} than point ${idB}.`;
+  }
+
+  function differenceSentence(comparison, lens) {
+    if (!comparison) return 'Patch two points to compare the same moment in two places.';
+    switch (lens) {
+      case 'wind':
+        return signedDifferenceSentence(
+          comparison.idA,
+          comparison.idB,
+          comparison.windDelta,
+          ' km/h',
+          'windier',
+          'less windy',
+          'have the same current wind speed'
+        );
+      case 'precipitation':
+        return signedDifferenceSentence(
+          comparison.idA,
+          comparison.idB,
+          comparison.precipitationDelta,
+          ' mm',
+          'wetter right now',
+          'drier right now',
+          'report the same current precipitation'
+        );
+      case 'light':
+        if (comparison.lightA === 'unknown' || comparison.lightB === 'unknown') {
+          return 'Current light state is unavailable for one or both patched points.';
+        }
+        if (comparison.sameLight) {
+          return `Points ${comparison.idA} and ${comparison.idB} are both in ${comparison.lightA}.`;
+        }
+        return `Point ${comparison.idA} is in ${comparison.lightA}; point ${comparison.idB} is in ${comparison.lightB}.`;
+      case 'distance':
+        return Number.isFinite(comparison.distanceKm)
+          ? `Points ${comparison.idA} and ${comparison.idB} are ${comparison.distanceKm.toLocaleString('en')} km apart along Earth’s surface.`
+          : 'Distance is unavailable for the patched points.';
+      case 'temperature':
+      default:
+        return signedDifferenceSentence(
+          comparison.idA,
+          comparison.idB,
+          comparison.temperatureDelta,
+          '°C',
+          'warmer',
+          'cooler',
+          'have the same current temperature'
+        );
+    }
+  }
+
   function snapshotSentence(snapshot) {
     const parts = [];
     if (snapshot?.earthquakes?.available) {
@@ -249,6 +378,11 @@
     sunState,
     stationPosition,
     formatCoordinate,
+    greatCircleDistanceKm,
+    observedRange,
+    metricPosition,
+    compareStationPair,
+    differenceSentence,
     snapshotSentence
   });
 });
