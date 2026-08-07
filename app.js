@@ -4,6 +4,7 @@
   const core = globalThis.MuseumCommonsCore;
   if (!core) return;
 
+  const SVG_NS = 'http://www.w3.org/2000/svg';
   const SOURCES = Object.freeze({
     earthquakes: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson',
     solar: 'https://services.swpc.noaa.gov/products/summary/solar-wind-speed.json',
@@ -53,7 +54,14 @@
     differenceTemperature: document.querySelector('#difference-temperature'),
     differenceWind: document.querySelector('#difference-wind'),
     differenceRain: document.querySelector('#difference-rain'),
-    differenceLight: document.querySelector('#difference-light')
+    differenceLight: document.querySelector('#difference-light'),
+    sectionGuides: document.querySelector('#section-guides'),
+    sectionPosts: document.querySelector('#section-posts'),
+    sectionPlotDesc: document.querySelector('#section-plot-desc'),
+    sectionStatus: document.querySelector('#section-status'),
+    sectionTableBody: document.querySelector('#section-table-body'),
+    fieldSheetTime: document.querySelector('#field-sheet-time'),
+    fieldSheetButton: document.querySelector('#field-sheet-button')
   };
 
   let requestController = null;
@@ -67,6 +75,7 @@
   ui.refresh?.addEventListener('click', refreshSnapshot);
   ui.patchA?.addEventListener('click', () => armComparisonEnd('a'));
   ui.patchB?.addEventListener('click', () => armComparisonEnd('b'));
+  ui.fieldSheetButton?.addEventListener('click', () => window.print());
   for (const button of ui.lensButtons) {
     button.addEventListener('click', () => {
       comparisonLens = button.dataset.lens || 'temperature';
@@ -274,6 +283,7 @@
     renderStationList(pointsById, lightStates);
     renderSelectedStation(pointsById, lightStates);
     renderDifferenceEngine();
+    renderPlanetarySection();
   }
 
   function renderMap(pointsById, lightStates) {
@@ -493,6 +503,140 @@
     ui.markerA.textContent = `A ${comparison.idA}`;
     ui.markerB.textContent = `B ${comparison.idB}`;
     ui.differenceScaleLabel.textContent = label;
+  }
+
+  function renderPlanetarySection() {
+    if (!ui.sectionGuides || !ui.sectionPosts || !ui.sectionTableBody) return;
+
+    const timestamp = snapshot.receivedAt || new Date();
+    const section = core.planetarySection(snapshot.weather, timestamp);
+    const reporting = section.points.filter((point) => point.temperature !== null || point.wind !== null || point.precipitation !== null).length;
+    const daylight = section.points.filter((point) => point.light === 'day').length;
+
+    if (ui.sectionStatus) {
+      ui.sectionStatus.textContent = section.available
+        ? `${reporting}/13 weather posts reporting · ${daylight}/13 daylight`
+        : `No live weather · ${daylight}/13 daylight from local geometry`;
+    }
+    if (ui.fieldSheetTime) {
+      ui.fieldSheetTime.textContent = snapshot.receivedAt
+        ? `Snapshot received ${formatUtc(snapshot.receivedAt)}`
+        : 'No live snapshot yet';
+    }
+    if (ui.sectionPlotDesc) {
+      ui.sectionPlotDesc.textContent = section.ranges.temperature.available
+        ? `Thirteen discrete posts ordered west to east. ${reporting} have current weather. Temperature ranges from ${section.ranges.temperature.min.toFixed(1)} to ${section.ranges.temperature.max.toFixed(1)} degrees Celsius. Wind and precipitation are separate local marks. No values are interpolated between posts.`
+        : `Thirteen discrete posts ordered west to east. Live weather is unavailable; light state is calculated locally. No values are interpolated between posts.`;
+    }
+
+    ui.sectionGuides.replaceChildren();
+    ui.sectionPosts.replaceChildren();
+
+    const left = 35;
+    const right = 965;
+    const top = 55;
+    const bottom = 245;
+    const baseline = 285;
+
+    appendSvgLine(ui.sectionGuides, left, baseline, right, baseline, 'section-axis');
+    appendSvgLine(ui.sectionGuides, left, top, right, top, 'section-guide');
+    appendSvgLine(ui.sectionGuides, left, bottom, right, bottom, 'section-guide');
+
+    if (section.ranges.temperature.available) {
+      appendSvgText(ui.sectionGuides, left, top - 10, `${section.ranges.temperature.max.toFixed(1)}°C`, 'section-axis-label', 'start');
+      appendSvgText(ui.sectionGuides, left, bottom + 18, `${section.ranges.temperature.min.toFixed(1)}°C`, 'section-axis-label', 'start');
+    } else {
+      appendSvgText(ui.sectionGuides, left, top - 10, 'LIVE TEMPERATURE UNAVAILABLE', 'section-axis-label', 'start');
+    }
+    appendSvgText(ui.sectionGuides, left, 344, '180°W', 'section-axis-label', 'start');
+    appendSvgText(ui.sectionGuides, right, 344, '180°E', 'section-axis-label', 'end');
+
+    for (const point of section.points) {
+      const x = left + (point.longitudePosition / 100) * (right - left);
+      const temperatureY = point.temperaturePosition === null
+        ? (top + bottom) / 2
+        : bottom - (point.temperaturePosition / 100) * (bottom - top);
+
+      const post = appendSvgLine(ui.sectionPosts, x, temperatureY, x, baseline, 'section-post');
+      post.dataset.light = point.light;
+
+      const node = document.createElementNS(SVG_NS, 'circle');
+      node.setAttribute('cx', x.toFixed(2));
+      node.setAttribute('cy', temperatureY.toFixed(2));
+      node.setAttribute('r', point.temperature === null ? '4' : '6');
+      node.setAttribute('class', 'section-temperature-node');
+      node.dataset.light = point.light;
+      ui.sectionPosts.append(node);
+
+      if (point.windPosition !== null) {
+        const windLength = 8 + (point.windPosition / 100) * 28;
+        const direction = x > 920 ? -1 : 1;
+        appendSvgLine(
+          ui.sectionPosts,
+          x,
+          Math.min(baseline - 18, temperatureY + 16),
+          x + windLength * direction,
+          Math.min(baseline - 18, temperatureY + 16),
+          'section-wind'
+        );
+      }
+
+      if (point.precipitation !== null && point.precipitation > 0) {
+        const rainLength = 5 + (point.precipitationPosition / 100) * 15;
+        appendSvgLine(ui.sectionPosts, x, baseline + 2, x, baseline + 2 + rainLength, 'section-rain');
+      }
+
+      appendSvgText(
+        ui.sectionPosts,
+        x,
+        Math.max(20, temperatureY - 11),
+        point.temperature === null ? '—' : `${point.temperature.toFixed(1)}°`,
+        'section-temperature-label',
+        'middle'
+      );
+      appendSvgText(ui.sectionPosts, x, 329, point.id, 'section-point-label', 'middle');
+    }
+
+    ui.sectionTableBody.replaceChildren();
+    for (const point of section.points) {
+      const row = document.createElement('tr');
+      const values = [
+        `POINT ${point.id}`,
+        core.formatCoordinate(point.lon, 'E', 'W'),
+        point.temperature === null ? '—' : `${point.temperature.toFixed(1)}°C`,
+        point.wind === null ? '—' : `${point.wind.toFixed(1)} km/h`,
+        point.precipitation === null ? '—' : `${point.precipitation.toFixed(1)} mm`,
+        point.light.toUpperCase()
+      ];
+      for (const value of values) {
+        const cell = document.createElement('td');
+        cell.textContent = value;
+        row.append(cell);
+      }
+      ui.sectionTableBody.append(row);
+    }
+  }
+
+  function appendSvgLine(parent, x1, y1, x2, y2, className) {
+    const line = document.createElementNS(SVG_NS, 'line');
+    line.setAttribute('x1', Number(x1).toFixed(2));
+    line.setAttribute('y1', Number(y1).toFixed(2));
+    line.setAttribute('x2', Number(x2).toFixed(2));
+    line.setAttribute('y2', Number(y2).toFixed(2));
+    line.setAttribute('class', className);
+    parent.append(line);
+    return line;
+  }
+
+  function appendSvgText(parent, x, y, text, className, anchor) {
+    const label = document.createElementNS(SVG_NS, 'text');
+    label.setAttribute('x', Number(x).toFixed(2));
+    label.setAttribute('y', Number(y).toFixed(2));
+    label.setAttribute('class', className);
+    label.setAttribute('text-anchor', anchor);
+    label.textContent = text;
+    parent.append(label);
+    return label;
   }
 
   function formatDelta(value, unit) {
