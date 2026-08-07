@@ -6,6 +6,23 @@ import dimensions from './entropy-dimensions.json' with { type: 'json' };
 const require = createRequire(import.meta.url);
 const core = require('../entropy-core.js');
 
+const execution1Seed = '3a69eb87180cbca48d2919a9d7e4722d0c54aaaac9e62855a03554f8c389c627';
+assert.deepEqual(selectEntropy(execution1Seed), {
+  A: 'an organism made from unfinished ideas',
+  B: 'custodian of an unstable rule',
+  C: 'contradict',
+  D: 'one continuous surface',
+  E: 'every action creates a delayed consequence',
+  F: 'retain one accidental event selected by the seed',
+  G: 'contrast between stillness and interruption',
+  I: 'repetition produces difference',
+  J: 'a pattern that appears to anticipate the visitor',
+  K: 'no icons',
+  H: ['wax seals', 'woven fibres'],
+  preservationBudget: 'Two'
+});
+assert.deepEqual(rerollRecord(execution1Seed), {});
+
 const execution2Seed = '18fe665945016bff2168f9c3ad6110e5c684dc9e8ef0983d9a300a8ac848782c';
 assert.deepEqual(selectEntropy(execution2Seed), {
   A: 'a law of nature that exists only in the browser',
@@ -69,83 +86,134 @@ assert.equal(
 );
 assert.equal(dimensions.K[selectIndex(execution4Seed, 'K', dimensions.K.length, 1)], 'no images');
 
-assert.equal(core.EXECUTION_SEED, execution4Seed);
-assert.equal(core.STATE_KEY, 'museum-of-almost:entropy:v4');
+const execution5Seed = '679e472a1e31e8c20074426565d9ed6ccc2f5115266f731bc3acd03470b35c02';
+assert.deepEqual(selectEntropy(execution5Seed), {
+  A: 'an agreement between impossible forces',
+  B: 'counterweight',
+  C: 'suspend',
+  D: 'a timeline that can be touched',
+  E: 'one small event occurs only once per browser installation',
+  F: 'preserve only what the visitor attempted to erase',
+  G: 'scale',
+  I: 'order can be created only by introducing one deliberate error',
+  J: 'a measurement with no known unit',
+  K: 'every state change must affect at least two visible elements',
+  H: ['temporary construction markings', 'magnetic fields'],
+  preservationBudget: 'One'
+});
+assert.deepEqual(rerollRecord(execution5Seed), {});
+
+assert.equal(core.EXECUTION_SEED, execution5Seed);
+assert.equal(core.STATE_KEY, 'museum-of-almost:entropy:v5');
 
 const seed = 123456;
 const empty = core.createState(seed);
-assert.equal(empty.version, 4);
-assert.equal(empty.installSeed, seed);
-assert.equal(empty.visit, 0);
-assert.deepEqual(empty.geometry, { spread: 0, axis: 0, fold: 0, generation: 0 });
+assert.deepEqual(empty, { version: 5, installSeed: seed, ghost: null });
 
-const carried = core.createState(seed, { spread: 2, axis: 1, fold: 2, generation: 3 });
-const beforeVisitMeanings = core.meaningsFor(carried);
-const visited = core.advanceVisit(carried);
-assert.deepEqual(visited.geometry, carried.geometry, 'visit must preserve geometry');
-assert.equal(visited.visit, 1);
-assert.notDeepEqual(core.meaningsFor(visited), beforeVisitMeanings, 'a preserved geometry must change meaning between visits');
+const session0 = core.createSession(empty);
+assert.ok(session0.cursor >= 0 && session0.cursor <= 1000);
+assert.deepEqual(session0.suspensions, []);
+assert.equal(session0.inversion, false);
+assert.equal(core.treatyState(empty, session0), 'too-exact');
+assert.match(core.statusText(empty, session0), /too perfectly/i);
 
-const separated = core.separate(visited, 'south');
-assert.equal(separated.geometry.generation, visited.geometry.generation, 'visitor activity must not advance time');
-assert.equal(separated.geometry.axis, 2);
-assert.equal(separated.geometry.spread, 3);
-assert.deepEqual(core.meaningsFor(separated), core.meaningsFor(visited), 'separation alone must not reinterpret the realities');
+const movedLeft = core.moveCursor(empty, session0, -5000);
+const movedRight = core.moveCursor(empty, session0, 5000);
+assert.equal(movedLeft.cursor, 0);
+assert.equal(movedRight.cursor, 1000);
 
-let saturated = core.createState(seed, { spread: 4, axis: 0, fold: 0, generation: 2 });
-saturated = core.separate(saturated, 'east');
-assert.equal(saturated.geometry.spread, 4);
-assert.notEqual(saturated.geometry.fold, 0, 'repeated separation at maximum spread must still change geometry');
+assert.equal(core.weightForDuration(0), 1);
+assert.equal(core.weightForDuration(1250), 3);
+assert.equal(core.weightForDuration(99999), 5);
 
-const silent = core.advanceSilence(separated);
-assert.equal(silent.state.geometry.generation, separated.geometry.generation + 1);
-assert.equal(silent.state.geometry.spread, separated.geometry.spread - 1);
-assert.notDeepEqual(core.meaningsFor(silent.state), core.meaningsFor(separated), 'silence must create new semantic information');
-assert.match(silent.warning, /^Late warning:/);
-assert.ok(silent.warningIndex >= 0 && silent.warningIndex < 3);
+const suspended1 = core.suspend(empty, session0, 700, 1250);
+assert.equal(suspended1.suspensions.length, 1);
+assert.deepEqual(suspended1.suspensions[0], { id: 1, position: 700, weight: 3 });
+assert.equal(core.treatyState(empty, suspended1), 'holding');
+assert.match(core.statusText(empty, suspended1), /One deliberate error/i);
 
-const geometry = core.geometryFor(silent.state);
-assert.equal(geometry.length, 3);
-assert.deepEqual([...geometry.map((item) => item.z)].sort(), [1, 2, 3]);
-assert.ok(geometry.some((item) => item.x !== 0 || item.y !== 0));
+const force1 = core.forceState(empty, suspended1);
+assert.notEqual(force1.scaleA, force1.scaleB);
+assert.ok(force1.fieldScale > 1);
 
-const earlyNotes = core.notesFor(empty).filter((item) => item.visible).length;
-const laterNotes = core.notesFor(core.createState(seed, { generation: 6 })).filter((item) => item.visible).length;
-assert.ok(laterNotes > earlyNotes, 'silence-driven generations must reveal more information');
+const measure1 = core.measurementFor(empty, suspended1);
+const measure1Again = core.measurementFor(empty, suspended1);
+assert.deepEqual(measure1, measure1Again);
+assert.ok(measure1.value >= 11 && measure1.value <= 97);
+assert.ok(core.UNKNOWN_UNITS.includes(measure1.unit));
+
+const suspended2 = core.suspend(empty, suspended1, 260, 300);
+assert.equal(suspended2.suspensions.length, 2);
+assert.equal(core.treatyState(empty, suspended2), 'overwritten');
+assert.match(core.statusText(empty, suspended2), /Too many errors/i);
+assert.notDeepEqual(core.measurementFor(empty, suspended2), measure1);
+
+const erasedFirst = core.attemptErase(empty, suspended2);
+assert.equal(erasedFirst.firstEvent, true);
+assert.deepEqual(erasedFirst.erased, { id: 2, position: 260, weight: 1 });
+assert.deepEqual(erasedFirst.state, {
+  version: 5,
+  installSeed: seed,
+  ghost: { position: 260, weight: 1 }
+});
+assert.equal(erasedFirst.session.suspensions.length, 1);
+assert.equal(erasedFirst.session.inversion, true);
+assert.equal(core.treatyState(erasedFirst.state, erasedFirst.session), 'holding');
+assert.match(core.memoryText(erasedFirst.state), /last attempted erasure/i);
+
+const beforeInversion = core.timelinePositions(empty, suspended2, 0.2);
+const afterInversion = core.timelinePositions(erasedFirst.state, erasedFirst.session, 0.2);
+assert.equal(beforeInversion.a, afterInversion.b);
+assert.equal(beforeInversion.b, afterInversion.a);
+
+const erasedAgain = core.attemptErase(erasedFirst.state, erasedFirst.session);
+assert.equal(erasedAgain.firstEvent, false, 'one-time event must not repeat after a ghost exists');
+assert.deepEqual(erasedAgain.state.ghost, { position: 700, weight: 3 });
+assert.equal(erasedAgain.session.suspensions.length, 0);
+assert.equal(erasedAgain.session.inversion, true);
+
+let capped = core.createSession(empty);
+for (let index = 0; index < 10; index += 1) {
+  capped = core.suspend(empty, capped, index * 100, 200 + index * 100);
+}
+assert.equal(capped.suspensions.length, core.MAX_SUSPENSIONS);
+assert.equal(capped.sequence, 10);
 
 const sanitized = core.sanitizeState({
   version: 999,
   installSeed: seed,
-  visit: 999999,
-  geometry: { spread: 99, axis: -4, fold: 7, generation: 99999 },
+  ghost: { position: 9000, weight: 99, label: 'must disappear' },
+  visit: 88,
+  geometry: { spread: 4 },
   actionHistory: ['must disappear'],
   pointerPath: [[1, 2]],
-  meaning: 'must not persist'
+  duration: 9000,
+  timestamp: 123
 });
-assert.equal(sanitized.version, 4);
-assert.equal(sanitized.visit, 9999);
-assert.deepEqual(sanitized.geometry, { spread: 4, axis: 0, fold: 2, generation: 999 });
-assert.equal('actionHistory' in sanitized, false);
-assert.equal('pointerPath' in sanitized, false);
-assert.equal('meaning' in sanitized, false);
+assert.deepEqual(sanitized, {
+  version: 5,
+  installSeed: seed,
+  ghost: { position: 1000, weight: 5 }
+});
 
 const migrated = core.migrateLegacy(
-  JSON.stringify({ contradiction: { source: 'pressure', left: 'held', right: 'not held' } }),
-  JSON.stringify({ offsets: [0.2], season: 3 }),
-  JSON.stringify({ tensions: [0.5] }),
-  JSON.stringify({ fragments: ['fictional'] }),
-  JSON.stringify({ selectedIndex: 4 })
+  JSON.stringify({ installSeed: 7654321, geometry: { spread: 4 }, visit: 9 }),
+  JSON.stringify({ contradiction: { left: 'held' } }),
+  JSON.stringify({ offsets: [0.2], season: 3 })
 );
 assert.equal(migrated.migrated, true);
-assert.deepEqual(migrated.geometry, { spread: 1, axis: 0, fold: 0, generation: 0 });
-assert.doesNotMatch(JSON.stringify(migrated), /contradiction|pressure|held|offset|season|tension|fragment|selectedIndex/i);
+assert.equal(migrated.installSeed, 7654321);
+assert.doesNotMatch(JSON.stringify(migrated), /geometry|visit|contradiction|held|offset|season/i);
 
-const noLegacy = core.migrateLegacy(null, null, null, null, null);
-assert.equal(noLegacy.migrated, false);
-assert.equal(noLegacy.geometry, null);
+const damagedLegacy = core.migrateLegacy('{broken', null, null);
+assert.equal(damagedLegacy.migrated, true);
+assert.equal(damagedLegacy.installSeed, null);
 
-assert.match(core.memoryText(visited), /geometry is preserved/i);
-assert.match(core.summaryText(visited), /Three realities currently read as/);
-assert.doesNotMatch(JSON.stringify(silent.state), /timestamp|email|name|location|pointer|client[xy]/i);
+const noLegacy = core.migrateLegacy(null, null, null, null);
+assert.deepEqual(noLegacy, { migrated: false, installSeed: null });
 
-console.log('Entropy history replay, v4 membrane geometry, silence-only time, and mutable meaning verified.');
+const persisted = JSON.stringify(erasedFirst.state);
+assert.doesNotMatch(persisted, /timestamp|email|name|location|pointer|client[xy]|duration|history|visit|geometry/i);
+assert.match(core.memoryText(empty), /Nothing attempted to erase/i);
+
+console.log('Entropy history replay, v5 treaty, suspension weight, erasure-only memory, and one-time reversal verified.');
