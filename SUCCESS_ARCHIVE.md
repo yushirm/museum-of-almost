@@ -1161,3 +1161,56 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Shuffle Table
+
+Feature:
+
+**The Shuffle Table / The Headline Does Not Know Where the Values Lived**
+
+Design outcome:
+
+- Concept A, **The Aggregation Audit**, was discarded as the least additive presentation because a static retention/loss ledger would remain too close to the Load-Bearing Sample and would explain aggregation loss without making it experiential.
+- Concept B, **The Shuffle Table**, supplied the card-dealing mechanic in which the exact current finite value multiset is rotated one evaluable fixed point forward in deterministic point-ID order.
+- Concept C, **The Headline Refuses to Update**, supplied the convention-breaking interaction in which the underlying hypothetical assignment changes while the authoritative aggregate headline deliberately stays fixed.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`fed711fd3bb2a3191834b02d59c79c8f987ec4ab`
+
+Pull request:
+
+`#80 — Add the Shuffle Table`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `255`;
+- conclusion: `success`.
+
+What succeeded:
+
+- exactly three fixed normalized weather aggregate lenses: temperature minimum/maximum, terrestrial wind mean/maximum, and the finite positive-precipitation reporting count;
+- one deterministic cyclic one-seat permutation of the same finite current values, with no random shuffle and no invented numeric value;
+- missing point values stay missing and outside the finite deck, while real numeric zero remains finite and participates in the permutation;
+- the current point values are independently recomputed and must reproduce the authoritative normalized headline before the hypothetical deal is enabled, so the snapshot remains the only normalizer and source of truth;
+- temperature min/max, one-decimal arithmetic wind mean/max, and the finite `> 0` precipitation membership count remain exactly invariant under the hypothetical permutation;
+- the actual finite multiset and hypothetical finite multiset are tested for equality for every lens;
+- every counterfactual state is explicitly labeled **HYPOTHETICAL PERMUTATION**, with the central verdict **SAME HEADLINE. DIFFERENT ASSIGNMENT.** and the doctrine **THIS IS NOT AN ALTERNATE WEATHER REPORT.**;
+- the per-point ledger distinguishes `assignmentMoved` from `valueChanged`, so a repeated equal numeric value can move between point identities without creating a false claim that the displayed number changed;
+- the feature refuses forecast, interpolation, synthetic measurement, physical-plausibility, repair, probability, uncertainty, representativeness, provider-error, quality, and ranking interpretations;
+- lens and deal state are memory-only and reset to temperature / actual on every real Commons latch, with no previous-latch fallback;
+- the full interactive table is omitted from print while a compact field-sheet statement records the selected aggregate, finite-value count, permutation invariance, and correspondence limitation;
+- no added data request, response clone, raw-provider retention, alternate acquisition path, random generator, polling, timer loop, animation-frame loop, persistence, geolocation, visitor text or numeric input, analytics, telemetry, remote runtime asset, account, cloud state, or dependency;
+- responsive, keyboard, disabled-insufficient-data, reduced-motion, increased-contrast, live-region, explicit-hypothetical, and print handling;
+- focused tests pin all three aggregate families to the actual `data-core.js` reducer declarations so semantic drift fails loudly;
+- coherent same-origin **v37 Shuffle Table** shell preserves concurrent **v36 Page Four Evidence Lattice**, **v35 Page Four Signal Anomaly**, **v34 Gauge Bench**, their local assets/tests, and all prior Museum assets;
+- run `246` was rejected after the new privacy regression falsely treated the ordinary safety word “plausible” as Plausible Analytics; the detector was narrowed to real analytics signatures (`plausible.io` / `window.plausible`) while the stronger “not physically plausible weather” disclaimer was preserved;
+- green run `253` was rejected as release evidence because live `main` advanced before its evidence race completed;
+- only the fully reconciled, behind-zero v37 head `fed711fd3bb2a3191834b02d59c79c8f987ec4ab` and run `255` are accepted as feature-complete evidence.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
