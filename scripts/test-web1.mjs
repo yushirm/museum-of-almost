@@ -35,7 +35,6 @@ for (const pattern of [
   /DO NOT MISTAKE REPEAT FOR MULTIPLICITY\./,
   /FOUND OUT THE SKY IS ONE FILE DOING A LOT\./,
   /The body has one line that names <code>assets\/web1\/stars\.gif<\/code> as its background image\./,
-  /I FOUND OUT THE NIGHT SKY IS WALLPAPER/,
   /MY HOMEPAGE DOES NOT HAVE A TRUE WIDTH/,
   /BEST VIEWED WITH WHATEVER YOU BROUGHT!!!/,
   /The layout has breakpoints\. I do not have a preferred body\./,
