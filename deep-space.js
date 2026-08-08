@@ -83,6 +83,35 @@
     document.head.append(script);
   }
 
+  function addPageFourSignalAnomaly() {
+    const nav = document.querySelector('.cosmos-nav');
+    if (nav && !document.getElementById('page-four-signal-link')) {
+      const link = document.createElement('a');
+      link.id = 'page-four-signal-link';
+      link.href = 'page-four.html';
+      link.textContent = '? Page Four / unfiled';
+      nav.append(link);
+    }
+
+    const axiom = document.querySelector('.hero-axiom');
+    if (axiom && !document.getElementById('page-four-signal-note')) {
+      const note = document.createElement('p');
+      note.id = 'page-four-signal-note';
+      note.className = 'hero-axiom';
+      const label = document.createElement('strong');
+      label.textContent = 'SIGNAL ANOMALY: ';
+      const link = document.createElement('a');
+      link.href = 'page-four.html';
+      link.textContent = 'Investigate Page Four →';
+      note.append(
+        label,
+        document.createTextNode('a fourth page is being reported elsewhere in the Museum. The archive is fictional; the route is local. '),
+        link
+      );
+      axiom.insertAdjacentElement('afterend', note);
+    }
+  }
+
   function loadCausalSignalBox(done) {
     if (!document.querySelector('link[data-causal-signal-styles]')) {
       const stylesheet = document.createElement('link');
@@ -174,6 +203,7 @@
     });
   }
 
+  addPageFourSignalAnomaly();
   renderScale('sun');
   renderBlackHole('sagittarius-a');
   renderMystery('dark-matter');

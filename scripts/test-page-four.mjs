@@ -58,6 +58,15 @@ assert.match(js, /clipboard\.writeText\(leakText\(target\)\)/, 'case leaks shoul
 assert.match(js, /Fictional, unverified archive material; no claim of fact\./, 'copied case text must preserve the fiction boundary');
 assert.match(js, /id = 'public-leak-channel'/, 'Page Four should expose the in-Museum rumor channel');
 assert.match(js, /href = 'almost-online\.html'/, 'the public leak channel should stay same-origin and local');
+assert.match(js, /id = 'signal-echo-channel'/, 'Page Four should expose the Deep Space signal echo');
+assert.match(js, /href = 'deep-space\.html'/, 'the signal echo should stay same-origin and local');
+for (const pattern of [
+  /KNOWN LEAK POINTS:/,
+  /MUSEUM ENTRANCE \/ PUBLIC LISTING/,
+  /ALMOST ONLINE! \/ UNLISTED BULLETIN/,
+  /DEEP SPACE \/ SIGNAL ANOMALY/,
+  /STATIC ROUTES\. NO VISITOR STATE OR COUNTING\./
+]) assert.match(js, pattern, `Page Four static sighting log missing ${pattern}`);
 assert.match(js, /addEventListener\('hashchange'/, 'shared case permalinks should keep active-file state synchronized');
 assert.match(js, /Shared case permalink opened:/, 'direct case permalinks should visibly activate and announce the selected file');
 
@@ -71,4 +80,4 @@ for (const styles of [css, teaser]) {
 assert.match(css, /min-height:\s*44px/, 'interactive controls should preserve a 44px target size');
 assert.match(css, /:focus-visible/, 'Page Four should expose visible keyboard focus');
 
-console.log('Page Four fictional archive, local leak desk, shared permalinks, accessibility, no-network boundary, evidence links, and entrance reveal verified.');
+console.log('Page Four fictional archive, local leak desk, static sighting log, shared permalinks, accessibility, no-network boundary, evidence links, and entrance reveal verified.');
