@@ -61,9 +61,13 @@ It changes only the hypothetical circuit evaluation inside the Isolation Board.
 
 The board declares a small dependency model for existing Commons instruments.
 
+The model is intentionally narrow. It tracks whether declared feed dependencies remain available. It does **not** assert that every value inside an available feed is present, valid, fresh, comparable, or sufficient for every downstream calculation.
+
 ### POWERED
 
-Every declared dependency required for the circuit remains live on the simulated bus.
+Every declared feed dependency for the circuit remains on the simulated bus.
+
+POWERED is therefore not a quality or completeness guarantee. It is only a feed-dependency statement.
 
 ### DEGRADED
 
@@ -83,11 +87,13 @@ Single-feed circuits go directly from POWERED to DARK when their one feed is una
 
 The Celestial Escapement and Planetary Heliodon are derived from the already-captured latch time and fixed local constants/geometry. Once a real latch exists, a hypothetical loss of live feeds does not remove that captured instant.
 
-### SEALED
+### ACTUAL
 
-The Witness Seal deliberately remains tied to the actual normalized latch. It is never recalculated from the hypothetical blackout.
+The Witness Seal is outside the hypothetical bus. The Isolation Board does not claim that a seal successfully exists; Web Crypto can legitimately be unavailable. Instead, ACTUAL means only that the simulation never recomputes, masks, or substitutes for the real Witness Seal instrument.
 
-This distinction is essential: the seal is evidence of what really latched, while the Isolation Board is a counterfactual about what would remain if evidence were removed.
+The Witness Seal itself remains authoritative about whether local SHA-256 sealing actually succeeded for the current latch.
+
+This distinction is essential: the seal describes what really latched when it is available, while the Isolation Board is a counterfactual about what would remain if evidence were removed.
 
 ## Refresh semantics
 
