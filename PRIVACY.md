@@ -1,6 +1,8 @@
 # Privacy Boundary
 
-The Museum of Almost is a static website. **COMMONS / NOW** does not create visitor accounts, profiles, histories, scores, identifiers, or personalized views.
+The Museum of Almost is a static, multi-space website. It does not create visitor accounts, profiles, histories, scores, identifiers, or personalized views.
+
+Only **COMMONS / NOW** makes live public-data requests. The Museum entrance, **DEEP SPACE / ALMOST**, **ALMOST ONLINE!**, **PAGE FOUR**, and **ELSEWHERE / CATALOGUE 0** do not initiate data-service requests. PAGE FOUR and CATALOGUE 0 are explicitly fictional spaces and do not accept visitor stories, names, submissions, or uploads.
 
 ## What the application does not collect
 
@@ -17,7 +19,7 @@ The application does not:
 
 ## Live public data requests
 
-The current product is intentionally a live public-data instrument. When the page opens it makes five direct HTTP requests across four public services:
+**COMMONS / NOW** is intentionally a live public-data instrument. When that gallery opens it makes five direct HTTP requests across four public services:
 
 - USGS Earthquake Hazards Program;
 - NOAA Space Weather Prediction Center;
@@ -31,6 +33,17 @@ All five requests share the Sample-and-Hold Bus acquisition barrier. Pressing **
 Requests use CORS mode, `credentials: omit`, `referrerPolicy: no-referrer`, and `cache: no-store`. The application does not intentionally send cookies, the Museum page URL, visitor location, or local visitor data with those requests.
 
 As with any direct internet request, the requested service and ordinary network infrastructure can see network-layer information such as the visitor's IP address. Each provider may process connection information under its own policies. The Museum does not receive their server logs.
+
+## Local-only spaces
+
+The entrance and the four non-COMMONS destinations use same-origin static assets and local browser computation only. They do not open a second scientific acquisition path, proxy COMMONS data, or transmit visitor interaction state.
+
+- **DEEP SPACE / ALMOST** uses fixed examples, local constants, and local calculations for its cosmic instruments and thought experiments.
+- **ALMOST ONLINE!** is a static personal-homepage artifact using local HTML, CSS, JavaScript, and local media assets. Its decorative counter and visited-link styling do not become analytics or a visitor log.
+- **PAGE FOUR** is an explicitly fictional local archive. Its records, rumors, diagrams, maps, and research presentation are not evidence about real people or institutions.
+- **ELSEWHERE / CATALOGUE 0** is an explicitly fictional local collection. Its twelve fixed accession records, provenance contradictions, service corridor, and misfile interaction exist entirely in the shipped files and page memory.
+
+Ordinary browser navigation to another page is not treated as application telemetry. The Museum does not record which route a visitor chooses.
 
 ## Sample-and-Hold Bus
 
@@ -109,11 +122,13 @@ The page deliberately reduces source data:
 
 ## Offline shell
 
-A same-origin service worker caches only the Museum's static application shell, including the local world map, Sample-and-Hold and Sounding Well code/styles, field-sheet stylesheet, and local cosmic instrument code/styles, so that the explanatory interface can still open offline. The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, or NASA responses.
+A same-origin service worker caches only the Museum's static application shell. The shell covers the entrance and the active spaces, including local HTML, JavaScript, CSS, maps, images, and other same-origin assets required for their runtime behavior.
+
+The service worker ignores cross-origin requests and does not cache, proxy, or persist USGS, NOAA, Open-Meteo, NASA, or another provider response.
 
 The service worker keeps one coherent static shell across upgrades. After a complete shell replacement, open Museum windows are reloaded once so HTML, scripts, styles, and local assets adopt the new version together.
 
-When offline, live values and temporal sounding are shown as unavailable. The page does not display stale live values from storage.
+When COMMONS / NOW is offline, its live values and temporal sounding are shown as unavailable rather than restored from stale application storage. The local-only spaces continue to render their static and locally computed material from the Museum shell.
 
 ## Hosting
 
