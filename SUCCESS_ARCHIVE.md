@@ -354,3 +354,50 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — DEEP SPACE / ALMOST — The Causal Signal Box
+
+Feature:
+
+**The Causal Signal Box / The Button Cannot Reach Everything**
+
+Design outcome:
+
+- Concept A, **The Light-Cone Atlas**, was discarded as the least additive because the Frame Shifter already provides the gallery's spacetime-stage and causal-class grammar.
+- Concept B, **The Causal Signal Box**, supplied the railway-interlocking mechanic in which every actual route segment must independently clear.
+- Concept C, **The Button Cannot Reach Everything**, supplied the convention-breaking rule that one browser action may update only causally reachable targets.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`61d93c797187bbf07e25adbbcc0907c1baa12244`
+
+Pull request:
+
+`#58 — Add Deep Space Causal Signal Box`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `151`;
+- conclusion: `success`.
+
+What succeeded:
+
+- six fixed generic spacetime stations and four fixed routes evaluated locally in seconds and light-seconds with `c = 1`;
+- future-directed timelike segments classified CLEAR, future-directed lightlike segments classified LIGHT-SPEED EDGE, spacelike segments classified LOCKED OUTSIDE CONE, and earlier targets classified LOCKED IN THE PAST;
+- the Light edge and Relay chain routes deliver only through segments that independently satisfy `Δt >= |Δx|`;
+- the Impossible shortcut updates RELAY and then refuses FAR because RELAY → FAR is spacelike, while a separate regression guard confirms ORIGIN → FAR is directly lightlike and therefore keeps route legality scoped to each actual segment;
+- the Past call route refuses without mutating the earlier target;
+- dispatch changes only the causally reachable route prefix rather than treating one click as unlimited action at a distance;
+- the interface responds immediately and uses no artificial light-travel timer;
+- the existing six-instrument `deep-space.html` remains unchanged while the new section mounts through same-origin local progressive enhancement;
+- the mounted interface uses DOM creation and text content without HTML-string injection;
+- beyond normal same-origin local asset loading, no data-service or external request, visitor input, storage, cookies, history state, location access, analytics, telemetry, polling, remote media, or dependency is added;
+- responsive, keyboard, reduced-motion, increased-contrast, and print handling;
+- coherent same-origin v23 offline-shell upgrade preserving the Reverse Ledger baseline and prior Museum assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
