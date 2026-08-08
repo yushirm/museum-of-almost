@@ -8,6 +8,7 @@ const coreSource = fs.readFileSync(new URL('../shutter-cabinet-core.js', import.
 const view = fs.readFileSync(new URL('../shutter-cabinet.js', import.meta.url), 'utf8');
 const css = fs.readFileSync(new URL('../shutter-cabinet.css', import.meta.url), 'utf8');
 const record = fs.readFileSync(new URL('../SHUTTER_CABINET.md', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const app = fs.readFileSync(new URL('../app.js', import.meta.url), 'utf8');
 const signalCore = fs.readFileSync(new URL('../cosmic-signal-core.js', import.meta.url), 'utf8');
@@ -172,4 +173,21 @@ for (const asset of ['./shutter-cabinet-core.js', './shutter-cabinet.js', './shu
 assert.match(worker, /const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room'/);
 assert.match(worker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
 
-console.log('Shutter Cabinet temporal-form registry, refusal interlock, Sounding Well boundary, accessibility, privacy, loader, and offline contracts verified.');
+for (const pattern of [
+  /## 2026-08-08 — COMMONS \/ NOW — The Shutter Cabinet/,
+  /\*\*The Shutter Cabinet \/ Same Latch, Different Temporal Support\*\*/,
+  /Concept A, \*\*The Temporal Support Ledger\*\*, was discarded/,
+  /Concepts B and C were merged/,
+  /`b7ff2ada34e0d3f2c10c98547e7e727b564c10ca`/,
+  /`#88 — Add the Shutter Cabinet`/,
+  /run: `283`/,
+  /conclusion: `success`/,
+  /\*\*v41 Shutter Cabinet\*\*/,
+  /\*\*v40 Page Four Instrument Room\*\*/,
+  /run `280` passed end to end but was rejected as release evidence/,
+  /`9e37abc67886268e69aa009d613955eca3ec8d6e`/,
+  /`Test Museum durable documentation` gate/,
+  /archive-bearing final head must pass the same required `check` job again before merge/
+]) assert.match(archive, pattern);
+
+console.log('Shutter Cabinet temporal-form registry, refusal interlock, Sounding Well boundary, archive evidence, accessibility, privacy, loader, and offline contracts verified.');
