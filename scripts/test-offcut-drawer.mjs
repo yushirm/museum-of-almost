@@ -8,6 +8,7 @@ const core = require('../offcut-drawer-core.js');
 const view = fs.readFileSync(new URL('../offcut-drawer.js', import.meta.url), 'utf8');
 const css = fs.readFileSync(new URL('../offcut-drawer.css', import.meta.url), 'utf8');
 const record = fs.readFileSync(new URL('../OFFCUT_DRAWER.md', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 const html = fs.readFileSync(new URL('../commons-now.html', import.meta.url), 'utf8');
 const observer = fs.readFileSync(new URL('../temporal-sounding.js', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
@@ -194,8 +195,17 @@ for (const pattern of [
   /never whole raw payloads/i
 ]) assert.match(record, pattern);
 
+for (const pattern of [
+  /## 2026-08-08 — COMMONS \/ NOW — The Offcut Drawer/,
+  /\*\*The Offcut Drawer \/ The Page Shaves Its Numbers\*\*/,
+  /Feature-complete evidence head:[\s\S]*`1ee4f08cc66a3fc9c9f3dde15c2b02a6f6e02a7d`/,
+  /#64 — Add the Offcut Drawer/,
+  /run: `178`/[,
+  /conclusion: `success`/
+]) assert.match(archive, pattern, `Success Archive should retain Offcut Drawer evidence ${pattern}`);
+
 for (const asset of ['./offcut-drawer-core.js', './offcut-drawer.js', './offcut-drawer.css', './OFFCUT_DRAWER.md']) {
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 
-console.log('Offcut Drawer source-to-display trace, rounding direction, range-guard separation, passive acquisition reuse, accessibility, privacy, and offline contracts verified.');
+console.log('Offcut Drawer source-to-display trace, rounding direction, range-guard separation, passive acquisition reuse, accessibility, privacy, success-archive evidence, and offline contracts verified.');
