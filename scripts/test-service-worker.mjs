@@ -35,11 +35,13 @@ assert.match(source, /const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-al
 assert.match(source, /const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
 assert.match(source, /const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/);
 assert.match(source, /const PAGE_FOUR_DEAD_DROP_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop'/);
-assert.match(source, /const CURRENT_CACHE_NAME = PAGE_FOUR_DEAD_DROP_CACHE_NAME/,
+assert.match(source, /const UNBUILT_ROOM_CACHE_NAME = 'museum-of-almost-v44-unbuilt-room'/);
+assert.match(source, /const CURRENT_CACHE_NAME = UNBUILT_ROOM_CACHE_NAME/,
   'the dedicated service-worker contract should own which named generation is current');
 for (const asset of [
   './',
   './index.html',
+  './404.html',
   './landing.css',
   './page-four-teaser.css',
   './elsewhere-teaser.css',
@@ -189,7 +191,8 @@ for (const asset of [
   './WEB1_HOME.md',
   './PAGE_FOUR_RESEARCH.md',
   './PAGE_FOUR_HESSDALEN.md',
-  './PAGE_FOUR_DEAD_DROP.md'
+  './PAGE_FOUR_DEAD_DROP.md',
+  './UNBUILT_ROOM.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
 }
@@ -200,14 +203,16 @@ assert.match(source, /caches\.open\(CURRENT_CACHE_NAME\)/);
 assert.match(source, /key !== CURRENT_CACHE_NAME/);
 assert.match(source, /url\.origin !== self\.location\.origin/);
 assert.match(source, /request\.mode === 'navigate'/);
-assert.match(source, /async function networkFirst[\s\S]+fetch\(request, \{ cache: 'no-cache' \}\)[\s\S]+caches\.match\(request\)/,
+assert.match(source, /async function networkFirst\(request, fallbackDocument = null\)[\s\S]+fetch\(request, \{ cache: 'no-cache' \}\)[\s\S]+caches\.match\(request\)/,
   'same-origin requests should revalidate online before falling back to the offline cache');
-assert.match(source, /const fallbackToIndex = url\.pathname === scopePath/,
-  'only root-scope navigation should use the museum entrance as its offline index fallback');
-assert.match(source, /caches\.match\('\.\/index\.html'\)/,
-  'root-scope navigation should retain the museum entrance as its offline index fallback');
-assert.match(source, /event\.respondWith\(networkFirst\(request, fallbackToIndex\)\)/,
-  'navigations should prefer the deployed document and use the requested cached document only offline');
+assert.match(source, /if \(fallbackDocument\)[\s\S]+caches\.match\(fallbackDocument\)/,
+  'navigation recovery should be selected only after the requested cached document is unavailable');
+assert.match(source, /const fallbackDocument = url\.pathname === scopePath \? '\.\/index\.html' : '\.\/404\.html'/,
+  'root-scope navigation should recover to the entrance while other unknown offline navigations recover to the Unbuilt Room');
+assert.match(source, /event\.respondWith\(networkFirst\(request, fallbackDocument\)\)/,
+  'navigations should prefer the deployed document, then the requested cached document, then the correct local recovery document');
+assert.ok(source.includes("'./index.html'"), 'offline shell must retain the entrance');
+assert.ok(source.includes("'./404.html'"), 'offline shell must include the Unbuilt Room');
 assert.match(source, /event\.respondWith\(networkFirst\(request\)\)/,
   'same-origin assets should prefer the deployed file while preserving offline fallback');
 assert.match(source, /clients\.claim\(\)/);
@@ -219,4 +224,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Page Four Dead Drop v43 is the current named generation; Unequal Minute v42, Shutter Cabinet v41, Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries remain in the fresh-online cached-offline shell.');
+console.log('Unbuilt Room v44 is the current named generation; Page Four Dead Drop v43, Unequal Minute v42, Shutter Cabinet v41, Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries remain in the fresh-online cached-offline shell.');

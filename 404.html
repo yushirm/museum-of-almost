@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0a10">
+  <meta name="robots" content="noindex">
+  <title>The Museum of Almost — Unbuilt Room</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f5f1ff;
+      --muted: #aaa3bc;
+      --paper: #0b0a10;
+      --panel: #14111d;
+      --line: #40384f;
+      --violet: #c9a7ff;
+      --cyan: #8feaff;
+      --danger: #ff8da8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--paper);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        radial-gradient(circle at 75% 20%, rgba(143, 234, 255, 0.08), transparent 32rem),
+        var(--paper);
+      background-size: 32px 32px, 32px 32px, auto, auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    a,
+    button {
+      font: inherit;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 10;
+      transform: translateY(-160%);
+      border: 2px solid var(--cyan);
+      padding: 0.65rem 0.8rem;
+      color: #05070a;
+      background: var(--cyan);
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .museum-header,
+    .museum-footer,
+    .unbuilt-room {
+      width: min(72rem, calc(100% - 2rem));
+      margin-inline: auto;
+    }
+
+    .museum-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-block: clamp(1.25rem, 5vw, 2.5rem) 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .museum-mark {
+      display: grid;
+      gap: 0.25rem;
+    }
+
+    .museum-mark small,
+    .error-code,
+    .slip-code {
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .museum-mark strong {
+      letter-spacing: 0.08em;
+    }
+
+    .museum-header > span {
+      color: var(--danger);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+    }
+
+    .unbuilt-room {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+      gap: clamp(1.25rem, 5vw, 4rem);
+      align-items: center;
+      min-height: min(44rem, calc(100vh - 11rem));
+      padding-block: clamp(2rem, 8vw, 6rem);
+    }
+
+    .error-code {
+      margin: 0 0 1rem;
+      color: var(--danger);
+    }
+
+    h1 {
+      max-width: 12ch;
+      margin: 0;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: clamp(3rem, 10vw, 7.5rem);
+      font-weight: 500;
+      letter-spacing: -0.055em;
+      line-height: 0.9;
+    }
+
+    .lead {
+      max-width: 48rem;
+      margin: 1.5rem 0 0;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.22rem);
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    .actions a,
+    .actions button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .actions a {
+      color: #05070a;
+      border-color: var(--cyan);
+      background: var(--cyan);
+      font-weight: 800;
+    }
+
+    .actions button {
+      color: var(--ink);
+      background: transparent;
+    }
+
+    .actions a:hover,
+    .actions button:hover {
+      border-color: var(--violet);
+    }
+
+    .actions a:focus-visible,
+    .actions button:focus-visible,
+    .skip-link:focus-visible {
+      outline: 3px solid var(--violet);
+      outline-offset: 4px;
+    }
+
+    .floor-plan {
+      position: relative;
+      min-height: 26rem;
+      border: 1px solid var(--line);
+      padding: 1rem;
+      background: rgba(20, 17, 29, 0.86);
+      box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.28);
+    }
+
+    .plan-grid {
+      position: absolute;
+      inset: 1rem;
+      border: 1px solid rgba(201, 167, 255, 0.24);
+      background:
+        linear-gradient(90deg, transparent 49.7%, rgba(201, 167, 255, 0.18) 50%, transparent 50.3%),
+        linear-gradient(transparent 49.7%, rgba(201, 167, 255, 0.18) 50%, transparent 50.3%);
+    }
+
+    .plan-room {
+      position: absolute;
+      border: 1px solid var(--muted);
+      color: var(--muted);
+      background: rgba(11, 10, 16, 0.84);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+
+    .room-a {
+      inset: 14% 52% 56% 8%;
+    }
+
+    .room-b {
+      inset: 55% 52% 10% 8%;
+    }
+
+    .room-c {
+      inset: 14% 8% 56% 56%;
+    }
+
+    .room-d {
+      inset: 55% 8% 10% 56%;
+    }
+
+    .plan-room span {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    .missing-room {
+      position: absolute;
+      inset: 35% 32%;
+      display: grid;
+      place-items: center;
+      border: 2px dashed var(--danger);
+      color: var(--danger);
+      background: var(--panel);
+      font-size: clamp(0.72rem, 2vw, 0.9rem);
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-align: center;
+      transform: rotate(-2deg);
+    }
+
+    .registrar-slip {
+      position: absolute;
+      right: 1.4rem;
+      bottom: -1.4rem;
+      width: min(20rem, 82%);
+      border: 1px solid var(--violet);
+      padding: 1rem;
+      color: var(--ink);
+      background: #161020;
+      transform: rotate(1.5deg);
+    }
+
+    .registrar-slip h2 {
+      margin: 0.35rem 0 0.8rem;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1.45rem;
+      font-weight: 500;
+    }
+
+    .registrar-slip dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.5rem 0.8rem;
+      margin: 0;
+      font-size: 0.74rem;
+      line-height: 1.45;
+    }
+
+    .registrar-slip dt {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .registrar-slip dd {
+      margin: 0;
+    }
+
+    .museum-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      border-top: 1px solid var(--line);
+      padding-block: 1rem 2rem;
+      color: var(--muted);
+      font-size: 0.7rem;
+      line-height: 1.6;
+    }
+
+    .museum-footer p {
+      max-width: 58rem;
+      margin: 0;
+    }
+
+    @media (max-width: 760px) {
+      .unbuilt-room {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .floor-plan {
+        min-height: 23rem;
+        margin-bottom: 1.4rem;
+      }
+
+      .museum-header,
+      .museum-footer {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .museum-header,
+      .museum-footer,
+      .unbuilt-room {
+        width: min(100% - 1.25rem, 72rem);
+      }
+
+      .actions {
+        display: grid;
+      }
+
+      .actions a,
+      .actions button {
+        width: 100%;
+      }
+
+      .floor-plan {
+        min-height: 20rem;
+      }
+
+      .registrar-slip {
+        right: 0.65rem;
+        width: calc(100% - 1.3rem);
+      }
+    }
+
+    @media (prefers-contrast: more) {
+      :root {
+        --muted: #ffffff;
+        --line: #ffffff;
+      }
+
+      body {
+        background: #000000;
+      }
+
+      .floor-plan,
+      .registrar-slip,
+      .missing-room {
+        background: #000000;
+      }
+    }
+
+    @media print {
+      .skip-link,
+      .actions {
+        display: none !important;
+      }
+
+      body {
+        color: #000000;
+        background: #ffffff;
+      }
+
+      .museum-header,
+      .museum-footer,
+      .floor-plan,
+      .registrar-slip,
+      .missing-room,
+      .plan-room {
+        color: #000000;
+        border-color: #000000;
+        background: #ffffff;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#recovery">Skip to recovery controls</a>
+
+  <header class="museum-header">
+    <div class="museum-mark">
+      <small>FACILITIES / UNBUILT ROOM</small>
+      <strong>THE MUSEUM OF ALMOST</strong>
+    </div>
+    <span>FLOOR PLAN DISAGREEMENT · 404</span>
+  </header>
+
+  <main class="unbuilt-room" id="recovery">
+    <section aria-labelledby="missing-title">
+      <p class="error-code">ERROR 404 · ACCESSION NOT FOUND</p>
+      <h1 id="missing-title">This room almost existed.</h1>
+      <p class="lead">The address reached the Museum, but no public room is filed there. Nothing has been unlocked, hidden, or collected because of the mistake. The useful thing to do now is recover the route.</p>
+
+      <div class="actions" aria-label="Missing-page recovery">
+        <a id="entrance-link" href="./">RETURN TO MUSEUM ENTRANCE</a>
+        <button id="back-button" type="button">GO BACK ONE DOOR</button>
+      </div>
+      <noscript><p class="lead">Recovery scripting is unavailable. Use your browser's Back control to return to the last page.</p></noscript>
+    </section>
+
+    <div class="floor-plan" aria-label="Diagram of four filed rooms around one unbuilt central room">
+      <div class="plan-grid" aria-hidden="true">
+        <div class="plan-room room-a"><span>FILED ROOM</span></div>
+        <div class="plan-room room-b"><span>FILED ROOM</span></div>
+        <div class="plan-room room-c"><span>FILED ROOM</span></div>
+        <div class="plan-room room-d"><span>FILED ROOM</span></div>
+        <div class="missing-room">NO ROOM<br>ON FILE</div>
+      </div>
+
+      <aside class="registrar-slip" aria-labelledby="slip-title">
+        <span class="slip-code">REGISTRAR'S SLIP · 404</span>
+        <h2 id="slip-title">Accession refused.</h2>
+        <dl>
+          <dt>STATUS</dt><dd>No room filed at this address.</dd>
+          <dt>ACTION</dt><dd>Return to a known Museum route.</dd>
+          <dt>MEMORY</dt><dd>No Museum history is created from this miss.</dd>
+        </dl>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="museum-footer">
+    <strong>NO ACCOUNT · NO ANALYTICS · NO TRACKING</strong>
+    <p>The Museum application does not log, display, or persist the missing path. Ordinary hosting and network request logs remain outside the Museum application.</p>
+  </footer>
+
+  <script>
+    (function initialiseRecovery() {
+      'use strict';
+
+      const entranceLink = document.getElementById('entrance-link');
+      const backButton = document.getElementById('back-button');
+
+      function museumRootPath() {
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        if (window.location.hostname.endsWith('.github.io') && pathParts.length > 0) {
+          return `/${pathParts[0]}/`;
+        }
+        return '/';
+      }
+
+      const museumRoot = museumRootPath();
+      entranceLink.href = museumRoot;
+
+      backButton.addEventListener('click', function recoverPreviousRoute() {
+        if (window.history.length > 1) {
+          window.history.back();
+          return;
+        }
+        window.location.assign(museumRoot);
+      });
+    })();
+  </script>
+</body>
+</html>

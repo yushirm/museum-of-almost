@@ -32,10 +32,12 @@ const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-ins
 const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet';
 const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute';
 const PAGE_FOUR_DEAD_DROP_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop';
-const CURRENT_CACHE_NAME = PAGE_FOUR_DEAD_DROP_CACHE_NAME;
+const UNBUILT_ROOM_CACHE_NAME = 'museum-of-almost-v44-unbuilt-room';
+const CURRENT_CACHE_NAME = UNBUILT_ROOM_CACHE_NAME;
 const APP_SHELL = [
   './',
   './index.html',
+  './404.html',
   './landing.css',
   './page-four-teaser.css',
   './elsewhere-teaser.css',
@@ -185,7 +187,8 @@ const APP_SHELL = [
   './WEB1_HOME.md',
   './PAGE_FOUR_RESEARCH.md',
   './PAGE_FOUR_HESSDALEN.md',
-  './PAGE_FOUR_DEAD_DROP.md'
+  './PAGE_FOUR_DEAD_DROP.md',
+  './UNBUILT_ROOM.md'
 ];
 
 self.addEventListener('install', (event) => {
@@ -226,7 +229,7 @@ async function cacheSuccessfulResponse(request, response) {
   return response;
 }
 
-async function networkFirst(request, fallbackToIndex = false) {
+async function networkFirst(request, fallbackDocument = null) {
   try {
     const response = await fetch(request, { cache: 'no-cache' });
     return cacheSuccessfulResponse(request, response);
@@ -234,8 +237,10 @@ async function networkFirst(request, fallbackToIndex = false) {
     const cached = await caches.match(request);
     if (cached) return cached;
 
-    if (fallbackToIndex) {
-      const fallback = await caches.match('./index.html');
+    if (fallbackDocument) {
+      const fallback = fallbackDocument === './index.html'
+        ? await caches.match('./index.html')
+        : await caches.match(fallbackDocument);
       if (fallback) return fallback;
     }
 
@@ -252,8 +257,8 @@ self.addEventListener('fetch', (event) => {
 
   if (request.mode === 'navigate') {
     const scopePath = new URL(self.registration.scope).pathname;
-    const fallbackToIndex = url.pathname === scopePath;
-    event.respondWith(networkFirst(request, fallbackToIndex));
+    const fallbackDocument = url.pathname === scopePath ? './index.html' : './404.html';
+    event.respondWith(networkFirst(request, fallbackDocument));
     return;
   }
 

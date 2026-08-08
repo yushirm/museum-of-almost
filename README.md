@@ -14,10 +14,12 @@ The Museum is local-first, offline-capable, accessible on mobile and desktop, an
 | `commons-now.html` | **COMMONS / NOW** | A live public instrument: five current requests across four public scientific services, thirteen fixed weather windows, and local derived instruments. |
 | `deep-space.html` | **DEEP SPACE / ALMOST** | Local cosmic instruments and fixed thought experiments about light, gravity, relativity, lensing, redshift, expansion, and unresolved physics. No data-service request. |
 | `almost-online.html` | **ALMOST ONLINE!** | A hand-built Web 1.0 personal homepage with local GIFs, diary entries, strange links, badges, and deliberate old-web texture. No analytics or application-owned visitor log. |
-| `page-four.html` | **PAGE FOUR** | A layered anomaly archive: fixed fictional case files remain fictional, while the Evidence Lattice and Hessdalen Instrument Room use separately labeled real-source material and methodological controls. No runtime source request. |
+| `page-four.html` | **PAGE FOUR** | A layered anomaly archive: fixed fictional case files and the Dead Drop puzzle trail remain fictional, while the Evidence Lattice and Hessdalen Instrument Room use separately labeled real-source material and methodological controls. No runtime source request. |
 | `elsewhere.html` | **ELSEWHERE / CATALOGUE 0** | The fifth space: an accessible service corridor, freight lift `0`, and twelve fixed fictional accession records recovered from worlds that almost existed. It remains outside the four-card gallery grid. |
 
 The entrance hierarchy is part of the product model. `ELSEWHERE / CATALOGUE 0` is discoverable through **FACILITIES NOTICE 05 / FLOOR PLAN DISAGREEMENT**, not promoted into an ordinary gallery card.
+
+`404.html` is **THE UNBUILT ROOM**, a missing-route recovery surface rather than another gallery, puzzle route, or accession. It does not display or persist the requested path. Its only job is to admit that no room is filed at that address and offer a route back to the Museum.
 
 ## Product boundaries
 
@@ -48,7 +50,7 @@ Most of the Museum is local-only at runtime.
 
 Those five requests enter one shared acquisition barrier. Pressing **Refresh world** performs one new five-request snapshot. There is no background polling.
 
-The entrance, DEEP SPACE / ALMOST, ALMOST ONLINE!, PAGE FOUR, and ELSEWHERE / CATALOGUE 0 do not initiate data-service requests or load third-party runtime assets. PAGE FOUR keeps its external source URLs in repository documentation rather than visitor runtime code.
+The entrance, DEEP SPACE / ALMOST, ALMOST ONLINE!, PAGE FOUR, ELSEWHERE / CATALOGUE 0, and the Unbuilt Room do not initiate data-service requests or load third-party runtime assets. PAGE FOUR keeps its external source URLs in repository documentation rather than visitor runtime code.
 
 See `SOURCES.md` for the exact COMMONS endpoints, source semantics, and attribution.
 
@@ -66,7 +68,9 @@ The Museum does not ask for a visitor name, email address, account, location, st
 
 Direct COMMONS requests still expose ordinary network-layer information, such as an IP address, to the requested public service and network infrastructure. The Museum does not receive provider server logs.
 
-**PAGE FOUR** has deliberately separated evidence layers. Its original archive case files and Page Four hypotheses are fictional or authored speculative material and make no claim of fact. Its Evidence Lattice and Hessdalen Instrument Room use documented real-source material, with source limits and methodological controls kept explicit. A sourced observation is not converted into an extraordinary conclusion.
+The Unbuilt Room does not echo, store, submit, classify, or score a missing path. Ordinary GitHub Pages and network infrastructure may still have request logs outside the Museum application; the recovery page states that boundary rather than pretending a web request leaves no infrastructure trace.
+
+**PAGE FOUR** has deliberately separated evidence layers. Its original archive case files, Dead Drop puzzle trail, and Page Four hypotheses are fictional or authored speculative material and make no claim of fact. Its Evidence Lattice and Hessdalen Instrument Room use documented real-source material, with source limits and methodological controls kept explicit. A sourced observation is not converted into an extraordinary conclusion.
 
 **ELSEWHERE / CATALOGUE 0** is explicitly fictional. Its accession records, provenance statements, contradictions, and institutional notes are not historical or scientific evidence and are not claims about real people or institutions.
 
@@ -77,6 +81,8 @@ See `PRIVACY.md` for the complete application boundary.
 A same-origin service worker keeps one coherent Museum shell for the entrance and active spaces. Static HTML, JavaScript, CSS, local images, local maps, and other same-origin assets needed by the runtime can fall back to the cache when the network is unavailable.
 
 Cross-origin COMMONS scientific responses are excluded from service-worker caching. Offline COMMONS therefore opens its explanatory shell but reports live scientific values as unavailable instead of showing a persisted stale snapshot. The local-only spaces retain their static and locally computed material without needing a data provider.
+
+Known same-origin Museum documents still fall back to their cached copy when offline. An uncached or unknown same-origin navigation falls back to the cached Unbuilt Room instead of a browser network-error page; the Museum scope root continues to fall back to the cached entrance.
 
 After a complete shell upgrade, open Museum pages reload once so HTML, scripts, styles, and local assets do not remain split across cache versions.
 
@@ -111,7 +117,9 @@ The repository keeps implementation records alongside the runtime. Important ent
 - `DEEP_SPACE.md` — the Deep Space gallery contract and scientific boundaries;
 - `PAGE_FOUR_INSTRUMENT_ROOM.md` — the Page Four source-backed investigation model and anti-drift rules;
 - `PAGE_FOUR_HESSDALEN.md` — Hessdalen and control-case source/provenance ledger;
+- `PAGE_FOUR_DEAD_DROP.md` — the local Page Four puzzle trail and its fiction/privacy boundary;
 - `ELSEWHERE_CATALOGUE_ZERO.md` — the fifth-space product, fiction, accessibility, privacy, and offline contract;
+- `UNBUILT_ROOM.md` — the missing-route recovery, path non-disclosure, and offline fallback contract;
 - `SUCCESS_ARCHIVE.md` — selected release evidence recorded after successful required checks;
 - `REBUILD_LOG.md`, `CONSTRUCTION_LOG.md`, `ENTROPY_LOG.md`, and `ENTROPY_HISTORY.md` — earlier product and mutation history.
 
