@@ -37,7 +37,11 @@
                       load('./isolation-board-core.js', 'isolationBoardCore', () => {
                         load('./isolation-board.js', 'isolationBoardView', () => {
                           load('./exposure-plate-core.js', 'exposurePlateCore', () => {
-                            load('./exposure-plate.js', 'exposurePlateView');
+                            load('./exposure-plate.js', 'exposurePlateView', () => {
+                              load('./reverse-ledger-core.js', 'reverseLedgerCore', () => {
+                                load('./reverse-ledger.js', 'reverseLedgerView');
+                              });
+                            });
                           });
                         });
                       });
