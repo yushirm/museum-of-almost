@@ -42,7 +42,11 @@
                                 load('./reverse-ledger.js', 'reverseLedgerView', () => {
                                   load('./rest-score-core.js', 'restScoreCore', () => {
                                     load('./rest-score.js', 'restScoreView', () => {
-                                      load('./offcut-drawer.js', 'offcutDrawerView');
+                                      load('./offcut-drawer.js', 'offcutDrawerView', () => {
+                                        load('./border-office-core.js', 'borderOfficeCore', () => {
+                                          load('./border-office.js', 'borderOfficeView');
+                                        });
+                                      });
                                     });
                                   });
                                 });

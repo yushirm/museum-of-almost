@@ -797,3 +797,51 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Border Office
+
+Feature:
+
+**The Border Office / The World Does Not Know Our Labels**
+
+Design outcome:
+
+- Concept A, **The Threshold Registry**, was discarded as the least additive because its useful threshold accounting would otherwise become another diagnostic table.
+- Concept B, **The Border Office**, supplied the customs-and-border-control mechanic in which continuous current values receive local category stamps only after crossing declared semantic lines.
+- Concept C, **No Label Without Its Exit Condition**, supplied the convention-breaking rule that every category must disclose the exact condition that would make it stop applying, with the exit condition receiving greater visual authority than the badge.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`4bdf00978569e2fbded04f21b4e5ee13b3460265`
+
+Pull request:
+
+`#68 — Add the Border Office`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `194`;
+- conclusion: `success`.
+
+What succeeded:
+
+- three fixed Museum-local classification families producing 27 current labels: one solar-wind state, thirteen fixed-point light states, and thirteen precipitation-count membership states;
+- solar boundaries pinned to the established `350`, `500`, and `700 km/s` branches while the normalized snapshot remains authoritative for the current solar label;
+- light borders pinned to `-6°` and `0°` solar elevation and evaluated through the existing `sunState` / `solarElevation` geometry rather than a competing astronomy model;
+- precipitation membership pinned to the established normalized `> 0 mm` rule, with `0 mm` described only as not counted as reporting precipitation rather than expanded into a complete “dry” claim;
+- every category writes its exact exit condition instead of presenting the status badge as a self-contained truth;
+- arithmetic distance to the nearest local border stays in the measure’s native unit and is never converted into uncertainty, error, confidence, probability, stability, danger, accuracy, quality, reliability, or a provider ranking;
+- margins from unlike units are never compared or ranked;
+- missing current values stay missing without borrowing an earlier latch;
+- memory-only family selection resets on every real Commons latch;
+- a compact qualified border summary is carried onto the field sheet while the full interactive office is omitted from print;
+- no data-service request, response-cloning layer, raw-provider retention, polling, timer loop, storage, cookies, history state, location access, visitor input, analytics, telemetry, remote media, account, cloud state, or runtime dependency;
+- responsive, keyboard, reduced-motion, increased-contrast, and print handling;
+- coherent same-origin v29 offline-shell upgrade preserving the Origin Machine v28 release, the concurrent Pink Links / visited-links release, Offcut Drawer v27, and all prior Museum assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
