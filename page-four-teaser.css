@@ -1,0 +1,166 @@
+@media (min-width: 1101px) {
+  .gallery-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .gallery-card { min-height: min(68vh, 700px); }
+}
+
+@media (min-width: 821px) and (max-width: 1100px) {
+  .gallery-web { grid-column: auto; border-top: 0; }
+  .gallery-four { border-top: 0; }
+}
+
+.gallery-four {
+  color: #dce8c8;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 70% 20%, rgba(115, 160, 70, 0.2), transparent 19rem),
+    #080b07;
+}
+.gallery-four::after {
+  content: "UNLISTED";
+  position: absolute;
+  z-index: 1;
+  right: -2.3rem;
+  top: 2.9rem;
+  width: 11rem;
+  padding: 0.35rem 0;
+  color: #f29c89;
+  border-block: 2px solid #b94736;
+  font: 800 0.64rem/1 "Courier New", monospace;
+  letter-spacing: 0.13em;
+  text-align: center;
+  transform: rotate(37deg);
+  opacity: 0.82;
+}
+.gallery-four .gallery-number { color: #a9d269; }
+.gallery-four .gallery-copy h2 {
+  color: #e3ecd3;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  text-shadow: 3px 0 rgba(123,179,77,0.35), -2px 0 rgba(185,71,54,0.22);
+}
+.gallery-four .gallery-thesis {
+  color: #cc785f;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+}
+.gallery-four .gallery-copy p:last-child { color: #aeb9a1; }
+
+.four-visual {
+  overflow: hidden;
+  border: 1px solid rgba(169,210,105,0.38);
+  background:
+    repeating-linear-gradient(0deg, rgba(168,222,105,0.035) 0 2px, transparent 2px 5px),
+    #030503;
+}
+.four-window {
+  position: absolute;
+  inset: 8% 7%;
+  border: 1px solid rgba(169,210,105,0.38);
+  background: #0c100b;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.38);
+  transform: rotate(1deg);
+}
+.four-window::before {
+  content: "CASE INDEX / DO NOT CIRCULATE";
+  display: block;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid rgba(169,210,105,0.3);
+  color: #a9d269;
+  font: 700 0.57rem/1.2 "Courier New", monospace;
+  letter-spacing: 0.06em;
+}
+.four-board {
+  position: absolute;
+  inset: 28% 9% 11%;
+  background: #6b4a2d;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.35);
+}
+.four-note,
+.four-photo,
+.four-string,
+.four-pin { position: absolute; }
+.four-note {
+  left: 8%;
+  top: 12%;
+  width: 38%;
+  min-height: 52px;
+  padding: 0.35rem;
+  color: #282013;
+  background: #bda765;
+  font: 700 0.54rem/1.25 "Courier New", monospace;
+  transform: rotate(-5deg);
+}
+.four-photo {
+  right: 8%;
+  top: 14%;
+  width: 38%;
+  height: 45%;
+  border: 5px solid #c6bea6;
+  background:
+    radial-gradient(ellipse at 50% 58%, #111 0 10%, transparent 11%),
+    linear-gradient(#6f7568, #20251e 45%, #0c100c);
+  transform: rotate(4deg);
+}
+.four-photo::after {
+  content: "?";
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  color: rgba(225,229,211,0.42);
+  font: 900 2.7rem/1 Georgia, serif;
+  transform: translate(-50%,-50%);
+}
+.four-string {
+  left: 27%;
+  top: 40%;
+  width: 50%;
+  height: 2px;
+  background: #a8382a;
+  transform: rotate(25deg);
+  transform-origin: left center;
+}
+.four-string-b { left: 18%; top: 70%; width: 61%; transform: rotate(-17deg); }
+.four-pin {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b33b2c;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+.four-pin-a { left: 25%; top: 38%; }
+.four-pin-b { right: 18%; top: 59%; }
+.four-pin-c { left: 16%; bottom: 18%; }
+.four-redaction {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 8%;
+  height: 9%;
+  background: repeating-linear-gradient(90deg, #121510 0 17%, transparent 17% 21%);
+  opacity: 0.9;
+}
+
+@media (max-width: 620px) {
+  .gallery-four::after { right: -3rem; top: 2.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-four::after,
+  .four-window,
+  .four-note,
+  .four-photo { transform: none; }
+}
+
+@media (prefers-contrast: more) {
+  .gallery-four { outline: 1px solid #dce8c8; outline-offset: -1px; }
+  .four-visual { border-color: #dce8c8; }
+}
+
+@media print {
+  .gallery-four { color: #000; background: #fff; }
+  .gallery-four::after { color: #000; border-color: #000; }
+  .gallery-four .gallery-copy h2,
+  .gallery-four .gallery-thesis,
+  .gallery-four .gallery-copy p:last-child { color: #000; text-shadow: none; }
+}
