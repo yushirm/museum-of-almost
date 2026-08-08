@@ -30,6 +30,12 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /I PUT THE GIFS IN ONE ROOM AND THEY STARTED LOOKING ORGANIZED/,
+  /\+\+\+ GIF STAFF MEETING \+\+\+/,
+  /A PAGE CAN MAKE A CHORUS OUT OF THINGS THAT CANNOT HEAR EACH OTHER\./,
+  /They do not message one another, share state, report frame numbers to JavaScript, or promise to stay synchronized\./,
+  /ARRANGEMENT CAN LOOK LIKE INTENTION\. LABEL IT CAREFULLY\./,
+  /HELD GIF STAFF MEETING\. ZERO SHARED STATE\./,
   /I FOUND OUT THE NIGHT SKY IS WALLPAPER/,
   /THE SAME NIGHT CAN APPEAR MANY TIMES WITHOUT BECOMING MANY FILES\./,
   /DO NOT MISTAKE REPEAT FOR MULTIPLICITY\./,
@@ -102,6 +108,20 @@ for (const pattern of [
   /src="web1\.js"/
 ]) assert.match(html, pattern);
 
+const gifMeeting = html.match(/<div class="gif-meeting"[^>]*>([\s\S]*?)<\/div>/);
+assert.ok(gifMeeting, 'the GIF staff meeting should remain a real local visual cluster');
+for (const asset of [
+  'assets/web1/comet.gif',
+  'assets/web1/alien.gif',
+  'assets/web1/construction.gif',
+  'assets/web1/hand-coded.gif'
+]) assert.ok(gifMeeting[1].includes(asset), `GIF staff meeting should include ${asset}`);
+
+assert.match(
+  html,
+  /<p class="motion-note">Reduced-motion note: when the browser asks for less motion, this meeting keeps the captions and sends the moving pictures home\.<\/p>/,
+  'the GIF staff meeting should explain its reduced-motion behavior in the post'
+);
 assert.match(
   html,
   /<img src="assets\/web1\/hand-coded\.gif" width="88" height="31" alt="Hand coded badge">/,
@@ -133,8 +153,12 @@ assert.match(
   'the source-only note should remain a real HTML comment rather than visible page copy'
 );
 assert.ok(
+  html.indexOf('I PUT THE GIFS IN ONE ROOM AND THEY STARTED LOOKING ORGANIZED') < html.indexOf('I FOUND OUT THE NIGHT SKY IS WALLPAPER'),
+  'GIF staff meeting should be the newest same-date weblog entry'
+);
+assert.ok(
   html.indexOf('I FOUND OUT THE NIGHT SKY IS WALLPAPER') < html.indexOf('MY HOMEPAGE DOES NOT HAVE A TRUE WIDTH'),
-  'wallpaper-sky entry should be the newest same-date weblog entry'
+  'wallpaper-sky entry should remain ahead of the earlier true-width entry'
 );
 assert.ok(
   html.indexOf('MY HOMEPAGE DOES NOT HAVE A TRUE WIDTH') < html.indexOf('I HAVE BEEN AWARDED BY THE WEBSITE I AM'),
@@ -210,6 +234,21 @@ assert.match(
   /@media \(prefers-contrast: more\)[\s\S]*?body\s*\{\s*background-image:\s*none;\s*\}/,
   'the wallpaper-sky post should preserve the existing increased-contrast starfield removal'
 );
+assert.match(
+  css,
+  /\.gif-meeting\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/,
+  'the GIF staff meeting should use a bounded two-column local cabinet'
+);
+assert.match(
+  css,
+  /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.gif-meeting img\s*\{\s*display:\s*none;\s*\}/,
+  'the GIF staff meeting should remove its moving images when reduced motion is requested'
+);
+assert.match(
+  css,
+  /@media \(max-width: 430px\)[\s\S]*?\.gif-meeting\s*\{[\s\S]*?grid-template-columns:\s*1fr;/,
+  'the GIF staff meeting should collapse to one column on the narrowest layout'
+);
 assert.match(css, /a:visited\s*\{\s*color:\s*#ff88ff;\s*\}/,
   'the visited-links post should remain grounded in the existing pink :visited rule');
 assert.match(css, /min-height:\s*44px/);
@@ -266,4 +305,4 @@ assert.match(notes, /No third-party runtime scripts, fonts, images, embeds, APIs
 assert.match(notes, /Do not publish personal information about real people/i);
 assert.match(notes, /Future posts should be added directly to the HTML in reverse chronological order/i);
 
-console.log('Almost Online! Web 1.0 gallery, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
+console.log('Almost Online! Web 1.0 gallery, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
