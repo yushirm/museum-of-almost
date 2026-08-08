@@ -267,3 +267,48 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Reverse Ledger
+
+Feature:
+
+**The Reverse Ledger / Every Claim Owes a Source**
+
+Design outcome:
+
+- Concept A, **Provenance Matrix**, was discarded as the least additive because it would turn claim ancestry into another administrative table.
+- Concept B, **The Double-Entry Evidence Ledger**, supplied the bookkeeping mechanic in which every displayed claim owes explicit upstream accounts.
+- Concept C, **Read the Page Backwards**, supplied the convention-breaking reverse navigation from finished claim to transformation and input.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`af5601c51896dd0b71ff39ba897597ca502f28f3`
+
+Pull request:
+
+`#56 — Add the Reverse Ledger`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `144`;
+- conclusion: `success`.
+
+What succeeded:
+
+- six fixed current Commons claims trace backward through explicit DISPLAYED, DERIVED, NORMALIZED, SOURCE, FIXED INPUT, and LOCAL INPUT accounts;
+- every dependency is rendered as an explicit OWES TO entry rather than implied by layout;
+- missing current sources keep the trace open instead of falling back to a prior latch or substitute provider;
+- the daylight trace correctly terminates in the local latch instant plus fixed coordinates without inventing a public astronomy feed;
+- the temperature-range trace keeps local min/max aggregation separate from normalized sparse point values and fixed sampling coordinates;
+- the Exposure Plate trace branches through current weather evidence, fixed 10° geometry, and the established great-circle distance calculation;
+- TRACE COMPLETE is explicitly limited to visible expected ancestry and is not a truth, confidence, quality, completeness, representativeness, or verification claim;
+- no additional runtime request, storage, cookies, location access, visitor text, analytics, telemetry, polling, remote media, or runtime dependency;
+- responsive, keyboard, reduced-motion, increased-contrast, and print handling;
+- coherent same-origin v22 offline-shell upgrade preserving the concurrent Almost Online! Back Button release and prior Museum assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
