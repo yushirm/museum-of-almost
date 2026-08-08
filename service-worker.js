@@ -15,7 +15,8 @@ const CAUSAL_SIGNAL_BOX_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box';
 const REST_SCORE_CACHE_NAME = 'museum-of-almost-v24-rest-score';
 const GRAVITATIONAL_COPY_ROOM_CACHE_NAME = 'museum-of-almost-v25-gravitational-copy-room';
 const REDSHIFT_RULER_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer';
+const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v28-origin-machine';
 const APP_SHELL = [
   './',
   './index.html',
@@ -85,6 +86,9 @@ const APP_SHELL = [
   './redshift-ruler.css',
   './redshift-ruler-core.js',
   './redshift-ruler.js',
+  './origin-machine.css',
+  './origin-machine-core.js',
+  './origin-machine.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -114,6 +118,7 @@ const APP_SHELL = [
   './CAUSAL_SIGNAL_BOX.md',
   './GRAVITATIONAL_COPY_ROOM.md',
   './REDSHIFT_RULER.md',
+  './ORIGIN_MACHINE.md',
   './WEB1_HOME.md'
 ];
 

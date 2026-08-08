@@ -97,7 +97,21 @@
     });
   }
 
-  function loadRedshiftRuler() {
+  function loadOriginMachine() {
+    if (!document.querySelector('link[data-origin-machine-styles]')) {
+      const stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = './origin-machine.css';
+      stylesheet.dataset.originMachineStyles = '';
+      document.head.append(stylesheet);
+    }
+
+    loadLocalScript('./origin-machine-core.js', 'origin-machine-core', () => {
+      loadLocalScript('./origin-machine.js', 'origin-machine-view');
+    });
+  }
+
+  function loadRedshiftRuler(done = loadOriginMachine) {
     if (!document.querySelector('link[data-redshift-ruler-styles]')) {
       const stylesheet = document.createElement('link');
       stylesheet.rel = 'stylesheet';
@@ -107,7 +121,7 @@
     }
 
     loadLocalScript('./redshift-ruler-core.js', 'redshift-ruler-core', () => {
-      loadLocalScript('./redshift-ruler.js', 'redshift-ruler-view');
+      loadLocalScript('./redshift-ruler.js', 'redshift-ruler-view', done);
     });
   }
 
