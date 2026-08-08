@@ -133,7 +133,8 @@ for (const pattern of [
 
 assert.match(notes, /personal homepage and weblog/i);
 assert.match(notes, /shared guestbook/i);
-assert.match(notes, /No names, email addresses, URLs, locations, accounts, or visitor free text/i);
+assert.match(notes, /No accounts/i);
+assert.match(notes, /names, email addresses, URLs, locations, or visitor free text/i);
 assert.match(notes, /Future posts should be added directly to the HTML in reverse chronological order/i);
 
 console.log('Almost Online! Web 1.0 gallery, shared safe guestbook UI, local GIFs, privacy, accessibility, and no-hardcoded-endpoint boundary verified.');
