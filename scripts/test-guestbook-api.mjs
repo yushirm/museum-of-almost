@@ -26,7 +26,8 @@ for (const name of [
   'guestbook-api/schema.sql',
   'guestbook-api/migrations/0001_guestbook.sql',
   'guestbook-api/wrangler.example.jsonc',
-  'GUESTBOOK_SECURITY.md'
+  'GUESTBOOK_SECURITY.md',
+  'PRIVACY.md'
 ]) assert.ok(fs.existsSync(path.join(root, name)), `missing ${name}`);
 
 assert.deepEqual(validateSelection({ message: 'cool-site', stamp: 'alien' }), {
@@ -75,6 +76,7 @@ const schema = read('guestbook-api/schema.sql');
 const migration = read('guestbook-api/migrations/0001_guestbook.sql');
 const config = read('guestbook-api/wrangler.example.jsonc');
 const security = read('GUESTBOOK_SECURITY.md');
+const privacy = read('PRIVACY.md');
 
 for (const pattern of [
   /request\.headers\.get\('origin'\)/,
@@ -137,4 +139,14 @@ for (const pattern of [
   /Do not commit Cloudflare account identifiers, API tokens, private URLs/i
 ]) assert.match(security, pattern);
 
-console.log('Shared counter/guestbook policy, D1-global budgets, API boundary, input allowlist, schema, and no-identifier design verified.');
+for (const pattern of [
+  /does not create visitor accounts, profiles, histories, scores, identifiers/i,
+  /create a unique-visitor counter/i,
+  /stores only one global integer/i,
+  /stores only an allowlisted message ID, an allowlisted stamp ID, and a server-generated UTC timestamp/i,
+  /does not store IP addresses, user-agent strings, referrers, browser fingerprints, or account identifiers/i,
+  /D1 holds a global minute-window counter keyed only as `page-hit`/i,
+  /renders guestbook entries with DOM `textContent`/i
+]) assert.match(privacy, pattern, `privacy record missing shared-state boundary: ${pattern}`);
+
+console.log('Shared counter/guestbook policy, D1-global budgets, API boundary, input allowlist, schema, privacy record, and no-identifier design verified.');
