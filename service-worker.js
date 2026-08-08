@@ -30,10 +30,12 @@ const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate';
 const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero';
 const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room';
 const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v42-unequal-minute';
+const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v43-unbuilt-room';
 const APP_SHELL = [
   './',
   './index.html',
+  './404.html',
   './landing.css',
   './page-four-teaser.css',
   './elsewhere-teaser.css',
@@ -221,7 +223,7 @@ async function cacheSuccessfulResponse(request, response) {
   return response;
 }
 
-async function networkFirst(request, fallbackToIndex = false) {
+async function networkFirst(request, fallbackDocument = null) {
   try {
     const response = await fetch(request, { cache: 'no-cache' });
     return cacheSuccessfulResponse(request, response);
@@ -229,8 +231,8 @@ async function networkFirst(request, fallbackToIndex = false) {
     const cached = await caches.match(request);
     if (cached) return cached;
 
-    if (fallbackToIndex) {
-      const fallback = await caches.match('./index.html');
+    if (fallbackDocument) {
+      const fallback = await caches.match(fallbackDocument);
       if (fallback) return fallback;
     }
 
@@ -247,8 +249,8 @@ self.addEventListener('fetch', (event) => {
 
   if (request.mode === 'navigate') {
     const scopePath = new URL(self.registration.scope).pathname;
-    const fallbackToIndex = url.pathname === scopePath;
-    event.respondWith(networkFirst(request, fallbackToIndex));
+    const fallbackDocument = url.pathname === scopePath ? './index.html' : './404.html';
+    event.respondWith(networkFirst(request, fallbackDocument));
     return;
   }
 
