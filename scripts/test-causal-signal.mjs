@@ -127,6 +127,7 @@ for (const asset of [
   './causal-signal.css', './causal-signal-core.js', './causal-signal.js', './CAUSAL_SIGNAL_BOX.md'
 ]) assert.ok(worker.includes(`'${asset}'`), `service worker should cache ${asset}`);
 assert.match(worker, /const REVERSE_LEDGER_CACHE_NAME = 'museum-of-almost-v22-reverse-ledger'/);
-assert.match(worker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box'/);
+assert.match(worker, /const CAUSAL_SIGNAL_BOX_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box'/,
+  'later releases may advance CURRENT_CACHE_NAME, but the Causal Signal Box v23 release marker must remain preserved');
 
 console.log('Causal Signal Box reachability, partial dispatch, progressive mount, privacy, accessibility, documentation, and offline contract verified.');

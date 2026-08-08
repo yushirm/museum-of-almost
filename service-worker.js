@@ -11,7 +11,8 @@ const ISOLATION_BOARD_CACHE_NAME = 'museum-of-almost-v19-isolation-board';
 const FRAME_SHIFTER_CACHE_NAME = 'museum-of-almost-v20-frame-shifter';
 const EXPOSURE_PLATE_CACHE_NAME = 'museum-of-almost-v21-exposure-plate';
 const REVERSE_LEDGER_CACHE_NAME = 'museum-of-almost-v22-reverse-ledger';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box';
+const CAUSAL_SIGNAL_BOX_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v24-rest-score';
 const APP_SHELL = [
   './',
   './index.html',
@@ -51,6 +52,9 @@ const APP_SHELL = [
   './reverse-ledger-core.js',
   './reverse-ledger.js',
   './reverse-ledger.css',
+  './rest-score-core.js',
+  './rest-score.js',
+  './rest-score.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -87,6 +91,7 @@ const APP_SHELL = [
   './ISOLATION_BOARD.md',
   './EXPOSURE_PLATE.md',
   './REVERSE_LEDGER.md',
+  './REST_SCORE.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',

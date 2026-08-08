@@ -39,7 +39,11 @@
                           load('./exposure-plate-core.js', 'exposurePlateCore', () => {
                             load('./exposure-plate.js', 'exposurePlateView', () => {
                               load('./reverse-ledger-core.js', 'reverseLedgerCore', () => {
-                                load('./reverse-ledger.js', 'reverseLedgerView');
+                                load('./reverse-ledger.js', 'reverseLedgerView', () => {
+                                  load('./rest-score-core.js', 'restScoreCore', () => {
+                                    load('./rest-score.js', 'restScoreView');
+                                  });
+                                });
                               });
                             });
                           });
