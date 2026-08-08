@@ -74,9 +74,11 @@ assert.match(source, /url\.origin !== self\.location\.origin/);
 assert.match(source, /request\.mode === 'navigate'/);
 assert.match(source, /async function networkFirst[\s\S]+fetch\(request, \{ cache: 'no-cache' \}\)[\s\S]+caches\.match\(request\)/,
   'same-origin requests should revalidate online before falling back to the offline cache');
-assert.match(source, /fallbackRequest = url\.pathname === scopePath \? '\.\/index\.html' : null/,
+assert.match(source, /const fallbackToIndex = url\.pathname === scopePath/,
+  'only root-scope navigation should use the museum entrance as its offline index fallback');
+assert.match(source, /caches\.match\('\.\/index\.html'\)/,
   'root-scope navigation should retain the museum entrance as its offline index fallback');
-assert.match(source, /event\.respondWith\(networkFirst\(request, fallbackRequest\)\)/,
+assert.match(source, /event\.respondWith\(networkFirst\(request, fallbackToIndex\)\)/,
   'navigations should prefer the deployed document and use the requested cached document only offline');
 assert.match(source, /event\.respondWith\(networkFirst\(request\)\)/,
   'same-origin assets should prefer the deployed file while preserving offline fallback');
