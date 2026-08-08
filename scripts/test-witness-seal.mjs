@@ -8,6 +8,7 @@ const core = require('../witness-seal-core.js');
 const view = fs.readFileSync(new URL('../witness-seal.js', import.meta.url), 'utf8');
 const css = fs.readFileSync(new URL('../witness-seal.css', import.meta.url), 'utf8');
 const record = fs.readFileSync(new URL('../WITNESS_SEAL.md', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const worker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 
@@ -38,6 +39,8 @@ const scales = {
 
 assert.equal(core.SCHEMA, 'commons-witness-v1');
 assert.equal(core.availableFeedCount(snapshot), 4);
+assert.equal(core.finiteOrNull(null), null, 'null must never become numeric zero');
+assert.equal(core.isoOrNull(null), null, 'null must never become the Unix epoch');
 assert.equal(core.canonicalSnapshot({ receivedAt: null }, scales), null, 'missing latch time must fail closed');
 
 const canonical = core.canonicalSnapshot(snapshot, scales);
@@ -64,6 +67,7 @@ const expected = crypto.createHash('sha256').update(payload).digest('hex');
 assert.equal(digest, expected, 'browser-compatible SHA-256 must match Node SHA-256');
 assert.match(core.sealCode(digest), /^NOW-[0-9A-F]{4}(?:-[0-9A-F]{4}){3}$/);
 assert.equal(core.sealCode('abc'), null, 'short or malformed digests must fail closed');
+assert.equal(core.sealCode(`${digest.slice(0, 63)}Z`), null, 'non-hex SHA-256 strings must fail closed');
 
 assert.match(view, /museum:commons-snapshot/);
 assert.match(view, /MuseumCommonsSnapshot/);
@@ -83,6 +87,9 @@ assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i);
 for (const pattern of [/Concept A/, /Concept B/, /Concept C/, /Concept C was discarded/, /SHA-256/, /adds no network request/i, /never persist/i]) {
   assert.match(record, pattern);
 }
+for (const pattern of [/Success Archive/, /COMMONS \/ NOW — The Witness Seal/, /e913246cd3e9a633319780b5a5eb23bc84ecebe5/, /run: `119`/, /conclusion: `success`/, /archive-bearing final head must pass/i]) {
+  assert.match(archive, pattern);
+}
 
 assert.match(loader, /witness-seal-core\.js/);
 assert.match(loader, /witness-seal\.js/);
@@ -90,4 +97,4 @@ for (const asset of ['./witness-seal-core.js', './witness-seal.js', './witness-s
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 
-console.log('Witness Seal canonicalization, hashing, privacy, stale-result rejection, accessibility, field-sheet, and offline contracts verified.');
+console.log('Witness Seal canonicalization, hashing, privacy, stale-result rejection, accessibility, field-sheet, success-archive, and offline contracts verified.');
