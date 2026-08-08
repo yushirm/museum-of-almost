@@ -69,7 +69,8 @@ for (const pattern of [
 
 assert.match(worker, /const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/);
 assert.match(worker, /const PAGE_FOUR_DEAD_DROP_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop'/);
-assert.match(worker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v44-unbuilt-room'/);
+assert.match(worker, /const UNBUILT_ROOM_CACHE_NAME = 'museum-of-almost-v44-unbuilt-room'/,
+  'Unbuilt Room v44 must remain named in cache lineage after later releases');
 assert.ok(worker.includes("'./404.html'"), 'offline shell should cache the Unbuilt Room');
 assert.ok(worker.includes("'./page-four-dead-drop.js'"), 'offline shell should preserve the v43 Dead Drop runtime');
 assert.ok(worker.includes("'./PAGE_FOUR_DEAD_DROP.md'"), 'offline shell should preserve the v43 Dead Drop record');
@@ -77,4 +78,4 @@ assert.match(worker, /const fallbackDocument = url\.pathname === scopePath \? '\
   'navigation fallback should preserve root entrance recovery and use Unbuilt Room elsewhere');
 assert.match(worker, /networkFirst\(request, fallbackDocument\)/);
 
-console.log('Unbuilt Room 404 recovery, v43 Dead Drop preservation, path non-disclosure, self-contained rendering, accessibility, privacy, and offline fallback contract verified.');
+console.log('Unbuilt Room 404 recovery, v44 cache lineage, v43 Dead Drop preservation, path non-disclosure, self-contained rendering, accessibility, privacy, and offline fallback contract verified.');
