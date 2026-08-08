@@ -30,6 +30,17 @@ for (const pattern of [
   /src="deep-space\.js"/
 ]) assert.match(html, pattern);
 
+for (const pattern of [
+  /function addPageFourSignalAnomaly\(\)/,
+  /page-four-signal-link/,
+  /link\.href = 'page-four\.html'/,
+  /\? Page Four \/ unfiled/,
+  /SIGNAL ANOMALY:/,
+  /The archive is fictional; the route is local\./,
+  /Investigate Page Four →/,
+  /addPageFourSignalAnomaly\(\);/
+]) assert.match(viewSource, pattern, `Deep Space Page Four signal anomaly missing ${pattern}`);
+
 for (const id of [
   'scale-name', 'scale-distance', 'scale-light-time', 'scale-note', 'scale-beam',
   'black-hole-name', 'black-hole-mass', 'black-hole-radius', 'black-hole-diameter', 'black-hole-note', 'gravity-well',
@@ -63,4 +74,4 @@ assert.ok(Math.abs(core.lightTimeSeconds(core.AU_KM) - 499.0047838) < 0.001, '1 
 assert.ok(Math.abs(core.schwarzschildRadiusKm(1) - 2.9533) < 0.01, 'one solar mass Schwarzschild radius should be about 2.95 km');
 assert.ok(Math.abs(core.inventoryTotal() - 100) < 1e-9, 'rounded cosmic inventory should total 100%');
 
-console.log('Deep Space / Almost local science, accessibility, privacy, calculations, and no-network contract verified.');
+console.log('Deep Space / Almost local science, Page Four signal anomaly, accessibility, privacy, calculations, and no-network contract verified.');

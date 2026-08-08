@@ -7,7 +7,7 @@
       const rumor = document.createElement('p');
       rumor.id = 'page-four-rumor';
       rumor.className = 'tiny-nav';
-      rumor.append(document.createTextNode('*** UNLISTED BULLETIN: PAGE FOUR REFUSES TO STAY SECRET. '));
+      rumor.append(document.createTextNode('*** UNLISTED BULLETIN: PAGE FOUR REFUSES TO STAY SECRET. DEEP SPACE NOW REPORTS THE SAME ANOMALY. '));
       const link = document.createElement('a');
       link.href = 'page-four.html';
       link.textContent = '[ OPEN THE UNFILED ARCHIVE ]';
@@ -31,7 +31,7 @@
       item.id = 'page-four-update';
       const date = document.createElement('strong');
       date.textContent = '08 AUG:';
-      item.append(date, document.createTextNode(' PAGE FOUR REFUSES TO STAY SECRET.'));
+      item.append(date, document.createTextNode(' PAGE FOUR REFUSES TO STAY SECRET. DEEP SPACE SAW IT TOO.'));
       updates.prepend(item);
     }
   }

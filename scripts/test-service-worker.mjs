@@ -25,7 +25,8 @@ assert.match(source, /const PAGE_FOUR_CACHE_NAME = 'museum-of-almost-v30-page-fo
 assert.match(source, /const SAME_ANSWER_MACHINE_CACHE_NAME = 'museum-of-almost-v31-same-answer-machine'/);
 assert.match(source, /const LOAD_BEARING_SAMPLE_CACHE_NAME = 'museum-of-almost-v32-load-bearing-sample'/);
 assert.match(source, /const PAGE_FOUR_RUMOR_RELAY_CACHE_NAME = 'museum-of-almost-v33-page-four-rumor-relay'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v34-gauge-bench'/);
+assert.match(source, /const GAUGE_BENCH_CACHE_NAME = 'museum-of-almost-v34-gauge-bench'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v35-page-four-signal-anomaly'/);
 for (const asset of [
   './',
   './index.html',
@@ -178,4 +179,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Page Four Rumor Relay, Same Answer Machine, Load-Bearing Sample, Gauge Bench, and the existing galleries are present in the fresh-online cached-offline shell.');
+console.log('Page Four Rumor Relay, Deep Space signal anomaly, Gauge Bench, and the existing galleries are present in the fresh-online cached-offline v35 shell.');
