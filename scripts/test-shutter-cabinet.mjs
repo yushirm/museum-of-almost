@@ -184,6 +184,7 @@ for (const pattern of [
   /conclusion: `success`/,
   /\*\*v41 Shutter Cabinet\*\*/,
   /\*\*v40 Page Four Instrument Room\*\*/,
+  /initial run `278` failed only because the focused view-source regression/,
   /run `280` passed end to end but was rejected as release evidence/,
   /`9e37abc67886268e69aa009d613955eca3ec8d6e`/,
   /`Test Museum durable documentation` gate/,
