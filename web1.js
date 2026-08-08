@@ -36,28 +36,28 @@
     }
   }
 
-  function addFreeGraphicsBoutique() {
+  function addDownloadCabinet() {
     const weblog = document.querySelector('.two-column');
-    if (!weblog || document.getElementById('free-graphics-boutique')) return;
+    if (!weblog || document.getElementById('homepage-download-cabinet')) return;
 
     const section = document.createElement('section');
-    section.id = 'free-graphics-boutique';
+    section.id = 'homepage-download-cabinet';
     section.className = 'webring';
-    section.setAttribute('aria-labelledby', 'free-graphics-title');
+    section.setAttribute('aria-labelledby', 'download-cabinet-title');
 
     const title = document.createElement('h2');
-    title.id = 'free-graphics-title';
-    title.textContent = '~* FREE GRAPHICS BOUTIQUE *~';
+    title.id = 'download-cabinet-title';
+    title.textContent = '~* HOMEPAGE DOWNLOAD CABINET *~';
 
     const intro = document.createElement('p');
     intro.append(
       document.createTextNode('I have spent most of this homepage arranging little files into scenery. Today I discovered a link can point at the file itself. So: '),
-      strong('PLEASE TAKE SOMETHING HOME.'),
-      document.createTextNode(' These are the same local GIFs already living on this page, offered directly instead of pretending they belong only to me.')
+      strong('YOU CAN SAVE A LOCAL COPY.'),
+      document.createTextNode(' These are the same GIFs already living on this page, exposed as files instead of scenery for a moment.')
     );
 
     const shelf = document.createElement('p');
-    shelf.setAttribute('aria-label', 'Five local homepage graphics available to download');
+    shelf.setAttribute('aria-label', 'Five local homepage graphics available to save');
 
     const graphics = [
       ['COMET.GIF', 'assets/web1/comet.gif'],
@@ -72,31 +72,31 @@
       const link = document.createElement('a');
       link.href = href;
       link.download = '';
-      link.textContent = `[ DOWNLOAD ${label} ]`;
+      link.textContent = `[ SAVE ${label} ]`;
       shelf.append(link);
     });
 
     const note = document.createElement('p');
     note.className = 'smallprint';
     note.append(
-      strong('FREE GRAPHICS POLICY:'),
-      document.createTextNode(' every link above points to a repository-local asset already used by ALMOST ONLINE!. No counter increments, no request is sent to a third party, and the page does not learn whether you saved anything. The browser decides how to handle the download.')
+      strong('DOWNLOAD CABINET POLICY:'),
+      document.createTextNode(' every link above points to a repository-local asset already used by ALMOST ONLINE!. No counter increments, no request is sent to a third party, and the page does not learn whether you saved anything. Saving a copy does not grant reuse or redistribution rights; the Museum rights notice still applies. The browser decides how to handle the download.')
     );
 
     const afterthought = document.createElement('p');
     afterthought.className = 'smallprint';
-    afterthought.textContent = 'I thought a homepage was a place where I showed you things. Apparently it can also be a tiny supply cupboard.';
+    afterthought.textContent = 'I thought a homepage was a place where I showed you things. Apparently it can also expose the little files it is made from.';
 
     section.append(title, intro, shelf, note, afterthought);
     weblog.insertAdjacentElement('beforebegin', section);
 
     const updates = document.querySelector('.updates');
-    if (updates && !document.getElementById('free-graphics-update')) {
+    if (updates && !document.getElementById('download-cabinet-update')) {
       const item = document.createElement('li');
-      item.id = 'free-graphics-update';
+      item.id = 'download-cabinet-update';
       const date = document.createElement('strong');
       date.textContent = '08 AUG:';
-      item.append(date, document.createTextNode(' OPENED FREE GRAPHICS BOUTIQUE. TAKE ONE. I WILL NOT KNOW.'));
+      item.append(date, document.createTextNode(' OPENED DOWNLOAD CABINET. FILES HAVE BECOME LINKS.'));
       updates.prepend(item);
     }
   }
@@ -108,7 +108,7 @@
   }
 
   addPageFourRumor();
-  addFreeGraphicsBoutique();
+  addDownloadCabinet();
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
