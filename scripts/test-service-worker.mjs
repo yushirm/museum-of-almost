@@ -29,12 +29,17 @@ assert.match(source, /const GAUGE_BENCH_CACHE_NAME = 'museum-of-almost-v34-gauge
 assert.match(source, /const PAGE_FOUR_SIGNAL_ANOMALY_CACHE_NAME = 'museum-of-almost-v35-page-four-signal-anomaly'/);
 assert.match(source, /const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice'/);
 assert.match(source, /const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shuffle-table'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v38-quorum-gate'/);
+assert.match(source, /const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero'/);
 for (const asset of [
   './',
   './index.html',
   './landing.css',
   './page-four-teaser.css',
+  './elsewhere-teaser.css',
+  './elsewhere.html',
+  './elsewhere.css',
+  './elsewhere.js',
   './page-four.html',
   './page-four.css',
   './page-four.js',
@@ -151,6 +156,7 @@ for (const asset of [
   './GAUGE_BENCH.md',
   './SHUFFLE_TABLE.md',
   './QUORUM_GATE.md',
+  './ELSEWHERE_CATALOGUE_ZERO.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
@@ -193,4 +199,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Page Four Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, Quorum Gate v38, and the existing galleries are present in the fresh-online cached-offline shell.');
+console.log('Catalogue 0 v39, Quorum Gate v38, Page Four Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries are present in the fresh-online cached-offline shell.');
