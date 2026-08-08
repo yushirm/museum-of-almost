@@ -13,7 +13,7 @@ The Museum is local-first, offline-capable, accessible on mobile and desktop, an
 | `index.html` | **MUSEUM ENTRANCE** | Four public gallery cards plus one facilities seam. No script and no live-data request. |
 | `commons-now.html` | **COMMONS / NOW** | A live public instrument: five current requests across four public scientific services, thirteen fixed weather windows, and local derived instruments. |
 | `deep-space.html` | **DEEP SPACE / ALMOST** | Local cosmic instruments and fixed thought experiments about light, gravity, relativity, lensing, redshift, expansion, and unresolved physics. No data-service request. |
-| `almost-online.html` | **ALMOST ONLINE!** | A hand-built Web 1.0 personal homepage with local GIFs, diary entries, strange links, badges, and deliberate old-web texture. No analytics or visitor memory. |
+| `almost-online.html` | **ALMOST ONLINE!** | A hand-built Web 1.0 personal homepage with local GIFs, diary entries, strange links, badges, and deliberate old-web texture. No analytics or application-owned visitor log. |
 | `page-four.html` | **PAGE FOUR** | A layered anomaly archive: fixed fictional case files remain fictional, while the Evidence Lattice and Hessdalen Instrument Room use separately labeled real-source material and methodological controls. No runtime source request. |
 | `elsewhere.html` | **ELSEWHERE / CATALOGUE 0** | The fifth space: an accessible service corridor, freight lift `0`, and twelve fixed fictional accession records recovered from worlds that almost existed. It remains outside the four-card gallery grid. |
 
