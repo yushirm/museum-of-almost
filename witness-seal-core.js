@@ -112,8 +112,8 @@
   }
 
   function sealCode(hex) {
-    const normalized = String(hex || '').toUpperCase().replace(/[^0-9A-F]/g, '');
-    if (normalized.length < 16) return null;
+    const normalized = String(hex || '').trim().toUpperCase();
+    if (!/^[0-9A-F]{64}$/.test(normalized)) return null;
     return `NOW-${normalized.slice(0, 4)}-${normalized.slice(4, 8)}-${normalized.slice(8, 12)}-${normalized.slice(12, 16)}`;
   }
 
