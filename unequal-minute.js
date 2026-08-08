@@ -91,7 +91,7 @@
       const track = make('div', 'unequal-minute-track');
       track.setAttribute('aria-hidden', 'true');
       const fill = make('span', 'unequal-minute-track-fill');
-      fill.style.setProperty('--unequal-minute-lapse', String(initial.lapseFactor));
+      fill.style.setProperty('--unequal-minute-lapse', `${initial.lapseFactor * 100}%`);
       track.append(fill);
 
       const trackNote = make('p', 'unequal-minute-track-note', `${formatNumber(initial.lapseFactor * 100, 3)}% of each coordinate-time command accumulates as proper time on this hovering clock.`);
