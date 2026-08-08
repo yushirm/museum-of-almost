@@ -17,11 +17,16 @@ const GRAVITATIONAL_COPY_ROOM_CACHE_NAME = 'museum-of-almost-v25-gravitational-c
 const REDSHIFT_RULER_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler';
 const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer';
 const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-origin-machine';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v29-border-office';
+const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v30-page-four';
 const APP_SHELL = [
   './',
   './index.html',
   './landing.css',
+  './page-four-teaser.css',
+  './page-four.html',
+  './page-four.css',
+  './page-four.js',
   './commons-now.html',
   './styles.css',
   './sample-hold.css',
