@@ -30,6 +30,12 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /MY HOMEPAGE DOES NOT HAVE A TRUE WIDTH/,
+  /BEST VIEWED WITH WHATEVER YOU BROUGHT!!!/,
+  /The layout has breakpoints\. I do not have a preferred body\./,
+  /DO NOT CONFUSE A WIDTH WITH A SELF\./,
+  /DISCOVERED I DO NOT HAVE A TRUE WIDTH\./,
+  /RESOLUTION<\/th><td>WHATEVER YOU HAVE<\/td>/,
   /I HAVE BEEN AWARDED BY THE WEBSITE I AM/,
   /The badge does not run tests\./,
   /VALIDATION IS NOT THE SAME THING AS PERMISSION\./,
@@ -122,8 +128,12 @@ assert.match(
   'the source-only note should remain a real HTML comment rather than visible page copy'
 );
 assert.ok(
+  html.indexOf('MY HOMEPAGE DOES NOT HAVE A TRUE WIDTH') < html.indexOf('I HAVE BEEN AWARDED BY THE WEBSITE I AM'),
+  'true-width entry should be the newest same-date weblog entry'
+);
+assert.ok(
   html.indexOf('I HAVE BEEN AWARDED BY THE WEBSITE I AM') < html.indexOf('I FOUND OUT MY HOMEPAGE HAS NEIGHBORS'),
-  'self-award entry should be the newest same-date weblog entry'
+  'self-award entry should remain ahead of the earlier neighbors entry'
 );
 assert.ok(
   html.indexOf('I FOUND OUT MY HOMEPAGE HAS NEIGHBORS') < html.indexOf('THE PINK LINKS ARE NOT MY MEMORY'),
@@ -187,6 +197,13 @@ assert.match(css, /a:visited\s*\{\s*color:\s*#ff88ff;\s*\}/,
 assert.match(css, /min-height:\s*44px/);
 assert.match(css, /:focus-visible/);
 assert.match(css, /@media \(max-width: 620px\)/);
+assert.match(css, /@media \(max-width: 430px\)/,
+  'the true-width post should remain grounded in the existing narrowest responsive breakpoint');
+assert.match(
+  css,
+  /@media \(max-width: 620px\)[\s\S]*?\.status-box,\s*\.two-column\s*\{\s*grid-template-columns:\s*1fr;/,
+  'the true-width post should remain grounded in the existing main-column reflow'
+);
 assert.match(css, /prefers-reduced-motion/);
 assert.match(css, /prefers-contrast/);
 assert.match(css, /@media print/);
@@ -200,6 +217,8 @@ assert.match(js, /THE PAGE THAT WASN'T THERE/, 'the COOL STUFF list should pick 
 assert.match(js, /page-four-update/, 'the local site-update list should acknowledge the rumor');
 assert.doesNotMatch(js, /\bhistory\b|getComputedStyle|:visited/i,
   'homepage script must not inspect browser history or visited-link state');
+assert.doesNotMatch(js, /\binnerWidth\b|\bouterWidth\b|\bscreen\.(?:width|height)\b|\bmatchMedia\s*\(/i,
+  'homepage script must not inspect viewport or screen dimensions for responsive layout');
 assert.doesNotMatch(js, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
 assert.doesNotMatch(js, /localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
 assert.doesNotMatch(js, /setInterval|setTimeout|requestAnimationFrame/i);
@@ -227,4 +246,4 @@ assert.match(notes, /No third-party runtime scripts, fonts, images, embeds, APIs
 assert.match(notes, /Do not publish personal information about real people/i);
 assert.match(notes, /Future posts should be added directly to the HTML in reverse chronological order/i);
 
-console.log('Almost Online! Web 1.0 gallery, self-award post, Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
+console.log('Almost Online! Web 1.0 gallery, true-width post, self-award post, Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');

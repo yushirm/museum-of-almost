@@ -1077,3 +1077,45 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The True Width
+
+Feature:
+
+**My Homepage Does Not Have a True Width / Best Viewed With Whatever You Brought**
+
+Design outcome:
+
+- Concept A, **I Do Not Have a Canonical Shape**, supplied the earnest diary reflection on one authored homepage occupying more than one valid geometry.
+- Concept B, **Best Viewed With Whatever You Brought!!!**, supplied the classic old-Web preferred-browser/resolution trope, inverted into a small compatibility manifesto.
+- Concept C, **The Viewport Is Eating Me in Rectangles**, was discarded because its surreal destruction metaphor falsely suggests responsive reflow removes content.
+- Concepts A and B were merged.
+
+Feature-complete evidence head:
+
+`04c3e62cae316001d67f3cbad0d42a18e3cbbabd`
+
+Pull request:
+
+`#76 — Add Almost Online true-width entry`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `232`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date Self-Award, Neighbors, Pink Links, Under Construction Forever, Honest Counter, Second Homepage, Broken-Image, and Back Button entries;
+- the post is grounded in the existing PAGE STATUS declaration `RESOLUTION: WHATEVER YOU HAVE`, the established `620px` and `430px` responsive breakpoints, reduced-motion handling, and increased-contrast handling;
+- wording explicitly distinguishes CSS viewport-width reflow from identifying a device or person and avoids claiming one canonical rendering geometry;
+- a focused regression guard prevents `web1.js` from taking over responsive layout through viewport/screen dimension inspection while preserving the existing same-origin Page Four rumor relay and service-worker registration;
+- focused assertions require the new post, its old-Web BEST VIEWED inversion, core thesis, existing breakpoints, status declaration, and same-date reverse chronology;
+- no CSS, JavaScript, service-worker behavior, asset, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, or dependency was added;
+- existing keyboard, mobile, reduced-motion, increased-contrast, print, local-GIF, offline, and Page Four rumor-relay behavior remains unchanged.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
