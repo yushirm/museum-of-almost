@@ -10,7 +10,8 @@ const POSSIBILITY_ENGINE_CACHE_NAME = 'museum-of-almost-v18-possibility-engine';
 const ISOLATION_BOARD_CACHE_NAME = 'museum-of-almost-v19-isolation-board';
 const FRAME_SHIFTER_CACHE_NAME = 'museum-of-almost-v20-frame-shifter';
 const EXPOSURE_PLATE_CACHE_NAME = 'museum-of-almost-v21-exposure-plate';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v22-reverse-ledger';
+const REVERSE_LEDGER_CACHE_NAME = 'museum-of-almost-v22-reverse-ledger';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box';
 const APP_SHELL = [
   './',
   './index.html',
@@ -65,6 +66,9 @@ const APP_SHELL = [
   './frame-shifter.css',
   './frame-shifter-core.js',
   './frame-shifter.js',
+  './causal-signal.css',
+  './causal-signal-core.js',
+  './causal-signal.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -89,6 +93,7 @@ const APP_SHELL = [
   './DEEP_SPACE.md',
   './POSSIBILITY_ENGINE.md',
   './FRAME_SHIFTER.md',
+  './CAUSAL_SIGNAL_BOX.md',
   './WEB1_HOME.md'
 ];
 

@@ -70,6 +70,33 @@
     mysteryUnknown.textContent = item.unknown;
   }
 
+  function loadLocalScript(src, marker, done) {
+    if (document.querySelector(`script[data-deep-space-module="${marker}"]`)) {
+      if (typeof done === 'function') done();
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.defer = true;
+    script.dataset.deepSpaceModule = marker;
+    if (typeof done === 'function') script.addEventListener('load', done, { once: true });
+    document.head.append(script);
+  }
+
+  function loadCausalSignalBox() {
+    if (!document.querySelector('link[data-causal-signal-styles]')) {
+      const stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = './causal-signal.css';
+      stylesheet.dataset.causalSignalStyles = '';
+      document.head.append(stylesheet);
+    }
+
+    loadLocalScript('./causal-signal-core.js', 'causal-signal-core', () => {
+      loadLocalScript('./causal-signal.js', 'causal-signal-view');
+    });
+  }
+
   for (const button of scaleButtons) {
     button.addEventListener('click', () => {
       selectButton(scaleButtons, button);
@@ -94,6 +121,7 @@
   renderScale('sun');
   renderBlackHole('sagittarius-a');
   renderMystery('dark-matter');
+  loadCausalSignalBox();
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
