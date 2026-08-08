@@ -6,6 +6,8 @@
   const randomButton = document.getElementById('random-file');
   const classificationButton = document.getElementById('classification-toggle');
   const evidenceButtons = [...document.querySelectorAll('[data-target]')];
+  const controlStack = document.querySelector('.control-stack');
+  const caseNav = document.querySelector('.case-nav');
   const reducedMotion = typeof globalThis.matchMedia === 'function'
     ? globalThis.matchMedia('(prefers-reduced-motion: reduce)')
     : null;
@@ -14,11 +16,19 @@
     if (status) status.textContent = message;
   }
 
+  function caseById(id) {
+    return cases.find((item) => item.id === id) || null;
+  }
+
+  function markActive(target) {
+    cases.forEach((item) => item.classList.toggle('is-active', item === target));
+  }
+
   function focusCase(id, sourceLabel = 'Archive') {
-    const target = document.getElementById(id);
+    const target = caseById(id);
     if (!target) return;
 
-    cases.forEach((item) => item.classList.toggle('is-active', item === target));
+    markActive(target);
     target.scrollIntoView({ behavior: reducedMotion?.matches ? 'auto' : 'smooth', block: 'start' });
     target.focus({ preventScroll: true });
     announce(`${sourceLabel}: file ${id.replaceAll('-', ' ')} selected. Evidence remains unverified.`);
@@ -32,6 +42,84 @@
       return value[0] % length;
     }
     return Math.floor(Math.random() * length);
+  }
+
+  function currentCase() {
+    const active = cases.find((item) => item.classList.contains('is-active'));
+    if (active) return active;
+
+    const hashId = globalThis.location.hash.replace(/^#/, '');
+    return caseById(hashId);
+  }
+
+  function caseTitle(target) {
+    return target?.querySelector('h2')?.textContent?.trim() || target?.id?.replaceAll('-', ' ') || 'UNFILED CASE';
+  }
+
+  function pageUrl(caseId = '') {
+    const url = new URL(globalThis.location.href);
+    url.hash = caseId ? `#${caseId}` : '';
+    return url.toString();
+  }
+
+  function leakText(target = null) {
+    if (!target) {
+      return `PAGE FOUR / THE UNFILED ARCHIVE — fictional folklore + speculative fiction, no claim of fact. ${pageUrl()}`;
+    }
+
+    return `PAGE FOUR / FILE ${target.id.toUpperCase()} — ${caseTitle(target)}. Fictional, unverified archive material; no claim of fact. ${pageUrl(target.id)}`;
+  }
+
+  async function copyLeak(target = null) {
+    const clipboard = navigator.clipboard;
+    if (!clipboard || typeof clipboard.writeText !== 'function') {
+      announce('Leak desk unavailable: this browser did not grant clipboard access. The case permalink remains in the address bar when you open a file.');
+      return;
+    }
+
+    try {
+      await clipboard.writeText(leakText(target));
+      announce(target
+        ? `Leak desk: copied a fictional permalink for ${caseTitle(target)}. You decide where it goes next.`
+        : 'Leak desk: copied the Page Four address with its fictional-archive warning. You decide where it goes next.');
+    } catch (error) {
+      announce('Leak desk blocked by the browser. Nothing was transmitted; use the browser address bar if you still want the link.');
+    }
+  }
+
+  function addLeakDesk() {
+    if (controlStack && !document.getElementById('copy-page-four')) {
+      const copyPageButton = document.createElement('button');
+      copyPageButton.type = 'button';
+      copyPageButton.id = 'copy-page-four';
+      copyPageButton.textContent = 'COPY PAGE FOUR LINK';
+      copyPageButton.addEventListener('click', () => copyLeak());
+
+      const copyFileButton = document.createElement('button');
+      copyFileButton.type = 'button';
+      copyFileButton.id = 'copy-active-file';
+      copyFileButton.textContent = 'COPY ACTIVE FILE LINK';
+      copyFileButton.addEventListener('click', () => {
+        const target = currentCase();
+        if (!target) {
+          announce('Leak desk: open or select a file first, then copy its permalink.');
+          return;
+        }
+        copyLeak(target);
+      });
+
+      controlStack.append(copyPageButton, copyFileButton);
+    }
+
+    if (caseNav && !document.getElementById('public-leak-channel')) {
+      const channel = document.createElement('a');
+      channel.id = 'public-leak-channel';
+      channel.href = 'almost-online.html';
+      const number = document.createElement('span');
+      number.textContent = '!!';
+      channel.append(number, document.createTextNode(' Public leak channel'));
+      caseNav.append(channel);
+    }
   }
 
   if (randomButton) {
@@ -57,15 +145,37 @@
     button.addEventListener('click', () => focusCase(button.dataset.target, 'Evidence board'));
   });
 
+  document.querySelectorAll('.case-nav a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const target = caseById(link.getAttribute('href').slice(1));
+      if (!target) return;
+      markActive(target);
+      announce(`Archive index: file ${target.id.replaceAll('-', ' ')} selected. Evidence remains unverified.`);
+    });
+  });
+
   document.querySelectorAll('.case-file details').forEach((details) => {
     details.addEventListener('toggle', () => {
       if (!details.open) return;
       const file = details.closest('[data-case]');
       if (!file) return;
-      cases.forEach((item) => item.classList.toggle('is-active', item === file));
+      markActive(file);
       announce(`File ${file.id.replaceAll('-', ' ')} opened. Treat contents as fictional archive material.`);
     });
   });
+
+  globalThis.addEventListener('hashchange', () => {
+    const target = caseById(globalThis.location.hash.replace(/^#/, ''));
+    if (target) markActive(target);
+  });
+
+  addLeakDesk();
+
+  const sharedCase = caseById(globalThis.location.hash.replace(/^#/, ''));
+  if (sharedCase) {
+    markActive(sharedCase);
+    announce(`Shared case permalink opened: ${caseTitle(sharedCase)}. Evidence remains fictional and unverified.`);
+  }
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {

@@ -193,6 +193,11 @@ assert.match(css, /@media print/);
 assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i);
 
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
+assert.match(js, /PAGE FOUR REFUSES TO STAY SECRET\./, 'Almost Online should visibly leak the new gallery');
+assert.match(js, /href = 'page-four\.html'/, 'the rumor relay should point only to the same-origin Page Four document');
+assert.match(js, /OPEN THE UNFILED ARCHIVE/, 'the homepage bulletin should expose a direct Page Four action');
+assert.match(js, /THE PAGE THAT WASN'T THERE/, 'the COOL STUFF list should pick up the suspicious fourth neighbor');
+assert.match(js, /page-four-update/, 'the local site-update list should acknowledge the rumor');
 assert.doesNotMatch(js, /\bhistory\b|getComputedStyle|:visited/i,
   'homepage script must not inspect browser history or visited-link state');
 assert.doesNotMatch(js, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
@@ -222,4 +227,4 @@ assert.match(notes, /No third-party runtime scripts, fonts, images, embeds, APIs
 assert.match(notes, /Do not publish personal information about real people/i);
 assert.match(notes, /Future posts should be added directly to the HTML in reverse chronological order/i);
 
-console.log('Almost Online! Web 1.0 gallery, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
+console.log('Almost Online! Web 1.0 gallery, self-award post, Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');

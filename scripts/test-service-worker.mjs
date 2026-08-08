@@ -23,7 +23,8 @@ assert.match(source, /const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-or
 assert.match(source, /const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office'/);
 assert.match(source, /const PAGE_FOUR_CACHE_NAME = 'museum-of-almost-v30-page-four'/);
 assert.match(source, /const SAME_ANSWER_MACHINE_CACHE_NAME = 'museum-of-almost-v31-same-answer-machine'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v32-load-bearing-sample'/);
+assert.match(source, /const LOAD_BEARING_SAMPLE_CACHE_NAME = 'museum-of-almost-v32-load-bearing-sample'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v33-page-four-rumor-relay'/);
 for (const asset of [
   './',
   './index.html',
@@ -172,4 +173,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Page Four, Same Answer Machine, Load-Bearing Sample, and the existing galleries are present in the fresh-online cached-offline shell.');
+console.log('Page Four rumor relay, Same Answer Machine, Load-Bearing Sample, and the existing galleries are present in the fresh-online cached-offline shell.');

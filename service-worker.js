@@ -20,7 +20,8 @@ const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-origin-machine';
 const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office';
 const PAGE_FOUR_CACHE_NAME = 'museum-of-almost-v30-page-four';
 const SAME_ANSWER_MACHINE_CACHE_NAME = 'museum-of-almost-v31-same-answer-machine';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v32-load-bearing-sample';
+const LOAD_BEARING_SAMPLE_CACHE_NAME = 'museum-of-almost-v32-load-bearing-sample';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v33-page-four-rumor-relay';
 const APP_SHELL = [
   './',
   './index.html',
