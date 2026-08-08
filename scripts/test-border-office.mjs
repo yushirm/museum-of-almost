@@ -5,12 +5,14 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const commons = require('../data-core.js');
 const core = require('../border-office-core.js');
+const coreSource = fs.readFileSync(new URL('../border-office-core.js', import.meta.url), 'utf8');
 const view = fs.readFileSync(new URL('../border-office.js', import.meta.url), 'utf8');
 const css = fs.readFileSync(new URL('../border-office.css', import.meta.url), 'utf8');
 const record = fs.readFileSync(new URL('../BORDER_OFFICE.md', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const dataCore = fs.readFileSync(new URL('../data-core.js', import.meta.url), 'utf8');
 const worker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
+const runtime = [coreSource, view].join('\n');
 
 assert.deepEqual(core.FAMILY_IDS, ['solar', 'light', 'precipitation']);
 assert.deepEqual(core.SOLAR_BORDERS, [350, 500, 700]);
@@ -131,9 +133,12 @@ for (const pattern of [
   /aria-pressed/,
   /aria-live/
 ]) assert.match(view, pattern);
-assert.doesNotMatch(view, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
-assert.doesNotMatch(view, /setInterval|setTimeout|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation|history\.(?:pushState|replaceState)/i);
-assert.doesNotMatch(view, /analytics|telemetry|https?:\/\//i);
+assert.doesNotMatch(runtime, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
+assert.doesNotMatch(runtime, /setInterval|setTimeout|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation|history\.(?:pushState|replaceState)/i);
+assert.doesNotMatch(runtime, /analytics|telemetry|https?:\/\//i);
+assert.doesNotMatch(runtime, /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i);
+assert.doesNotMatch(runtime, /\bAKIA[0-9A-Z]{16}\b|\bsk-(?:proj-)?[A-Za-z0-9_-]{16,}\b|BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY/i);
+assert.doesNotMatch(runtime, /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i);
 
 for (const pattern of [
   /min-height:\s*44px/,
