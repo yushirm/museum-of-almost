@@ -170,6 +170,7 @@ for (const asset of ['./shutter-cabinet-core.js', './shutter-cabinet.js', './shu
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 assert.match(worker, /const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room'/);
-assert.match(worker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
+assert.match(worker, /const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
+assert.match(worker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/);
 
-console.log('Shutter Cabinet temporal-form registry, refusal interlock, Sounding Well boundary, accessibility, privacy, loader, and offline contracts verified.');
+console.log('Shutter Cabinet temporal-form registry, refusal interlock, Sounding Well boundary, accessibility, privacy, loader, preserved v41 shell marker, and v42 successor contract verified.');
