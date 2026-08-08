@@ -620,3 +620,52 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Offcut Drawer
+
+Feature:
+
+**The Offcut Drawer / The Page Shaves Its Numbers**
+
+Design outcome:
+
+- Concept A, **Display Precision Audit**, was discarded as the least additive because the useful transformation ledger would otherwise become another administrative table.
+- Concept B, **The Offcut Drawer**, supplied the machine-shop mechanic in which the polished value is accompanied by the numeric material removed to make it.
+- Concept C, **Put the Discarded Digits in the Biggest Type**, supplied the convention-breaking hierarchy in which rounding residues receive stronger visual emphasis than exact values.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`1ee4f08cc66a3fc9c9f3dde15c2b02a6f6e02a7d`
+
+Pull request:
+
+`#64 — Add the Offcut Drawer`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `178`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a fixed set of 15 current numeric traces covering strongest USGS earthquake magnitude, NOAA solar-wind speed, and thirteen Open-Meteo point temperatures;
+- four explicit stages per path: selected public source numeric, accepted-range result, authoritative normalized latch, and numeric value represented by the main Commons display;
+- signed offcut defined as bounded numeric minus displayed numeric, with positive meaning rounded down and negative meaning rounded up;
+- range bounding kept categorically separate from rounding, including tested cases where a range guard changes the source while the rounding offcut remains exactly zero;
+- the existing Sounding Well passive response clones are reused rather than creating another fetch or cloning layer, and the same short-lived cycle records are cleared immediately after the selected numeric trace is derived;
+- `offcut-drawer-core.js` loads statically before the passive observer and `app.js`, removing a first-latch dynamic-load race, while the interactive view still mounts after the Rest Score through the established progressive chain;
+- the normalized snapshot remains authoritative and the trace never becomes a second normalizer or alternate acquisition path;
+- missing current sources remain missing with no previous-latch numeric substitution;
+- memory-only All / Exact / Rounded up / Rounded down / Missing filters reset on every real latch and precision publication;
+- category counts remain counts only and are never converted into percentages, quality scores, uncertainty, confidence, accuracy, significant figures, provider precision, reliability, or provider rankings;
+- a compact qualified offcut count is carried onto the real field sheet while the full interactive drawer is omitted from print;
+- no additional data-service request, polling, timer loop, storage, cookies, history state, location access, visitor input, analytics, telemetry, remote media, account, cloud state, or runtime dependency;
+- responsive, keyboard, reduced-motion, increased-contrast, and print handling;
+- coherent same-origin v27 offline-shell upgrade preserving the Honest Counter, Redshift Ruler v26, Gravitational Copy Room v25, Rest Score v24, and all prior Museum assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
