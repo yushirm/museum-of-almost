@@ -576,3 +576,47 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — DEEP SPACE / ALMOST — The Redshift Ruler
+
+Feature:
+
+**The Redshift Ruler / The Tick Marks Will Not Stay Put**
+
+Design outcome:
+
+- Concept A, **The Redshift Desk**, supplied the exact cosmological-redshift wavelength and normalized scale-factor ledger.
+- Concept B, **The Spectral Bellows**, was discarded because a mechanical stretching metaphor risked implying an ether-like medium or literal material carrying the light.
+- Concept C, **The Ruler Refuses to Stay the Same Size**, supplied the convention-breaking interface in which the observed ruler changes screen span by the exact calculated stretch factor.
+- Concepts A and C were merged.
+
+Feature-complete evidence head:
+
+`4f3a605fbb16c5d5ec6ac1c4ccd98be2e1772e27`
+
+Pull request:
+
+`#63 — Add Deep Space Redshift Ruler`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `175`;
+- conclusion: `success`.
+
+What succeeded:
+
+- one fixed generic `500 nm` emitted reference wavelength and three fixed cosmological redshifts, `z = 0.1`, `1`, and `6`;
+- exact received wavelengths of `550 nm`, `1000 nm`, and `3500 nm` from `lambda_obs = lambda_emit (1 + z)`;
+- exact normalized emission scale factors from `a_emit = 1 / (1 + z)` with `a_obs = 1`;
+- the visual observed ruler derives only from the exact `1 + z` ratio and deliberately permits bounded horizontal overflow inside a labeled keyboard-focusable viewport rather than breaking page-level layout;
+- cosmological redshift remains explicitly separate from Doppler and gravitational redshift, with no recession-velocity, distance, lookback-time, cosmic-age, cosmological-parameter, real-source, or spectral-line inference;
+- deterministic Instrument 07 → Instrument 08 → Instrument 09 progressive loading without rewriting the proven `deep-space.html` document;
+- no data-service or external runtime request, visitor text or numeric input, storage, cookies, history state, IndexedDB, location access, analytics, telemetry, polling, timer loop, remote media, account, cloud state, or dependency;
+- responsive, keyboard, reduced-motion, increased-contrast, and print handling;
+- coherent same-origin v26 offline-shell upgrade preserving the Gravitational Copy Room v25 marker, the Honest Counter release, and all prior Museum assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.

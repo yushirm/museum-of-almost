@@ -103,6 +103,28 @@ The stage is schematic and normalized. It is not a sky map, mass estimator, dist
 
 The section mounts after the Causal Signal Box through the existing local `deep-space.js` bootstrap, preserving deterministic Instrument 07 → Instrument 08 order without rewriting the proven static document. Beyond normal same-origin local asset loading it makes no data-service or external request, accepts no visitor-entered astrophysical parameters, stores no case selection, and uses no timers, location access, analytics, telemetry, remote assets or dependencies.
 
+### Redshift Ruler / The Tick Marks Will Not Stay Put
+
+The ninth instrument models cosmological redshift with one fixed generic `500 nm` reference wavelength and three fixed cases: `z = 0.1`, `1`, and `6`.
+
+The exact local relations are:
+
+`1 + z = lambda_obs / lambda_emit`
+
+`lambda_obs = lambda_emit (1 + z)`
+
+and, with today's scale factor normalized to `a_obs = 1`:
+
+`a_emit = 1 / (1 + z)`
+
+The calculated observed wavelengths are therefore `550 nm`, `1000 nm`, and `3500 nm` for the three fixed cases. The corresponding emission scale factors are `1/1.1`, `0.5`, and `1/7`.
+
+The convention-breaking visualization makes the observed ruler's screen span change by exactly `1 + z` relative to the fixed emitted ruler. Large redshift can therefore create intentional horizontal overflow inside the instrument viewport. That overflow is a local teaching device, not a broken responsive layout and not a second scientific calculation.
+
+The feature covers **cosmological redshift only**. It does not infer Doppler velocity, gravitational redshift, peculiar velocity, distance, lookback time, cosmic age, `H0`, density parameters, a real source identity, or a real spectral-line identification. The ruler is schematic; exact numerical readouts remain authoritative. Full design, source basis, accessibility contract and rebuild rules are documented in `REDSHIFT_RULER.md`.
+
+The Redshift Ruler mounts after the Gravitational Copy Room through the existing same-origin bootstrap, preserving deterministic Instrument 07 → 08 → 09 order without rewriting `deep-space.html`. It adds no data-service or external runtime request, visitor-entered values, storage, cookies, history state, location access, analytics, telemetry, timer loop, remote assets or dependencies.
+
 ## Accessibility
 
-The gallery uses semantic sections, visible keyboard focus, 44px minimum interactive targets, polite live regions for changing instrument readouts, a skip link, responsive layouts, `prefers-reduced-motion`, `prefers-contrast`, and print handling. The Possibility Engine also preserves a static initial possibility map and the full Success Archives in HTML so the historical record remains readable without JavaScript. The Frame Shifter duplicates every visual event-order change in text and removes its card transition under reduced-motion preferences. The Causal Signal Box writes every station and route state in text, gives refused dispatches immediate live-region feedback, lists each segment's `Δt` and `|Δx|`, and removes station transitions under reduced-motion preferences. The Gravitational Copy Room repeats shared source identity and parity in text, states the Einstein-ring case textually, and never relies on card duplication, mirroring, or animation alone to carry scientific meaning.
+The gallery uses semantic sections, visible keyboard focus, 44px minimum interactive targets, polite live regions for changing instrument readouts, a skip link, responsive layouts, `prefers-reduced-motion`, `prefers-contrast`, and print handling. The Possibility Engine also preserves a static initial possibility map and the full Success Archives in HTML so the historical record remains readable without JavaScript. The Frame Shifter duplicates every visual event-order change in text and removes its card transition under reduced-motion preferences. The Causal Signal Box writes every station and route state in text, gives refused dispatches immediate live-region feedback, lists each segment's `Δt` and `|Δx|`, and removes station transitions under reduced-motion preferences. The Gravitational Copy Room repeats shared source identity and parity in text, states the Einstein-ring case textually, and never relies on card duplication, mirroring, or animation alone to carry scientific meaning. The Redshift Ruler duplicates every visual width change in exact redshift, wavelength, stretch-factor and scale-factor text; confines deliberate horizontal overflow to a labeled keyboard-focusable viewport; and removes ruler transitions under reduced-motion preferences.

@@ -97,7 +97,21 @@
     });
   }
 
-  function loadGravitationalCopyRoom() {
+  function loadRedshiftRuler() {
+    if (!document.querySelector('link[data-redshift-ruler-styles]')) {
+      const stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = './redshift-ruler.css';
+      stylesheet.dataset.redshiftRulerStyles = '';
+      document.head.append(stylesheet);
+    }
+
+    loadLocalScript('./redshift-ruler-core.js', 'redshift-ruler-core', () => {
+      loadLocalScript('./redshift-ruler.js', 'redshift-ruler-view');
+    });
+  }
+
+  function loadGravitationalCopyRoom(done = loadRedshiftRuler) {
     if (!document.querySelector('link[data-gravitational-copy-styles]')) {
       const stylesheet = document.createElement('link');
       stylesheet.rel = 'stylesheet';
@@ -107,7 +121,7 @@
     }
 
     loadLocalScript('./gravitational-copy-core.js', 'gravitational-copy-core', () => {
-      loadLocalScript('./gravitational-copy.js', 'gravitational-copy-view');
+      loadLocalScript('./gravitational-copy.js', 'gravitational-copy-view', done);
     });
   }
 
