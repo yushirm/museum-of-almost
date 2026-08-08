@@ -157,6 +157,24 @@
     else archiveSidebar.append(log);
   }
 
+  function loadResearchWing() {
+    if (!document.getElementById('page-four-research-style')) {
+      const style = document.createElement('link');
+      style.id = 'page-four-research-style';
+      style.rel = 'stylesheet';
+      style.href = 'page-four-research.css';
+      document.head.append(style);
+    }
+
+    if (!document.getElementById('page-four-research-script')) {
+      const script = document.createElement('script');
+      script.id = 'page-four-research-script';
+      script.src = 'page-four-research.js';
+      script.defer = true;
+      document.body.append(script);
+    }
+  }
+
   if (randomButton) {
     randomButton.addEventListener('click', () => {
       const target = cases[randomIndex(cases.length)];
@@ -206,6 +224,7 @@
 
   addLeakDesk();
   addRumorSightings();
+  loadResearchWing();
 
   const sharedCase = caseById(globalThis.location.hash.replace(/^#/, ''));
   if (sharedCase) {
