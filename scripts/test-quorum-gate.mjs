@@ -8,6 +8,7 @@ const coreSource = fs.readFileSync(new URL('../quorum-gate-core.js', import.meta
 const view = fs.readFileSync(new URL('../quorum-gate.js', import.meta.url), 'utf8');
 const css = fs.readFileSync(new URL('../quorum-gate.css', import.meta.url), 'utf8');
 const record = fs.readFileSync(new URL('../QUORUM_GATE.md', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const dataCore = fs.readFileSync(new URL('../data-core.js', import.meta.url), 'utf8');
 const app = fs.readFileSync(new URL('../app.js', import.meta.url), 'utf8');
@@ -215,10 +216,23 @@ for (const pattern of [
   /Require the feature-complete head to pass the required `check`[\s\S]+archive-bearing head to pass `check` again before merge/
 ]) assert.match(record, pattern);
 
+for (const pattern of [
+  /COMMONS \/ NOW — The Quorum Gate/,
+  /\*\*The Quorum Gate \/ The Pie Refuses to Close\*\*/,
+  /Concept A, \*\*The Ratio Ledger\*\*, was discarded/,
+  /Concepts B and C were merged/,
+  /84cb11d8f2a3a94b7ab61023dfa9acf80850733a/,
+  /#82 — Add the Quorum Gate/,
+  /run: `261`/,
+  /conclusion: `success`/,
+  /v38 Quorum Gate/,
+  /archive-bearing final head must pass the same required `check` job again before merge/
+]) assert.match(archive, pattern, `Quorum Gate Success Archive evidence must contain ${pattern}`);
+
 for (const asset of ['./quorum-gate-core.js', './quorum-gate.js', './quorum-gate.css', './QUORUM_GATE.md']) {
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 assert.match(worker, /const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shuffle-table'/);
 assert.match(worker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v38-quorum-gate'/);
 
-console.log('Quorum Gate denominator retention, subset membership, returned-window scope, partition refusal, accessibility, privacy, loader, and offline contracts verified.');
+console.log('Quorum Gate denominator retention, subset membership, returned-window scope, partition refusal, archive evidence, accessibility, privacy, loader, and offline contracts verified.');
