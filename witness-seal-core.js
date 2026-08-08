@@ -8,6 +8,7 @@
   const SCHEMA = 'commons-witness-v1';
 
   function finiteOrNull(value) {
+    if (value === null || value === undefined || value === '') return null;
     const number = Number(value);
     return Number.isFinite(number) ? number : null;
   }
@@ -17,6 +18,7 @@
   }
 
   function isoOrNull(value) {
+    if (value === null || value === undefined || value === '') return null;
     const date = new Date(value);
     return Number.isFinite(date.getTime()) ? date.toISOString() : null;
   }
@@ -43,7 +45,7 @@
         precipitation: finiteOrNull(point?.precipitation)
       }))
       .filter((point) => point.id)
-      .sort((a, b) => a.id.localeCompare(b.id, 'en'));
+      .sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
   }
 
   function canonicalSnapshot(snapshot, scales) {
