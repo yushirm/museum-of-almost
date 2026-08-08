@@ -10,6 +10,7 @@ const css = fs.readFileSync(new URL('../rest-score.css', import.meta.url), 'utf8
 const record = fs.readFileSync(new URL('../REST_SCORE.md', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const worker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 
 const weatherPoints = commons.STATIONS.map((station, index) => ({
   ...station,
@@ -159,4 +160,13 @@ for (const asset of ['./rest-score-core.js', './rest-score.js', './rest-score.cs
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 
-console.log('Rest Score field-specific zero semantics, missing-vs-not-applicable behavior, five-feed coverage, filtering, privacy, accessibility, and offline shell verified.');
+for (const pattern of [
+  /COMMONS \/ NOW — The Rest Score/,
+  /The Rest Score \/ Nothing Is Not Missing/,
+  /d61d3602c0e1c5a8945ce7087d9bc05d5a4c7c9b/,
+  /#60 — Add the Rest Score/,
+  /run: `160`/,
+  /conclusion: `success`/
+]) assert.match(archive, pattern, `Success Archive should preserve Rest Score evidence: ${pattern}`);
+
+console.log('Rest Score field-specific zero semantics, missing-vs-not-applicable behavior, five-feed coverage, filtering, privacy, accessibility, success archive evidence, and offline shell verified.');
