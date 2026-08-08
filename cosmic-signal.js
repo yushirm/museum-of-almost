@@ -54,7 +54,11 @@
                                                         load('./quorum-gate-core.js', 'quorumGateCore', () => {
                                                           load('./quorum-gate.js', 'quorumGateView', () => {
                                                             load('./shutter-cabinet-core.js', 'shutterCabinetCore', () => {
-                                                              load('./shutter-cabinet.js', 'shutterCabinetView');
+                                                              load('./shutter-cabinet.js', 'shutterCabinetView', () => {
+                                                                load('./weather-score-core.js', 'weatherScoreCore', () => {
+                                                                  load('./weather-score.js', 'weatherScoreView');
+                                                                });
+                                                              });
                                                             });
                                                           });
                                                         });
