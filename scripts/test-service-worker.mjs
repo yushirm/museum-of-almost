@@ -22,7 +22,8 @@ assert.match(source, /const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-off
 assert.match(source, /const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-origin-machine'/);
 assert.match(source, /const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office'/);
 assert.match(source, /const PAGE_FOUR_CACHE_NAME = 'museum-of-almost-v30-page-four'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v31-same-answer-machine'/);
+assert.match(source, /const SAME_ANSWER_MACHINE_CACHE_NAME = 'museum-of-almost-v31-same-answer-machine'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v32-load-bearing-sample'/);
 for (const asset of [
   './',
   './index.html',
@@ -75,6 +76,9 @@ for (const asset of [
   './border-office-core.js',
   './border-office.js',
   './border-office.css',
+  './load-bearing-sample-core.js',
+  './load-bearing-sample.js',
+  './load-bearing-sample.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -126,6 +130,7 @@ for (const asset of [
   './REST_SCORE.md',
   './OFFCUT_DRAWER.md',
   './BORDER_OFFICE.md',
+  './LOAD_BEARING_SAMPLE.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
@@ -167,4 +172,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Page Four, Same Answer Machine, and the existing galleries are present in the fresh-online cached-offline shell.');
+console.log('Page Four, Same Answer Machine, Load-Bearing Sample, and the existing galleries are present in the fresh-online cached-offline shell.');

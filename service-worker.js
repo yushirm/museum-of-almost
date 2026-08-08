@@ -19,7 +19,8 @@ const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer';
 const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-origin-machine';
 const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office';
 const PAGE_FOUR_CACHE_NAME = 'museum-of-almost-v30-page-four';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v31-same-answer-machine';
+const SAME_ANSWER_MACHINE_CACHE_NAME = 'museum-of-almost-v31-same-answer-machine';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v32-load-bearing-sample';
 const APP_SHELL = [
   './',
   './index.html',
@@ -72,6 +73,9 @@ const APP_SHELL = [
   './border-office-core.js',
   './border-office.js',
   './border-office.css',
+  './load-bearing-sample-core.js',
+  './load-bearing-sample.js',
+  './load-bearing-sample.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -123,6 +127,7 @@ const APP_SHELL = [
   './REST_SCORE.md',
   './OFFCUT_DRAWER.md',
   './BORDER_OFFICE.md',
+  './LOAD_BEARING_SAMPLE.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',

@@ -44,7 +44,11 @@
                                     load('./rest-score.js', 'restScoreView', () => {
                                       load('./offcut-drawer.js', 'offcutDrawerView', () => {
                                         load('./border-office-core.js', 'borderOfficeCore', () => {
-                                          load('./border-office.js', 'borderOfficeView');
+                                          load('./border-office.js', 'borderOfficeView', () => {
+                                            load('./load-bearing-sample-core.js', 'loadBearingSampleCore', () => {
+                                              load('./load-bearing-sample.js', 'loadBearingSampleView');
+                                            });
+                                          });
                                         });
                                       });
                                     });
