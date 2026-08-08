@@ -710,3 +710,48 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — DEEP SPACE / ALMOST — The Origin Machine
+
+Feature:
+
+**The Origin Machine / Every Point Gets to Be Zero**
+
+Design outcome:
+
+- Concept A, **The Expansion Bench**, supplied the exact fixed-comoving-coordinate and scale-factor geometry.
+- Concept B, **The Darkroom Enlarger**, was discarded because its external viewer, finite print edges, and privileged optical center introduce misleading cosmological baggage.
+- Concept C, **The Page Has No Permanent Center**, supplied the convention-breaking interface in which any fixed marker can become coordinate zero and the bounded stage re-centers around it.
+- Concepts A and C were merged.
+
+Feature-complete evidence head:
+
+`ec128a073cc85e7f12ee216b0726fa54e1c4d498`
+
+Pull request:
+
+`#66 — Add Deep Space Origin Machine`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `186`;
+- conclusion: `success`.
+
+What succeeded:
+
+- five immutable fictional comoving markers at `χ = -4, -2, 0, +3, +5` and three fixed normalized scale factors, `a = 0.5`, `1`, and `2`;
+- exact local `x_relative = a(χ - χ_observer)` and `D = a|χ - χ_observer|` calculations for every offered origin/scale combination;
+- pairwise geometry remains invariant under origin changes while the selected marker is always represented at relative coordinate zero;
+- marker identity and fixed comoving coordinates never reorder or mutate during re-centering;
+- the visual mapping remains downstream of exact values, reserves safe horizontal margins, keeps marker glyph size fixed, and uses vertical staggering only as explicitly non-spatial label clearance;
+- the finite five-marker window is explicitly not a cosmological edge or center, and the toy refuses Hubble-constant, velocity, redshift, acceleration, horizon, curvature, causal-visibility, and real-object-distance inference;
+- deterministic Instrument 07 → 08 → 09 → 10 progressive loading without rewriting `deep-space.html`;
+- no data-service or external runtime request, visitor text or numeric input, storage, cookies, history state, IndexedDB, location access, analytics, telemetry, polling, timer loop, animation-frame loop, remote media, account, cloud state, or dependency;
+- responsive, keyboard, reduced-motion, increased-contrast, semantic-table, live-region, and print handling;
+- coherent same-origin v28 offline-shell upgrade preserving the Offcut Drawer v27 release, Under Construction Forever, Redshift Ruler v26, and all prior Museum assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.

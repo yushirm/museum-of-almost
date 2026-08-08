@@ -18,7 +18,8 @@ assert.match(source, /const CAUSAL_SIGNAL_BOX_CACHE_NAME = 'museum-of-almost-v23
 assert.match(source, /const REST_SCORE_CACHE_NAME = 'museum-of-almost-v24-rest-score'/);
 assert.match(source, /const GRAVITATIONAL_COPY_ROOM_CACHE_NAME = 'museum-of-almost-v25-gravitational-copy-room'/);
 assert.match(source, /const REDSHIFT_RULER_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer'/);
+assert.match(source, /const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v28-origin-machine'/);
 for (const asset of [
   './',
   './index.html',
@@ -88,6 +89,9 @@ for (const asset of [
   './redshift-ruler.css',
   './redshift-ruler-core.js',
   './redshift-ruler.js',
+  './origin-machine.css',
+  './origin-machine-core.js',
+  './origin-machine.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -117,6 +121,7 @@ for (const asset of [
   './CAUSAL_SIGNAL_BOX.md',
   './GRAVITATIONAL_COPY_ROOM.md',
   './REDSHIFT_RULER.md',
+  './ORIGIN_MACHINE.md',
   './WEB1_HOME.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
@@ -147,4 +152,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Witness Seal, Possibility Engine, Isolation Board, Frame Shifter, Exposure Plate, Reverse Ledger, Causal Signal Box, Rest Score, Gravitational Copy Room, Redshift Ruler, and Offcut Drawer offline shell plus fresh-online cached-offline behavior verified.');
+console.log('Witness Seal, Possibility Engine, Isolation Board, Frame Shifter, Exposure Plate, Reverse Ledger, Causal Signal Box, Rest Score, Gravitational Copy Room, Redshift Ruler, Offcut Drawer, and Origin Machine offline shell plus fresh-online cached-offline behavior verified.');
