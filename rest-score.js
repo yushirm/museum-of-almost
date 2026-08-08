@@ -111,7 +111,7 @@
 
       const note = element('p', 'rest-score-note');
       const strong = element('strong', null, 'Zero is data. Missing is ignorance.');
-      note.append(strong, document.createTextNode(' “Written rest” is used only where zero has a field-specific none-or-no-occurrence meaning. A numeric zero in another field—such as magnitude or speed—remains a sounded value. The score does not synchronize feeds, compare units, or measure data quality.'));
+      note.append(strong, document.createTextNode(' Numeric zero does not automatically mean silence. “Written rest” is used only where zero has a field-specific none-or-no-occurrence meaning. A numeric zero in another field—such as magnitude or speed—remains a sounded value. The score does not synchronize feeds, compare units, or measure data quality.'));
       section.append(note);
 
       const anchor = document.querySelector('#reverse-ledger') || document.querySelector('#exposure-plate') || document.querySelector('.windows-section');
