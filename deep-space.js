@@ -83,7 +83,7 @@
     document.head.append(script);
   }
 
-  function loadCausalSignalBox() {
+  function loadCausalSignalBox(done) {
     if (!document.querySelector('link[data-causal-signal-styles]')) {
       const stylesheet = document.createElement('link');
       stylesheet.rel = 'stylesheet';
@@ -93,7 +93,21 @@
     }
 
     loadLocalScript('./causal-signal-core.js', 'causal-signal-core', () => {
-      loadLocalScript('./causal-signal.js', 'causal-signal-view');
+      loadLocalScript('./causal-signal.js', 'causal-signal-view', done);
+    });
+  }
+
+  function loadGravitationalCopyRoom() {
+    if (!document.querySelector('link[data-gravitational-copy-styles]')) {
+      const stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = './gravitational-copy.css';
+      stylesheet.dataset.gravitationalCopyStyles = '';
+      document.head.append(stylesheet);
+    }
+
+    loadLocalScript('./gravitational-copy-core.js', 'gravitational-copy-core', () => {
+      loadLocalScript('./gravitational-copy.js', 'gravitational-copy-view');
     });
   }
 
@@ -121,7 +135,7 @@
   renderScale('sun');
   renderBlackHole('sagittarius-a');
   renderMystery('dark-matter');
-  loadCausalSignalBox();
+  loadCausalSignalBox(loadGravitationalCopyRoom);
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

@@ -488,3 +488,50 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — DEEP SPACE / ALMOST — The Gravitational Copy Room
+
+Feature:
+
+**The Gravitational Copy Room / One Source, More Than One Image**
+
+Design outcome:
+
+- Concept A, **The Einstein Lens Bench**, supplied the normalized point-lens calculation and exact apparent-image positions.
+- Concept B, **The Printmaker's Ghost Plate**, was discarded because a mechanical copying metaphor risked overpowering the gravitational light-path physics.
+- Concept C, **Duplicate Cards Are Not Duplicate Things**, supplied the convention-breaking interface in which multiple apparent-image cards explicitly share one immutable source identity.
+- Concepts A and C were merged.
+
+Feature-complete evidence head:
+
+`a000ca66cb6d7b1a12ec8565eecc2815de2c0d34`
+
+Pull request:
+
+`#61 — Add Deep Space Gravitational Copy Room`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `169`;
+- conclusion: `success`.
+
+What succeeded:
+
+- three fixed normalized source offsets, `y = 0`, `0.5`, and `1.5`, evaluated against one immutable fictional source identity, `SRC-01`;
+- every non-aligned image root satisfies the normalized point-lens equation `y = x - 1/x` to floating-point tolerance;
+- non-aligned cases produce two apparent images that keep one shared source identity while exposing opposite image parity in text;
+- exact alignment is represented as a continuous Einstein ring of normalized radius `1` rather than two discrete image cards;
+- schematic screen position remains downstream of the exact normalized solution and is explicitly not a mass, distance, magnification, or sky-position estimator;
+- the interface mounts through DOM creation and text content without HTML-string injection;
+- deterministic Instrument 07 → Instrument 08 progressive loading preserves the existing `deep-space.html` document;
+- the Causal Signal Box regression preserves its v23 release marker while allowing the later Instrument 08 callback chain;
+- the Rest Score v24 offline shell and current-latch assets remain intact under the Gravitational Copy Room v25 successor shell;
+- beyond normal same-origin local asset loading, no data-service or external request, visitor-entered astrophysical values, storage, cookies, history state, location access, analytics, telemetry, polling, timer loop, remote media, or dependency is added;
+- responsive, keyboard, reduced-motion, increased-contrast, and print handling;
+- coherent same-origin v25 offline-shell upgrade preserving the Rest Score, Causal Signal Box, Second Homepage, and all prior Museum assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
