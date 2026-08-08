@@ -30,7 +30,8 @@ assert.match(source, /const PAGE_FOUR_SIGNAL_ANOMALY_CACHE_NAME = 'museum-of-alm
 assert.match(source, /const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice'/);
 assert.match(source, /const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shuffle-table'/);
 assert.match(source, /const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero'/);
+assert.match(source, /const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room'/);
 for (const asset of [
   './',
   './index.html',
@@ -45,6 +46,8 @@ for (const asset of [
   './page-four.js',
   './page-four-research.css',
   './page-four-research.js',
+  './page-four-instrument-room.css',
+  './page-four-instrument-room.js',
   './commons-now.html',
   './styles.css',
   './sample-hold.css',
@@ -169,7 +172,8 @@ for (const asset of [
   './ORIGIN_MACHINE.md',
   './SAME_ANSWER_MACHINE.md',
   './WEB1_HOME.md',
-  './PAGE_FOUR_RESEARCH.md'
+  './PAGE_FOUR_RESEARCH.md',
+  './PAGE_FOUR_HESSDALEN.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
 }
@@ -199,4 +203,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Catalogue 0 v39, Quorum Gate v38, Page Four Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries are present in the fresh-online cached-offline shell.');
+console.log('Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries are present in the fresh-online cached-offline shell.');
