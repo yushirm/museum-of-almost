@@ -52,6 +52,14 @@ The entrance, DEEP SPACE / ALMOST, ALMOST ONLINE!, PAGE FOUR, and ELSEWHERE / CA
 
 See `SOURCES.md` for the exact COMMONS endpoints, source semantics, and attribution.
 
+## COMMONS / NOW contract
+
+COMMONS / NOW takes **one current snapshot** and commits its five responses together through the Sample-and-Hold Bus. The **Sounding Well** then exposes known **source-time thickness** from timestamp metadata already present in the approved responses; it makes no extra request. **EONET is deliberately left unsounded** because its event geometry dates do not form one honest feed-wide observation instant.
+
+Its weather view uses **thirteen fixed coordinates** over a local basemap derived from **Natural Earth 110m public-domain land geometry**. The **Difference Engine** compares two of those fixed samples, while the **Planetary Section** lays the same discrete measurements out west to east and **does not interpolate** values between them. The **Planetary Heliodon** derives the approximate **subsolar point**, antisolar point, and terminator from the captured snapshot instant and the established local solar geometry.
+
+**Make field sheet** invokes the browser's native print path for a local copy of the current snapshot. The Museum keeps **no visitor persistence** for these interactions or snapshots. The fixed weather sample came from opaque build material; the **original opaque seed inputs are deliberately not stored** in the repository.
+
 ## Privacy and evidence boundaries
 
 The Museum does not ask for a visitor name, email address, account, location, story, upload, comment, or free-text input. It does not create cookies or write visitor profiles or histories into `localStorage`, `sessionStorage`, or IndexedDB. It adds no analytics or tracking on top of GitHub Pages hosting.
