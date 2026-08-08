@@ -6,7 +6,7 @@ const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url),
 assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/);
 assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/);
 assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online'/);
 for (const asset of [
   './',
   './index.html',
@@ -66,23 +66,27 @@ for (const asset of [
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
 }
 
+assert.match(source, /APP_SHELL\.map\(\(asset\) => new Request\(asset, \{ cache: 'reload' \}\)\)/,
+  'install should refill the offline shell from the deployed files instead of a stale browser HTTP cache');
 assert.match(source, /caches\.open\(CURRENT_CACHE_NAME\)/);
 assert.match(source, /key !== CURRENT_CACHE_NAME/);
 assert.match(source, /url\.origin !== self\.location\.origin/);
 assert.match(source, /request\.mode === 'navigate'/);
-assert.match(source, /request\.mode === 'navigate'[\s\S]+caches\.match\(request\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
-  'navigations should use the requested cached document so the foyer and all galleries remain distinct offline');
-assert.match(source, /caches\.match\('\.\/index\.html'\)/,
-  'root-scope navigation should retain the museum entrance as its index fallback');
-assert.match(source, /caches\.match\(request\)[\s\S]+if \(cached\) return cached;[\s\S]+fetch\(request\)/,
-  'same-origin assets should remain cache-first for offline-first behavior');
+assert.match(source, /async function networkFirst[\s\S]+fetch\(request, \{ cache: 'no-cache' \}\)[\s\S]+caches\.match\(request\)/,
+  'same-origin requests should revalidate online before falling back to the offline cache');
+assert.match(source, /fallbackRequest = url\.pathname === scopePath \? '\.\/index\.html' : null/,
+  'root-scope navigation should retain the museum entrance as its offline index fallback');
+assert.match(source, /event\.respondWith\(networkFirst\(request, fallbackRequest\)\)/,
+  'navigations should prefer the deployed document and use the requested cached document only offline');
+assert.match(source, /event\.respondWith\(networkFirst\(request\)\)/,
+  'same-origin assets should prefer the deployed file while preserving offline fallback');
 assert.match(source, /clients\.claim\(\)/);
 assert.match(source, /clients\.matchAll\(\{ type: 'window', includeUncontrolled: true \}\)/);
 assert.match(source, /client\.navigate\(client\.url\)/,
-  'an upgraded worker should reload open pages once so the new shell becomes active atomically');
+  'a worker architecture upgrade should still reload open pages once so the new cache policy takes control');
 assert.match(source, /startsWith\('museum-of-almost-'\)/);
 assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Museum foyer, Commons / Now, Deep Space / Almost, and Almost Online! coherent multi-page offline shell and cross-origin boundary verified.');
+console.log('Fresh-online, cached-offline service worker behavior and cross-origin boundary verified.');
