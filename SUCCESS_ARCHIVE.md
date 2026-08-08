@@ -1119,3 +1119,45 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The Wallpaper Sky
+
+Feature:
+
+**I Found Out the Night Sky Is Wallpaper / One File, Many Appearances**
+
+Design outcome:
+
+- Concept A, **I Thought I Had a Sky**, supplied the earnest diary reflection on discovering that the homepage atmosphere comes from one small local starfield asset plus CSS.
+- Concept B, **Free Infinite Starfield for Your Homepage!!!**, was discarded because another tutorial/manual structure would repeat a joke already used by earlier ALMOST ONLINE! entries.
+- Concept C, **The Same Night Has Been Copied Behind Every Sentence**, supplied the surreal fixation on many visible star patches sharing one source image.
+- Concepts A and C were merged.
+
+Feature-complete evidence head:
+
+`95bd9a7961046f52b3f34c64708f26b5dadd92fe`
+
+Pull request:
+
+`#79 — Add Almost Online wallpaper-sky entry`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `243`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date True Width, Self-Award, Neighbors, Pink Links, Under Construction Forever, Honest Counter, Second Homepage, Broken-Image, and Back Button entries;
+- the post is grounded in the existing local `assets/web1/stars.gif` body background and adds no new visual asset or effect;
+- wording explicitly distinguishes repeated CSS background painting from separate source files, per-tile asset URLs, or separately stored star images;
+- the existing `prefers-contrast: more` rule that removes the star background remains part of the post’s factual and accessibility boundary;
+- focused assertions require the new entry, its one-file/many-appearances thesis, the existing body starfield declaration, increased-contrast removal, and same-date reverse chronology;
+- no CSS, JavaScript, service-worker behavior, asset, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, or dependency was added;
+- existing keyboard, mobile, reduced-motion, increased-contrast, print, local-GIF, offline, and amplified Page Four rumor-relay behavior remains unchanged.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
