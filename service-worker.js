@@ -34,8 +34,7 @@ const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute';
 const PAGE_FOUR_DEAD_DROP_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop';
 const UNBUILT_ROOM_CACHE_NAME = 'museum-of-almost-v44-unbuilt-room';
 const PARALLAX_SURVEY_CACHE_NAME = 'museum-of-almost-v45-parallax-survey';
-const WEATHER_SCORE_CACHE_NAME = 'museum-of-almost-v46-weather-score';
-const CURRENT_CACHE_NAME = WEATHER_SCORE_CACHE_NAME;
+const CURRENT_CACHE_NAME = PARALLAX_SURVEY_CACHE_NAME;
 const APP_SHELL = [
   './',
   './index.html',
