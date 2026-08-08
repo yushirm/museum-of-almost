@@ -9,6 +9,7 @@ const coreSource = fs.readFileSync(new URL('../load-bearing-sample-core.js', imp
 const view = fs.readFileSync(new URL('../load-bearing-sample.js', import.meta.url), 'utf8');
 const css = fs.readFileSync(new URL('../load-bearing-sample.css', import.meta.url), 'utf8');
 const record = fs.readFileSync(new URL('../LOAD_BEARING_SAMPLE.md', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const dataCore = fs.readFileSync(new URL('../data-core.js', import.meta.url), 'utf8');
 const worker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
@@ -177,8 +178,20 @@ for (const pattern of [
   /Require the feature-complete head to pass `check`[\s\S]+archive-bearing head to pass `check` again before merge/
 ]) assert.match(record, pattern);
 
+for (const pattern of [
+  /## 2026-08-08 — COMMONS \/ NOW — The Load-Bearing Sample/,
+  /\*\*The Load-Bearing Sample \/ Pull One Pin\*\*/,
+  /Concepts B and C were merged/,
+  /06da32042db0b1aa45a74df2a4914f65939041be/,
+  /#72 — Add the Load-Bearing Sample/,
+  /required job: `check`/,
+  /run: `216`/,
+  /conclusion: `success`/,
+  /archive-bearing final head must pass the same required `check` job again before merge/
+]) assert.match(archive, pattern);
+
 for (const asset of ['./load-bearing-sample-core.js', './load-bearing-sample.js', './load-bearing-sample.css', './LOAD_BEARING_SAMPLE.md']) {
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 
-console.log('Load-Bearing Sample one-point aggregate sensitivity, authoritative latch, missing/zero handling, accessibility, privacy, loader, and offline contracts verified.');
+console.log('Load-Bearing Sample one-point aggregate sensitivity, authoritative latch, missing/zero handling, accessibility, privacy, repository Success Archive evidence, loader, and offline contracts verified.');
