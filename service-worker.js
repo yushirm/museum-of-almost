@@ -26,12 +26,17 @@ const GAUGE_BENCH_CACHE_NAME = 'museum-of-almost-v34-gauge-bench';
 const PAGE_FOUR_SIGNAL_ANOMALY_CACHE_NAME = 'museum-of-almost-v35-page-four-signal-anomaly';
 const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice';
 const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shuffle-table';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v38-quorum-gate';
+const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero';
 const APP_SHELL = [
   './',
   './index.html',
   './landing.css',
   './page-four-teaser.css',
+  './elsewhere-teaser.css',
+  './elsewhere.html',
+  './elsewhere.css',
+  './elsewhere.js',
   './page-four.html',
   './page-four.css',
   './page-four.js',
@@ -148,6 +153,7 @@ const APP_SHELL = [
   './GAUGE_BENCH.md',
   './SHUFFLE_TABLE.md',
   './QUORUM_GATE.md',
+  './ELSEWHERE_CATALOGUE_ZERO.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
