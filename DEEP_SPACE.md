@@ -47,6 +47,26 @@ The **Success Archives** are organized by the kind of epistemic revision the evi
 
 The instrument is entirely local. It does not fetch papers, query a science service, accept visitor text, store progress, assign scores, or keep a history of clicks. Selecting another case or reloading starts from the fixed initial map.
 
+### Frame Shifter / No Universal Now
+
+The sixth instrument demonstrates one-dimensional special relativity using three fixed event pairs and five fixed inertial frames. Distances are expressed in light-seconds and times in seconds, so the local calculation uses `c = 1`.
+
+For `beta = v/c`, it applies:
+
+`Δt′ = gamma (Δt - beta Δx)`
+
+`Δx′ = gamma (Δx - beta Δt)`
+
+with:
+
+`gamma = 1 / sqrt(1 - beta²)`
+
+The instrument verifies the invariant `Δx² - Δt²` before classifying each pair as spacelike, lightlike or timelike. The default spacelike pair is simultaneous in the gallery frame and reverses coordinate-time order between opposite moving frames. Lightlike and timelike pairs retain causal order across every displayed subluminal frame.
+
+The deliberately misaligned event cards are a visualization of transformed coordinate time, not a physical scale. Exact numerical readouts remain authoritative. Full design, calculation, accessibility and rebuild rules are documented in `FRAME_SHIFTER.md`.
+
+The Frame Shifter is entirely local and timer-free. It makes no request, accepts no visitor-entered values, stores no frame selection, and resets to the fixed gallery-frame state on reload.
+
 ## Accessibility
 
-The gallery uses semantic sections, visible keyboard focus, 44px minimum interactive targets, polite live regions for changing instrument readouts, a skip link, responsive layouts, `prefers-reduced-motion`, `prefers-contrast`, and print handling. The Possibility Engine also preserves a static initial possibility map and the full Success Archives in HTML so the historical record remains readable without JavaScript.
+The gallery uses semantic sections, visible keyboard focus, 44px minimum interactive targets, polite live regions for changing instrument readouts, a skip link, responsive layouts, `prefers-reduced-motion`, `prefers-contrast`, and print handling. The Possibility Engine also preserves a static initial possibility map and the full Success Archives in HTML so the historical record remains readable without JavaScript. The Frame Shifter duplicates every visual event-order change in text and removes its card transition under reduced-motion preferences.

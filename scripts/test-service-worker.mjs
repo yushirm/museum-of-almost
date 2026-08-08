@@ -10,7 +10,8 @@ assert.match(source, /const PREVIOUS_PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-al
 assert.match(source, /const PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online'/);
 assert.match(source, /const WITNESS_SEAL_CACHE_NAME = 'museum-of-almost-v17-witness-seal'/);
 assert.match(source, /const POSSIBILITY_ENGINE_CACHE_NAME = 'museum-of-almost-v18-possibility-engine'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v19-isolation-board'/);
+assert.match(source, /const ISOLATION_BOARD_CACHE_NAME = 'museum-of-almost-v19-isolation-board'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v20-frame-shifter'/);
 for (const asset of [
   './',
   './index.html',
@@ -56,6 +57,9 @@ for (const asset of [
   './possibility-engine.css',
   './possibility-engine-core.js',
   './possibility-engine.js',
+  './frame-shifter.css',
+  './frame-shifter-core.js',
+  './frame-shifter.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -77,6 +81,7 @@ for (const asset of [
   './PLANETARY_HELIODON.md',
   './DEEP_SPACE.md',
   './POSSIBILITY_ENGINE.md',
+  './FRAME_SHIFTER.md',
   './WEB1_HOME.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
@@ -107,4 +112,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Witness Seal, Possibility Engine, and Isolation Board offline shell plus fresh-online cached-offline behavior verified.');
+console.log('Witness Seal, Possibility Engine, Isolation Board, and Frame Shifter offline shell plus fresh-online cached-offline behavior verified.');

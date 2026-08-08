@@ -134,3 +134,48 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — DEEP SPACE / ALMOST — The Frame Shifter
+
+Feature:
+
+**The Frame Shifter / No Universal Now**
+
+Design outcome:
+
+- Concept A, **The Relativity Desk**, supplied the conventional Lorentz-transform calculations, invariant interval, and causal classification.
+- Concept B, **The Registration Press**, was discarded because its print-alignment metaphor risked making relativity sound like a mechanical registration defect.
+- Concept C, **The Page Refuses a Universal Row**, supplied the convention-breaking layout in which distant event cards stop sharing a horizontal coordinate-time row when the selected inertial frame says they are not simultaneous.
+- Concepts A and C were merged.
+
+Feature-complete evidence head:
+
+`c0cc070ce5a140c905e73e4a782d63447bdc40a6`
+
+Pull request:
+
+`#53 — Add Deep Space Frame Shifter`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `132`;
+- conclusion: `success`.
+
+What succeeded:
+
+- five fixed subluminal inertial frames and three fixed generic event pairs with no visitor-entered values;
+- exact one-dimensional Lorentz transformation in seconds and light-seconds with `c = 1`;
+- interval preservation across every tested transformation to floating-point tolerance;
+- a spacelike pair that reverses coordinate-time order between opposite moving frames without implying causation;
+- lightlike and timelike pairs that preserve causal order across every offered frame;
+- the visual event-card offset kept strictly downstream of the physics and normalized only for finite-stage legibility;
+- no runtime request, storage, cookies, location access, analytics, telemetry, polling, timer loop, remote media, or dependency;
+- keyboard-sized controls plus textual duplication of every visual order change;
+- reduced-motion, increased-contrast, responsive and print handling;
+- coherent same-origin offline-shell upgrade preserving Witness Seal, Possibility Engine, and Isolation Board assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
