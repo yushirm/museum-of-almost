@@ -173,6 +173,22 @@
       script.defer = true;
       document.body.append(script);
     }
+
+    if (!document.getElementById('page-four-instrument-room-style')) {
+      const style = document.createElement('link');
+      style.id = 'page-four-instrument-room-style';
+      style.rel = 'stylesheet';
+      style.href = 'page-four-instrument-room.css';
+      document.head.append(style);
+    }
+
+    if (!document.getElementById('page-four-instrument-room-script')) {
+      const script = document.createElement('script');
+      script.id = 'page-four-instrument-room-script';
+      script.src = 'page-four-instrument-room.js';
+      script.defer = true;
+      document.body.append(script);
+    }
   }
 
   if (randomButton) {

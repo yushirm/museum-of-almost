@@ -28,17 +28,28 @@ assert.match(source, /const PAGE_FOUR_RUMOR_RELAY_CACHE_NAME = 'museum-of-almost
 assert.match(source, /const GAUGE_BENCH_CACHE_NAME = 'museum-of-almost-v34-gauge-bench'/);
 assert.match(source, /const PAGE_FOUR_SIGNAL_ANOMALY_CACHE_NAME = 'museum-of-almost-v35-page-four-signal-anomaly'/);
 assert.match(source, /const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v37-unequal-minute'/);
+assert.match(source, /const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shuffle-table'/);
+assert.match(source, /const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate'/);
+assert.match(source, /const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero'/);
+assert.match(source, /const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room'/);
+assert.match(source, /const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/);
 for (const asset of [
   './',
   './index.html',
   './landing.css',
   './page-four-teaser.css',
+  './elsewhere-teaser.css',
+  './elsewhere.html',
+  './elsewhere.css',
+  './elsewhere.js',
   './page-four.html',
   './page-four.css',
   './page-four.js',
   './page-four-research.css',
   './page-four-research.js',
+  './page-four-instrument-room.css',
+  './page-four-instrument-room.js',
   './commons-now.html',
   './styles.css',
   './sample-hold.css',
@@ -89,6 +100,15 @@ for (const asset of [
   './gauge-bench-core.js',
   './gauge-bench.js',
   './gauge-bench.css',
+  './shuffle-table-core.js',
+  './shuffle-table.js',
+  './shuffle-table.css',
+  './quorum-gate-core.js',
+  './quorum-gate.js',
+  './quorum-gate.css',
+  './shutter-cabinet-core.js',
+  './shutter-cabinet.js',
+  './shutter-cabinet.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -145,6 +165,10 @@ for (const asset of [
   './BORDER_OFFICE.md',
   './LOAD_BEARING_SAMPLE.md',
   './GAUGE_BENCH.md',
+  './SHUFFLE_TABLE.md',
+  './QUORUM_GATE.md',
+  './SHUTTER_CABINET.md',
+  './ELSEWHERE_CATALOGUE_ZERO.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
@@ -159,7 +183,7 @@ for (const asset of [
   './UNEQUAL_MINUTE.md',
   './WEB1_HOME.md',
   './PAGE_FOUR_RESEARCH.md',
-  './PAGE_FOUR_EVIDENCE_LATTICE.md'
+  './PAGE_FOUR_HESSDALEN.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
 }
@@ -189,4 +213,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Page Four Evidence Lattice v36, Unequal Minute v37, Signal Anomaly, Rumor Relay, Gauge Bench, and the existing galleries are present in the fresh-online cached-offline shell.');
+console.log('Unequal Minute v42, Shutter Cabinet v41, Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries are present in the fresh-online cached-offline shell.');

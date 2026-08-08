@@ -144,17 +144,20 @@ for (const pattern of [
   /Documentation sources only/i
 ]) assert.match(doc, pattern);
 
-assert.match(serviceWorker, /const PAGE_FOUR_SIGNAL_ANOMALY_CACHE_NAME = 'museum-of-almost-v35-page-four-signal-anomaly'/);
-assert.match(serviceWorker, /const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice'/);
-assert.match(serviceWorker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v37-unequal-minute'/);
+assert.match(serviceWorker, /const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room'/);
+assert.match(serviceWorker, /const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
+assert.match(serviceWorker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/);
 for (const asset of [
   './unequal-minute.css',
   './unequal-minute-core.js',
   './unequal-minute.js',
   './UNEQUAL_MINUTE.md',
-  './page-four-research.js',
-  './PAGE_FOUR_RESEARCH.md',
-  './PAGE_FOUR_EVIDENCE_LATTICE.md'
+  './shutter-cabinet-core.js',
+  './shutter-cabinet.js',
+  './shutter-cabinet.css',
+  './SHUTTER_CABINET.md',
+  './page-four-instrument-room.js',
+  './PAGE_FOUR_HESSDALEN.md'
 ]) assert.ok(serviceWorker.includes(`'${asset}'`), `offline shell should include ${asset}`);
 
-console.log('Unequal Minute Schwarzschild lapse math, fixed hovering stations, one-command unequal increments, horizon/free-fall boundary, Page Four Evidence Lattice v36 preservation, accessibility, privacy, progressive mount, and v37 offline shell verified.');
+console.log('Unequal Minute Schwarzschild lapse math, fixed hovering stations, one-command unequal increments, horizon/free-fall boundary, v41 Shutter Cabinet preservation, accessibility, privacy, progressive mount, and v42 offline shell verified.');

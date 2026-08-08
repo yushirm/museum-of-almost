@@ -25,17 +25,28 @@ const PAGE_FOUR_RUMOR_RELAY_CACHE_NAME = 'museum-of-almost-v33-page-four-rumor-r
 const GAUGE_BENCH_CACHE_NAME = 'museum-of-almost-v34-gauge-bench';
 const PAGE_FOUR_SIGNAL_ANOMALY_CACHE_NAME = 'museum-of-almost-v35-page-four-signal-anomaly';
 const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v37-unequal-minute';
+const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shuffle-table';
+const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate';
+const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero';
+const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room';
+const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v42-unequal-minute';
 const APP_SHELL = [
   './',
   './index.html',
   './landing.css',
   './page-four-teaser.css',
+  './elsewhere-teaser.css',
+  './elsewhere.html',
+  './elsewhere.css',
+  './elsewhere.js',
   './page-four.html',
   './page-four.css',
   './page-four.js',
   './page-four-research.css',
   './page-four-research.js',
+  './page-four-instrument-room.css',
+  './page-four-instrument-room.js',
   './commons-now.html',
   './styles.css',
   './sample-hold.css',
@@ -86,6 +97,15 @@ const APP_SHELL = [
   './gauge-bench-core.js',
   './gauge-bench.js',
   './gauge-bench.css',
+  './shuffle-table-core.js',
+  './shuffle-table.js',
+  './shuffle-table.css',
+  './quorum-gate-core.js',
+  './quorum-gate.js',
+  './quorum-gate.css',
+  './shutter-cabinet-core.js',
+  './shutter-cabinet.js',
+  './shutter-cabinet.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -142,6 +162,10 @@ const APP_SHELL = [
   './BORDER_OFFICE.md',
   './LOAD_BEARING_SAMPLE.md',
   './GAUGE_BENCH.md',
+  './SHUFFLE_TABLE.md',
+  './QUORUM_GATE.md',
+  './SHUTTER_CABINET.md',
+  './ELSEWHERE_CATALOGUE_ZERO.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
@@ -156,7 +180,7 @@ const APP_SHELL = [
   './UNEQUAL_MINUTE.md',
   './WEB1_HOME.md',
   './PAGE_FOUR_RESEARCH.md',
-  './PAGE_FOUR_EVIDENCE_LATTICE.md'
+  './PAGE_FOUR_HESSDALEN.md'
 ];
 
 self.addEventListener('install', (event) => {

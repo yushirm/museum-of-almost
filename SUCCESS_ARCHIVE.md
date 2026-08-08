@@ -1161,3 +1161,155 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Shuffle Table
+
+Feature:
+
+**The Shuffle Table / The Headline Does Not Know Where the Values Lived**
+
+Design outcome:
+
+- Concept A, **The Aggregation Audit**, was discarded as the least additive presentation because a static retention/loss ledger would remain too close to the Load-Bearing Sample and would explain aggregation loss without making it experiential.
+- Concept B, **The Shuffle Table**, supplied the card-dealing mechanic in which the exact current finite value multiset is rotated one evaluable fixed point forward in deterministic point-ID order.
+- Concept C, **The Headline Refuses to Update**, supplied the convention-breaking interaction in which the underlying hypothetical assignment changes while the authoritative aggregate headline deliberately stays fixed.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`fed711fd3bb2a3191834b02d59c79c8f987ec4ab`
+
+Pull request:
+
+`#80 — Add the Shuffle Table`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `255`;
+- conclusion: `success`.
+
+What succeeded:
+
+- exactly three fixed normalized weather aggregate lenses: temperature minimum/maximum, terrestrial wind mean/maximum, and the finite positive-precipitation reporting count;
+- one deterministic cyclic one-seat permutation of the same finite current values, with no random shuffle and no invented numeric value;
+- missing point values stay missing and outside the finite deck, while real numeric zero remains finite and participates in the permutation;
+- the current point values are independently recomputed and must reproduce the authoritative normalized headline before the hypothetical deal is enabled, so the snapshot remains the only normalizer and source of truth;
+- temperature min/max, one-decimal arithmetic wind mean/max, and the finite `> 0` precipitation membership count remain exactly invariant under the hypothetical permutation;
+- the actual finite multiset and hypothetical finite multiset are tested for equality for every lens;
+- every counterfactual state is explicitly labeled **HYPOTHETICAL PERMUTATION**, with the central verdict **SAME HEADLINE. DIFFERENT ASSIGNMENT.** and the doctrine **THIS IS NOT AN ALTERNATE WEATHER REPORT.**;
+- the per-point ledger distinguishes `assignmentMoved` from `valueChanged`, so a repeated equal numeric value can move between point identities without creating a false claim that the displayed number changed;
+- the feature refuses forecast, interpolation, synthetic measurement, physical-plausibility, repair, probability, uncertainty, representativeness, provider-error, quality, and ranking interpretations;
+- lens and deal state are memory-only and reset to temperature / actual on every real Commons latch, with no previous-latch fallback;
+- the full interactive table is omitted from print while a compact field-sheet statement records the selected aggregate, finite-value count, permutation invariance, and correspondence limitation;
+- no added data request, response clone, raw-provider retention, alternate acquisition path, random generator, polling, timer loop, animation-frame loop, persistence, geolocation, visitor text or numeric input, analytics, telemetry, remote runtime asset, account, cloud state, or dependency;
+- responsive, keyboard, disabled-insufficient-data, reduced-motion, increased-contrast, live-region, explicit-hypothetical, and print handling;
+- focused tests pin all three aggregate families to the actual `data-core.js` reducer declarations so semantic drift fails loudly;
+- coherent same-origin **v37 Shuffle Table** shell preserves concurrent **v36 Page Four Evidence Lattice**, **v35 Page Four Signal Anomaly**, **v34 Gauge Bench**, their local assets/tests, and all prior Museum assets;
+- run `246` was rejected after the new privacy regression falsely treated the ordinary safety word “plausible” as Plausible Analytics; the detector was narrowed to real analytics signatures (`plausible.io` / `window.plausible`) while the stronger “not physically plausible weather” disclaimer was preserved;
+- green run `253` was rejected as release evidence because live `main` advanced before its evidence race completed;
+- only the fully reconciled, behind-zero v37 head `fed711fd3bb2a3191834b02d59c79c8f987ec4ab` and run `255` are accepted as feature-complete evidence.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Quorum Gate
+
+Feature:
+
+**The Quorum Gate / The Pie Refuses to Close**
+
+Design outcome:
+
+- Concept A, **The Ratio Ledger**, was discarded as the least additive presentation because another static denominator table would explain the rule without making refusal experiential.
+- Concept B, **The Quorum Gate**, supplied the procedural mechanic that a population must be established before a percentage is licensed.
+- Concept C, **The Pie Refuses to Close**, supplied the convention-breaking interaction in which count arithmetic may produce a scoped individual share while the interface still refuses an invalid partition.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`84cb11d8f2a3a94b7ab61023dfa9acf80850733a`
+
+Pull request:
+
+`#82 — Add the Quorum Gate`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `261`;
+- conclusion: `success`.
+
+What succeeded:
+
+- exactly four fixed denominator cases: precipitation membership, five-feed return, significant earthquakes, and top EONET category membership;
+- **NO DENOMINATOR. NO PERCENT.** is enforced as an executable rule rather than explanatory copy;
+- an individual membership share is kept distinct from a valid partition, with the explicit invariant **AN ALLOWED INDIVIDUAL SHARE DOES NOT AUTOMATICALLY AUTHORIZE A PIE PARTITION.**;
+- precipitation eligibility is derived only from current normalized points with a finite precipitation value, deliberately refusing broader `weather.availableCount` as the denominator because weather availability can come from temperature or wind alone;
+- the authoritative `weather.raining` numerator is independently reproduced from finite current precipitation values greater than `0` before a percentage is licensed, and source/headline drift refuses the fraction;
+- a real zero numerator can produce `0.0%` only when a positive, retained, semantically valid denominator exists, while a zero or missing denominator never becomes zero percent;
+- feed-return percentage uses exactly the five fixed requested channels and remains an operational return fraction rather than world completeness, source quality, reliability, or provider ranking;
+- significant-earthquake percentage is deliberately refused as **DENOMINATOR LOST** because the normalized latch retains total earthquake features and the count of significant finite magnitudes but not the finite-magnitude eligibility population needed for that classification ratio;
+- total earthquake features are never borrowed as a convenient substitute denominator;
+- top EONET category membership may form a scoped share of the current returned event response, while the pie remains refused because event category memberships may overlap and only the top five category counts are retained;
+- the existing EONET `limit=500` / `events.capped` boundary becomes **WINDOWED QUORUM**, explicitly scoped to the capped returned response rather than all open events;
+- count values that violate subset bounds, such as a category membership count larger than the returned-event count, are treated as contract drift rather than repaired silently;
+- case selection and requested-percentage state are memory-only, reset to precipitation/counts-only on every real Commons latch, and never borrow a previous latch;
+- the full interactive gate is omitted from print while a compact field-sheet statement retains the selected numerator, denominator status, percentage or refusal, population scope, and partition verdict;
+- no added data request, response clone, raw-provider retention, alternate normalizer, polling, timer loop, animation-frame loop, persistence, geolocation, visitor text or numeric input, analytics, telemetry, remote runtime asset, account, cloud state, or dependency;
+- responsive, keyboard, disabled-unavailable-state, reduced-motion, increased-contrast, live-region, textual-refusal, and print handling;
+- focused regression guards pin denominator decisions to the exact current `data-core.js` earthquake, precipitation, EONET category/top-five/cap reducers and the fixed `app.js` five-feed/EONET-500 request contract;
+- coherent same-origin **v38 Quorum Gate** shell preserves **v37 Shuffle Table**, **v36 Page Four Evidence Lattice**, and all earlier Museum assets;
+- feature head `84cb11d8f2a3a94b7ab61023dfa9acf80850733a` passed required run `261` and the post-run evidence race confirmed live `main` remained exact `55da5e18230e14ce20f54bc71cbd7dfa2e323bf8` with the branch behind zero.
+
+Final-merge rule:
+
+This archive entry is added only after the feature-complete head passed required job `check`. Because adding this archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The GIF Staff Meeting
+
+Feature:
+
+**I Put the GIFs in One Room and They Started Looking Organized / A Chorus That Cannot Hear Itself**
+
+Design outcome:
+
+- reused the existing local comet, alien, construction-strip, and hand-coded badge GIFs as one deliberately excessive Web 1.0 visual cluster rather than adding another remote or newly fetched asset;
+- treated layout and captions as the source of the fictional “staff meeting” while explicitly refusing any claim that the GIFs communicate, share state, expose frame timing to JavaScript, or synchronize with one another;
+- added a two-column cabinet that collapses at the existing narrow breakpoint, with captions preserved as the authoritative meaning when moving images are removed;
+- extended reduced-motion handling so the meeting’s animated images disappear while the labels and article remain readable, and kept those images out of print.
+
+Feature-complete evidence head:
+
+`b15a054921a9afa79f4d11ad17b3271d7ea9eab9`
+
+Pull request:
+
+`#86 — Add Almost Online GIF staff meeting`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `284`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date Wallpaper Sky, True Width, Self-Award, Neighbors, Pink Links, Under Construction Forever, Honest Counter, Second Homepage, Broken-Image, and Back Button entries;
+- a visible four-GIF **GIF STAFF MEETING** reuses only `assets/web1/comet.gif`, `assets/web1/alien.gif`, `assets/web1/construction.gif`, and `assets/web1/hand-coded.gif`, all already present in the offline shell;
+- the post preserves the central thesis **A PAGE CAN MAKE A CHORUS OUT OF THINGS THAT CANNOT HEAR EACH OTHER.** while stating that composition and captions—not runtime coordination—create the apparent organization;
+- the four GIFs gain no shared state, messaging channel, event bus, timer loop, animation-frame loop, synchronization contract, or JavaScript frame inspection;
+- the new visual cabinet uses only static HTML and CSS, stays bounded at two columns on wider layouts, and collapses to one column at the existing `430px` breakpoint;
+- `prefers-reduced-motion: reduce` hides the meeting’s moving images while retaining the four captions and explanatory text, and print likewise omits those images;
+- focused regression assertions require the post, thesis, technical boundary, all four local GIF references, reduced-motion behavior, narrow layout, site-update line, and same-date reverse chronology;
+- no new JavaScript, service-worker behavior, GIF asset, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, account, cloud state, or dependency was added;
+- the accepted feature head is based directly on durable-documentation `main` `9e37abc67886268e69aa009d613955eca3ec8d6e`, preserving the concurrent Page Four Hessdalen instrument room, Elsewhere Catalogue 0 fifth space, Page Four rumor relay, offline shell, privacy boundaries, durable documentation gate, and all prior Museum features;
+- earlier green runs `276` and `282` were rejected as release evidence after `main` advanced during their evidence races; only reconciled head `b15a054921a9afa79f4d11ad17b3271d7ea9eab9` and run `284` are accepted as feature-complete evidence.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed required job `check`. Because adding this archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
