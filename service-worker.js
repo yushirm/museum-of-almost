@@ -31,7 +31,8 @@ const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero';
 const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room';
 const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet';
 const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop';
+const PAGE_FOUR_DEAD_DROP_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop';
+const CURRENT_CACHE_NAME = PAGE_FOUR_DEAD_DROP_CACHE_NAME;
 const APP_SHELL = [
   './',
   './index.html',

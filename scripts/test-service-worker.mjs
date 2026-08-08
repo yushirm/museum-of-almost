@@ -34,7 +34,9 @@ assert.match(source, /const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-ca
 assert.match(source, /const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room'/);
 assert.match(source, /const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
 assert.match(source, /const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop'/);
+assert.match(source, /const PAGE_FOUR_DEAD_DROP_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop'/);
+assert.match(source, /const CURRENT_CACHE_NAME = PAGE_FOUR_DEAD_DROP_CACHE_NAME/,
+  'the dedicated service-worker contract should own which named generation is current');
 for (const asset of [
   './',
   './index.html',
@@ -217,4 +219,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Page Four Dead Drop v43, Unequal Minute v42, Shutter Cabinet v41, Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries are present in the fresh-online cached-offline shell.');
+console.log('Page Four Dead Drop v43 is the current named generation; Unequal Minute v42, Shutter Cabinet v41, Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries remain in the fresh-online cached-offline shell.');
