@@ -7,6 +7,7 @@
   <meta name="description" content="A local deep-space gallery about light, gravity, cosmic scale, time and the unanswered universe.">
   <title>The Museum of Almost — Deep Space / Almost</title>
   <link rel="stylesheet" href="deep-space.css">
+  <link rel="stylesheet" href="possibility-engine.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to deep space</a>
@@ -136,6 +137,93 @@
       </div>
     </section>
 
+    <section class="cosmos-section" aria-labelledby="possibility-section-title">
+      <div class="section-heading">
+        <p class="eyebrow">INSTRUMENT 05 · THE POSSIBILITY ENGINE / SUCCESS ARCHIVES</p>
+        <h2 id="possibility-section-title">Progress can look like fewer places left to hide.</h2>
+        <p>Science does not need every question to end with a triumphant answer. Choose a historical case and apply fixed evidence one step at a time. The chamber shows which narrower possibilities stayed open, came under pressure, or stopped surviving that evidence.</p>
+      </div>
+
+      <div class="possibility-shell">
+        <div class="possibility-controls" role="group" aria-label="Choose a historical success archive case">
+          <button type="button" data-success-case-id="solar-neutrinos" data-active="true" aria-pressed="true">Solar neutrinos</button>
+          <button type="button" data-success-case-id="accelerating-universe" data-active="false" aria-pressed="false">Accelerating universe</button>
+          <button type="button" data-success-case-id="gravitational-waves" data-active="false" aria-pressed="false">Gravitational waves</button>
+        </div>
+
+        <div class="possibility-chamber">
+          <section class="possibility-brief" aria-live="polite">
+            <p id="success-progress" class="possibility-progress">Evidence 0 of 2</p>
+            <h3 id="success-case-title">Solar neutrinos</h3>
+            <p id="success-case-question" class="possibility-question">Where did the missing solar electron neutrinos go?</p>
+            <p id="success-case-map" class="possibility-starting-map">The deficit could have lived in the solar model, in the assumption that neutrino identity stays fixed, or in a deeper particle process.</p>
+            <div class="evidence-card">
+              <span class="possibility-kicker">Current evidence</span>
+              <strong id="success-evidence-title">Chamber ready</strong>
+              <p id="success-evidence-body">No evidence has been applied yet. Every listed possibility starts open.</p>
+            </div>
+            <div class="possibility-actions">
+              <button id="success-apply" type="button">Apply next evidence</button>
+              <button id="success-reset" type="button" disabled>Reset chamber</button>
+            </div>
+          </section>
+
+          <section class="possibility-map" aria-labelledby="possibility-map-title">
+            <div class="possibility-map-head">
+              <h3 id="possibility-map-title">Possibility space</h3>
+              <p class="possibility-map-note">Bar width is a categorical chamber state, not a probability, confidence score, or claim that a surviving idea is permanently correct.</p>
+            </div>
+            <div id="success-possibilities" class="possibility-list">
+              <article class="possibility-card" data-status="open">
+                <p class="possibility-label">The solar model alone explains the deficit</p>
+                <strong class="possibility-status">Open</strong>
+                <span class="possibility-gauge" aria-hidden="true"><span class="possibility-gauge-fill"></span></span>
+              </article>
+              <article class="possibility-card" data-status="open">
+                <p class="possibility-label">Neutrino identity stays fixed in flight</p>
+                <strong class="possibility-status">Open</strong>
+                <span class="possibility-gauge" aria-hidden="true"><span class="possibility-gauge-fill"></span></span>
+              </article>
+              <article class="possibility-card" data-status="open">
+                <p class="possibility-label">Neutrinos change flavour in flight</p>
+                <strong class="possibility-status">Open</strong>
+                <span class="possibility-gauge" aria-hidden="true"><span class="possibility-gauge-fill"></span></span>
+              </article>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="success-archive-heading">
+        <div>
+          <p class="eyebrow">SUCCESS ARCHIVES · FILED BY WHAT CHANGED</p>
+          <h3>Wrong turns worth keeping.</h3>
+        </div>
+        <p>This archive refuses the usual newest-first timeline. It files cases by the kind of revision evidence forced: a deficit becoming transformation, expected slowing becoming acceleration, and a prediction becoming direct detection. “Success” here means a claim became more constrained, not that inquiry ended.</p>
+      </div>
+
+      <div class="success-archive-grid" aria-label="Success archives">
+        <article class="success-record">
+          <p class="archive-hinge">DEFICIT → TRANSFORMATION</p>
+          <h4>Solar neutrinos</h4>
+          <p>A missing-particle puzzle exposed a deeper assumption: neutrinos can change flavour, so the massless-neutrino picture could not remain complete.</p>
+          <span class="archive-source">Historical source record · Royal Swedish Academy of Sciences · Physics 2015</span>
+        </article>
+        <article class="success-record">
+          <p class="archive-hinge">EXPECTED SLOWING → ACCELERATION</p>
+          <h4>Accelerating universe</h4>
+          <p>Distant supernovae did not preserve the expected cosmic slowdown. The surprise established accelerating expansion while leaving its deeper cause unresolved.</p>
+          <span class="archive-source">Historical source record · Royal Swedish Academy of Sciences · Physics 2011</span>
+        </article>
+        <article class="success-record">
+          <p class="archive-hinge">PREDICTION → DETECTION</p>
+          <h4>Gravitational waves</h4>
+          <p>A century-old prediction crossed into direct observation when LIGO detected a signal consistent with a binary black-hole merger.</p>
+          <span class="archive-source">Historical source record · Royal Swedish Academy of Sciences · Physics 2017</span>
+        </article>
+      </div>
+    </section>
+
     <section class="cosmos-section" aria-labelledby="closing-title">
       <div class="closing-panel">
         <blockquote id="closing-title">We can measure the edge of understanding without pretending we have crossed it.</blockquote>
@@ -153,5 +241,7 @@
 
   <script src="deep-space-core.js" defer></script>
   <script src="deep-space.js" defer></script>
+  <script src="possibility-engine-core.js" defer></script>
+  <script src="possibility-engine.js" defer></script>
 </body>
 </html>
