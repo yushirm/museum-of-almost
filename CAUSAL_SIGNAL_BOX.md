@@ -93,9 +93,8 @@ The stage is a schematic. Exact coordinate values and segment readouts are autho
 
 The feature is entirely local.
 
-It adds no:
+It adds no data-service or external runtime request. Loading the feature uses only its own same-origin local script and stylesheet assets. It also adds no:
 
-- runtime network request;
 - visitor free-text or numeric input;
 - storage, cookies, history state, or persistence;
 - timer, polling loop, or animation frame;
@@ -124,7 +123,7 @@ Route selection and dispatch state exist only in JavaScript memory and reset on 
 
 `causal-signal-core.js`, `causal-signal.js`, `causal-signal.css`, and this record are same-origin local assets and belong to the Museum's coherent offline shell.
 
-The feature makes no external request when online or offline.
+The feature makes no external or data-service request when online or offline; its same-origin code and stylesheet are normal local application assets.
 
 ## Rebuild rule
 

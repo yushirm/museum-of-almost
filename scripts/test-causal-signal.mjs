@@ -118,7 +118,7 @@ for (const pattern of [
   /Concept A was discarded/,
   /Concepts B and C were merged/,
   /Δt > \|Δx\|/,
-  /no[\s\S]+runtime network request/i,
+  /no data-service or external runtime request/i,
   /screen update happens immediately/i,
   /schematic/i
 ]) assert.match(doc, pattern);

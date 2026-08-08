@@ -79,7 +79,7 @@ The screen response is immediate. No timer is used to imitate physical light-tra
 
 The section is mounted by the existing local `deep-space.js` bootstrap after the static gallery is available, keeping the large proven document untouched while the feature remains a same-origin progressive enhancement. The full design gate, fixed routes, causal classification, accessibility contract and rebuild rule are documented in `CAUSAL_SIGNAL_BOX.md`.
 
-The signal box is entirely local. It makes no request, accepts no visitor-entered coordinates or text, stores no dispatch state, and uses no timers, location access, analytics, telemetry, remote assets or dependencies.
+The signal box is entirely local. Beyond loading its own same-origin script and stylesheet assets, it makes no data-service or external request, accepts no visitor-entered coordinates or text, stores no dispatch state, and uses no timers, location access, analytics, telemetry, remote assets or dependencies.
 
 ## Accessibility
 
