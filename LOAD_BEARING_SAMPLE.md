@@ -185,7 +185,7 @@ It contains no visitor, owner, or identifying information.
 
 The feature mounts after the Border Office through the established Commons progressive loader.
 
-At the implementation baseline the current shell is **v29 Border Office**. The successor must preserve that marker and all prior assets. If another release lands before merge, the feature must reconcile with that exact live shell rather than overwriting it.
+Implementation began on **v29 Border Office**. Before the first release gate, concurrent **Page Four / Unfiled Archive** landed on live `main` and legitimately became **v30 Page Four** while also adding its own entrance assets, workflow gate, and offline regression. The Load-Bearing Sample therefore preserves Page Four's exact v30 marker and assets and advances the coherent successor shell to **v31 Load-Bearing Sample**. The release must continue to reconcile with exact live `main` if another release lands before merge rather than overwriting it.
 
 ## Validation contract
 
