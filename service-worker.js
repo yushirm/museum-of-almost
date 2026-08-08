@@ -236,9 +236,14 @@ async function networkFirst(request, fallbackDocument = null) {
     const cached = await caches.match(request);
     if (cached) return cached;
 
-    if (fallbackDocument) {
-      const fallback = await caches.match(fallbackDocument);
-      if (fallback) return fallback;
+    if (fallbackDocument === './index.html') {
+      const entrance = await caches.match('./index.html');
+      if (entrance) return entrance;
+    }
+
+    if (fallbackDocument === './404.html') {
+      const missing = await caches.match('./404.html');
+      if (missing) return missing;
     }
 
     throw error;
