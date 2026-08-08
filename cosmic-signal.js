@@ -90,6 +90,10 @@
     });
   });
 
+  load('./solar-boundary-core.js', 'solarBoundaryCore', () => {
+    load('./solar-boundary.js', 'solarBoundaryView');
+  });
+
   load('./faultline-core.js', 'faultlineCore', () => {
     load('./faultline.js', 'faultlineView');
   });
