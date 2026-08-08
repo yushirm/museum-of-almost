@@ -8,6 +8,7 @@
   const evidenceButtons = [...document.querySelectorAll('[data-target]')];
   const controlStack = document.querySelector('.control-stack');
   const caseNav = document.querySelector('.case-nav');
+  const archiveSidebar = document.querySelector('.archive-sidebar');
   const reducedMotion = typeof globalThis.matchMedia === 'function'
     ? globalThis.matchMedia('(prefers-reduced-motion: reduce)')
     : null;
@@ -120,6 +121,40 @@
       channel.append(number, document.createTextNode(' Public leak channel'));
       caseNav.append(channel);
     }
+
+    if (caseNav && !document.getElementById('signal-echo-channel')) {
+      const channel = document.createElement('a');
+      channel.id = 'signal-echo-channel';
+      channel.href = 'deep-space.html';
+      const number = document.createElement('span');
+      number.textContent = '??';
+      channel.append(number, document.createTextNode(' Signal echo / Deep Space'));
+      caseNav.append(channel);
+    }
+  }
+
+  function addRumorSightings() {
+    if (!archiveSidebar || document.getElementById('rumor-sightings')) return;
+
+    const log = document.createElement('div');
+    log.id = 'rumor-sightings';
+    log.className = 'note-card';
+
+    const title = document.createElement('strong');
+    title.textContent = 'KNOWN LEAK POINTS:';
+    const entrance = document.createElement('span');
+    entrance.textContent = 'MUSEUM ENTRANCE / PUBLIC LISTING';
+    const web = document.createElement('span');
+    web.textContent = 'ALMOST ONLINE! / UNLISTED BULLETIN';
+    const space = document.createElement('span');
+    space.textContent = 'DEEP SPACE / SIGNAL ANOMALY';
+    const boundary = document.createElement('small');
+    boundary.textContent = 'STATIC ROUTES. NO VISITOR TRACKING.';
+
+    log.append(title, entrance, web, space, boundary);
+    const fictionLabel = archiveSidebar.querySelector('.fiction-label');
+    if (fictionLabel) archiveSidebar.insertBefore(log, fictionLabel);
+    else archiveSidebar.append(log);
   }
 
   if (randomButton) {
@@ -170,6 +205,7 @@
   });
 
   addLeakDesk();
+  addRumorSightings();
 
   const sharedCase = caseById(globalThis.location.hash.replace(/^#/, ''));
   if (sharedCase) {
