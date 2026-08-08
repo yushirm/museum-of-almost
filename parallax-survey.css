@@ -1,0 +1,256 @@
+.parallax-survey-section {
+  --parallax-paper: rgba(232, 230, 219, 0.05);
+  --parallax-line: rgba(219, 226, 255, 0.2);
+  --parallax-ink: #dce4ff;
+  --parallax-muted: #9da8c7;
+}
+
+.parallax-survey-shell {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.parallax-survey-premise,
+.parallax-survey-ledger,
+.parallax-survey-card {
+  border: 1px solid var(--parallax-line);
+  background: var(--parallax-paper);
+}
+
+.parallax-survey-premise {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.1rem;
+}
+
+.parallax-survey-premise strong,
+.parallax-survey-reading strong {
+  letter-spacing: 0.08em;
+}
+
+.parallax-survey-equation {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: clamp(1.05rem, 2.3vw, 1.5rem);
+  color: var(--parallax-ink);
+}
+
+.parallax-survey-caveat,
+.parallax-survey-note {
+  color: var(--parallax-muted);
+}
+
+.parallax-survey-cases {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.parallax-survey-card {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+}
+
+.parallax-survey-card-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.parallax-survey-card-head p,
+.parallax-survey-card-head h3,
+.parallax-survey-note,
+.parallax-survey-reading p,
+.parallax-survey-premise p {
+  margin: 0;
+}
+
+.parallax-sky-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.parallax-sky {
+  position: relative;
+  min-height: 116px;
+  overflow: hidden;
+  border: 1px solid rgba(219, 226, 255, 0.14);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    rgba(3, 4, 13, 0.72);
+  background-size: 20px 20px;
+}
+
+.parallax-background-star,
+.parallax-target-star,
+.parallax-earth,
+.parallax-sun {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+}
+
+.parallax-background-star {
+  width: 4px;
+  height: 4px;
+  background: rgba(220, 228, 255, 0.7);
+}
+
+.parallax-background-star.star-a { left: 18%; top: 26%; }
+.parallax-background-star.star-b { left: 73%; top: 18%; }
+.parallax-background-star.star-c { left: 62%; top: 68%; }
+.parallax-background-star.star-d { left: 30%; top: 76%; }
+
+.parallax-target-star {
+  width: 10px;
+  height: 10px;
+  top: calc(50% - 5px);
+  left: calc(50% - 5px);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08), 0 0 18px rgba(255, 255, 255, 0.35);
+}
+
+.parallax-sky-left.parallax-shift-wide .parallax-target-star { transform: translateX(-18px); }
+.parallax-sky-right.parallax-shift-wide .parallax-target-star { transform: translateX(18px); }
+.parallax-sky-left.parallax-shift-medium .parallax-target-star { transform: translateX(-10px); }
+.parallax-sky-right.parallax-shift-medium .parallax-target-star { transform: translateX(10px); }
+.parallax-sky-left.parallax-shift-narrow .parallax-target-star { transform: translateX(-4px); }
+.parallax-sky-right.parallax-shift-narrow .parallax-target-star { transform: translateX(4px); }
+
+.parallax-baseline {
+  position: relative;
+  min-height: 34px;
+  border-top: 1px solid rgba(219, 226, 255, 0.14);
+}
+
+.parallax-baseline::before {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 16px;
+  border-top: 1px dashed rgba(219, 226, 255, 0.36);
+}
+
+.parallax-earth,
+.parallax-sun {
+  top: 11px;
+}
+
+.parallax-earth {
+  width: 10px;
+  height: 10px;
+  background: #8faaff;
+}
+
+.parallax-earth.earth-left { left: 10%; }
+.parallax-earth.earth-right { right: 10%; }
+
+.parallax-sun {
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 12px;
+  background: #f5e4a3;
+}
+
+.parallax-survey-metrics {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.4rem 0.8rem;
+  margin: 0;
+}
+
+.parallax-survey-metrics dt {
+  color: var(--parallax-muted);
+}
+
+.parallax-survey-metrics dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.parallax-survey-ledger {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.parallax-survey-ledger h3 {
+  margin: 0;
+}
+
+.parallax-survey-table-wrap {
+  overflow-x: auto;
+}
+
+.parallax-survey-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+}
+
+.parallax-survey-table caption {
+  padding-bottom: 0.65rem;
+  color: var(--parallax-muted);
+  text-align: left;
+}
+
+.parallax-survey-table th,
+.parallax-survey-table td {
+  padding: 0.65rem;
+  border-bottom: 1px solid rgba(219, 226, 255, 0.13);
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.parallax-survey-reading {
+  display: grid;
+  gap: 0.55rem;
+  padding-top: 0.2rem;
+}
+
+@media (max-width: 860px) {
+  .parallax-survey-cases {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .parallax-survey-section *,
+  .parallax-survey-section *::before,
+  .parallax-survey-section *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .parallax-survey-premise,
+  .parallax-survey-ledger,
+  .parallax-survey-card,
+  .parallax-sky {
+    border-color: currentColor;
+  }
+
+  .parallax-survey-caveat,
+  .parallax-survey-note,
+  .parallax-survey-metrics dt,
+  .parallax-survey-table caption {
+    color: inherit;
+  }
+}
+
+@media print {
+  .parallax-survey-section {
+    break-inside: avoid;
+  }
+
+  .parallax-sky {
+    border: 1px solid #777;
+    background: transparent;
+  }
+}

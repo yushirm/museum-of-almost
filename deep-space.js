@@ -126,7 +126,21 @@
     });
   }
 
-  function loadUnequalMinute() {
+  function loadParallaxSurvey() {
+    if (!document.querySelector('link[data-parallax-survey-styles]')) {
+      const stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = './parallax-survey.css';
+      stylesheet.dataset.parallaxSurveyStyles = '';
+      document.head.append(stylesheet);
+    }
+
+    loadLocalScript('./parallax-survey-core.js', 'parallax-survey-core', () => {
+      loadLocalScript('./parallax-survey.js', 'parallax-survey-view');
+    });
+  }
+
+  function loadUnequalMinute(done = loadParallaxSurvey) {
     if (!document.querySelector('link[data-unequal-minute-styles]')) {
       const stylesheet = document.createElement('link');
       stylesheet.rel = 'stylesheet';
@@ -136,7 +150,7 @@
     }
 
     loadLocalScript('./unequal-minute-core.js', 'unequal-minute-core', () => {
-      loadLocalScript('./unequal-minute.js', 'unequal-minute-view');
+      loadLocalScript('./unequal-minute.js', 'unequal-minute-view', done);
     });
   }
 
