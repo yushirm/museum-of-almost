@@ -48,6 +48,8 @@ assert.doesNotMatch(js, /analytics|telemetry|tracking|gtag|dataLayer|mixpanel|se
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/, 'Page Four should participate in the local offline shell');
 assert.match(js, /getRandomValues/, 'random-file access should be local and non-identifying');
 assert.match(js, /aria-pressed/, 'reclassification control should expose state accessibly');
+assert.match(js, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/, 'scripted archive jumps should honor reduced-motion preference');
+assert.match(js, /reducedMotion\?\.matches \? 'auto' : 'smooth'/, 'reduced motion should disable smooth scrolling');
 
 for (const styles of [css, teaser]) {
   assert.match(styles, /@media/, 'Page Four styles need responsive/environment handling');
