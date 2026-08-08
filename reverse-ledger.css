@@ -1,0 +1,212 @@
+.reverse-ledger-section {
+  padding-block: clamp(2.5rem, 7vw, 6rem);
+  border-bottom: 2px solid var(--line);
+}
+
+.reverse-ledger-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 1rem 2rem;
+  margin-bottom: 1.25rem;
+}
+.reverse-ledger-heading .eyebrow { grid-column: 1 / -1; }
+.reverse-ledger-heading h2,
+.reverse-ledger-heading p { margin: 0; }
+.reverse-ledger-heading h2 {
+  font-family: ui-serif, Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1;
+}
+.reverse-ledger-heading > p:last-child {
+  max-width: 65ch;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.reverse-ledger-console {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.38fr) minmax(0, 1fr);
+  border: 1.5px solid var(--line);
+  background: var(--panel);
+}
+
+.reverse-ledger-claims {
+  padding: 1rem;
+  border-right: 1px solid var(--line);
+}
+.reverse-ledger-claims > span,
+.reverse-ledger-kicker {
+  display: block;
+  margin-bottom: 0.65rem;
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 780;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.reverse-ledger-buttons {
+  display: grid;
+  gap: 0.45rem;
+}
+.reverse-ledger-buttons button {
+  min-height: 44px;
+  padding: 0.62rem 0.7rem;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 720;
+  text-align: left;
+  cursor: pointer;
+}
+.reverse-ledger-buttons button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.reverse-ledger-buttons button:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+.reverse-ledger-book { min-width: 0; }
+.reverse-ledger-book-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.reverse-ledger-book-head .eyebrow { display: block; margin-bottom: 0.25rem; }
+.reverse-ledger-book-head div > strong {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+}
+.reverse-ledger-book-head > b {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--line);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.reverse-ledger-book-head > b[data-state="open"] { border-style: dashed; }
+
+.reverse-ledger-status,
+.reverse-ledger-note,
+.reverse-ledger-boundary {
+  color: var(--muted);
+  line-height: 1.55;
+}
+.reverse-ledger-status {
+  margin: 0;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--soft-line);
+}
+.reverse-ledger-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.reverse-ledger-body > div {
+  min-width: 0;
+  padding: 1rem;
+}
+.reverse-ledger-body > div + div { border-left: 1px solid var(--line); }
+
+.reverse-ledger-accounts,
+.reverse-ledger-entries {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.reverse-ledger-account,
+.reverse-ledger-entry {
+  border: 1px solid var(--soft-line);
+  background: var(--paper);
+}
+.reverse-ledger-account { padding: 0.75rem; }
+.reverse-ledger-account[data-state="missing"],
+.reverse-ledger-entry[data-state="missing"] { border-style: dashed; }
+.reverse-ledger-type {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--muted);
+  font-size: 0.61rem;
+  font-weight: 780;
+  letter-spacing: 0.1em;
+}
+.reverse-ledger-account strong { font-size: 0.84rem; }
+.reverse-ledger-account p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.77rem;
+  line-height: 1.5;
+}
+
+.reverse-ledger-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem;
+}
+.reverse-ledger-entry > strong {
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.reverse-ledger-entry span { min-width: 0; }
+.reverse-ledger-entry small,
+.reverse-ledger-entry b { display: block; }
+.reverse-ledger-entry small {
+  color: var(--muted);
+  font-size: 0.56rem;
+  letter-spacing: 0.07em;
+}
+.reverse-ledger-entry b {
+  margin-top: 0.12rem;
+  font-size: 0.72rem;
+  overflow-wrap: anywhere;
+}
+.reverse-ledger-note {
+  margin: 0;
+  padding: 0.8rem 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
+}
+.reverse-ledger-boundary { margin: 0.85rem 0 0; max-width: 95ch; }
+
+@media (max-width: 760px) {
+  .reverse-ledger-heading,
+  .reverse-ledger-console,
+  .reverse-ledger-body { grid-template-columns: 1fr; }
+  .reverse-ledger-claims { border-right: 0; border-bottom: 1px solid var(--line); }
+  .reverse-ledger-body > div + div { border-left: 0; border-top: 1px solid var(--line); }
+  .reverse-ledger-buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .reverse-ledger-buttons { grid-template-columns: 1fr; }
+  .reverse-ledger-book-head { flex-direction: column; }
+  .reverse-ledger-entry { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reverse-ledger-section * { transition: none !important; animation: none !important; }
+}
+
+@media (prefers-contrast: more) {
+  .reverse-ledger-console,
+  .reverse-ledger-buttons button,
+  .reverse-ledger-account,
+  .reverse-ledger-entry,
+  .reverse-ledger-book-head > b { border-width: 2px; }
+}
+
+@media print {
+  .reverse-ledger-section { display: none !important; }
+}
