@@ -14,7 +14,8 @@ const REVERSE_LEDGER_CACHE_NAME = 'museum-of-almost-v22-reverse-ledger';
 const CAUSAL_SIGNAL_BOX_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box';
 const REST_SCORE_CACHE_NAME = 'museum-of-almost-v24-rest-score';
 const GRAVITATIONAL_COPY_ROOM_CACHE_NAME = 'museum-of-almost-v25-gravitational-copy-room';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler';
+const REDSHIFT_RULER_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer';
 const APP_SHELL = [
   './',
   './index.html',
@@ -57,6 +58,9 @@ const APP_SHELL = [
   './rest-score-core.js',
   './rest-score.js',
   './rest-score.css',
+  './offcut-drawer-core.js',
+  './offcut-drawer.js',
+  './offcut-drawer.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -100,6 +104,7 @@ const APP_SHELL = [
   './EXPOSURE_PLATE.md',
   './REVERSE_LEDGER.md',
   './REST_SCORE.md',
+  './OFFCUT_DRAWER.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',

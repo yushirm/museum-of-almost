@@ -41,7 +41,9 @@
                               load('./reverse-ledger-core.js', 'reverseLedgerCore', () => {
                                 load('./reverse-ledger.js', 'reverseLedgerView', () => {
                                   load('./rest-score-core.js', 'restScoreCore', () => {
-                                    load('./rest-score.js', 'restScoreView');
+                                    load('./rest-score.js', 'restScoreView', () => {
+                                      load('./offcut-drawer.js', 'offcutDrawerView');
+                                    });
                                   });
                                 });
                               });
