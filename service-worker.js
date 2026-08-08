@@ -30,7 +30,8 @@ const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate';
 const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero';
 const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room';
 const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v42-unequal-minute';
+const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop';
 const APP_SHELL = [
   './',
   './index.html',
@@ -47,6 +48,8 @@ const APP_SHELL = [
   './page-four-research.js',
   './page-four-instrument-room.css',
   './page-four-instrument-room.js',
+  './page-four-dead-drop.css',
+  './page-four-dead-drop.js',
   './commons-now.html',
   './styles.css',
   './sample-hold.css',
@@ -180,7 +183,8 @@ const APP_SHELL = [
   './UNEQUAL_MINUTE.md',
   './WEB1_HOME.md',
   './PAGE_FOUR_RESEARCH.md',
-  './PAGE_FOUR_HESSDALEN.md'
+  './PAGE_FOUR_HESSDALEN.md',
+  './PAGE_FOUR_DEAD_DROP.md'
 ];
 
 self.addEventListener('install', (event) => {

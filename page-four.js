@@ -182,10 +182,34 @@
       document.head.append(style);
     }
 
-    if (!document.getElementById('page-four-instrument-room-script')) {
+    const instrumentScript = document.getElementById('page-four-instrument-room-script');
+    if (!instrumentScript) {
       const script = document.createElement('script');
       script.id = 'page-four-instrument-room-script';
       script.src = 'page-four-instrument-room.js';
+      script.defer = true;
+      script.addEventListener('load', loadDeadDrop, { once: true });
+      document.body.append(script);
+    } else if (document.getElementById('instrument-room')) {
+      loadDeadDrop();
+    } else {
+      instrumentScript.addEventListener('load', loadDeadDrop, { once: true });
+    }
+  }
+
+  function loadDeadDrop() {
+    if (!document.getElementById('page-four-dead-drop-style')) {
+      const style = document.createElement('link');
+      style.id = 'page-four-dead-drop-style';
+      style.rel = 'stylesheet';
+      style.href = 'page-four-dead-drop.css';
+      document.head.append(style);
+    }
+
+    if (!document.getElementById('page-four-dead-drop-script')) {
+      const script = document.createElement('script');
+      script.id = 'page-four-dead-drop-script';
+      script.src = 'page-four-dead-drop.js';
       script.defer = true;
       document.body.append(script);
     }

@@ -1,0 +1,440 @@
+.dead-drop {
+  position: relative;
+  margin-top: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid rgba(255, 193, 92, 0.36);
+  background:
+    linear-gradient(rgba(15, 10, 4, 0.96), rgba(8, 8, 7, 0.99)),
+    repeating-linear-gradient(90deg, transparent 0 19px, rgba(255, 193, 92, 0.02) 19px 20px);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.72);
+}
+
+.dead-drop::before {
+  content: "PUZZLE FICTION / LOCAL CASEWORK";
+  position: absolute;
+  top: -0.75rem;
+  right: 1rem;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid #f0b55b;
+  background: #120b03;
+  color: #ffd891;
+  font-size: 0.66rem;
+  letter-spacing: 0.13em;
+  transform: rotate(1deg);
+}
+
+.dead-drop-heading {
+  display: grid;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed rgba(255, 193, 92, 0.28);
+}
+
+.dead-drop-heading > span,
+.dead-drop-lock-number,
+.dead-drop-boundary,
+.dead-drop-fragment,
+.dead-drop-final > span,
+.dead-drop-final small {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.dead-drop-heading > span {
+  color: #f0b55b;
+  font-size: 0.74rem;
+}
+
+.dead-drop-title {
+  margin: 0;
+  color: #fff0c9;
+  font-size: clamp(2rem, 7vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.dead-drop-heading p {
+  max-width: 74ch;
+  margin: 0;
+  color: #c8bca5;
+  line-height: 1.55;
+}
+
+.dead-drop-boundary {
+  color: #e99a8d !important;
+  font-size: 0.66rem;
+}
+
+.dead-drop-protocol {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+
+.dead-drop-protocol strong {
+  grid-column: 1 / -1;
+  color: #ffd891;
+  letter-spacing: 0.1em;
+}
+
+.dead-drop-protocol span {
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 193, 92, 0.22);
+  background: rgba(255, 193, 92, 0.035);
+  color: #d8cdb8;
+  font-size: 0.78rem;
+}
+
+.dead-drop-progress {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.dead-drop-progress-cell {
+  display: grid;
+  place-items: center;
+  min-height: 2.7rem;
+  border: 1px solid rgba(255, 193, 92, 0.24);
+  color: #a69373;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.dead-drop-progress-cell[data-state="open"] {
+  border-color: #9ecf78;
+  background: rgba(126, 190, 96, 0.08);
+  color: #d8ffbf;
+}
+
+.dead-drop-live {
+  min-height: 1.5em;
+  margin: 0 0 1rem;
+  color: #9f927c;
+  font-size: 0.75rem;
+}
+
+.dead-drop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.dead-drop-puzzle {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgba(255, 193, 92, 0.22);
+  background: rgba(18, 13, 7, 0.76);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.38);
+}
+
+.dead-drop-puzzle[data-state="solved"] {
+  border-color: rgba(158, 207, 120, 0.68);
+  background: rgba(10, 24, 9, 0.56);
+}
+
+.dead-drop-puzzle header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 0.7rem;
+}
+
+.dead-drop-lock-number {
+  color: #f0b55b;
+  font-size: 0.65rem;
+}
+
+.dead-drop-puzzle h3 {
+  margin: 0;
+  color: #fff2d2;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.dead-drop-challenge {
+  margin: 0;
+  padding: 0.8rem;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff5df;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.dead-drop-prompt {
+  margin: 0;
+  color: #d8cdb8;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.dead-drop-options {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.dead-drop-options button,
+.dead-drop-hint-button,
+#dead-drop-reset,
+.dead-drop-final a {
+  min-height: 44px;
+}
+
+.dead-drop-options button,
+.dead-drop-hint-button,
+#dead-drop-reset {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid rgba(255, 193, 92, 0.48);
+  background: #130d07;
+  color: #ffe4aa;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dead-drop-options button:hover:not(:disabled),
+.dead-drop-hint-button:hover,
+#dead-drop-reset:hover {
+  background: #211508;
+}
+
+.dead-drop-options button[aria-pressed="true"] {
+  border-color: #f5d58c;
+  box-shadow: inset 0 0 0 1px rgba(245, 213, 140, 0.32);
+}
+
+.dead-drop-options button:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.dead-drop-puzzle[data-state="solved"] .dead-drop-options button[aria-pressed="true"] {
+  border-color: #9ecf78;
+  color: #deffc8;
+  opacity: 1;
+}
+
+.dead-drop-hint-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, auto) 1fr;
+  gap: 0.6rem;
+  align-items: start;
+}
+
+.dead-drop-hint-button {
+  color: #b8cde9;
+  border-color: rgba(139, 174, 219, 0.42);
+  background: #070d13;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.dead-drop-hint-output {
+  min-height: 44px;
+  margin: 0;
+  padding: 0.65rem;
+  border: 1px solid rgba(139, 174, 219, 0.16);
+  color: #9eabb9;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.dead-drop-feedback {
+  display: grid;
+  gap: 0.35rem;
+  min-height: 4.2rem;
+  padding: 0.7rem;
+  border-top: 1px solid rgba(255, 193, 92, 0.16);
+  color: #ad9d83;
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+.dead-drop-puzzle[data-state="solved"] .dead-drop-feedback {
+  color: #cce9b9;
+}
+
+.dead-drop-fragment {
+  color: #ffe08a;
+  font-weight: 800;
+}
+
+.dead-drop-final {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid rgba(216, 92, 79, 0.55);
+  background:
+    linear-gradient(rgba(30, 5, 4, 0.86), rgba(16, 5, 4, 0.92)),
+    repeating-linear-gradient(-12deg, transparent 0 11px, rgba(255, 255, 255, 0.018) 11px 12px);
+}
+
+.dead-drop-final[hidden] {
+  display: none;
+}
+
+.dead-drop-final > span {
+  color: #ff9a8d;
+  font-size: 0.68rem;
+}
+
+.dead-drop-final h3 {
+  margin: 0;
+  color: #ffd8cf;
+  font-size: clamp(1.4rem, 4vw, 2.6rem);
+  letter-spacing: 0.04em;
+}
+
+.dead-drop-final p {
+  margin: 0;
+  color: #d9c3bd;
+}
+
+.dead-drop-final a {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0 0.1rem;
+  color: #fff0c5;
+  font-weight: 800;
+  text-underline-offset: 0.25em;
+}
+
+.dead-drop-final small {
+  color: #ba8b83;
+  font-size: 0.62rem;
+  line-height: 1.5;
+}
+
+#dead-drop-reset {
+  display: block;
+  width: fit-content;
+  margin: 1rem 0 0;
+}
+
+#dead-drop-reset[hidden] {
+  display: none;
+}
+
+.dead-drop-final-rule {
+  margin: 1rem 0 0;
+  padding: 0.8rem;
+  border: 1px dashed rgba(255, 193, 92, 0.34);
+  color: #f0b55b;
+  text-align: center;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+}
+
+.dead-drop button:focus-visible,
+.dead-drop a:focus-visible {
+  outline: 2px solid #f6d788;
+  outline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .dead-drop-protocol,
+  .dead-drop-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dead-drop-protocol strong {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 620px) {
+  .dead-drop {
+    padding: 0.9rem;
+  }
+
+  .dead-drop::before {
+    position: static;
+    display: inline-block;
+    margin-bottom: 0.8rem;
+    transform: none;
+  }
+
+  .dead-drop-progress {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dead-drop-hint-row,
+  .dead-drop-puzzle header {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dead-drop *,
+  .dead-drop *::before,
+  .dead-drop *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .dead-drop,
+  .dead-drop-puzzle,
+  .dead-drop-challenge,
+  .dead-drop-hint-output,
+  .dead-drop-final,
+  .dead-drop-progress-cell {
+    border-color: currentColor;
+  }
+
+  .dead-drop-heading p,
+  .dead-drop-prompt,
+  .dead-drop-feedback,
+  .dead-drop-hint-output,
+  .dead-drop-final p,
+  .dead-drop-live {
+    color: #fff;
+  }
+}
+
+@media print {
+  .dead-drop {
+    break-before: page;
+    color: #000;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .dead-drop::before,
+  .dead-drop-options,
+  .dead-drop-hint-row,
+  #dead-drop-reset,
+  .dead-drop-live {
+    display: none !important;
+  }
+
+  .dead-drop-puzzle,
+  .dead-drop-challenge,
+  .dead-drop-final,
+  .dead-drop-progress-cell {
+    color: #000;
+    background: #fff;
+    border-color: #555;
+    box-shadow: none;
+  }
+
+  .dead-drop *,
+  .dead-drop-final * {
+    color: #000 !important;
+  }
+}
