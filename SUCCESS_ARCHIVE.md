@@ -442,3 +442,49 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Rest Score
+
+Feature:
+
+**The Rest Score / Nothing Is Not Missing**
+
+Design outcome:
+
+- Concept A, **Completeness Audit**, was discarded as the least additive because it would turn absence semantics into another operational dashboard.
+- Concept B, **The Rest Score**, supplied the orchestral distinction between an intentional written rest and missing notation.
+- Concept C, **The Empty State Becomes the Main Exhibit**, supplied the convention-breaking visual hierarchy in which zero, missing, and not-applicable states receive stronger emphasis than ordinary nonzero readings.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`d61d3602c0e1c5a8945ce7087d9bc05d5a4c7c9b`
+
+Pull request:
+
+`#60 — Add the Rest Score`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `160`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a fixed score of 19 current semantic measures spanning the existing USGS, NOAA FLOW, NOAA SCALES, Open-Meteo, and NASA EONET feed channels;
+- explicit `SOUNDED VALUE`, `WRITTEN ZERO`, `MISSING MEASURE`, and `NOT APPLICABLE` states without collapsing them into one empty-state glyph;
+- field-specific zero semantics so numeric zero never automatically becomes a rest;
+- magnitude `0.0` and solar-wind speed `0` remain sounded values, while zero event counts, `G0`/`S0`, and `0.0 mm` precipitation become written zeros only where the field semantics justify it;
+- an unavailable earthquake feed leaves strongest magnitude missing, while a successful zero-event count makes strongest magnitude not applicable;
+- reuse of the existing NOAA scale normalizer instead of a competing scale interpretation;
+- category counts kept explicitly separate from completeness percentages, quality scores, confidence scores, reliability rankings, and provider comparisons;
+- memory-only state soloing reset on every new real Commons snapshot;
+- no additional runtime data-service request, storage, cookies, history state, location access, visitor input, analytics, telemetry, polling, remote media, or runtime dependency;
+- responsive, keyboard, reduced-motion, increased-contrast, and print handling;
+- coherent same-origin v24 offline-shell upgrade preserving the concurrent Second Homepage and Causal Signal Box releases, plus a forward-compatible regression guard that keeps the Causal Signal Box v23 release marker without requiring it to remain the current cache forever.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
