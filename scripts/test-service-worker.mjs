@@ -20,11 +20,16 @@ assert.match(source, /const GRAVITATIONAL_COPY_ROOM_CACHE_NAME = 'museum-of-almo
 assert.match(source, /const REDSHIFT_RULER_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler'/);
 assert.match(source, /const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer'/);
 assert.match(source, /const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-origin-machine'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v29-border-office'/);
+assert.match(source, /const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v30-page-four'/);
 for (const asset of [
   './',
   './index.html',
   './landing.css',
+  './page-four-teaser.css',
+  './page-four.html',
+  './page-four.css',
+  './page-four.js',
   './commons-now.html',
   './styles.css',
   './sample-hold.css',
@@ -157,4 +162,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Witness Seal, Possibility Engine, Isolation Board, Frame Shifter, Exposure Plate, Reverse Ledger, Causal Signal Box, Rest Score, Gravitational Copy Room, Redshift Ruler, Offcut Drawer, Origin Machine, and Border Office offline shell plus fresh-online cached-offline behavior verified.');
+console.log('Page Four and the existing galleries are present in the fresh-online cached-offline shell.');
