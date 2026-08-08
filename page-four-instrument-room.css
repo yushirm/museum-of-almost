@@ -1,0 +1,481 @@
+.instrument-room {
+  position: relative;
+  margin-top: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid rgba(131, 204, 255, 0.32);
+  background:
+    linear-gradient(rgba(5, 9, 12, 0.96), rgba(4, 7, 9, 0.99)),
+    repeating-linear-gradient(90deg, transparent 0 31px, rgba(131, 204, 255, 0.025) 31px 32px);
+  box-shadow: inset 0 0 42px rgba(0, 0, 0, 0.78), 0 0 0 1px rgba(0, 0, 0, 0.82);
+}
+
+.instrument-room::before {
+  content: "FIELD FILE / HESSDALEN 1984";
+  position: absolute;
+  top: -0.75rem;
+  right: 1rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid #85cdf7;
+  background: #071018;
+  color: #bfe8ff;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  transform: rotate(-1deg);
+}
+
+.instrument-heading {
+  display: grid;
+  gap: 0.45rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed rgba(131, 204, 255, 0.3);
+}
+
+.instrument-heading > span,
+.instrument-state,
+.instrument-source,
+.hypothesis-status,
+.cross-exam-relation,
+.control-code,
+.control-boundary {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.instrument-heading > span {
+  color: #85cdf7;
+  font-size: 0.74rem;
+}
+
+.instrument-heading h2 {
+  margin: 0;
+  color: #e0f4ff;
+  font-size: clamp(2rem, 6vw, 4.8rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.instrument-heading p {
+  max-width: 78ch;
+  margin: 0;
+  color: #b7c7d0;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.instrument-rule {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.instrument-rule strong {
+  grid-column: 1 / -1;
+  color: #ffcd75;
+  letter-spacing: 0.09em;
+  font-size: 0.78rem;
+}
+
+.instrument-rule span {
+  min-height: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 205, 117, 0.24);
+  background: rgba(255, 205, 117, 0.035);
+  color: #d8d2c5;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.instrument-channel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.instrument-channel {
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid rgba(131, 204, 255, 0.18);
+  background: rgba(7, 15, 20, 0.72);
+}
+
+.instrument-channel header {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(131, 204, 255, 0.12);
+}
+
+.instrument-channel h3 {
+  margin: 0;
+  color: #e5f6ff;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+}
+
+.instrument-state {
+  flex: 0 0 auto;
+  color: #ffcd75;
+  font-size: 0.61rem;
+  text-align: right;
+}
+
+.instrument-channel dl {
+  display: grid;
+  grid-template-columns: minmax(6.6rem, 0.28fr) 1fr;
+  margin: 0;
+}
+
+.instrument-channel dt,
+.instrument-channel dd {
+  margin: 0;
+  padding: 0.62rem 0.4rem;
+  border-bottom: 1px solid rgba(131, 204, 255, 0.1);
+  font-size: 0.73rem;
+  line-height: 1.48;
+}
+
+.instrument-channel dt {
+  color: #8ecae9;
+  font-weight: 700;
+}
+
+.instrument-channel dd {
+  color: #d6dfe4;
+}
+
+.instrument-channel dt:nth-of-type(2),
+.instrument-channel dd:nth-of-type(2) {
+  color: #d8b8a8;
+}
+
+.instrument-source {
+  margin: 0;
+  color: #718995;
+  font-size: 0.61rem;
+  line-height: 1.4;
+}
+
+.hypothesis-bench,
+.control-desk {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 113, 98, 0.34);
+  background: rgba(25, 6, 5, 0.42);
+}
+
+.hypothesis-bench h3,
+.control-desk h3 {
+  margin: 0;
+  color: #ff9a8e;
+  letter-spacing: 0.07em;
+}
+
+.hypothesis-intro,
+.control-boundary {
+  margin: 0.45rem 0 0;
+  color: #b99c98;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.hypothesis-buttons,
+.control-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 0.85rem 0;
+}
+
+.hypothesis-buttons button,
+.control-buttons button {
+  min-height: 44px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(255, 145, 133, 0.52);
+  background: #160907;
+  color: #eec2bd;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hypothesis-buttons button[aria-pressed="true"],
+.control-buttons button[aria-pressed="true"] {
+  border-color: #ffcd75;
+  background: #30200d;
+  color: #ffe2a7;
+}
+
+.hypothesis-buttons button:hover,
+.control-buttons button:hover {
+  background: #27100d;
+}
+
+.hypothesis-buttons button:focus-visible,
+.control-buttons button:focus-visible,
+.instrument-ledger-link:focus-visible {
+  outline: 2px solid #ffcd75;
+  outline-offset: 3px;
+}
+
+.hypothesis-output {
+  min-height: 12rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 205, 117, 0.28);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.hypothesis-claim {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.hypothesis-status {
+  color: #ffcd75;
+  font-size: 0.66rem;
+}
+
+.hypothesis-claim strong {
+  color: #ffe1db;
+  font-size: 1.22rem;
+}
+
+.hypothesis-claim h4,
+.control-output h4 {
+  margin: 0.4rem 0 0;
+  color: #8ecae9;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+}
+
+.hypothesis-claim p,
+.control-output p {
+  margin: 0;
+  color: #d8d4d2;
+  line-height: 1.55;
+}
+
+.cross-exam-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.cross-exam-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.38rem 0.7rem;
+  padding: 0.75rem;
+  border-left: 3px solid #718995;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.cross-exam-row strong {
+  color: #dbeef8;
+  font-size: 0.73rem;
+}
+
+.cross-exam-relation {
+  color: #ffcd75;
+  font-size: 0.6rem;
+  text-align: right;
+}
+
+.cross-exam-row p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #bfc7cb;
+  font-size: 0.72rem;
+  line-height: 1.48;
+}
+
+.cross-exam-row[data-relation="weighs-for"] {
+  border-left-color: #a8d98f;
+}
+
+.cross-exam-row[data-relation="weighs-against"] {
+  border-left-color: #ff8275;
+}
+
+.cross-exam-row[data-relation="inconclusive"] {
+  border-left-color: #ffcd75;
+}
+
+.control-desk {
+  border-color: rgba(131, 204, 255, 0.3);
+  background: rgba(4, 14, 21, 0.56);
+}
+
+.control-desk h3 {
+  color: #a8dcf8;
+}
+
+.control-output {
+  display: grid;
+  gap: 0.5rem;
+  min-height: 14rem;
+  padding: 1rem;
+  border-left: 3px solid #85cdf7;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.control-code {
+  color: #85cdf7;
+  font-size: 0.66rem;
+}
+
+.control-output strong {
+  color: #e0f4ff;
+  font-size: 1.18rem;
+}
+
+.control-output small {
+  color: #ffcd75;
+  line-height: 1.5;
+}
+
+.instrument-ledger-link {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 44px;
+  margin-top: 1rem;
+  color: #bfe8ff;
+  font-weight: 700;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+.instrument-final-rule {
+  margin: 1rem 0 0;
+  padding: 0.9rem;
+  border: 1px dashed rgba(255, 205, 117, 0.46);
+  color: #ffcd75;
+  text-align: center;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .instrument-rule,
+  .instrument-channel-grid,
+  .cross-exam-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .instrument-rule strong {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 580px) {
+  .instrument-room {
+    padding: 0.9rem;
+  }
+
+  .instrument-room::before {
+    position: static;
+    display: inline-block;
+    margin-bottom: 0.8rem;
+    transform: none;
+  }
+
+  .instrument-channel header,
+  .instrument-channel dl,
+  .cross-exam-row {
+    grid-template-columns: 1fr;
+  }
+
+  .instrument-channel header {
+    align-items: start;
+  }
+
+  .instrument-state,
+  .cross-exam-relation {
+    text-align: left;
+  }
+
+  .instrument-channel dt {
+    padding-bottom: 0.18rem;
+    border-bottom: 0;
+  }
+
+  .instrument-channel dd {
+    padding-top: 0.18rem;
+  }
+
+  .cross-exam-row p {
+    grid-column: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .instrument-room *,
+  .instrument-room *::before,
+  .instrument-room *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .instrument-room,
+  .instrument-rule span,
+  .instrument-channel,
+  .hypothesis-bench,
+  .hypothesis-output,
+  .cross-exam-row,
+  .control-desk,
+  .control-output {
+    border-color: currentColor;
+  }
+
+  .instrument-heading p,
+  .instrument-channel dd,
+  .hypothesis-claim p,
+  .cross-exam-row p,
+  .control-output p {
+    color: #fff;
+  }
+}
+
+@media print {
+  .instrument-room {
+    break-before: page;
+    color: #000;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .instrument-room::before,
+  .hypothesis-buttons,
+  .control-buttons {
+    display: none;
+  }
+
+  .instrument-rule span,
+  .instrument-channel,
+  .hypothesis-bench,
+  .hypothesis-output,
+  .cross-exam-row,
+  .control-desk,
+  .control-output {
+    color: #000;
+    background: #fff;
+    border-color: #555;
+  }
+
+  .instrument-room * {
+    color: #000 !important;
+  }
+}

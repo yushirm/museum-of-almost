@@ -27,7 +27,8 @@ const PAGE_FOUR_SIGNAL_ANOMALY_CACHE_NAME = 'museum-of-almost-v35-page-four-sign
 const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice';
 const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shuffle-table';
 const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero';
+const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room';
 const APP_SHELL = [
   './',
   './index.html',
@@ -42,6 +43,8 @@ const APP_SHELL = [
   './page-four.js',
   './page-four-research.css',
   './page-four-research.js',
+  './page-four-instrument-room.css',
+  './page-four-instrument-room.js',
   './commons-now.html',
   './styles.css',
   './sample-hold.css',
@@ -166,7 +169,8 @@ const APP_SHELL = [
   './ORIGIN_MACHINE.md',
   './SAME_ANSWER_MACHINE.md',
   './WEB1_HOME.md',
-  './PAGE_FOUR_RESEARCH.md'
+  './PAGE_FOUR_RESEARCH.md',
+  './PAGE_FOUR_HESSDALEN.md'
 ];
 
 self.addEventListener('install', (event) => {
