@@ -7,7 +7,8 @@ const PREVIOUS_PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer
 const PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online';
 const WITNESS_SEAL_CACHE_NAME = 'museum-of-almost-v17-witness-seal';
 const POSSIBILITY_ENGINE_CACHE_NAME = 'museum-of-almost-v18-possibility-engine';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v19-isolation-board';
+const ISOLATION_BOARD_CACHE_NAME = 'museum-of-almost-v19-isolation-board';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v20-frame-shifter';
 const APP_SHELL = [
   './',
   './index.html',
@@ -53,6 +54,9 @@ const APP_SHELL = [
   './possibility-engine.css',
   './possibility-engine-core.js',
   './possibility-engine.js',
+  './frame-shifter.css',
+  './frame-shifter-core.js',
+  './frame-shifter.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -74,6 +78,7 @@ const APP_SHELL = [
   './PLANETARY_HELIODON.md',
   './DEEP_SPACE.md',
   './POSSIBILITY_ENGINE.md',
+  './FRAME_SHIFTER.md',
   './WEB1_HOME.md'
 ];
 

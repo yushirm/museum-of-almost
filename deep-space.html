@@ -8,6 +8,7 @@
   <title>The Museum of Almost — Deep Space / Almost</title>
   <link rel="stylesheet" href="deep-space.css">
   <link rel="stylesheet" href="possibility-engine.css">
+  <link rel="stylesheet" href="frame-shifter.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to deep space</a>
@@ -224,6 +225,77 @@
       </div>
     </section>
 
+    <section class="cosmos-section" aria-labelledby="frame-shifter-title">
+      <div class="section-heading">
+        <p class="eyebrow">INSTRUMENT 06 · NO UNIVERSAL NOW / THE FRAME SHIFTER</p>
+        <h2 id="frame-shifter-title">The page cannot keep distant events on one row.</h2>
+        <p>Choose an idealized pair of events, then change inertial frame. The numerical Lorentz transform and the layout move together: coordinate time and distance can change, while the spacetime interval and causal class do not.</p>
+      </div>
+
+      <div class="frame-shifter">
+        <div class="frame-control-bank">
+          <div class="frame-control-group">
+            <p class="frame-control-label">Event pair</p>
+            <div class="frame-controls" role="group" aria-label="Choose a spacetime event pair">
+              <button type="button" data-spacetime-scenario-id="distant-flashes" data-active="true" aria-pressed="true">Distant flashes</button>
+              <button type="button" data-spacetime-scenario-id="light-pulse" data-active="false" aria-pressed="false">Light pulse</button>
+              <button type="button" data-spacetime-scenario-id="timelike-exchange" data-active="false" aria-pressed="false">Timelike exchange</button>
+            </div>
+          </div>
+          <div class="frame-control-group">
+            <p class="frame-control-label">Inertial frame · β = v/c</p>
+            <div class="frame-controls" role="group" aria-label="Choose an inertial reference frame">
+              <button type="button" data-frame-beta="-0.8" data-active="false" aria-pressed="false">−0.8c</button>
+              <button type="button" data-frame-beta="-0.6" data-active="false" aria-pressed="false">−0.6c</button>
+              <button type="button" data-frame-beta="0" data-active="true" aria-pressed="true">0c</button>
+              <button type="button" data-frame-beta="0.6" data-active="false" aria-pressed="false">+0.6c</button>
+              <button type="button" data-frame-beta="0.8" data-active="false" aria-pressed="false">+0.8c</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="frame-body">
+          <div class="frame-stage-wrap">
+            <div class="frame-stage-head">
+              <h3>Coordinate-time stage</h3>
+              <span>Time increases downward</span>
+            </div>
+            <div id="frame-stage" class="frame-stage" data-causal-class="spacelike">
+              <div class="frame-same-time-line" aria-hidden="true"><span>same coordinate time as A</span></div>
+              <div class="frame-lanes">
+                <div class="frame-lane">
+                  <span class="frame-lane-label">Event A</span>
+                  <div class="frame-event frame-event-a"><strong id="frame-event-a">FLASH A</strong></div>
+                </div>
+                <div class="frame-lane">
+                  <span class="frame-lane-label">Event B</span>
+                  <div class="frame-event frame-event-b"><strong id="frame-event-b">FLASH B</strong></div>
+                </div>
+              </div>
+            </div>
+            <p class="frame-integrity-note">The vertical displacement is normalized only to fit the stage. It is not a second physical scale. The numerical Δt′ readout is authoritative.</p>
+          </div>
+
+          <div class="frame-readout" aria-live="polite">
+            <div class="frame-scenario-copy">
+              <p class="frame-control-label">Selected case</p>
+              <h3 id="frame-scenario-title">Distant flashes</h3>
+              <p id="frame-scenario-note">Two flashes are simultaneous in the gallery frame and separated by four light-seconds. Because the separation is spacelike, another inertial frame can reverse their coordinate-time order.</p>
+            </div>
+            <div class="frame-metrics">
+              <div class="frame-metric"><span>Frame</span><strong id="frame-name">0c · gallery reference frame</strong></div>
+              <div class="frame-metric"><span>Δt′</span><strong id="frame-delta-time">0 s</strong></div>
+              <div class="frame-metric"><span>Δx′</span><strong id="frame-delta-space">+4 light-s</strong></div>
+              <div class="frame-metric"><span>Invariant Δx² − Δt²</span><strong id="frame-invariant">+16 light-s²</strong></div>
+              <div class="frame-metric"><span>Causal class</span><strong id="frame-causal-class">SPACELIKE</strong></div>
+            </div>
+            <p id="frame-order" class="frame-order">A and B are simultaneous in this frame.</p>
+            <p id="frame-causal-note" class="frame-causal-note">No light-speed-or-slower signal can connect these events. Their coordinate-time order may depend on the inertial frame.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="cosmos-section" aria-labelledby="closing-title">
       <div class="closing-panel">
         <blockquote id="closing-title">We can measure the edge of understanding without pretending we have crossed it.</blockquote>
@@ -243,5 +315,7 @@
   <script src="deep-space.js" defer></script>
   <script src="possibility-engine-core.js" defer></script>
   <script src="possibility-engine.js" defer></script>
+  <script src="frame-shifter-core.js" defer></script>
+  <script src="frame-shifter.js" defer></script>
 </body>
 </html>
