@@ -35,7 +35,11 @@
                   load('./witness-seal-core.js', 'witnessSealCore', () => {
                     load('./witness-seal.js', 'witnessSealView', () => {
                       load('./isolation-board-core.js', 'isolationBoardCore', () => {
-                        load('./isolation-board.js', 'isolationBoardView');
+                        load('./isolation-board.js', 'isolationBoardView', () => {
+                          load('./exposure-plate-core.js', 'exposurePlateCore', () => {
+                            load('./exposure-plate.js', 'exposurePlateView');
+                          });
+                        });
                       });
                     });
                   });

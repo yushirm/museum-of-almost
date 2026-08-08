@@ -179,3 +179,49 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Exposure Plate
+
+Feature:
+
+**The Exposure Plate / The World We Did Not Measure**
+
+Design outcome:
+
+- Concept A, **Coverage Meter**, was discarded as the least additive because its useful sparse-sampling metrics would otherwise become another dashboard card.
+- Concept B, **The Exposure Plate**, supplied the photographic contact-sheet mechanic for making distance from current evidence visible.
+- Concept C, **The Anti-Weather Map**, supplied the convention-breaking refusal to infer a continuous weather surface between sparse fixed samples.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`134f6342482c57ef11626e07e69e20ee85863190`
+
+Pull request:
+
+`#54 — Add the Exposure Plate`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `137`;
+- conclusion: `success`.
+
+What succeeded:
+
+- only fixed weather points that actually produced a current value participate in the evidence geometry;
+- deterministic 10° × 10° grid evaluation across 648 cell centers;
+- reuse of the established Commons great-circle distance calculation rather than a competing geometry model;
+- literal nearest-sample distance bands without temperature, wind, precipitation, light, uncertainty, confidence, accuracy, or representativeness interpolation;
+- the farthest readout explicitly scoped to an approximate tested grid-cell center rather than an exact continuous global maximum;
+- no conversion of equirectangular cell counts into misleading Earth-surface coverage percentages;
+- memory-only distance-band highlighting reset on each real latched snapshot;
+- compact evidence-geometry qualification carried onto the native field sheet while the interactive plate is omitted from print;
+- no additional runtime request, storage, cookies, location access, visitor input, analytics, telemetry, polling, remote media, or runtime dependency;
+- responsive, keyboard, reduced-motion, increased-contrast, and print handling;
+- coherent same-origin v21 offline-shell upgrade preserving the concurrently merged Frame Shifter and prior Museum assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
