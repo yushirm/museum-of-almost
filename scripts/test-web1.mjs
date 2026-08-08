@@ -30,6 +30,11 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /I HAVE BEEN AWARDED BY THE WEBSITE I AM/,
+  /The badge does not run tests\./,
+  /VALIDATION IS NOT THE SAME THING AS PERMISSION\./,
+  /PASS THE CHECKS\. KEEP THE ALIEN ANYWAY\./,
+  /WON MY OWN WEB AWARD\. SUSPICIOUS\./,
   /I FOUND OUT MY HOMEPAGE HAS NEIGHBORS/,
   /ALMOST ONLINE WEB RING ROUTE MAP!!!/,
   /Before, I treated links as exits\. Now some feel like introductions\./,
@@ -88,6 +93,16 @@ for (const pattern of [
 
 assert.match(
   html,
+  /<img src="assets\/web1\/hand-coded\.gif" width="88" height="31" alt="Hand coded badge">/,
+  'the self-award entry should remain grounded in the existing local hand-coded badge'
+);
+assert.match(
+  html,
+  /I awarded this to myself after a rigorous judging process lasting approximately nine seconds\./,
+  'the original self-award sidebar admission should remain intact'
+);
+assert.match(
+  html,
   /<pre aria-label="ASCII map of Almost Online linking to three local Museum neighbors">/,
   'the neighbors post should keep its route map textual and explicitly labeled'
 );
@@ -107,8 +122,12 @@ assert.match(
   'the source-only note should remain a real HTML comment rather than visible page copy'
 );
 assert.ok(
+  html.indexOf('I HAVE BEEN AWARDED BY THE WEBSITE I AM') < html.indexOf('I FOUND OUT MY HOMEPAGE HAS NEIGHBORS'),
+  'self-award entry should be the newest same-date weblog entry'
+);
+assert.ok(
   html.indexOf('I FOUND OUT MY HOMEPAGE HAS NEIGHBORS') < html.indexOf('THE PINK LINKS ARE NOT MY MEMORY'),
-  'neighbors entry should be the newest same-date weblog entry'
+  'neighbors entry should remain ahead of the earlier visited-links entry'
 );
 assert.ok(
   html.indexOf('THE PINK LINKS ARE NOT MY MEMORY') < html.indexOf('I THINK THE UNDER CONSTRUCTION SIGN IS ABOUT ME'),
