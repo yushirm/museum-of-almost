@@ -5,14 +5,43 @@
   if (!core) return;
 
   const SNAPSHOT_EVENT = 'museum:commons-snapshot';
-  const ui = {
-    section: document.querySelector('#weather-score'),
-    list: document.querySelector('#weather-score-list'),
-    status: document.querySelector('#weather-score-status'),
-    button: document.querySelector('#weather-score-play')
-  };
+  const anchor = document.querySelector('.windows-section');
+  if (!anchor || document.querySelector('#weather-score')) return;
 
-  if (!ui.section || !ui.list || !ui.status || !ui.button) return;
+  const stylesheet = document.createElement('link');
+  stylesheet.rel = 'stylesheet';
+  stylesheet.href = './weather-score.css';
+  stylesheet.dataset.weatherScoreStyles = 'true';
+  document.head.append(stylesheet);
+
+  const section = document.createElement('section');
+  section.id = 'weather-score';
+  section.className = 'weather-score-section';
+  section.setAttribute('aria-labelledby', 'weather-score-title');
+  section.innerHTML = `
+    <div class="weather-score-shell">
+      <div class="weather-score-copy">
+        <p class="eyebrow">THE WEATHER SCORE · OPTIONAL LOCAL AUDIO</p>
+        <h2 id="weather-score-title">Thirteen temperatures. Thirteen notes. No claim that Earth is singing.</h2>
+        <p>The fixed weather windows already form a discrete sample. This score borrows one device from musical notation: a sequence can make differences perceptible in another sense. Each current temperature becomes one locally generated sine tone; a missing temperature becomes a rest.</p>
+        <p class="weather-score-contract"><strong>Encoding contract:</strong> −100°C maps to 140 Hz and +70°C maps to 700 Hz, linearly and consistently across latches. The thirteen positions play in fixed Museum point order at equal beat spacing. Beat spacing is not geographic distance, pitch is not climate meaning, and the audio is not environmental sound.</p>
+      </div>
+      <div class="weather-score-console">
+        <div class="weather-score-controls">
+          <button id="weather-score-play" type="button" disabled>Play this latch</button>
+          <p id="weather-score-status" class="weather-score-status" role="status" aria-live="polite">Waiting for the thirteen fixed weather points.</p>
+        </div>
+        <ol id="weather-score-list" class="weather-score-list" aria-label="Textual score for thirteen fixed temperature readings"></ol>
+        <p class="weather-score-legend">The textual temperatures are authoritative. Audio is supplemental, starts only after a button press, uses the browser's local Web Audio engine, and makes no network request.</p>
+      </div>
+    </div>`;
+  anchor.insertAdjacentElement('afterend', section);
+
+  const ui = {
+    list: section.querySelector('#weather-score-list'),
+    status: section.querySelector('#weather-score-status'),
+    button: section.querySelector('#weather-score-play')
+  };
 
   let score = [];
   let audioContext = null;
