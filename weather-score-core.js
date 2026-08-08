@@ -11,6 +11,12 @@
   const MAX_FREQUENCY_HZ = 700;
   const POINT_DURATION_MS = 190;
 
+  function finiteTemperature(value) {
+    if (value === null || value === undefined || value === '') return null;
+    const number = Number(value);
+    return Number.isFinite(number) ? number : null;
+  }
+
   function clamp(value, min, max) {
     const number = Number(value);
     if (!Number.isFinite(number)) return min;
@@ -18,8 +24,8 @@
   }
 
   function temperatureToFrequency(temperature) {
-    const value = Number(temperature);
-    if (!Number.isFinite(value)) return null;
+    const value = finiteTemperature(temperature);
+    if (value === null) return null;
     const bounded = clamp(value, MIN_TEMP_C, MAX_TEMP_C);
     const position = (bounded - MIN_TEMP_C) / (MAX_TEMP_C - MIN_TEMP_C);
     return Math.round((MIN_FREQUENCY_HZ + position * (MAX_FREQUENCY_HZ - MIN_FREQUENCY_HZ)) * 10) / 10;
@@ -28,11 +34,11 @@
   function buildScore(snapshot) {
     const points = Array.isArray(snapshot?.weather?.points) ? snapshot.weather.points : [];
     return points.map((point, index) => {
-      const temperature = Number(point?.temperature);
-      const hasTemperature = Number.isFinite(temperature);
+      const temperature = finiteTemperature(point?.temperature);
+      const hasTemperature = temperature !== null;
       return {
         id: String(point?.id || String(index + 1).padStart(2, '0')),
-        temperature: hasTemperature ? temperature : null,
+        temperature,
         frequency: hasTemperature ? temperatureToFrequency(temperature) : null,
         rest: !hasTemperature
       };
@@ -41,8 +47,8 @@
 
   function summarize(score) {
     const entries = Array.isArray(score) ? score : [];
-    const measured = entries.filter((entry) => Number.isFinite(entry?.temperature));
-    const temperatures = measured.map((entry) => entry.temperature);
+    const measured = entries.filter((entry) => finiteTemperature(entry?.temperature) !== null);
+    const temperatures = measured.map((entry) => Number(entry.temperature));
     return {
       total: entries.length,
       measured: measured.length,
