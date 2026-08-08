@@ -10,6 +10,7 @@ const css = fs.readFileSync(new URL('../exposure-plate.css', import.meta.url), '
 const record = fs.readFileSync(new URL('../EXPOSURE_PLATE.md', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const worker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 
 const weatherPoints = commons.STATIONS.map((station) => ({ ...station, available: true, temperature: 10, wind: 5, precipitation: 0 }));
 const snapshot = {
@@ -93,4 +94,11 @@ for (const asset of ['./exposure-plate-core.js', './exposure-plate.js', './expos
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 
-console.log('Exposure Plate distance-only geometry, no-interpolation contract, current-evidence semantics, accessibility, privacy, and offline shell verified.');
+assert.match(archive, /COMMONS \/ NOW — The Exposure Plate/);
+assert.match(archive, /The Exposure Plate \/ The World We Did Not Measure/);
+assert.match(archive, /134f6342482c57ef11626e07e69e20ee85863190/);
+assert.match(archive, /#54 — Add the Exposure Plate/);
+assert.match(archive, /run: `137`/);
+assert.match(archive, /conclusion: `success`/);
+
+console.log('Exposure Plate distance-only geometry, no-interpolation contract, current-evidence semantics, accessibility, privacy, archive evidence, and offline shell verified.');
