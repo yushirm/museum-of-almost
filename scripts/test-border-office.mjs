@@ -12,6 +12,7 @@ const record = fs.readFileSync(new URL('../BORDER_OFFICE.md', import.meta.url), 
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const dataCore = fs.readFileSync(new URL('../data-core.js', import.meta.url), 'utf8');
 const worker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 const runtime = [coreSource, view].join('\n');
 
 assert.deepEqual(core.FAMILY_IDS, ['solar', 'light', 'precipitation']);
@@ -165,8 +166,19 @@ for (const pattern of [
   /Require the feature-complete head to pass `check`[\s\S]*repository Success Archive[\s\S]*archive-bearing head to pass `check` again/
 ]) assert.match(record, pattern);
 
+for (const pattern of [
+  /## 2026-08-08 — COMMONS \/ NOW — The Border Office/,
+  /\*\*The Border Office \/ The World Does Not Know Our Labels\*\*/,
+  /Concepts B and C were merged\./,
+  /Feature-complete evidence head:[\s\S]*`4bdf00978569e2fbded04f21b4e5ee13b3460265`/,
+  /#68 — Add the Border Office/,
+  /run: `194`/,
+  /conclusion: `success`/,
+  /archive-bearing final head must pass the same required `check` job again before merge/
+]) assert.match(archive, pattern, `Success Archive should retain Border Office evidence ${pattern}`);
+
 for (const asset of ['./border-office-core.js', './border-office.js', './border-office.css', './BORDER_OFFICE.md']) {
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 
-console.log('Border Office local solar, light, and precipitation boundaries; exit conditions; native-unit margins; missing-value behavior; accessibility; privacy; loader; and offline contracts verified.');
+console.log('Border Office local solar, light, and precipitation boundaries; exit conditions; native-unit margins; missing-value behavior; accessibility; privacy; success-archive evidence; loader; and offline contracts verified.');
