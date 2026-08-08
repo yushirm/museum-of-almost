@@ -41,6 +41,27 @@ for (const pattern of [
   /addPageFourSignalAnomaly\(\);/
 ]) assert.match(viewSource, pattern, `Deep Space Page Four signal anomaly missing ${pattern}`);
 
+for (const pattern of [
+  /function addCosmicStrata\(\)/,
+  /id = 'cosmic-strata'/,
+  /INSTRUMENT 14 · COSMIC STRATIGRAPHY/,
+  /Scroll downward\. The universe gets younger\./,
+  /Geologists read time through depth\./,
+  /THE SURFACE · NOW/,
+  /SOLAR STRATUM/,
+  /STARBIRTH MAXIMUM/,
+  /REIONIZATION STRATUM/,
+  /FIRST-LIGHT WINDOW/,
+  /RECOMBINATION · 380,000 YEARS/,
+  /Vertical spacing is editorial, not proportional to elapsed time\./,
+  /Native page scrolling is the only interaction\./,
+  /addCosmicStrata\(\);/
+]) assert.match(viewSource, pattern, `Deep Space cosmic stratigraphy missing ${pattern}`);
+
+const strataLayerCount = (viewSource.match(/label: '(?:THE SURFACE · NOW|SOLAR STRATUM|STARBIRTH MAXIMUM|REIONIZATION STRATUM|FIRST-LIGHT WINDOW|RECOMBINATION · 380,000 YEARS)'/g) || []).length;
+assert.equal(strataLayerCount, 6, 'cosmic stratigraphy should retain exactly six rounded reference layers');
+assert.doesNotMatch(viewSource, /IntersectionObserver|scrollY|scrollTop|wheel|touchmove/, 'cosmic stratigraphy must use native document flow rather than scroll surveillance');
+
 for (const id of [
   'scale-name', 'scale-distance', 'scale-light-time', 'scale-note', 'scale-beam',
   'black-hole-name', 'black-hole-mass', 'black-hole-radius', 'black-hole-diameter', 'black-hole-note', 'gravity-well',
@@ -74,4 +95,4 @@ assert.ok(Math.abs(core.lightTimeSeconds(core.AU_KM) - 499.0047838) < 0.001, '1 
 assert.ok(Math.abs(core.schwarzschildRadiusKm(1) - 2.9533) < 0.01, 'one solar mass Schwarzschild radius should be about 2.95 km');
 assert.ok(Math.abs(core.inventoryTotal() - 100) < 1e-9, 'rounded cosmic inventory should total 100%');
 
-console.log('Deep Space / Almost local science, Page Four signal anomaly, accessibility, privacy, calculations, and no-network contract verified.');
+console.log('Deep Space / Almost local science, Page Four signal anomaly, cosmic stratigraphy, accessibility, privacy, calculations, and no-network contract verified.');

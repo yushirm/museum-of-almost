@@ -112,6 +112,118 @@
     }
   }
 
+  function addCosmicStrata() {
+    if (document.getElementById('cosmic-strata')) return;
+    const closingSection = document.querySelector('[aria-labelledby="closing-title"]');
+    if (!closingSection) return;
+
+    const layers = [
+      {
+        age: '13.8 billion years',
+        label: 'THE SURFACE · NOW',
+        title: 'The observable universe at the age we inhabit',
+        note: 'The current age is rounded. “Now” is not a universal simultaneity surface; this layer is only the top of this historical core.'
+      },
+      {
+        age: '9.2 billion years',
+        label: 'SOLAR STRATUM',
+        title: 'The Sun and solar system begin to form',
+        note: 'About 4.6 billion years before the present. This layer is placed by subtraction from the same rounded 13.8-billion-year reference age.'
+      },
+      {
+        age: '≈3 billion years',
+        label: 'STARBIRTH MAXIMUM',
+        title: 'Cosmic star formation reaches its broad peak',
+        note: 'A rounded historical landmark, not a sharp boundary: surveys place the busiest era of star formation roughly three billion years after the hot Big Bang.'
+      },
+      {
+        age: '≤1 billion years',
+        label: 'REIONIZATION STRATUM',
+        title: 'Much of intergalactic hydrogen becomes ionized again',
+        note: 'Reionization was extended rather than instantaneous. The one-billion-year marker is a broad upper boundary, not a single switch-on date.'
+      },
+      {
+        age: 'after 0.00038, before 0.4 billion years',
+        label: 'FIRST-LIGHT WINDOW',
+        title: 'The first stars emerge somewhere inside an unresolved interval',
+        note: 'The exact first appearance is not yet fixed. The honest bracket starts after recombination and ends before the earliest-known-galaxy boundary used here; most of that interval belongs to the cosmic dark ages.'
+      },
+      {
+        age: '0.00038 billion years',
+        label: 'RECOMBINATION · 380,000 YEARS',
+        title: 'The cosmic fog clears and the oldest observable light is released',
+        note: 'This is the cosmic microwave background boundary: before it, ordinary light could not travel freely through the hot plasma.'
+      }
+    ];
+
+    const section = document.createElement('section');
+    section.id = 'cosmic-strata';
+    section.className = 'cosmos-section';
+    section.setAttribute('aria-labelledby', 'cosmic-strata-title');
+
+    const heading = document.createElement('div');
+    heading.className = 'section-heading';
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'eyebrow';
+    eyebrow.textContent = 'INSTRUMENT 14 · COSMIC STRATIGRAPHY';
+    const title = document.createElement('h2');
+    title.id = 'cosmic-strata-title';
+    title.textContent = 'Scroll downward. The universe gets younger.';
+    const intro = document.createElement('p');
+    intro.textContent = 'Geologists read time through depth. This core sample borrows that grammar for cosmic history: no controls, no animation, no claim that the intervals are to scale. Each band is a rounded landmark in age after the hot Big Bang.';
+    heading.append(eyebrow, title, intro);
+
+    const coreSample = document.createElement('ol');
+    coreSample.setAttribute('aria-label', 'Cosmic history from the present downward toward recombination');
+    coreSample.style.listStyle = 'none';
+    coreSample.style.margin = '0';
+    coreSample.style.padding = '0';
+    coreSample.style.border = '1px solid var(--line)';
+    coreSample.style.background = 'rgba(7, 5, 17, 0.78)';
+
+    layers.forEach((layer, index) => {
+      const item = document.createElement('li');
+      item.style.display = 'grid';
+      item.style.gridTemplateColumns = '1fr';
+      item.style.gap = '0.8rem';
+      item.style.padding = 'clamp(1.4rem, 4vw, 3.5rem)';
+      item.style.borderTop = index === 0 ? '0' : '1px solid var(--line)';
+      item.style.background = `linear-gradient(90deg, rgba(132,232,255,${Math.max(0.02, 0.13 - index * 0.018)}), rgba(111,59,209,${Math.min(0.18, 0.05 + index * 0.02)}))`;
+
+      const age = document.createElement('p');
+      age.className = 'eyebrow';
+      age.style.margin = '0';
+      age.textContent = layer.age;
+
+      const body = document.createElement('div');
+      const label = document.createElement('p');
+      label.className = 'metric-label';
+      label.textContent = layer.label;
+      const layerTitle = document.createElement('h3');
+      layerTitle.style.margin = '0';
+      layerTitle.style.maxWidth = '22ch';
+      layerTitle.style.fontFamily = 'ui-serif, Georgia, serif';
+      layerTitle.style.fontWeight = '500';
+      layerTitle.style.fontSize = 'clamp(1.8rem, 4vw, 3.8rem)';
+      layerTitle.style.lineHeight = '1';
+      layerTitle.textContent = layer.title;
+      const note = document.createElement('p');
+      note.className = 'readout-note';
+      note.style.maxWidth = '62ch';
+      note.textContent = layer.note;
+      body.append(label, layerTitle, note);
+      item.append(age, body);
+      coreSample.append(item);
+    });
+
+    const boundary = document.createElement('p');
+    boundary.className = 'inventory-note';
+    boundary.textContent = 'STRATIGRAPHIC BOUNDARY · Vertical spacing is editorial, not proportional to elapsed time. Ages are rounded reference landmarks; the first-star interval and reionization remain active areas of measurement. Native page scrolling is the only interaction.';
+
+    section.append(heading, coreSample, boundary);
+    closingSection.insertAdjacentElement('beforebegin', section);
+  }
+
   function loadCausalSignalBox(done) {
     if (!document.querySelector('link[data-causal-signal-styles]')) {
       const stylesheet = document.createElement('link');
@@ -232,6 +344,7 @@
   }
 
   addPageFourSignalAnomaly();
+  addCosmicStrata();
   renderScale('sun');
   renderBlackHole('sagittarius-a');
   renderMystery('dark-matter');
