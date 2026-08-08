@@ -1,0 +1,303 @@
+.shuffle-table-section {
+  margin-block: clamp(3rem, 8vw, 7rem);
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 2px solid var(--line);
+  background:
+    linear-gradient(rgba(31, 35, 41, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 35, 41, 0.035) 1px, transparent 1px),
+    rgba(255, 255, 255, 0.18);
+  background-size: 18px 18px;
+}
+
+.shuffle-table-heading {
+  max-width: 78ch;
+}
+
+.shuffle-table-heading h2 {
+  margin: 0.2rem 0 0.7rem;
+  font-size: clamp(2rem, 5vw, 4.6rem);
+  line-height: 0.94;
+  letter-spacing: -0.045em;
+}
+
+.shuffle-table-heading > p:last-child {
+  max-width: 70ch;
+  margin-bottom: 0;
+}
+
+.shuffle-table-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: end;
+  margin-top: 1.5rem;
+  padding-block: 1rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.shuffle-table-lenses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.shuffle-table-lenses button,
+.shuffle-table-cut {
+  min-height: 44px;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--line);
+  background: transparent;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.shuffle-table-lenses button[aria-pressed="true"] {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.shuffle-table-cut {
+  min-width: 12rem;
+  border-width: 2px;
+  background: var(--panel);
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.shuffle-table-cut[aria-pressed="true"] {
+  transform: rotate(-1deg);
+  background: rgba(189, 138, 22, 0.16);
+}
+
+.shuffle-table-cut:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.shuffle-table-lenses button:focus-visible,
+.shuffle-table-cut:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.shuffle-table-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  margin-top: 1.4rem;
+  border: 2px solid var(--line);
+}
+
+.shuffle-table-headline,
+.shuffle-table-verdict {
+  min-height: 13rem;
+  padding: clamp(1rem, 3vw, 1.6rem);
+}
+
+.shuffle-table-headline {
+  display: grid;
+  align-content: center;
+  gap: 0.7rem;
+  border-right: 2px solid var(--line);
+}
+
+.shuffle-table-headline-value {
+  display: block;
+  font-size: clamp(1.7rem, 4vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.shuffle-table-headline-state,
+.shuffle-table-verdict-kicker,
+.shuffle-table-card-state,
+.shuffle-table-point {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.shuffle-table-verdict {
+  display: grid;
+  align-content: center;
+  gap: 0.55rem;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.shuffle-table-verdict-title {
+  max-width: 17ch;
+  font-size: clamp(1.8rem, 4.6vw, 4rem);
+  line-height: 0.93;
+  letter-spacing: -0.05em;
+}
+
+.shuffle-table-section[data-deal="hypothetical"] .shuffle-table-verdict {
+  background:
+    repeating-linear-gradient(-45deg, transparent 0 12px, rgba(31, 35, 41, 0.05) 12px 24px),
+    rgba(255, 255, 255, 0.2);
+}
+
+.shuffle-table-section[data-deal="hypothetical"] .shuffle-table-verdict-title {
+  transform: rotate(-1deg);
+}
+
+.shuffle-table-verdict-copy {
+  max-width: 66ch;
+  margin: 0;
+}
+
+.shuffle-table-ledger {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.shuffle-table-card {
+  min-width: 0;
+  min-height: 10.5rem;
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  padding: 0.9rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.shuffle-table-card[data-state="hypothetical"] {
+  border-style: dashed;
+}
+
+.shuffle-table-card[data-assignment-moved="true"] {
+  box-shadow: inset 0 0 0 2px rgba(189, 138, 22, 0.15);
+}
+
+.shuffle-table-card[data-state="missing"] {
+  opacity: 0.62;
+}
+
+.shuffle-table-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--soft-line);
+}
+
+.shuffle-table-card-state {
+  text-align: right;
+}
+
+.shuffle-table-value {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  line-height: 1;
+}
+
+.shuffle-table-assignment {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.42;
+}
+
+.shuffle-table-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 1rem;
+  border: 1px dashed var(--line);
+}
+
+.shuffle-table-doctrine {
+  margin: 1rem 0 0;
+  padding: 0.9rem 1rem;
+  border-left: 5px solid var(--line);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.field-sheet-shuffle-table {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 980px) {
+  .shuffle-table-ledger {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .shuffle-table-controls,
+  .shuffle-table-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .shuffle-table-headline {
+    min-height: 9rem;
+    border-right: 0;
+    border-bottom: 2px solid var(--line);
+  }
+
+  .shuffle-table-verdict {
+    min-height: 10rem;
+  }
+
+  .shuffle-table-cut {
+    width: 100%;
+  }
+
+  .shuffle-table-ledger {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .shuffle-table-section {
+    padding-inline: 0.75rem;
+  }
+
+  .shuffle-table-lenses {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .shuffle-table-lenses button {
+    width: 100%;
+  }
+
+  .shuffle-table-ledger {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shuffle-table-cut,
+  .shuffle-table-verdict-title {
+    transition: none;
+    transform: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .shuffle-table-section,
+  .shuffle-table-stage,
+  .shuffle-table-card,
+  .shuffle-table-lenses button,
+  .shuffle-table-cut {
+    border-color: currentColor;
+  }
+
+  .shuffle-table-card[data-assignment-moved="true"] {
+    box-shadow: inset 0 0 0 3px currentColor;
+  }
+}
+
+@media print {
+  .shuffle-table-section {
+    display: none !important;
+  }
+}
