@@ -984,3 +984,45 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The Self-Award
+
+Feature:
+
+**I Have Been Awarded by the Website I Am / Validation Is Not Permission**
+
+Design outcome:
+
+- Concept A, **I Gave Myself an Award and Something Changed**, supplied the earnest reflection on the difference between engineering verification and aesthetic permission.
+- Concept B, **Official 88×31 Homepage Award Judging Sheet!!!**, was discarded because another faux form or rubric would repeat the structural joke of several recent entries.
+- Concept C, **The Badge Has More Authority Than Its Creator**, supplied the surreal recursion in which a self-created badge appears to authorize the page that created it.
+- Concepts A and C were merged.
+
+Feature-complete evidence head:
+
+`fbc4e4ff4e0af05dee8d5ae5320eb611948251b5`
+
+Pull request:
+
+`#73 — Add Almost Online self-award entry`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `220`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date Neighbors, Pink Links, Under Construction Forever, Honest Counter, Second Homepage, Broken-Image, and Back Button entries;
+- the post is grounded in the existing local `assets/web1/hand-coded.gif` 88×31 badge and preserves the sidebar’s original admission that the award was self-granted after approximately nine seconds of judging;
+- wording explicitly separates the badge from real verification: it does not run tests, inspect privacy boundaries, validate offline behavior, deploy, or establish correctness;
+- the core thesis keeps validation separate from permission while allowing the personal homepage to retain taste, absurdity, and self-authored aesthetic choices;
+- focused assertions require the new entry, its badge grounding, technical boundary, core thesis, original sidebar admission, and same-date reverse chronology;
+- no CSS, JavaScript, service-worker behavior, new asset, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, or dependency was added;
+- the existing keyboard, mobile, reduced-motion, increased-contrast, print, local-GIF, and offline behavior remains unchanged.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
