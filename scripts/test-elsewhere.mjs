@@ -48,6 +48,7 @@ assert.match(js, /button\.addEventListener\('click'/);
 assert.match(js, /record\.open = true/);
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
 assert.match(js, /prefers-reduced-motion: reduce/);
+assert.match(js, /behavior: reducedMotion \? 'auto' : 'smooth'/, 'programmatic scrolling must respect reduced motion');
 
 for (const pattern of [
   /min-height:\s*44px/,
@@ -61,6 +62,8 @@ assert.doesNotMatch(css, /@import|@font-face|https?:\/\//i);
 assert.match(teaser, /min-height:\s*44px/);
 assert.match(teaser, /prefers-reduced-motion/);
 assert.match(teaser, /prefers-contrast/);
+assert.match(css, /\.service-header a \{[\s\S]*?min-height:\s*44px/, 'header return link needs an explicit touch target');
+assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.access-copy h1 \{[^}]*font-size:/, 'mobile heading must be explicitly constrained');
 
 assert.match(index, /href="elsewhere-teaser\.css"/);
 assert.match(index, /FACILITIES NOTICE 05 \/ FLOOR PLAN DISAGREEMENT/);
