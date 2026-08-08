@@ -32,7 +32,8 @@ assert.match(source, /const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shu
 assert.match(source, /const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate'/);
 assert.match(source, /const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero'/);
 assert.match(source, /const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
+assert.match(source, /const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/);
 for (const asset of [
   './',
   './index.html',
@@ -138,6 +139,9 @@ for (const asset of [
   './same-answer-machine.css',
   './same-answer-core.js',
   './same-answer-machine.js',
+  './unequal-minute.css',
+  './unequal-minute-core.js',
+  './unequal-minute.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -176,6 +180,7 @@ for (const asset of [
   './REDSHIFT_RULER.md',
   './ORIGIN_MACHINE.md',
   './SAME_ANSWER_MACHINE.md',
+  './UNEQUAL_MINUTE.md',
   './WEB1_HOME.md',
   './PAGE_FOUR_RESEARCH.md',
   './PAGE_FOUR_HESSDALEN.md'
@@ -208,4 +213,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Shutter Cabinet v41, Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries are present in the fresh-online cached-offline shell.');
+console.log('Unequal Minute v42, Shutter Cabinet v41, Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries are present in the fresh-online cached-offline shell.');
