@@ -29,14 +29,14 @@ assert.equal(normal.unavailableCount, 0);
 assert.equal(normal.circuits.find((circuit) => circuit.id === 'cosmic-signal').state, 'powered');
 assert.equal(normal.circuits.find((circuit) => circuit.id === 'celestial-escapement').state, 'local');
 assert.equal(normal.circuits.find((circuit) => circuit.id === 'planetary-heliodon').state, 'local');
-assert.equal(normal.circuits.find((circuit) => circuit.id === 'witness-seal').state, 'sealed');
+assert.equal(normal.circuits.find((circuit) => circuit.id === 'witness-seal').state, 'actual');
 
 const oneTrip = core.evaluateBoard(snapshot, new Set(['scales']));
 assert.equal(oneTrip.trippedCount, 1);
 assert.equal(oneTrip.circuits.find((circuit) => circuit.id === 'space-scales').state, 'dark');
 assert.equal(oneTrip.circuits.find((circuit) => circuit.id === 'cosmic-signal').state, 'degraded');
 assert.equal(oneTrip.circuits.find((circuit) => circuit.id === 'faultline-core').state, 'degraded');
-assert.equal(oneTrip.circuits.find((circuit) => circuit.id === 'witness-seal').state, 'sealed', 'simulation must never alter actual latch evidence');
+assert.equal(oneTrip.circuits.find((circuit) => circuit.id === 'witness-seal').state, 'actual', 'simulation must never claim or alter actual Witness Seal availability');
 
 const cosmicDark = core.evaluateBoard(snapshot, new Set(['solar', 'scales']));
 assert.equal(cosmicDark.circuits.find((circuit) => circuit.id === 'cosmic-signal').state, 'dark');
@@ -47,7 +47,7 @@ assert.equal(allTripped.liveCount, 0);
 assert.equal(allTripped.circuits.find((circuit) => circuit.id === 'sounding-well').state, 'dark');
 assert.equal(allTripped.circuits.find((circuit) => circuit.id === 'faultline-core').state, 'dark');
 assert.equal(allTripped.circuits.find((circuit) => circuit.id === 'celestial-escapement').state, 'local');
-assert.equal(allTripped.circuits.find((circuit) => circuit.id === 'witness-seal').state, 'sealed');
+assert.equal(allTripped.circuits.find((circuit) => circuit.id === 'witness-seal').state, 'actual');
 
 const actualFailure = core.evaluateBoard({
   ...snapshot,
@@ -68,20 +68,21 @@ assert.match(view, /tripped = new Set\(\);[\s\S]+render\(\);/, 'a real snapshot 
 assert.match(view, /SIMULATED ISOLATION ONLY/);
 assert.match(view, /ACTUALLY UNAVAILABLE/);
 assert.match(view, /real latched snapshot remains untouched/i);
-assert.match(view, /Witness Seal continues to identify the actual normalized latch/i);
+assert.match(view, /own instrument remains authoritative/i);
+assert.match(view, /Powered.*declared feed dependencies/is);
 assert.match(view, /aria-pressed/);
 assert.match(view, /aria-live/);
 assert.doesNotMatch(view, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
 assert.doesNotMatch(view, /setInterval|setTimeout|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
 assert.doesNotMatch(view, /analytics|telemetry|https?:\/\//i);
 
-for (const pattern of [/@media \(max-width: 760px\)/, /@media \(max-width: 620px\)/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/, /display: none !important/]) {
+for (const pattern of [/@media \(max-width: 760px\)/, /@media \(max-width: 620px\)/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/, /display: none !important/, /data-state="actual"/]) {
   assert.match(css, pattern);
 }
 assert.match(css, /min-height: 44px/);
 assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i);
 
-for (const pattern of [/Concept A/, /Concept B/, /Concept C/, /Concept A was discarded/, /The Isolation Board \/ What Survives a Lost Feed/, /adds no network request/i, /never alter the Witness Seal/i, /clear every hypothetical trip/i]) {
+for (const pattern of [/Concept A/, /Concept B/, /Concept C/, /Concept A was discarded/, /The Isolation Board \/ What Survives a Lost Feed/, /adds no network request/i, /never alter the Witness Seal/i, /clear every hypothetical trip/i, /POWERED is therefore not a quality or completeness guarantee/i, /### ACTUAL/]) {
   assert.match(record, pattern);
 }
 
@@ -91,4 +92,4 @@ for (const asset of ['./isolation-board-core.js', './isolation-board.js', './iso
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 
-console.log('Isolation Board failure simulation, actual-vs-hypothetical state, privacy, accessibility, and offline contracts verified.');
+console.log('Isolation Board failure simulation, actual-vs-hypothetical state, Witness Seal boundary, privacy, accessibility, and offline contracts verified.');
