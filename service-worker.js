@@ -5,7 +5,8 @@ const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold';
 const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now';
 const PREVIOUS_PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer';
 const PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v17-witness-seal';
+const WITNESS_SEAL_CACHE_NAME = 'museum-of-almost-v17-witness-seal';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v18-possibility-engine';
 const APP_SHELL = [
   './',
   './index.html',
@@ -45,6 +46,9 @@ const APP_SHELL = [
   './deep-space.css',
   './deep-space-core.js',
   './deep-space.js',
+  './possibility-engine.css',
+  './possibility-engine-core.js',
+  './possibility-engine.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -64,6 +68,7 @@ const APP_SHELL = [
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
   './DEEP_SPACE.md',
+  './POSSIBILITY_ENGINE.md',
   './WEB1_HOME.md'
 ];
 

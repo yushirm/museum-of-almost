@@ -37,6 +37,16 @@ The `4.9% / 26.8% / 68.3%` ordinary-matter / dark-matter / dark-energy split is 
 
 The mystery cards deliberately separate observationally grounded statements from unresolved theory. They avoid ranking hypotheses or presenting speculative answers as settled science.
 
+### Possibility Engine / Success Archives
+
+The fifth instrument uses three fixed historical case studies to show how evidence can reduce a possibility space without turning scientific method into a certainty game. Each case begins with a small set of deliberately broad possibilities. Fixed evidence steps can leave a possibility open, place it under pressure, retire the narrower claim for that case, or mark it as having survived that evidence.
+
+Those labels are categorical. The visual bar width is not a probability, confidence score, Bayesian posterior, or ranking of scientific importance. A surviving possibility is not presented as permanently correct, and a retired possibility is scoped to the evidence and wording shown by the case.
+
+The **Success Archives** are organized by the kind of epistemic revision the evidence forced rather than by publication date. They preserve three cases: the solar-neutrino puzzle becoming evidence for flavour change and non-zero neutrino mass; distant-supernova observations overturning the expected late-time cosmic slowdown; and the first direct observation of gravitational waves by LIGO. Source records and the pre-code design gate are documented in `POSSIBILITY_ENGINE.md`.
+
+The instrument is entirely local. It does not fetch papers, query a science service, accept visitor text, store progress, assign scores, or keep a history of clicks. Selecting another case or reloading starts from the fixed initial map.
+
 ## Accessibility
 
-The gallery uses semantic sections, visible keyboard focus, 44px minimum interactive targets, polite live regions for changing instrument readouts, a skip link, responsive layouts, `prefers-reduced-motion`, `prefers-contrast`, and print handling.
+The gallery uses semantic sections, visible keyboard focus, 44px minimum interactive targets, polite live regions for changing instrument readouts, a skip link, responsive layouts, `prefers-reduced-motion`, `prefers-contrast`, and print handling. The Possibility Engine also preserves a static initial possibility map and the full Success Archives in HTML so the historical record remains readable without JavaScript.
