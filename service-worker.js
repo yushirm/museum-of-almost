@@ -100,7 +100,7 @@ async function cacheSuccessfulResponse(request, response) {
   return response;
 }
 
-async function networkFirst(request, fallbackRequest = null) {
+async function networkFirst(request, fallbackToIndex = false) {
   try {
     const response = await fetch(request, { cache: 'no-cache' });
     return cacheSuccessfulResponse(request, response);
@@ -108,8 +108,8 @@ async function networkFirst(request, fallbackRequest = null) {
     const cached = await caches.match(request);
     if (cached) return cached;
 
-    if (fallbackRequest) {
-      const fallback = await caches.match(fallbackRequest);
+    if (fallbackToIndex) {
+      const fallback = await caches.match('./index.html');
       if (fallback) return fallback;
     }
 
@@ -126,8 +126,8 @@ self.addEventListener('fetch', (event) => {
 
   if (request.mode === 'navigate') {
     const scopePath = new URL(self.registration.scope).pathname;
-    const fallbackRequest = url.pathname === scopePath ? './index.html' : null;
-    event.respondWith(networkFirst(request, fallbackRequest));
+    const fallbackToIndex = url.pathname === scopePath;
+    event.respondWith(networkFirst(request, fallbackToIndex));
     return;
   }
 
