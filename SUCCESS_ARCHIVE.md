@@ -1026,3 +1026,54 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Gauge Bench
+
+Feature:
+
+**The Gauge Bench / Break the Chart Before It Lies**
+
+Design outcome:
+
+- Concept A, **The Dimensional Ledger**, was discarded as the least engaging presentation because a static registry would explain comparability without making refusal experiential.
+- Concept B, **The Gauge Bench**, supplied the metrology interlock in which two current claims must pass a declared comparison contract before one shared magnitude ruler is permitted.
+- Concept C, **Break the Chart Before It Lies**, supplied the convention-breaking interaction in which selecting two numbers does not guarantee a chart; incompatible pairs physically split the would-be axis instead.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`34db4d9af072231de14ae2ca492b5e481c293b94`
+
+Pull request:
+
+`#75 — Add the Gauge Bench`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `228`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a fixed registry of exactly nine existing normalized Commons claims spanning earthquake magnitude/count, solar-wind speed, fixed-point temperature, terrestrial wind, precipitation-reporting point count, and open EONET event count;
+- every registry entry declares a broad dimension family, narrower Museum-local comparison group, semantic subject, native unit, precision, and authoritative normalized snapshot field;
+- **COMMON RULER** is permitted only for an exact comparison-group match, including minimum↔maximum fixed-point temperature and mean↔maximum terrestrial wind;
+- **SAME DIMENSION, DIFFERENT THING** explicitly refuses a shared ruler for false friends such as solar-wind speed versus terrestrial wind speed and counts that refer to different populations;
+- **NO COMMON AXIS** explicitly refuses pairs from different dimension families, including earthquake magnitude versus temperature;
+- compatible arithmetic is limited to signed native-unit `B - A`; incompatible pairs never receive a ratio, percentage, winner, ranking, normalized score, or fabricated shared axis;
+- comparison legality is fixed metadata and never inferred from numeric values, numeric type, or coincidental unit-like syntax;
+- missing current values remain missing rather than zero, the static comparison contract remains visible when a value is absent, and no previous-latch fallback is used;
+- trivial same-claim pairing is prevented in the interface while both claim trays reset to minimum versus maximum temperature on every real Commons latch;
+- the registry is explicitly a Museum-local interface rule rather than a universal scientific ontology;
+- the full comparator is omitted from print while a compact field-sheet interlock line preserves the selected pair and qualified outcome;
+- no data-service request, response clone, raw-provider retention, alternate normalizer, polling, timer loop, animation-frame loop, persistence, visitor text or numeric input, location access, analytics, telemetry, remote runtime asset, account, cloud state, or dependency;
+- responsive, keyboard, reduced-motion, increased-contrast, live-region, disabled-opposite-control, textual-refusal, and print handling;
+- focused regression guards pin all nine claim extractions to the actual `data-core.js` reducer declarations so semantic drift fails loudly;
+- coherent same-origin **v34 Gauge Bench** shell preserves v32 Load-Bearing Sample and concurrent **v33 Page Four Rumor Relay** plus all prior Museum assets;
+- initial green run `226` was rejected as release evidence because `main` advanced before the evidence race; only the reconstructed, behind-zero v34 head and run `228` are accepted as feature-complete evidence.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
