@@ -3,7 +3,7 @@
 const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish';
 const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold';
 const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online';
 const APP_SHELL = [
   './',
   './index.html',
@@ -64,7 +64,9 @@ const APP_SHELL = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CURRENT_CACHE_NAME)
-      .then((cache) => cache.addAll(APP_SHELL))
+      .then((cache) => cache.addAll(
+        APP_SHELL.map((asset) => new Request(asset, { cache: 'reload' }))
+      ))
       .then(() => self.skipWaiting())
   );
 });
@@ -90,11 +92,28 @@ self.addEventListener('activate', (event) => {
   })());
 });
 
-function cacheSuccessfulResponse(request, response) {
+async function cacheSuccessfulResponse(request, response) {
   if (!response || response.status !== 200 || response.type === 'opaque') return response;
-  const copy = response.clone();
-  caches.open(CURRENT_CACHE_NAME).then((cache) => cache.put(request, copy));
+  const cache = await caches.open(CURRENT_CACHE_NAME);
+  await cache.put(request, response.clone());
   return response;
+}
+
+async function networkFirst(request, fallbackRequest = null) {
+  try {
+    const response = await fetch(request, { cache: 'no-cache' });
+    return cacheSuccessfulResponse(request, response);
+  } catch (error) {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+
+    if (fallbackRequest) {
+      const fallback = await caches.match(fallbackRequest);
+      if (fallback) return fallback;
+    }
+
+    throw error;
+  }
 }
 
 self.addEventListener('fetch', (event) => {
@@ -105,28 +124,11 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   if (request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(request).then((cached) => {
-        if (cached) return cached;
-
-        const scopePath = new URL(self.registration.scope).pathname;
-        if (url.pathname === scopePath) {
-          return caches.match('./index.html').then((cached) => {
-            if (cached) return cached;
-            return fetch(request).then((response) => cacheSuccessfulResponse(request, response));
-          });
-        }
-
-        return fetch(request).then((response) => cacheSuccessfulResponse(request, response));
-      })
-    );
+    const scopePath = new URL(self.registration.scope).pathname;
+    const fallbackRequest = url.pathname === scopePath ? './index.html' : null;
+    event.respondWith(networkFirst(request, fallbackRequest));
     return;
   }
 
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
-      return fetch(request).then((response) => cacheSuccessfulResponse(request, response));
-    })
-  );
+  event.respondWith(networkFirst(request));
 });
