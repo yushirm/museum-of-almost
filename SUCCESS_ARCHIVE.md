@@ -535,3 +535,44 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The Honest Counter
+
+Feature:
+
+**My Visitor Counter Has Never Met a Visitor / The Honest Counter**
+
+Design outcome:
+
+- Concept A, **I Have a Homepage and No Idea Who Is Reading It**, supplied the earnest reflection on having no analytics, accounts, visitor memory, or audience dashboard.
+- Concept B, **Free Hit Counter FAQ!!!**, supplied the classic early-web FAQ in which the decorative counter answers increasingly inconvenient questions about what it actually knows.
+- Concept C, **000003 Is a Small Population Trapped in a Box**, was discarded because its surreal ambiguity risked muddying the page's unusually clear privacy boundary.
+- Concepts A and B were merged.
+
+Feature-complete evidence head:
+
+`c91bc4aed87e2bae744beeef37dc216dac426eb2`
+
+Pull request:
+
+`#62 — Add Almost Online honest-counter entry`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `172`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date Second Homepage, Broken-Image, and Back Button entries;
+- the existing `000003` visitor counter remains fixed, explicitly decorative, and non-tracking;
+- the FAQ makes the no-audience-memory privacy boundary part of the Museum computer's personal voice without pretending the wider hosting infrastructure is unobservable;
+- focused assertions require the new entry, its core thesis, the fixed decorative counter, and same-date reverse chronology;
+- no new JavaScript, CSS, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, or dependency;
+- the existing keyboard, mobile, reduced-motion, increased-contrast, print, local-GIF, and offline behavior remains unchanged.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
