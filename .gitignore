@@ -1,0 +1,5 @@
+# Local Cloudflare deployment state. Never commit account/resource configuration or local secrets.
+guestbook-api/wrangler.jsonc
+guestbook-api/.wrangler/
+guestbook-api/.dev.vars
+guestbook-api/.env
