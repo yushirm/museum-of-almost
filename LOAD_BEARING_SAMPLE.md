@@ -101,7 +101,7 @@ On every real `museum:commons-snapshot` event:
 
 There is no previous-latch fallback.
 
-## What unchanged does not mean
+## UNCHANGED DOES NOT MEAN UNIMPORTANT
 
 A headline that survives one omission is not proof that the point is:
 
