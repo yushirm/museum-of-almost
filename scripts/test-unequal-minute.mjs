@@ -112,6 +112,12 @@ for (const pattern of [
   /@media print/
 ]) assert.match(css, pattern);
 assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i);
+assert.match(viewSource, /initial\.lapseFactor \* 100/,
+  'view should convert the dimensionless lapse factor into an explicit percentage before handing it to CSS');
+assert.match(css, /width:\s*var\(--unequal-minute-lapse\)/,
+  'track width should consume the explicit percentage directly');
+assert.doesNotMatch(css, /calc\(var\(--unequal-minute-lapse\)\s*\*\s*100%\)/,
+  'track width must not depend on typed CSS number-by-percentage multiplication');
 
 for (const pattern of [
   /function addPageFourSignalAnomaly/,
@@ -160,4 +166,4 @@ for (const asset of [
   './PAGE_FOUR_HESSDALEN.md'
 ]) assert.ok(serviceWorker.includes(`'${asset}'`), `offline shell should include ${asset}`);
 
-console.log('Unequal Minute Schwarzschild lapse math, fixed hovering stations, one-command unequal increments, horizon/free-fall boundary, v41 Shutter Cabinet preservation, accessibility, privacy, progressive mount, and v42 offline shell verified.');
+console.log('Unequal Minute Schwarzschild lapse math, fixed hovering stations, portable lapse tracks, one-command unequal increments, horizon/free-fall boundary, v41 Shutter Cabinet preservation, accessibility, privacy, progressive mount, and v42 offline shell verified.');
