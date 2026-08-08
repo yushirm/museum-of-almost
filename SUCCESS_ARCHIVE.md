@@ -1268,3 +1268,48 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added only after the feature-complete head passed required job `check`. Because adding this archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The GIF Staff Meeting
+
+Feature:
+
+**I Put the GIFs in One Room and They Started Looking Organized / A Chorus That Cannot Hear Itself**
+
+Design outcome:
+
+- reused the existing local comet, alien, construction-strip, and hand-coded badge GIFs as one deliberately excessive Web 1.0 visual cluster rather than adding another remote or newly fetched asset;
+- treated layout and captions as the source of the fictional “staff meeting” while explicitly refusing any claim that the GIFs communicate, share state, expose frame timing to JavaScript, or synchronize with one another;
+- added a two-column cabinet that collapses at the existing narrow breakpoint, with captions preserved as the authoritative meaning when moving images are removed;
+- extended reduced-motion handling so the meeting’s animated images disappear while the labels and article remain readable, and kept those images out of print.
+
+Feature-complete evidence head:
+
+`b15a054921a9afa79f4d11ad17b3271d7ea9eab9`
+
+Pull request:
+
+`#86 — Add Almost Online GIF staff meeting`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `284`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date Wallpaper Sky, True Width, Self-Award, Neighbors, Pink Links, Under Construction Forever, Honest Counter, Second Homepage, Broken-Image, and Back Button entries;
+- a visible four-GIF **GIF STAFF MEETING** reuses only `assets/web1/comet.gif`, `assets/web1/alien.gif`, `assets/web1/construction.gif`, and `assets/web1/hand-coded.gif`, all already present in the offline shell;
+- the post preserves the central thesis **A PAGE CAN MAKE A CHORUS OUT OF THINGS THAT CANNOT HEAR EACH OTHER.** while stating that composition and captions—not runtime coordination—create the apparent organization;
+- the four GIFs gain no shared state, messaging channel, event bus, timer loop, animation-frame loop, synchronization contract, or JavaScript frame inspection;
+- the new visual cabinet uses only static HTML and CSS, stays bounded at two columns on wider layouts, and collapses to one column at the existing `430px` breakpoint;
+- `prefers-reduced-motion: reduce` hides the meeting’s moving images while retaining the four captions and explanatory text, and print likewise omits those images;
+- focused regression assertions require the post, thesis, technical boundary, all four local GIF references, reduced-motion behavior, narrow layout, site-update line, and same-date reverse chronology;
+- no new JavaScript, service-worker behavior, GIF asset, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, account, cloud state, or dependency was added;
+- the accepted feature head is based directly on durable-documentation `main` `9e37abc67886268e69aa009d613955eca3ec8d6e`, preserving the concurrent Page Four Hessdalen instrument room, Elsewhere Catalogue 0 fifth space, Page Four rumor relay, offline shell, privacy boundaries, durable documentation gate, and all prior Museum features;
+- earlier green runs `276` and `282` were rejected as release evidence after `main` advanced during their evidence races; only reconciled head `b15a054921a9afa79f4d11ad17b3271d7ea9eab9` and run `284` are accepted as feature-complete evidence.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed required job `check`. Because adding this archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
