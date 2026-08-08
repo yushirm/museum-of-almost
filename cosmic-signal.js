@@ -52,7 +52,11 @@
                                                     load('./shuffle-table-core.js', 'shuffleTableCore', () => {
                                                       load('./shuffle-table.js', 'shuffleTableView', () => {
                                                         load('./quorum-gate-core.js', 'quorumGateCore', () => {
-                                                          load('./quorum-gate.js', 'quorumGateView');
+                                                          load('./quorum-gate.js', 'quorumGateView', () => {
+                                                            load('./shutter-cabinet-core.js', 'shutterCabinetCore', () => {
+                                                              load('./shutter-cabinet.js', 'shutterCabinetView');
+                                                            });
+                                                          });
                                                         });
                                                       });
                                                     });
