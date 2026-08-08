@@ -1,0 +1,133 @@
+.weather-score-section {
+  border-top: 1px solid var(--line, #c9c3b6);
+  padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 4vw, 4rem);
+}
+
+.weather-score-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.weather-score-copy {
+  max-width: 42rem;
+}
+
+.weather-score-copy h2 {
+  margin: 0.3rem 0 1rem;
+}
+
+.weather-score-contract {
+  margin-top: 1rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.weather-score-console {
+  border: 1px solid currentColor;
+  padding: clamp(1rem, 3vw, 1.75rem);
+  background: color-mix(in srgb, currentColor 3%, transparent);
+}
+
+.weather-score-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.weather-score-controls button {
+  min-height: 44px;
+  padding: 0.7rem 1rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.weather-score-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.weather-score-status {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.weather-score-list {
+  list-style: none;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.weather-score-note {
+  min-width: 0;
+  border-top: 3px solid currentColor;
+  padding-top: 0.5rem;
+}
+
+.weather-score-note strong,
+.weather-score-note span {
+  display: block;
+}
+
+.weather-score-note strong {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.weather-score-note span {
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.weather-score-note[data-rest="true"] {
+  border-top-style: dashed;
+  opacity: 0.65;
+}
+
+.weather-score-legend {
+  margin: 1rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 920px) {
+  .weather-score-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .weather-score-list {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .weather-score-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-contrast: more) {
+  .weather-score-console,
+  .weather-score-controls button,
+  .weather-score-note {
+    border-width: 2px;
+  }
+}
+
+@media print {
+  .weather-score-section {
+    display: none !important;
+  }
+}
