@@ -10,6 +10,7 @@ const css = fs.readFileSync(new URL('../reverse-ledger.css', import.meta.url), '
 const record = fs.readFileSync(new URL('../REVERSE_LEDGER.md', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const worker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 
 const weatherPoints = commons.STATIONS.map((station, index) => ({
   ...station,
@@ -153,4 +154,13 @@ for (const asset of ['./reverse-ledger-core.js', './reverse-ledger.js', './rever
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 
-console.log('Reverse Ledger claim ancestry, missing-source behavior, local-vs-public inputs, branching dependencies, privacy, accessibility, and offline shell verified.');
+for (const pattern of [
+  /COMMONS \/ NOW — The Reverse Ledger/,
+  /The Reverse Ledger \/ Every Claim Owes a Source/,
+  /af5601c51896dd0b71ff39ba897597ca502f28f3/,
+  /#56 — Add the Reverse Ledger/,
+  /run: `144`/,
+  /conclusion: `success`/
+]) assert.match(archive, pattern, `Success Archive should preserve Reverse Ledger evidence: ${pattern}`);
+
+console.log('Reverse Ledger claim ancestry, missing-source behavior, local-vs-public inputs, branching dependencies, success archive, privacy, accessibility, and offline shell verified.');
