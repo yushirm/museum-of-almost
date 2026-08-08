@@ -31,7 +31,11 @@
           load('./cosmic-escapement-core.js', 'celestialEscapementCore', () => {
             load('./cosmic-escapement.js', 'celestialEscapementView', () => {
               load('./planetary-heliodon-core.js', 'planetaryHeliodonCore', () => {
-                load('./planetary-heliodon.js', 'planetaryHeliodonView');
+                load('./planetary-heliodon.js', 'planetaryHeliodonView', () => {
+                  load('./witness-seal-core.js', 'witnessSealCore', () => {
+                    load('./witness-seal.js', 'witnessSealView');
+                  });
+                });
               });
             });
           });
