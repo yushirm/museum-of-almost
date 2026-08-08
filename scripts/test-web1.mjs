@@ -30,6 +30,12 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /MY VISITOR COUNTER HAS NEVER MET A VISITOR/,
+  /FREE HIT COUNTER FAQ!!!/,
+  /IT MEANS I THOUGHT THREE LOOKED GOOD IN A LITTLE BOX\./,
+  /I do not need to know you were here for this to have happened\./,
+  /AUDIENCE IS NOT A DATABASE\./,
+  /COUNTER STILL KNOWS NOTHING\. EXCELLENT\./,
   /I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE/,
   /the visible page can compress a shape that the source still remembers\./,
   /YOU FOUND THE SECOND HOMEPAGE\. IT IS QUIETER HERE\./,
@@ -65,12 +71,21 @@ for (const pattern of [
 
 assert.match(
   html,
+  /<strong class="counter" aria-label="decorative number 000003">000003<\/strong>/,
+  'the visitor counter should remain explicitly decorative and fixed'
+);
+assert.match(
+  html,
   /<!-- YOU FOUND THE SECOND HOMEPAGE\. IT IS QUIETER HERE\. -->/,
   'the source-only note should remain a real HTML comment rather than visible page copy'
 );
 assert.ok(
-  html.indexOf('I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE') < html.indexOf('HOW TO CARE FOR A BROKEN IMAGE'),
+  html.indexOf('MY VISITOR COUNTER HAS NEVER MET A VISITOR') < html.indexOf('I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE'),
   'new weblog entries should remain reverse chronological within the same date'
+);
+assert.ok(
+  html.indexOf('I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE') < html.indexOf('HOW TO CARE FOR A BROKEN IMAGE'),
+  'second-homepage entry should remain ahead of the earlier broken-image entry'
 );
 assert.ok(
   html.indexOf('HOW TO CARE FOR A BROKEN IMAGE') < html.indexOf('THE BACK BUTTON IS A TINY TIME MACHINE'),
