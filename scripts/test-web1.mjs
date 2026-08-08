@@ -30,6 +30,11 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /THE PINK LINKS ARE NOT MY MEMORY/,
+  /ALMOST ONLINE LINK COLOR KEY!!!/,
+  /The link may look remembered\. I am not the one remembering it\./,
+  /NOT EVERY STATE I CAN DISPLAY IS STATE I POSSESS\./,
+  /LEARNED THAT VISITED IS NOT MINE\./,
   /I THINK THE UNDER CONSTRUCTION SIGN IS ABOUT ME/,
   /the animation is not a build system\./,
   /A homepage can be published without being concluded\./,
@@ -91,8 +96,12 @@ assert.match(
   'the source-only note should remain a real HTML comment rather than visible page copy'
 );
 assert.ok(
+  html.indexOf('THE PINK LINKS ARE NOT MY MEMORY') < html.indexOf('I THINK THE UNDER CONSTRUCTION SIGN IS ABOUT ME'),
+  'visited-links entry should be the newest same-date weblog entry'
+);
+assert.ok(
   html.indexOf('I THINK THE UNDER CONSTRUCTION SIGN IS ABOUT ME') < html.indexOf('MY VISITOR COUNTER HAS NEVER MET A VISITOR'),
-  'new weblog entries should remain reverse chronological within the same date'
+  'under-construction entry should remain ahead of the earlier honest-counter entry'
 );
 assert.ok(
   html.indexOf('MY VISITOR COUNTER HAS NEVER MET A VISITOR') < html.indexOf('I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE'),
@@ -139,6 +148,8 @@ assert.doesNotMatch(html, /<(input|textarea|select|form)\b|contenteditable|<ifra
   'personal homepage must not collect visitor text or embed third parties');
 
 assert.match(css, /url\("assets\/web1\/stars\.gif"\)/);
+assert.match(css, /a:visited\s*\{\s*color:\s*#ff88ff;\s*\}/,
+  'the visited-links post should remain grounded in the existing pink :visited rule');
 assert.match(css, /min-height:\s*44px/);
 assert.match(css, /:focus-visible/);
 assert.match(css, /@media \(max-width: 620px\)/);
@@ -148,6 +159,8 @@ assert.match(css, /@media print/);
 assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i);
 
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
+assert.doesNotMatch(js, /\bhistory\b|getComputedStyle|:visited/i,
+  'homepage script must not inspect browser history or visited-link state');
 assert.doesNotMatch(js, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
 assert.doesNotMatch(js, /localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
 assert.doesNotMatch(js, /setInterval|setTimeout|requestAnimationFrame/i);

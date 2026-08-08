@@ -755,3 +755,45 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The Pink Links
+
+Feature:
+
+**The Pink Links Are Not My Memory / Browser State Without Ownership**
+
+Design outcome:
+
+- Concept A, **My Page Can Show a Memory I Do Not Own**, supplied the earnest diary reflection on browser-local visited state affecting rendering without becoming a page-owned visitor log.
+- Concept B, **Almost Online Link Color Key!!!**, supplied the classic early-web link legend and concrete cyan/pink artifact.
+- Concept C, **Purple Is a Memory Leak From Another Page**, was discarded because its corruption metaphor could falsely imply that the site extracts browser history and would blur the privacy boundary.
+- Concepts A and B were merged.
+
+Feature-complete evidence head:
+
+`c25c0920d5bc4ecd2793c00f2769d06b6a4b78ac`
+
+Pull request:
+
+`#67 — Add Almost Online visited-links entry`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `189`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date Under Construction Forever, Honest Counter, Second Homepage, Broken-Image, and Back Button entries;
+- the post is grounded in the existing `a:visited { color: #ff88ff; }` CSS rule and adds no new styling or behavior;
+- wording explicitly distinguishes browser-local visited state from page-owned state, notes browser/settings variation, and acknowledges privacy restrictions around `:visited`;
+- `web1.js` remains limited to local service-worker registration and a focused regression guard rejects browser-history or visited-state inspection there;
+- focused assertions require the new entry, its link-color key, core thesis, existing pink visited-link rule, and same-date reverse chronology;
+- no new JavaScript, CSS, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, or dependency;
+- the existing keyboard, mobile, reduced-motion, increased-contrast, print, local-GIF, and offline behavior remains unchanged.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
