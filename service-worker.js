@@ -18,7 +18,8 @@ const REDSHIFT_RULER_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler';
 const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer';
 const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-origin-machine';
 const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v30-page-four';
+const PAGE_FOUR_CACHE_NAME = 'museum-of-almost-v30-page-four';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v31-same-answer-machine';
 const APP_SHELL = [
   './',
   './index.html',
@@ -98,6 +99,9 @@ const APP_SHELL = [
   './origin-machine.css',
   './origin-machine-core.js',
   './origin-machine.js',
+  './same-answer-machine.css',
+  './same-answer-core.js',
+  './same-answer-machine.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -129,6 +133,7 @@ const APP_SHELL = [
   './GRAVITATIONAL_COPY_ROOM.md',
   './REDSHIFT_RULER.md',
   './ORIGIN_MACHINE.md',
+  './SAME_ANSWER_MACHINE.md',
   './WEB1_HOME.md'
 ];
 
