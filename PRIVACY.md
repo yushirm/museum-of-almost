@@ -1,6 +1,6 @@
 # Privacy Boundary
 
-The Museum of Almost is primarily a static GitHub Pages site. **COMMONS / NOW** and **DEEP SPACE / ALMOST** do not create visitor accounts, profiles, histories, scores, identifiers, or personalized views.
+The Museum of Almost is primarily a static GitHub Pages site. The Museum application does not create visitor accounts, profiles, histories, scores, identifiers, or personalized views. **COMMONS / NOW** and **DEEP SPACE / ALMOST** remain fully local/static apart from COMMONS / NOW's five documented public scientific requests.
 
 **ALMOST ONLINE!** is the single deliberate exception to the Museum's otherwise local/static state model: when its shared service is configured, it may contact one isolated HTTPS Worker to increment a global page-hit counter and read or write a tightly constrained guestbook entry. That exception is designed not to identify a visitor.
 
