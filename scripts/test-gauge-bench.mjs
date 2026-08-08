@@ -8,6 +8,7 @@ const coreSource = fs.readFileSync(new URL('../gauge-bench-core.js', import.meta
 const view = fs.readFileSync(new URL('../gauge-bench.js', import.meta.url), 'utf8');
 const css = fs.readFileSync(new URL('../gauge-bench.css', import.meta.url), 'utf8');
 const record = fs.readFileSync(new URL('../GAUGE_BENCH.md', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const dataCore = fs.readFileSync(new URL('../data-core.js', import.meta.url), 'utf8');
 const worker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
@@ -181,11 +182,28 @@ for (const pattern of [
   /earthquake count ↔ precipitation-reporting point count/,
   /A broad dimension match alone is insufficient/,
   /Museum-local rather than a universal scientific ontology/,
+  /v33 Page Four Rumor Relay/,
+  /v34 Gauge Bench/,
   /Require the feature-complete head to pass `check`[\s\S]+archive-bearing head to pass `check` again before merge/
 ]) assert.match(record, pattern);
+
+for (const pattern of [
+  /## 2026-08-08 — COMMONS \/ NOW — The Gauge Bench/,
+  /\*\*The Gauge Bench \/ Break the Chart Before It Lies\*\*/,
+  /Concepts B and C were merged/,
+  /34db4d9af072231de14ae2ca492b5e481c293b94/,
+  /#75 — Add the Gauge Bench/,
+  /run: `228`/,
+  /required job: `check`/,
+  /conclusion: `success`/,
+  /v34 Gauge Bench/,
+  /v33 Page Four Rumor Relay/,
+  /run `226` was rejected as release evidence/,
+  /archive-bearing final head must pass the same required `check` job again before merge/
+]) assert.match(archive, pattern, `Gauge Bench success archive must retain ${pattern}`);
 
 for (const asset of ['./gauge-bench-core.js', './gauge-bench.js', './gauge-bench.css', './GAUGE_BENCH.md']) {
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 
-console.log('Gauge Bench fixed comparison registry, false-friend refusals, native-unit compatible differences, missing/zero semantics, accessibility, privacy, loader, and offline contracts verified.');
+console.log('Gauge Bench fixed comparison registry, false-friend refusals, native-unit compatible differences, missing/zero semantics, accessibility, privacy, success-archive evidence, loader, and offline contracts verified.');
