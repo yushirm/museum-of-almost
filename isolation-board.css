@@ -1,0 +1,170 @@
+.isolation-board-section {
+  padding-block: clamp(2.5rem, 7vw, 6rem);
+  border-bottom: 2px solid var(--line);
+}
+
+.isolation-board-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 1rem 2rem;
+  margin-bottom: 1.25rem;
+}
+.isolation-board-heading .eyebrow { grid-column: 1 / -1; }
+.isolation-board-heading h2,
+.isolation-board-heading p { margin: 0; }
+.isolation-board-heading h2 { font-family: ui-serif, Georgia, serif; font-size: clamp(1.8rem, 4vw, 3.6rem); font-weight: 500; line-height: 0.98; }
+.isolation-board-heading > p:last-child { max-width: 64ch; color: var(--muted); line-height: 1.6; }
+
+.isolation-console {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+  border: 1.5px solid var(--line);
+  background: var(--panel);
+}
+.isolation-breaker-bank { border-right: 1px solid var(--line); }
+
+.isolation-bank-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+.isolation-bank-heading div { display: grid; gap: 0.2rem; }
+.isolation-bank-heading span,
+.isolation-bank-heading strong,
+.isolation-summary > span,
+.isolation-key,
+.isolation-breaker small,
+.isolation-breaker span,
+.isolation-circuit span,
+.isolation-circuit small {
+  font-size: 0.66rem;
+  font-weight: 780;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.isolation-bank-heading span { color: var(--muted); }
+
+#isolation-reset {
+  min-height: 44px;
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 760;
+}
+
+.isolation-breakers,
+.isolation-circuits { margin: 0; padding: 0; list-style: none; }
+.isolation-breaker + .isolation-breaker { border-top: 1px solid var(--soft-line); }
+.isolation-breaker button {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.25rem 0.7rem;
+  width: 100%;
+  min-height: 68px;
+  padding: 0.7rem 0.85rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.isolation-breaker button:disabled { cursor: not-allowed; opacity: 0.72; }
+.isolation-breaker button small { color: var(--muted); }
+.isolation-breaker button strong { font-size: 0.95rem; }
+.isolation-breaker button span { justify-self: end; }
+.isolation-breaker button em {
+  grid-column: 2 / -1;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-style: normal;
+  line-height: 1.35;
+}
+.isolation-breaker[data-state="live"] button span { color: var(--green); }
+.isolation-breaker[data-state="tripped"] button { background: color-mix(in srgb, var(--red) 10%, transparent); }
+.isolation-breaker[data-state="tripped"] button span { color: var(--red); }
+.isolation-breaker[data-state="unavailable"] button span,
+.isolation-breaker[data-state="waiting"] button span { color: var(--muted); }
+
+.isolation-safety,
+.isolation-note { margin: 0; color: var(--muted); line-height: 1.55; }
+.isolation-safety { padding: 0.85rem 0.9rem; border-top: 1px solid var(--line); font-size: 0.82rem; }
+.isolation-note { margin-top: 0.85rem; max-width: 92ch; }
+
+.isolation-readout { min-width: 0; }
+.isolation-summary { padding: 0.9rem 1rem; border-bottom: 1px solid var(--line); }
+.isolation-summary > span { color: var(--muted); }
+.isolation-summary > strong {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+}
+.isolation-summary p { margin: 0.45rem 0 0; color: var(--muted); line-height: 1.45; }
+
+.isolation-circuits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.isolation-circuit {
+  min-width: 0;
+  padding: 0.8rem 0.9rem;
+  border-bottom: 1px solid var(--soft-line);
+}
+.isolation-circuit:nth-child(odd) { border-right: 1px solid var(--soft-line); }
+.isolation-circuit div { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; }
+.isolation-circuit div strong { font-size: 0.86rem; }
+.isolation-circuit p { margin: 0.35rem 0; color: var(--ink); font-size: 0.78rem; line-height: 1.4; }
+.isolation-circuit small { display: block; color: var(--muted); line-height: 1.5; }
+.isolation-circuit[data-state="powered"] span { color: var(--green); }
+.isolation-circuit[data-state="degraded"] span { color: var(--gold); }
+.isolation-circuit[data-state="dark"] { background: color-mix(in srgb, var(--night) 8%, transparent); }
+.isolation-circuit[data-state="dark"] span { color: var(--red); }
+.isolation-circuit[data-state="local"] span { color: var(--blue); }
+.isolation-circuit[data-state="sealed"] span { color: var(--ink); }
+.isolation-circuit[data-state="waiting"] span { color: var(--muted); }
+
+.isolation-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1rem;
+  align-items: center;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--line);
+  border-top: 0;
+  color: var(--muted);
+}
+.isolation-key span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.isolation-key i { width: 0.7rem; height: 0.7rem; border: 1px solid var(--line); border-radius: 50%; }
+.isolation-key i[data-state="powered"] { background: var(--green); }
+.isolation-key i[data-state="degraded"] { background: var(--gold); }
+.isolation-key i[data-state="dark"] { background: var(--red); }
+.isolation-key i[data-state="local"] { background: var(--blue); }
+.isolation-key i[data-state="sealed"] { background: var(--ink); }
+
+@media (max-width: 760px) {
+  .isolation-board-heading { grid-template-columns: 1fr; }
+  .isolation-console { grid-template-columns: 1fr; }
+  .isolation-breaker-bank { border-right: 0; border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 620px) {
+  .isolation-bank-heading { align-items: stretch; flex-direction: column; }
+  #isolation-reset { width: 100%; }
+  .isolation-circuits { grid-template-columns: 1fr; }
+  .isolation-circuit:nth-child(odd) { border-right: 0; }
+  .isolation-breaker button { grid-template-columns: auto 1fr; }
+  .isolation-breaker button span { grid-column: 1 / -1; justify-self: start; }
+  .isolation-breaker button em { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .isolation-board-section * { transition: none !important; animation: none !important; }
+}
+@media (prefers-contrast: more) {
+  .isolation-console,
+  .isolation-key { border-width: 2px; }
+  .isolation-breaker[data-state="tripped"] button,
+  .isolation-circuit[data-state="dark"] { outline: 2px solid currentColor; outline-offset: -2px; }
+}
+@media print {
+  .isolation-board-section { display: none !important; }
+}
