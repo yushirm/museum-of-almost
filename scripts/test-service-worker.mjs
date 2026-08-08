@@ -20,7 +20,8 @@ assert.match(source, /const GRAVITATIONAL_COPY_ROOM_CACHE_NAME = 'museum-of-almo
 assert.match(source, /const REDSHIFT_RULER_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler'/);
 assert.match(source, /const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer'/);
 assert.match(source, /const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-origin-machine'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v29-border-office'/);
+assert.match(source, /const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v30-load-bearing-sample'/);
 for (const asset of [
   './',
   './index.html',
@@ -69,6 +70,9 @@ for (const asset of [
   './border-office-core.js',
   './border-office.js',
   './border-office.css',
+  './load-bearing-sample-core.js',
+  './load-bearing-sample.js',
+  './load-bearing-sample.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -117,6 +121,7 @@ for (const asset of [
   './REST_SCORE.md',
   './OFFCUT_DRAWER.md',
   './BORDER_OFFICE.md',
+  './LOAD_BEARING_SAMPLE.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
@@ -157,4 +162,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Witness Seal, Possibility Engine, Isolation Board, Frame Shifter, Exposure Plate, Reverse Ledger, Causal Signal Box, Rest Score, Gravitational Copy Room, Redshift Ruler, Offcut Drawer, Origin Machine, and Border Office offline shell plus fresh-online cached-offline behavior verified.');
+console.log('Witness Seal, Possibility Engine, Isolation Board, Frame Shifter, Exposure Plate, Reverse Ledger, Causal Signal Box, Rest Score, Gravitational Copy Room, Redshift Ruler, Offcut Drawer, Origin Machine, Border Office, and Load-Bearing Sample offline shell plus fresh-online cached-offline behavior verified.');
