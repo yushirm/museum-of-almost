@@ -55,7 +55,7 @@ The NOAA scales are normalized with the existing `cosmic-signal-core.js` scale p
 
 ## Zero is field-specific
 
-The Rest Score never assumes that the number `0` means “nothing happened.”
+The Rest Score never assumes that the number `0` means “nothing happened.” Numeric zero does not automatically mean silence.
 
 A value becomes **WRITTEN ZERO** only when the field already has a none-or-no-occurrence zero semantics:
 
@@ -102,9 +102,8 @@ Filtering changes only what is visible. It does not alter the snapshot, score cl
 
 The summary may count how many of the 19 fixed measures occupy each category.
 
-Those counts are **not**:
+Those counts are not a completeness percentage or any other overall score. They are also not:
 
-- a completeness percentage;
 - a provider score;
 - a data-quality score;
 - a confidence score;
