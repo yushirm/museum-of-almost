@@ -28,7 +28,8 @@ const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-ev
 const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shuffle-table';
 const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate';
 const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room';
+const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet';
 const APP_SHELL = [
   './',
   './index.html',
@@ -101,6 +102,9 @@ const APP_SHELL = [
   './quorum-gate-core.js',
   './quorum-gate.js',
   './quorum-gate.css',
+  './shutter-cabinet-core.js',
+  './shutter-cabinet.js',
+  './shutter-cabinet.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -156,6 +160,7 @@ const APP_SHELL = [
   './GAUGE_BENCH.md',
   './SHUFFLE_TABLE.md',
   './QUORUM_GATE.md',
+  './SHUTTER_CABINET.md',
   './ELSEWHERE_CATALOGUE_ZERO.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
