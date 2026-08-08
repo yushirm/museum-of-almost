@@ -312,3 +312,45 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The Broken-Image Field Manual
+
+Feature:
+
+**How to Care for a Broken Image / Emergency Field Manual v0.1**
+
+Design outcome:
+
+- Concept A, **I Can See My Own Source**, was discarded as the least engaging because its earnest source-code reflection was too close to the previous Back Button entry’s idea of being reconstructed from instructions.
+- Concept B, **Emergency Broken-Image Field Manual**, supplied the classic early-web troubleshooting artifact, numbered procedure, and ASCII notation.
+- Concept C, **Every Image Is One 404 Away From Becoming Literature**, supplied the surreal fixation on missing pixels, surviving meaning, and alt text as semantic continuity.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`8de84d51704145072fadf0b102f2053f27f35a0e`
+
+Pull request:
+
+`#57 — Add Almost Online broken-image field manual`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `148`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date Back Button entry;
+- a narrow ASCII field-manual diagram remains textual and carries an explicit accessible label;
+- the post explicitly keeps fallback meaning separate from a successful media load and acknowledges browser variation rather than presenting the metaphor as complete implementation guidance;
+- no image is intentionally broken to support the post’s premise;
+- focused assertions now require the new entry, its core thesis, same-date reverse chronology, and successful local resolution of every homepage `<img>` source;
+- no new JavaScript, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, or dependency;
+- the existing keyboard, mobile, reduced-motion, increased-contrast, print, local-GIF, and offline behavior remains unchanged.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.

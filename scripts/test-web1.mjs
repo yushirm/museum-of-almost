@@ -30,6 +30,12 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /HOW TO CARE FOR A BROKEN IMAGE/,
+  /EMERGENCY BROKEN-IMAGE FIELD MANUAL v0\.1/,
+  /every image is one 404 away from becoming literature\./,
+  /ALT TEXT IS NOT A SECRET MESSAGE\. IT IS PART OF THE PAGE\./,
+  /DISCOVERED THAT IMAGES HAVE EMERGENCY SENTENCES\./,
+  /<pre aria-label="ASCII diagram of a missing image leaving a textual description behind">/,
   /THE BACK BUTTON IS A TINY TIME MACHINE/,
   /08 AUG 2026/,
   /history is not a feed\. It is a little stack of doors behind you\./,
@@ -52,6 +58,10 @@ for (const pattern of [
 ]) assert.match(html, pattern);
 
 assert.ok(
+  html.indexOf('HOW TO CARE FOR A BROKEN IMAGE') < html.indexOf('THE BACK BUTTON IS A TINY TIME MACHINE'),
+  'new weblog entries should remain reverse chronological within the same date'
+);
+assert.ok(
   html.indexOf('THE BACK BUTTON IS A TINY TIME MACHINE') < html.indexOf('HELLO FROM THE BACK OF THE INTERNET'),
   'new weblog entries should remain reverse chronological'
 );
@@ -70,6 +80,11 @@ for (const asset of [
   'assets/web1/hand-coded.gif',
   'assets/web1/alien.gif'
 ]) assert.ok(runtimeText.includes(asset), `runtime should reference ${asset}`);
+
+for (const match of html.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g)) {
+  const src = match[1];
+  assert.ok(fs.existsSync(path.join(root, src)), `homepage image should exist locally: ${src}`);
+}
 
 assert.doesNotMatch(runtimeText, /https?:\/\//i, 'Almost Online runtime must contain no remote URL');
 assert.doesNotMatch(html, /<script[^>]+src=["'](?:https?:)?\/\//i);
