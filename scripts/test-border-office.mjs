@@ -160,7 +160,7 @@ for (const pattern of [
   /The world provides values\. The Museum draws some of the lines/,
   /Margin to nearest border/,
   /not.*uncertainty/i,
-  /does \*\*not\*\* translate `0 mm` into “dry”/,
+  /does \*\*not\*\* translate `0 mm` into “dry/,
   /adds no response observation, provider payload retention, fetch, or alternate acquisition path/i,
   /Require the feature-complete head to pass `check`[\s\S]*repository Success Archive[\s\S]*archive-bearing head to pass `check` again/
 ]) assert.match(record, pattern);
