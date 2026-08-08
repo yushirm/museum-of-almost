@@ -8,6 +8,7 @@ const coreSource = fs.readFileSync(new URL('../shuffle-table-core.js', import.me
 const view = fs.readFileSync(new URL('../shuffle-table.js', import.meta.url), 'utf8');
 const css = fs.readFileSync(new URL('../shuffle-table.css', import.meta.url), 'utf8');
 const record = fs.readFileSync(new URL('../SHUFFLE_TABLE.md', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
 const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 const dataCore = fs.readFileSync(new URL('../data-core.js', import.meta.url), 'utf8');
 const worker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
@@ -203,8 +204,23 @@ for (const pattern of [
   /Require the feature-complete head to pass `check`[\s\S]+archive-bearing head to pass `check` again before merge/
 ]) assert.match(record, pattern);
 
+for (const pattern of [
+  /## 2026-08-08 — COMMONS \/ NOW — The Shuffle Table/,
+  /\*\*The Shuffle Table \/ The Headline Does Not Know Where the Values Lived\*\*/,
+  /Concept A, \*\*The Aggregation Audit\*\*, was discarded/,
+  /Concepts B and C were merged/,
+  /`fed711fd3bb2a3191834b02d59c79c8f987ec4ab`/,
+  /`#80 — Add the Shuffle Table`/,
+  /run: `255`;/,
+  /conclusion: `success`\./,
+  /run `246` was rejected[\s\S]+Plausible Analytics/,
+  /green run `253` was rejected as release evidence/,
+  /v37 Shuffle Table[\s\S]+v36 Page Four Evidence Lattice/,
+  /archive-bearing final head must pass the same required `check` job again before merge/
+]) assert.match(archive, pattern);
+
 for (const asset of ['./shuffle-table-core.js', './shuffle-table.js', './shuffle-table.css', './SHUFFLE_TABLE.md']) {
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 
-console.log('Shuffle Table deterministic permutation, aggregate invariance, missing/zero semantics, accessibility, privacy, loader, and offline contracts verified.');
+console.log('Shuffle Table deterministic permutation, aggregate invariance, missing/zero semantics, accessibility, privacy, archive evidence, loader, and offline contracts verified.');
