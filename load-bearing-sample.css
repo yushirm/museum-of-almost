@@ -1,0 +1,274 @@
+.load-bearing-sample-section {
+  border-top: 1px solid var(--line, #7f8b8f);
+  padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1rem, 4vw, 3rem);
+}
+
+.load-bearing-sample-heading,
+.load-bearing-claim-controls,
+.load-bearing-beam,
+.load-bearing-detail,
+.load-bearing-grid,
+.load-bearing-doctrine {
+  max-width: 86rem;
+  margin-inline: auto;
+}
+
+.load-bearing-sample-heading {
+  margin-bottom: 1.5rem;
+}
+
+.load-bearing-sample-heading h2 {
+  max-width: 18ch;
+  margin: 0.25rem 0 0.75rem;
+  font-size: clamp(2rem, 6vw, 5.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.load-bearing-sample-heading > p:last-child {
+  max-width: 60rem;
+}
+
+.load-bearing-claim-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.load-bearing-claim-controls button,
+.load-bearing-pin {
+  min-height: 44px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.load-bearing-claim-controls button[aria-pressed="true"],
+.load-bearing-pin[aria-pressed="true"] {
+  background: var(--ink, #172126);
+  color: var(--paper, #f2efe6);
+}
+
+.load-bearing-claim-controls button:focus-visible,
+.load-bearing-pin:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+.load-bearing-pin:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  border-style: dashed;
+}
+
+.load-bearing-beam {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  border: 1px solid var(--line, #7f8b8f);
+  background: var(--paper, #f2efe6);
+}
+
+.load-bearing-beam-cell {
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 1.6rem);
+}
+
+.load-bearing-beam-cell strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: clamp(1.35rem, 3.8vw, 3.2rem);
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+.load-bearing-beam-cell.hypothetical {
+  border-left: 1px dashed var(--line, #7f8b8f);
+}
+
+.load-bearing-joint {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 0.2rem;
+  min-width: 7rem;
+  border-left: 1px solid var(--line, #7f8b8f);
+  border-right: 1px solid var(--line, #7f8b8f);
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.load-bearing-joint span {
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.load-bearing-joint b {
+  font-size: 1.8rem;
+}
+
+.load-bearing-detail {
+  border: 1px solid var(--line, #7f8b8f);
+  border-top: 0;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  line-height: 1.5;
+}
+
+.load-bearing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line, #7f8b8f);
+  border-left: 1px solid var(--line, #7f8b8f);
+}
+
+.load-bearing-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  border-right: 1px solid var(--line, #7f8b8f);
+  border-bottom: 1px solid var(--line, #7f8b8f);
+  padding: 1rem;
+  transition: transform 160ms ease;
+}
+
+.load-bearing-card[data-selected="true"] {
+  box-shadow: inset 0 0 0 3px currentColor;
+}
+
+.load-bearing-card[data-state="bearing"],
+.load-bearing-card[data-state="sole"] {
+  min-height: 18rem;
+}
+
+.load-bearing-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.load-bearing-station,
+.load-bearing-state {
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+}
+
+.load-bearing-state {
+  max-width: 18ch;
+  border: 1px solid currentColor;
+  padding: 0.25rem 0.35rem;
+  text-align: right;
+}
+
+.load-bearing-card[data-state="missing"] .load-bearing-state {
+  border-style: dashed;
+}
+
+.load-bearing-value {
+  display: block;
+  margin: 1.1rem 0 0.7rem;
+  font-size: clamp(1.5rem, 3vw, 2.8rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.load-bearing-effect {
+  flex: 1;
+  margin: 0 0 1rem;
+  line-height: 1.45;
+}
+
+.load-bearing-pin {
+  width: 100%;
+  margin-top: auto;
+}
+
+.load-bearing-doctrine {
+  margin-top: 1rem;
+  border-left: 0.35rem solid currentColor;
+  padding: 0.85rem 1rem;
+  line-height: 1.5;
+}
+
+.field-sheet-load-bearing-sample {
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .load-bearing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .load-bearing-beam {
+    grid-template-columns: 1fr;
+  }
+
+  .load-bearing-joint {
+    min-width: 0;
+    border-left: 0;
+    border-right: 0;
+    border-top: 1px solid var(--line, #7f8b8f);
+    border-bottom: 1px solid var(--line, #7f8b8f);
+  }
+
+  .load-bearing-beam-cell.hypothetical {
+    border-left: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .load-bearing-sample-section {
+    padding-inline: 0.8rem;
+  }
+
+  .load-bearing-claim-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .load-bearing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .load-bearing-card[data-state="bearing"],
+  .load-bearing-card[data-state="sole"] {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .load-bearing-card {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .load-bearing-beam,
+  .load-bearing-detail,
+  .load-bearing-grid,
+  .load-bearing-card,
+  .load-bearing-state,
+  .load-bearing-claim-controls button,
+  .load-bearing-pin {
+    border-width: 2px;
+  }
+}
+
+@media print {
+  .load-bearing-sample-section {
+    display: none !important;
+  }
+
+  .field-sheet-load-bearing-sample {
+    display: block !important;
+  }
+}
