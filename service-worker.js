@@ -18,11 +18,16 @@ const REDSHIFT_RULER_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler';
 const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer';
 const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-origin-machine';
 const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v30-load-bearing-sample';
+const PAGE_FOUR_CACHE_NAME = 'museum-of-almost-v30-page-four';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v31-load-bearing-sample';
 const APP_SHELL = [
   './',
   './index.html',
   './landing.css',
+  './page-four-teaser.css',
+  './page-four.html',
+  './page-four.css',
+  './page-four.js',
   './commons-now.html',
   './styles.css',
   './sample-hold.css',
