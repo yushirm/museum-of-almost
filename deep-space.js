@@ -97,7 +97,21 @@
     });
   }
 
-  function loadOriginMachine() {
+  function loadSameAnswerMachine() {
+    if (!document.querySelector('link[data-same-answer-styles]')) {
+      const stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = './same-answer-machine.css';
+      stylesheet.dataset.sameAnswerStyles = '';
+      document.head.append(stylesheet);
+    }
+
+    loadLocalScript('./same-answer-core.js', 'same-answer-core', () => {
+      loadLocalScript('./same-answer-machine.js', 'same-answer-view');
+    });
+  }
+
+  function loadOriginMachine(done = loadSameAnswerMachine) {
     if (!document.querySelector('link[data-origin-machine-styles]')) {
       const stylesheet = document.createElement('link');
       stylesheet.rel = 'stylesheet';
@@ -107,7 +121,7 @@
     }
 
     loadLocalScript('./origin-machine-core.js', 'origin-machine-core', () => {
-      loadLocalScript('./origin-machine.js', 'origin-machine-view');
+      loadLocalScript('./origin-machine.js', 'origin-machine-view', done);
     });
   }
 

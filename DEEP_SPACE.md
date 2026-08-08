@@ -143,6 +143,28 @@ The feature does not calculate a Hubble constant or parameter, recession velocit
 
 The Origin Machine mounts after the Redshift Ruler through the same-origin bootstrap, preserving deterministic Instrument 07 → 08 → 09 → 10 loading without rewriting `deep-space.html`. It adds no data-service or external runtime request, visitor-entered values, storage, cookies, history state, location access, analytics, telemetry, timer loop, remote assets or dependencies.
 
+### Same Answer Machine / Three Histories, One Redshift
+
+The eleventh instrument fixes `a_emit = 0.5` and `a_obs = 1`, so all three offered toy histories have the same endpoint cosmological redshift, `z = 1`.
+
+The three analytic histories use a normalized dimensionless coordinate `u` from `0` to `1`:
+
+- Linear: `a(u) = 0.5 + 0.5u`
+- Early growth: `a(u) = 0.5 + 0.5 sqrt(u)`
+- Late growth: `a(u) = 0.5 + 0.5u²`
+
+For each history the local core also calculates the dimensionless path integral:
+
+`J = integral_0^1 du / a(u)`
+
+The exact results are `2 ln 2`, `4(1 - ln 2)`, and `pi / 2`. They differ even though every history begins and ends at the same scale factors and therefore keeps the same `z = 1` endpoint result.
+
+The interface deliberately breaks the normal expectation that a valid control selection must change the headline number. Every history button leaves the large `z = 1` result unchanged while changing the selected curve, formula, sample table and `J` ledger. All three curves remain visible so the shared endpoints are explicit rather than implied.
+
+`J` is dimensionless because `u` is a normalized toy coordinate. It is not a physical distance, lookback time, cosmic age, Hubble parameter, Friedmann-equation solution or observational fit, and the three toy histories are not ranked as models of the real Universe. Full design, source basis, accessibility contract and rebuild rules are documented in `SAME_ANSWER_MACHINE.md`.
+
+The Same Answer Machine mounts after the Origin Machine through the same-origin bootstrap, preserving deterministic Instrument 07 → 08 → 09 → 10 → 11 loading without rewriting `deep-space.html`. It adds no data-service or external runtime request, visitor-entered values, storage, cookies, history state, location access, analytics, telemetry, timer loop, animation-frame loop, remote assets or dependencies.
+
 ## Accessibility
 
-The gallery uses semantic sections, visible keyboard focus, 44px minimum interactive targets, polite live regions for changing instrument readouts, a skip link, responsive layouts, `prefers-reduced-motion`, `prefers-contrast`, and print handling. The Possibility Engine also preserves a static initial possibility map and the full Success Archives in HTML so the historical record remains readable without JavaScript. The Frame Shifter duplicates every visual event-order change in text and removes its card transition under reduced-motion preferences. The Causal Signal Box writes every station and route state in text, gives refused dispatches immediate live-region feedback, lists each segment's `Δt` and `|Δx|`, and removes station transitions under reduced-motion preferences. The Gravitational Copy Room repeats shared source identity and parity in text, states the Einstein-ring case textually, and never relies on card duplication, mirroring, or animation alone to carry scientific meaning. The Redshift Ruler duplicates every visual width change in exact redshift, wavelength, stretch-factor and scale-factor text; confines deliberate horizontal overflow to a labeled keyboard-focusable viewport; and removes ruler transitions under reduced-motion preferences. The Origin Machine duplicates every re-centering and scale-factor result in an exact semantic table, explains that vertical label lanes are non-spatial, keeps the stage keyboard-focusable, and disables horizontal marker motion under reduced-motion preferences.
+The gallery uses semantic sections, visible keyboard focus, 44px minimum interactive targets, polite live regions for changing instrument readouts, a skip link, responsive layouts, `prefers-reduced-motion`, `prefers-contrast`, and print handling. The Possibility Engine also preserves a static initial possibility map and the full Success Archives in HTML so the historical record remains readable without JavaScript. The Frame Shifter duplicates every visual event-order change in text and removes its card transition under reduced-motion preferences. The Causal Signal Box writes every station and route state in text, gives refused dispatches immediate live-region feedback, lists each segment's `Δt` and `|Δx|`, and removes station transitions under reduced-motion preferences. The Gravitational Copy Room repeats shared source identity and parity in text, states the Einstein-ring case textually, and never relies on card duplication, mirroring, or animation alone to carry scientific meaning. The Redshift Ruler duplicates every visual width change in exact redshift, wavelength, stretch-factor and scale-factor text; confines deliberate horizontal overflow to a labeled keyboard-focusable viewport; and removes ruler transitions under reduced-motion preferences. The Origin Machine duplicates every re-centering and scale-factor result in an exact semantic table, explains that vertical label lanes are non-spatial, keeps the stage keyboard-focusable, and disables horizontal marker motion under reduced-motion preferences. The Same Answer Machine writes the invariant `z = 1` result explicitly, duplicates every selected curve in formula and table form, uses curve dash patterns in addition to emphasis, treats its SVG as decorative, and removes curve transitions under reduced-motion preferences.
