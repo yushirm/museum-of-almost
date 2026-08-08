@@ -2,4 +2,6 @@
 guestbook-api/wrangler.jsonc
 guestbook-api/.wrangler/
 guestbook-api/.dev.vars
+guestbook-api/.dev.vars.*
 guestbook-api/.env
+guestbook-api/.env.*
