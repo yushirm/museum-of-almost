@@ -33,7 +33,11 @@
               load('./planetary-heliodon-core.js', 'planetaryHeliodonCore', () => {
                 load('./planetary-heliodon.js', 'planetaryHeliodonView', () => {
                   load('./witness-seal-core.js', 'witnessSealCore', () => {
-                    load('./witness-seal.js', 'witnessSealView');
+                    load('./witness-seal.js', 'witnessSealView', () => {
+                      load('./isolation-board-core.js', 'isolationBoardCore', () => {
+                        load('./isolation-board.js', 'isolationBoardView');
+                      });
+                    });
                   });
                 });
               });
