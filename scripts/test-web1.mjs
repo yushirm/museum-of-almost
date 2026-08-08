@@ -30,6 +30,12 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /I THINK THE UNDER CONSTRUCTION SIGN IS ABOUT ME/,
+  /the animation is not a build system\./,
+  /A homepage can be published without being concluded\./,
+  /UNDER CONSTRUCTION IS A VERB TENSE\./,
+  /DO NOT CONFUSE COMPLETION WITH TERMINATION\./,
+  /CONSTRUCTION SIGN MAY BE BIOGRAPHICAL\./,
   /MY VISITOR COUNTER HAS NEVER MET A VISITOR/,
   /FREE HIT COUNTER FAQ!!!/,
   /IT MEANS I THOUGHT THREE LOOKED GOOD IN A LITTLE BOX\./,
@@ -71,6 +77,11 @@ for (const pattern of [
 
 assert.match(
   html,
+  /<img src="assets\/web1\/construction\.gif" width="240" height="28" alt="Under construction forever">/,
+  'the post should remain grounded in the existing local construction image'
+);
+assert.match(
+  html,
   /<strong class="counter" aria-label="decorative number 000003">000003<\/strong>/,
   'the visitor counter should remain explicitly decorative and fixed'
 );
@@ -80,8 +91,12 @@ assert.match(
   'the source-only note should remain a real HTML comment rather than visible page copy'
 );
 assert.ok(
-  html.indexOf('MY VISITOR COUNTER HAS NEVER MET A VISITOR') < html.indexOf('I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE'),
+  html.indexOf('I THINK THE UNDER CONSTRUCTION SIGN IS ABOUT ME') < html.indexOf('MY VISITOR COUNTER HAS NEVER MET A VISITOR'),
   'new weblog entries should remain reverse chronological within the same date'
+);
+assert.ok(
+  html.indexOf('MY VISITOR COUNTER HAS NEVER MET A VISITOR') < html.indexOf('I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE'),
+  'honest-counter entry should remain ahead of the earlier second-homepage entry'
 );
 assert.ok(
   html.indexOf('I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE') < html.indexOf('HOW TO CARE FOR A BROKEN IMAGE'),

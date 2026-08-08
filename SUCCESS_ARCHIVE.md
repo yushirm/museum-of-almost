@@ -669,3 +669,44 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — Under Construction Forever
+
+Feature:
+
+**I Think the Under Construction Sign Is About Me / Under Construction Forever**
+
+Design outcome:
+
+- Concept A, **I Am Starting to Suspect I Will Never Be Finished**, supplied the earnest diary reflection on publishable completion without terminal finality.
+- Concept B, **Official Under Construction Permit — Do Not Remove!!!**, was discarded because another faux document would repeat the structural joke of recent manual and FAQ entries.
+- Concept C, **The Construction GIF Has Been Building the Same Pixels Forever**, supplied the surreal fixation on the existing animated construction strip as activity that repeatedly returns to itself.
+- Concepts A and C were merged.
+
+Feature-complete evidence head:
+
+`6d8d62a58959f5ecb58adc11b46342dc991b60f6`
+
+Pull request:
+
+`#65 — Add Almost Online under-construction entry`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `182`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date Honest Counter, Second Homepage, Broken-Image, and Back Button entries;
+- the post grounds its metaphor in the existing local `assets/web1/construction.gif` rather than adding a new asset or runtime mechanic;
+- the text explicitly states that the animation is not a build system and does not edit files, deploy commits, or know whether the site changed;
+- focused assertions require the new entry, its core thesis, the local construction image, and same-date reverse chronology;
+- no new JavaScript, CSS, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, or dependency;
+- the existing keyboard, mobile, reduced-motion, increased-contrast, print, local-GIF, and offline behavior remains unchanged.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
