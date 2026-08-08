@@ -32,7 +32,8 @@ const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-ins
 const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet';
 const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute';
 const PAGE_FOUR_DEAD_DROP_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop';
-const CURRENT_CACHE_NAME = PAGE_FOUR_DEAD_DROP_CACHE_NAME;
+const PARALLAX_SURVEY_CACHE_NAME = 'museum-of-almost-v44-parallax-survey';
+const CURRENT_CACHE_NAME = PARALLAX_SURVEY_CACHE_NAME;
 const APP_SHELL = [
   './',
   './index.html',
@@ -143,6 +144,9 @@ const APP_SHELL = [
   './unequal-minute.css',
   './unequal-minute-core.js',
   './unequal-minute.js',
+  './parallax-survey.css',
+  './parallax-survey-core.js',
+  './parallax-survey.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -182,6 +186,7 @@ const APP_SHELL = [
   './ORIGIN_MACHINE.md',
   './SAME_ANSWER_MACHINE.md',
   './UNEQUAL_MINUTE.md',
+  './PARALLAX_SURVEY.md',
   './WEB1_HOME.md',
   './PAGE_FOUR_RESEARCH.md',
   './PAGE_FOUR_HESSDALEN.md',
