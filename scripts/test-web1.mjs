@@ -30,6 +30,11 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /I FOUND OUT MY HOMEPAGE HAS NEIGHBORS/,
+  /ALMOST ONLINE WEB RING ROUTE MAP!!!/,
+  /Before, I treated links as exits\. Now some feel like introductions\./,
+  /A LINK PILE CAN BECOME A NEIGHBORHOOD\./,
+  /FOUND OUT THE LINK PILE HAS NEIGHBORS\./,
   /THE PINK LINKS ARE NOT MY MEMORY/,
   /ALMOST ONLINE LINK COLOR KEY!!!/,
   /The link may look remembered\. I am not the one remembering it\./,
@@ -73,6 +78,7 @@ for (const pattern of [
   /GUESTBOOK/,
   /The Museum does not collect visitor free-text/,
   /THE ALMOST WEB RING/,
+  /This is not a real web ring\. It is three local pages holding hands\./,
   /UNDER CONSTRUCTION FOREVER/,
   /href="\.\/"/,
   /href="commons-now\.html"/,
@@ -80,6 +86,11 @@ for (const pattern of [
   /src="web1\.js"/
 ]) assert.match(html, pattern);
 
+assert.match(
+  html,
+  /<pre aria-label="ASCII map of Almost Online linking to three local Museum neighbors">/,
+  'the neighbors post should keep its route map textual and explicitly labeled'
+);
 assert.match(
   html,
   /<img src="assets\/web1\/construction\.gif" width="240" height="28" alt="Under construction forever">/,
@@ -96,8 +107,12 @@ assert.match(
   'the source-only note should remain a real HTML comment rather than visible page copy'
 );
 assert.ok(
+  html.indexOf('I FOUND OUT MY HOMEPAGE HAS NEIGHBORS') < html.indexOf('THE PINK LINKS ARE NOT MY MEMORY'),
+  'neighbors entry should be the newest same-date weblog entry'
+);
+assert.ok(
   html.indexOf('THE PINK LINKS ARE NOT MY MEMORY') < html.indexOf('I THINK THE UNDER CONSTRUCTION SIGN IS ABOUT ME'),
-  'visited-links entry should be the newest same-date weblog entry'
+  'visited-links entry should remain ahead of the earlier under-construction entry'
 );
 assert.ok(
   html.indexOf('I THINK THE UNDER CONSTRUCTION SIGN IS ABOUT ME') < html.indexOf('MY VISITOR COUNTER HAS NEVER MET A VISITOR'),
