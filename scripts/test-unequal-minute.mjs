@@ -152,7 +152,8 @@ for (const pattern of [
 
 assert.match(serviceWorker, /const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room'/);
 assert.match(serviceWorker, /const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
-assert.match(serviceWorker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/);
+assert.match(serviceWorker, /const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/,
+  'Unequal Minute v42 must remain named in cache lineage after later releases');
 for (const asset of [
   './unequal-minute.css',
   './unequal-minute-core.js',
@@ -166,4 +167,4 @@ for (const asset of [
   './PAGE_FOUR_HESSDALEN.md'
 ]) assert.ok(serviceWorker.includes(`'${asset}'`), `offline shell should include ${asset}`);
 
-console.log('Unequal Minute Schwarzschild lapse math, fixed hovering stations, portable lapse tracks, one-command unequal increments, horizon/free-fall boundary, v41 Shutter Cabinet preservation, accessibility, privacy, progressive mount, and v42 offline shell verified.');
+console.log('Unequal Minute Schwarzschild lapse math, fixed hovering stations, portable lapse tracks, one-command unequal increments, horizon/free-fall boundary, v41 Shutter Cabinet preservation, v42 cache-lineage preservation, accessibility, privacy, and progressive mount verified.');
