@@ -106,7 +106,7 @@ for (const pattern of [
   /https:\/\/www\.nasa\.gov\/news-release\/our-solar-systems-first-known-interstellar-object-gets-unexpected-speed-boost\//,
   /https:\/\/science\.nasa\.gov\/uap\//,
   /12,618 sightings/,
-  /701 remained categorized as “Unidentified”/,
+  /701 remained categorized as “Unidentified\.”/,
   /deer-family origin/,
   /Source review date: 2026-08-08/
 ]) assert.match(researchLedger, pattern, `source ledger missing ${pattern}`);
