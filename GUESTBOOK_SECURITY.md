@@ -25,6 +25,8 @@ The Museum therefore uses the old guestbook *gesture* without collecting identit
 
 ## API boundary
 
+The backend is intentionally one self-contained Worker file: `guestbook-api/worker.mjs`. The audited allowlists, validation helpers, HTTP boundary, and D1 operations live in that same deployment artifact so the policy cannot drift from the deployed code.
+
 The Worker exposes only:
 
 - `GET /v1/state` — current accepted hit count and the newest public entries;
@@ -69,7 +71,7 @@ Do not commit Cloudflare account identifiers, API tokens, private URLs, producti
 
 1. Create a D1 database named `museum-almost-guestbook`.
 2. Apply `guestbook-api/migrations/0001_guestbook.sql` to that database.
-3. Create a Worker using `guestbook-api/worker.mjs` and `guestbook-api/policy.mjs`.
+3. Create a Worker and replace its starter code with the full contents of `guestbook-api/worker.mjs`.
 4. Bind the D1 database as `DB`.
 5. Set `SITE_ORIGIN` to the Museum's public GitHub Pages origin.
 6. Deploy the Worker and record its public HTTPS origin.

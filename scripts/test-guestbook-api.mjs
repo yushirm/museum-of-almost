@@ -15,13 +15,12 @@ import {
   startOfHitWindow,
   startOfUtcDay,
   validateSelection
-} from '../guestbook-api/policy.mjs';
+} from '../guestbook-api/worker.mjs';
 
 const root = path.resolve(new URL('..', import.meta.url).pathname);
 const read = (name) => fs.readFileSync(path.join(root, name), 'utf8');
 
 for (const name of [
-  'guestbook-api/policy.mjs',
   'guestbook-api/worker.mjs',
   'guestbook-api/schema.sql',
   'guestbook-api/migrations/0001_guestbook.sql',
@@ -79,6 +78,8 @@ const security = read('GUESTBOOK_SECURITY.md');
 const privacy = read('PRIVACY.md');
 
 for (const pattern of [
+  /export const MESSAGE_OPTIONS/,
+  /export function validateSelection/,
   /request\.headers\.get\('origin'\)/,
   /isAllowedOrigin\(requestOrigin, configuredOrigin\)/,
   /Access-Control-Allow-Origin/,
@@ -102,6 +103,8 @@ for (const pattern of [
   /service_unavailable/
 ]) assert.match(worker, pattern);
 
+assert.doesNotMatch(worker, /^import\s/m,
+  'Dashboard deployment artifact should be one self-contained Worker file');
 assert.doesNotMatch(worker, /HIT_RATE_LIMITER|SIGN_RATE_LIMITER|cf-connecting-ip|user-agent|referer/i,
   'Worker must not use edge/person identifiers or external limiter bindings');
 assert.doesNotMatch(worker, /console\.(?:log|info|warn|error)/,
@@ -136,6 +139,7 @@ for (const pattern of [
   /at most 300 accepted page-hit increments per UTC minute window/i,
   /request bodies are capped at 256 bytes/i,
   /single D1 row keyed only as `page-hit`/i,
+  /one self-contained Worker file/i,
   /Do not commit Cloudflare account identifiers, API tokens, private URLs/i
 ]) assert.match(security, pattern);
 
@@ -149,4 +153,4 @@ for (const pattern of [
   /renders guestbook entries with DOM `textContent`/i
 ]) assert.match(privacy, pattern, `privacy record missing shared-state boundary: ${pattern}`);
 
-console.log('Shared counter/guestbook policy, D1-global budgets, API boundary, input allowlist, schema, privacy record, and no-identifier design verified.');
+console.log('Single-file shared counter/guestbook Worker, D1-global budgets, API boundary, input allowlist, schema, privacy record, and no-identifier design verified.');
