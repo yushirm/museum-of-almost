@@ -6,6 +6,7 @@
   if (!core || !document || typeof root.fetch !== 'function') return;
 
   const SNAPSHOT_EVENT = 'museum:commons-snapshot';
+  const PRECISION_EVENT = 'museum:commons-precision-trace';
   const CHANNEL_IDS = core.CHANNELS.map((channel) => channel.id);
   const nativeFetch = root.fetch.bind(root);
   const cyclesBySignal = new WeakMap();
@@ -59,9 +60,25 @@
 
     const sounding = core.deriveSounding(cycle.records, snapshot.receivedAt);
     renderSounding(sounding);
+    publishPrecisionTrace(cycle.records, snapshot);
     cycle.records = {};
     cycles = cycles.filter((candidate) => !candidate.consumed).slice(-4);
   });
+
+  function publishPrecisionTrace(records, snapshot) {
+    const offcutCore = root.MuseumOffcutDrawerCore;
+    const commonsCore = root.MuseumCommonsCore;
+    if (!offcutCore || !commonsCore || !Array.isArray(commonsCore.STATIONS)) return;
+
+    const trace = offcutCore.buildTrace({
+      earthquakes: records?.earthquakes?.payload || null,
+      solar: records?.solar?.payload || null,
+      weather: records?.weather?.payload || null
+    }, snapshot, commonsCore.STATIONS);
+
+    root.MuseumCommonsPrecisionTrace = trace;
+    document.dispatchEvent(new CustomEvent(PRECISION_EVENT, { detail: { trace } }));
+  }
 
   function cycleFor(signal) {
     if (signal && typeof signal === 'object') {
