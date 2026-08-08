@@ -233,6 +233,7 @@ for (const asset of ['./quorum-gate-core.js', './quorum-gate.js', './quorum-gate
   assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
 }
 assert.match(worker, /const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shuffle-table'/);
-assert.match(worker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v38-quorum-gate'/);
+assert.match(worker, /const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate'/,
+  'Quorum Gate must retain its v38 cache lineage marker after later releases advance the active shell');
 
 console.log('Quorum Gate denominator retention, subset membership, returned-window scope, partition refusal, archive evidence, accessibility, privacy, loader, and offline contracts verified.');
