@@ -6,7 +6,9 @@ const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url),
 assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/);
 assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/);
 assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online'/);
+assert.match(source, /const PREVIOUS_PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer'/);
+assert.match(source, /const PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v17-witness-seal'/);
 for (const asset of [
   './',
   './index.html',
@@ -34,6 +36,9 @@ for (const asset of [
   './planetary-heliodon.css',
   './faultline-core.js',
   './faultline.js',
+  './witness-seal-core.js',
+  './witness-seal.js',
+  './witness-seal.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -57,6 +62,7 @@ for (const asset of [
   './SAMPLE_AND_HOLD.md',
   './SOUNDING_WELL.md',
   './FAULTLINE_CORE.md',
+  './WITNESS_SEAL.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
@@ -91,4 +97,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Fresh-online, cached-offline service worker behavior and cross-origin boundary verified.');
+console.log('Witness Seal offline shell, fresh-online cached-offline behavior, and cross-origin boundary verified.');
