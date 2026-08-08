@@ -24,7 +24,7 @@
     Object.freeze({ id: 'faultline-core', label: 'Faultline Core', detail: 'Five-feed semantic strata and availability', dependencies: Object.freeze(['earthquakes', 'solar', 'scales', 'weather', 'events']), mode: 'any' }),
     Object.freeze({ id: 'celestial-escapement', label: 'Celestial Escapement', detail: 'Frozen local clocks derived from latch time', dependencies: Object.freeze([]), mode: 'local' }),
     Object.freeze({ id: 'planetary-heliodon', label: 'Planetary Heliodon', detail: 'Local day/night geometry derived from latch time', dependencies: Object.freeze([]), mode: 'local' }),
-    Object.freeze({ id: 'witness-seal', label: 'Witness Seal', detail: 'Evidence of the actual normalized latch, never the hypothetical isolation', dependencies: Object.freeze([]), mode: 'sealed' })
+    Object.freeze({ id: 'witness-seal', label: 'Witness Seal', detail: 'Actual latch evidence path; this simulation never recomputes or masks it', dependencies: Object.freeze([]), mode: 'actual' })
   ]);
 
   const FEED_IDS = Object.freeze(FEEDS.map((feed) => feed.id));
@@ -61,8 +61,8 @@
     if (circuit.mode === 'local') {
       return { ...circuit, state: 'local', active: 0, total: 0, live: [], tripped: [], unavailable: [] };
     }
-    if (circuit.mode === 'sealed') {
-      return { ...circuit, state: 'sealed', active: 0, total: 0, live: [], tripped: [], unavailable: [] };
+    if (circuit.mode === 'actual') {
+      return { ...circuit, state: 'actual', active: 0, total: 0, live: [], tripped: [], unavailable: [] };
     }
 
     const availability = availabilityFromSnapshot(snapshot);
@@ -92,7 +92,7 @@
     const latch = hasLatch(snapshot);
     const feeds = FEEDS.map((feed) => ({ ...feed, state: latch ? feedState(feed.id, availability, tripped) : 'waiting' }));
     const circuits = CIRCUITS.map((circuit) => evaluateCircuit(circuit, snapshot, tripped));
-    const counts = Object.fromEntries(['powered', 'degraded', 'dark', 'local', 'sealed', 'waiting'].map((state) => [state, circuits.filter((circuit) => circuit.state === state).length]));
+    const counts = Object.fromEntries(['powered', 'degraded', 'dark', 'local', 'actual', 'waiting'].map((state) => [state, circuits.filter((circuit) => circuit.state === state).length]));
 
     return {
       hasLatch: latch,
@@ -109,7 +109,7 @@
     if (!result?.hasLatch) return 'Waiting for a real latched snapshot before a failure simulation can begin.';
     const outage = result.unavailableCount === 1 ? '1 feed is actually unavailable' : `${result.unavailableCount} feeds are actually unavailable`;
     const tripped = result.trippedCount === 1 ? '1 live feed is deliberately isolated' : `${result.trippedCount} live feeds are deliberately isolated`;
-    return `${result.liveCount} feeds remain on the simulated bus; ${tripped}; ${outage}. ${result.counts.powered} circuits are fully powered, ${result.counts.degraded} degraded, and ${result.counts.dark} dark.`;
+    return `${result.liveCount} feeds remain on the simulated bus; ${tripped}; ${outage}. ${result.counts.powered} circuits retain all declared feed dependencies, ${result.counts.degraded} are partial, and ${result.counts.dark} are dark.`;
   }
 
   return Object.freeze({ FEEDS, CIRCUITS, FEED_IDS, hasLatch, availabilityFromSnapshot, normalizeTripped, feedState, evaluateCircuit, evaluateBoard, stateSentence });
