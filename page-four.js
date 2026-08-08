@@ -6,6 +6,9 @@
   const randomButton = document.getElementById('random-file');
   const classificationButton = document.getElementById('classification-toggle');
   const evidenceButtons = [...document.querySelectorAll('[data-target]')];
+  const reducedMotion = typeof globalThis.matchMedia === 'function'
+    ? globalThis.matchMedia('(prefers-reduced-motion: reduce)')
+    : null;
 
   function announce(message) {
     if (status) status.textContent = message;
@@ -16,7 +19,7 @@
     if (!target) return;
 
     cases.forEach((item) => item.classList.toggle('is-active', item === target));
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.scrollIntoView({ behavior: reducedMotion?.matches ? 'auto' : 'smooth', block: 'start' });
     target.focus({ preventScroll: true });
     announce(`${sourceLabel}: file ${id.replaceAll('-', ' ')} selected. Evidence remains unverified.`);
   }
