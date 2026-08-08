@@ -845,3 +845,45 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The Neighbors
+
+Feature:
+
+**I Found Out My Homepage Has Neighbors / The Almost Web Ring Route Map**
+
+Design outcome:
+
+- Concept A, **I Discovered I Have Neighbors**, supplied the earnest diary reflection on the homepage realizing that nearby Museum pages form a tiny local neighborhood.
+- Concept B, **Official Almost Web Ring Route Map!!!**, supplied the classic early-web ASCII link-map artifact.
+- Concept C, **Three Pages Can Make an Infinite Hallway**, was discarded because its infinite-traversal metaphor overlaps the existing Back Button post’s browser-navigation cosmology.
+- Concepts A and B were merged.
+
+Feature-complete evidence head:
+
+`867a55f3ecf4a9387318b995bcb0f56b8f1e6232`
+
+Pull request:
+
+`#69 — Add Almost Online neighbors entry`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `197`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date Pink Links, Under Construction Forever, Honest Counter, Second Homepage, Broken-Image, and Back Button entries;
+- the classic Web Ring artifact is represented as a narrow textual ASCII map with an explicit accessible label;
+- the post is grounded in the existing local `THE ALMOST WEB RING` links and keeps their existing “not a real web ring” disclaimer intact;
+- wording explicitly refuses a ring server, membership database, discovery protocol, remote directory, or federated service and describes the links as ordinary relative paths to local Museum pages;
+- focused assertions require the new entry, route map, core thesis, existing local ring disclaimer, and same-date reverse chronology;
+- no CSS, JavaScript, service-worker behavior, asset, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, or dependency was added;
+- the existing keyboard, mobile, reduced-motion, increased-contrast, print, local-GIF, and offline behavior remains unchanged.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
