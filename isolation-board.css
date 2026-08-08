@@ -121,7 +121,7 @@
 .isolation-circuit[data-state="dark"] { background: color-mix(in srgb, var(--night) 8%, transparent); }
 .isolation-circuit[data-state="dark"] span { color: var(--red); }
 .isolation-circuit[data-state="local"] span { color: var(--blue); }
-.isolation-circuit[data-state="sealed"] span { color: var(--ink); }
+.isolation-circuit[data-state="actual"] span { color: var(--ink); }
 .isolation-circuit[data-state="waiting"] span { color: var(--muted); }
 
 .isolation-key {
@@ -140,7 +140,7 @@
 .isolation-key i[data-state="degraded"] { background: var(--gold); }
 .isolation-key i[data-state="dark"] { background: var(--red); }
 .isolation-key i[data-state="local"] { background: var(--blue); }
-.isolation-key i[data-state="sealed"] { background: var(--ink); }
+.isolation-key i[data-state="actual"] { background: var(--ink); }
 
 @media (max-width: 760px) {
   .isolation-board-heading { grid-template-columns: 1fr; }
