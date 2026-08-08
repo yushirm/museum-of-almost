@@ -1,0 +1,150 @@
+.quorum-gate-section {
+  margin: 3rem 0;
+  padding: 1.25rem;
+  border: 2px solid var(--ink, currentColor);
+  position: relative;
+  overflow: hidden;
+}
+
+.quorum-gate-heading { max-width: 76ch; }
+.quorum-gate-heading h2 { margin: .25rem 0 .65rem; }
+
+.quorum-gate-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .8rem;
+  align-items: stretch;
+  margin: 1.25rem 0;
+}
+
+.quorum-gate-cases {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .5rem;
+}
+
+.quorum-gate-cases button,
+.quorum-gate-ask {
+  min-height: 44px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: .65rem .8rem;
+  cursor: pointer;
+}
+
+.quorum-gate-cases button[aria-pressed="true"],
+.quorum-gate-ask[aria-pressed="true"] { outline: 3px double currentColor; outline-offset: -5px; }
+.quorum-gate-cases button:focus-visible,
+.quorum-gate-ask:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+.quorum-gate-ask:disabled { cursor: not-allowed; opacity: .55; }
+
+.quorum-gate-chamber {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(180px, .65fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.quorum-gate-fraction,
+.quorum-gate-verdict,
+.quorum-gate-pie,
+.quorum-gate-scope-card,
+.quorum-gate-partition-card {
+  border: 1px solid currentColor;
+  padding: 1rem;
+}
+
+.quorum-gate-fraction,
+.quorum-gate-verdict { display: grid; gap: .55rem; align-content: start; }
+.quorum-gate-fraction-value { font-size: clamp(1.55rem, 4vw, 3rem); line-height: 1; overflow-wrap: anywhere; }
+.quorum-gate-fraction-labels { overflow-wrap: anywhere; }
+.quorum-gate-verdict-title { font-size: clamp(1.15rem, 2vw, 1.6rem); }
+.quorum-gate-verdict-copy { margin: 0; }
+
+.quorum-gate-pie {
+  --share: 0%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  min-width: 180px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  align-self: center;
+  position: relative;
+  background: transparent;
+}
+
+.quorum-gate-pie::before {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  background: var(--paper, Canvas);
+}
+
+.quorum-gate-pie[data-mode="partition"] { background: conic-gradient(currentColor 0 var(--share), transparent var(--share) 100%); }
+.quorum-gate-pie[data-mode="broken"] { border-style: dashed; transform: rotate(-3deg); }
+.quorum-gate-pie[data-mode="refused"] { border-style: double; }
+.quorum-gate-pie-value,
+.quorum-gate-pie-state { position: relative; z-index: 1; }
+.quorum-gate-pie-value { font-size: clamp(1.5rem, 4vw, 2.8rem); font-weight: 800; }
+.quorum-gate-pie-state { max-width: 14ch; margin-inline: auto; }
+
+.quorum-gate-scope {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.quorum-gate-scope-card,
+.quorum-gate-partition-card { display: grid; gap: .45rem; }
+.quorum-gate-scope-card p,
+.quorum-gate-partition-card p { margin: 0; }
+
+.quorum-gate-doctrine {
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px dashed currentColor;
+}
+
+.field-sheet-quorum-gate { display: block; margin-top: .6rem; }
+
+@media (max-width: 760px) {
+  .quorum-gate-controls { grid-template-columns: 1fr; }
+  .quorum-gate-cases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .quorum-gate-chamber { grid-template-columns: 1fr 1fr; }
+  .quorum-gate-pie { grid-column: 1 / -1; max-width: 240px; justify-self: center; }
+}
+
+@media (max-width: 620px) {
+  .quorum-gate-section { padding: 1rem; }
+  .quorum-gate-cases,
+  .quorum-gate-chamber,
+  .quorum-gate-scope { grid-template-columns: 1fr; }
+  .quorum-gate-pie { grid-column: auto; min-width: 160px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quorum-gate-pie { transform: none !important; transition: none !important; }
+}
+
+@media (prefers-contrast: more) {
+  .quorum-gate-section,
+  .quorum-gate-fraction,
+  .quorum-gate-verdict,
+  .quorum-gate-pie,
+  .quorum-gate-scope-card,
+  .quorum-gate-partition-card,
+  .quorum-gate-cases button,
+  .quorum-gate-ask { border-width: 2px; }
+}
+
+@media print {
+  .quorum-gate-section { display: none !important; }
+  .field-sheet-quorum-gate { display: block !important; }
+}

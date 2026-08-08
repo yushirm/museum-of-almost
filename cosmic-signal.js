@@ -50,7 +50,11 @@
                                                 load('./gauge-bench-core.js', 'gaugeBenchCore', () => {
                                                   load('./gauge-bench.js', 'gaugeBenchView', () => {
                                                     load('./shuffle-table-core.js', 'shuffleTableCore', () => {
-                                                      load('./shuffle-table.js', 'shuffleTableView');
+                                                      load('./shuffle-table.js', 'shuffleTableView', () => {
+                                                        load('./quorum-gate-core.js', 'quorumGateCore', () => {
+                                                          load('./quorum-gate.js', 'quorumGateView');
+                                                        });
+                                                      });
                                                     });
                                                   });
                                                 });

@@ -1214,3 +1214,57 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Quorum Gate
+
+Feature:
+
+**The Quorum Gate / The Pie Refuses to Close**
+
+Design outcome:
+
+- Concept A, **The Ratio Ledger**, was discarded as the least additive presentation because another static denominator table would explain the rule without making refusal experiential.
+- Concept B, **The Quorum Gate**, supplied the procedural mechanic that a population must be established before a percentage is licensed.
+- Concept C, **The Pie Refuses to Close**, supplied the convention-breaking interaction in which count arithmetic may produce a scoped individual share while the interface still refuses an invalid partition.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`84cb11d8f2a3a94b7ab61023dfa9acf80850733a`
+
+Pull request:
+
+`#82 — Add the Quorum Gate`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `261`;
+- conclusion: `success`.
+
+What succeeded:
+
+- exactly four fixed denominator cases: precipitation membership, five-feed return, significant earthquakes, and top EONET category membership;
+- **NO DENOMINATOR. NO PERCENT.** is enforced as an executable rule rather than explanatory copy;
+- an individual membership share is kept distinct from a valid partition, with the explicit invariant **AN ALLOWED INDIVIDUAL SHARE DOES NOT AUTOMATICALLY AUTHORIZE A PIE PARTITION.**;
+- precipitation eligibility is derived only from current normalized points with a finite precipitation value, deliberately refusing broader `weather.availableCount` as the denominator because weather availability can come from temperature or wind alone;
+- the authoritative `weather.raining` numerator is independently reproduced from finite current precipitation values greater than `0` before a percentage is licensed, and source/headline drift refuses the fraction;
+- a real zero numerator can produce `0.0%` only when a positive, retained, semantically valid denominator exists, while a zero or missing denominator never becomes zero percent;
+- feed-return percentage uses exactly the five fixed requested channels and remains an operational return fraction rather than world completeness, source quality, reliability, or provider ranking;
+- significant-earthquake percentage is deliberately refused as **DENOMINATOR LOST** because the normalized latch retains total earthquake features and the count of significant finite magnitudes but not the finite-magnitude eligibility population needed for that classification ratio;
+- total earthquake features are never borrowed as a convenient substitute denominator;
+- top EONET category membership may form a scoped share of the current returned event response, while the pie remains refused because event category memberships may overlap and only the top five category counts are retained;
+- the existing EONET `limit=500` / `events.capped` boundary becomes **WINDOWED QUORUM**, explicitly scoped to the capped returned response rather than all open events;
+- count values that violate subset bounds, such as a category membership count larger than the returned-event count, are treated as contract drift rather than repaired silently;
+- case selection and requested-percentage state are memory-only, reset to precipitation/counts-only on every real Commons latch, and never borrow a previous latch;
+- the full interactive gate is omitted from print while a compact field-sheet statement retains the selected numerator, denominator status, percentage or refusal, population scope, and partition verdict;
+- no added data request, response clone, raw-provider retention, alternate normalizer, polling, timer loop, animation-frame loop, persistence, geolocation, visitor text or numeric input, analytics, telemetry, remote runtime asset, account, cloud state, or dependency;
+- responsive, keyboard, disabled-unavailable-state, reduced-motion, increased-contrast, live-region, textual-refusal, and print handling;
+- focused regression guards pin denominator decisions to the exact current `data-core.js` earthquake, precipitation, EONET category/top-five/cap reducers and the fixed `app.js` five-feed/EONET-500 request contract;
+- coherent same-origin **v38 Quorum Gate** shell preserves **v37 Shuffle Table**, **v36 Page Four Evidence Lattice**, and all earlier Museum assets;
+- feature head `84cb11d8f2a3a94b7ab61023dfa9acf80850733a` passed required run `261` and the post-run evidence race confirmed live `main` remained exact `55da5e18230e14ce20f54bc71cbd7dfa2e323bf8` with the branch behind zero.
+
+Final-merge rule:
+
+This archive entry is added only after the feature-complete head passed required job `check`. Because adding this archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
