@@ -200,7 +200,7 @@ for (const pattern of [
   /\*\*The Offcut Drawer \/ The Page Shaves Its Numbers\*\*/,
   /Feature-complete evidence head:[\s\S]*`1ee4f08cc66a3fc9c9f3dde15c2b02a6f6e02a7d`/,
   /#64 — Add the Offcut Drawer/,
-  /run: `178`/[,
+  /run: `178`/,
   /conclusion: `success`/
 ]) assert.match(archive, pattern, `Success Archive should retain Offcut Drawer evidence ${pattern}`);
 
