@@ -149,7 +149,7 @@
     const space = document.createElement('span');
     space.textContent = 'DEEP SPACE / SIGNAL ANOMALY';
     const boundary = document.createElement('small');
-    boundary.textContent = 'STATIC ROUTES. NO VISITOR TRACKING.';
+    boundary.textContent = 'STATIC ROUTES. NO VISITOR STATE OR COUNTING.';
 
     log.append(title, entrance, web, space, boundary);
     const fictionLabel = archiveSidebar.querySelector('.fiction-label');
