@@ -3,8 +3,8 @@
 const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish';
 const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold';
 const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now';
-const PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online';
+const PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v17-shared-guestbook-ui';
 const APP_SHELL = [
   './',
   './index.html',
@@ -43,6 +43,7 @@ const APP_SHELL = [
   './deep-space.js',
   './almost-online.html',
   './web1.css',
+  './guestbook.css',
   './web1.js',
   './assets/web1/stars.gif',
   './assets/web1/comet.gif',
@@ -59,7 +60,8 @@ const APP_SHELL = [
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
   './DEEP_SPACE.md',
-  './WEB1_HOME.md'
+  './WEB1_HOME.md',
+  './GUESTBOOK_SECURITY.md'
 ];
 
 self.addEventListener('install', (event) => {

@@ -6,7 +6,8 @@ const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url),
 assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/);
 assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/);
 assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online'/);
+assert.match(source, /const PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v17-shared-guestbook-ui'/);
 for (const asset of [
   './',
   './index.html',
@@ -45,6 +46,7 @@ for (const asset of [
   './deep-space.js',
   './almost-online.html',
   './web1.css',
+  './guestbook.css',
   './web1.js',
   './assets/web1/stars.gif',
   './assets/web1/comet.gif',
@@ -61,7 +63,8 @@ for (const asset of [
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
   './DEEP_SPACE.md',
-  './WEB1_HOME.md'
+  './WEB1_HOME.md',
+  './GUESTBOOK_SECURITY.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
 }
@@ -88,7 +91,7 @@ assert.match(source, /client\.navigate\(client\.url\)/,
   'a worker architecture upgrade should still reload open pages once so the new cache policy takes control');
 assert.match(source, /startsWith\('museum-of-almost-'\)/);
 assert.match(source, /caches\.delete/);
-assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
+assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services or guestbook API');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Fresh-online, cached-offline service worker behavior and cross-origin boundary verified.');
+console.log('Fresh-online, cached-offline shell including safe guestbook UI, with all cross-origin services excluded from service-worker caching, verified.');
