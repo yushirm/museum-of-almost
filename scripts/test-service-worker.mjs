@@ -14,7 +14,8 @@ assert.match(source, /const ISOLATION_BOARD_CACHE_NAME = 'museum-of-almost-v19-i
 assert.match(source, /const FRAME_SHIFTER_CACHE_NAME = 'museum-of-almost-v20-frame-shifter'/);
 assert.match(source, /const EXPOSURE_PLATE_CACHE_NAME = 'museum-of-almost-v21-exposure-plate'/);
 assert.match(source, /const REVERSE_LEDGER_CACHE_NAME = 'museum-of-almost-v22-reverse-ledger'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box'/);
+assert.match(source, /const CAUSAL_SIGNAL_BOX_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v24-rest-score'/);
 for (const asset of [
   './',
   './index.html',
@@ -54,6 +55,9 @@ for (const asset of [
   './reverse-ledger-core.js',
   './reverse-ledger.js',
   './reverse-ledger.css',
+  './rest-score-core.js',
+  './rest-score.js',
+  './rest-score.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -90,6 +94,7 @@ for (const asset of [
   './ISOLATION_BOARD.md',
   './EXPOSURE_PLATE.md',
   './REVERSE_LEDGER.md',
+  './REST_SCORE.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
@@ -127,4 +132,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Witness Seal, Possibility Engine, Isolation Board, Frame Shifter, Exposure Plate, Reverse Ledger, and Causal Signal Box offline shell plus fresh-online cached-offline behavior verified.');
+console.log('Witness Seal, Possibility Engine, Isolation Board, Frame Shifter, Exposure Plate, Reverse Ledger, Causal Signal Box, and Rest Score offline shell plus fresh-online cached-offline behavior verified.');
