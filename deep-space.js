@@ -143,10 +143,10 @@
         note: 'Reionization was extended rather than instantaneous. The one-billion-year marker is a broad upper boundary, not a single switch-on date.'
       },
       {
-        age: '0.38–0.4 billion years',
+        age: 'after 0.00038, before 0.4 billion years',
         label: 'FIRST-LIGHT WINDOW',
-        title: 'The first stars must already be entering the record',
-        note: 'Their exact first appearance is still uncertain. This layer deliberately shows a window: after recombination and before the oldest known early galaxies.'
+        title: 'The first stars emerge somewhere inside an unresolved interval',
+        note: 'The exact first appearance is not yet fixed. The honest bracket starts after recombination and ends before the earliest-known-galaxy boundary used here; most of that interval belongs to the cosmic dark ages.'
       },
       {
         age: '0.00038 billion years',
@@ -184,8 +184,8 @@
     layers.forEach((layer, index) => {
       const item = document.createElement('li');
       item.style.display = 'grid';
-      item.style.gridTemplateColumns = 'minmax(8.5rem, 0.24fr) minmax(0, 0.76fr)';
-      item.style.gap = '1rem clamp(1.5rem, 5vw, 5rem)';
+      item.style.gridTemplateColumns = '1fr';
+      item.style.gap = '0.8rem';
       item.style.padding = 'clamp(1.4rem, 4vw, 3.5rem)';
       item.style.borderTop = index === 0 ? '0' : '1px solid var(--line)';
       item.style.background = `linear-gradient(90deg, rgba(132,232,255,${Math.max(0.02, 0.13 - index * 0.018)}), rgba(111,59,209,${Math.min(0.18, 0.05 + index * 0.02)}))`;
@@ -201,6 +201,7 @@
       label.textContent = layer.label;
       const layerTitle = document.createElement('h3');
       layerTitle.style.margin = '0';
+      layerTitle.style.maxWidth = '22ch';
       layerTitle.style.fontFamily = 'ui-serif, Georgia, serif';
       layerTitle.style.fontWeight = '500';
       layerTitle.style.fontSize = 'clamp(1.8rem, 4vw, 3.8rem)';
@@ -208,6 +209,7 @@
       layerTitle.textContent = layer.title;
       const note = document.createElement('p');
       note.className = 'readout-note';
+      note.style.maxWidth = '62ch';
       note.textContent = layer.note;
       body.append(label, layerTitle, note);
       item.append(age, body);
