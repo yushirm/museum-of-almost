@@ -52,7 +52,7 @@
                 <button id="isolation-reset" type="button" disabled>Restore simulated feeds</button>
               </div>
               <ol id="isolation-breakers" class="isolation-breakers" aria-label="Simulated feed isolation breakers"></ol>
-              <p class="isolation-safety"><strong>Nothing here cancels or repeats a request.</strong> A tripped breaker masks one already-latched channel only inside this hypothetical board. An actual unavailable feed is labeled separately and cannot be switched back on here.</p>
+              <p class="isolation-safety"><strong>Nothing here cancels or repeats a request.</strong> A tripped breaker masks one already-latched channel only inside this hypothetical board. An actual unavailable feed is labeled separately and cannot be switched back on here. “Powered” means declared feed dependencies remain; it does not guarantee every downstream value or source timestamp is valid.</p>
             </div>
             <div class="isolation-readout">
               <div class="isolation-summary">
@@ -68,9 +68,9 @@
             <span><i data-state="degraded"></i> degraded</span>
             <span><i data-state="dark"></i> dark</span>
             <span><i data-state="local"></i> local derivation survives</span>
-            <span><i data-state="sealed"></i> actual latch evidence survives</span>
+            <span><i data-state="actual"></i> actual evidence path untouched</span>
           </div>
-          <p class="isolation-note"><strong>A simulation is not a source failure.</strong> Refreshing the world clears every hypothetical trip. The Witness Seal continues to identify the actual normalized latch and is never recomputed from this imagined blackout.</p>
+          <p class="isolation-note"><strong>A simulation is not a source failure.</strong> Refreshing the world clears every hypothetical trip. The Witness Seal is outside this simulation and is never recomputed from the imagined blackout; its own instrument remains authoritative about whether a seal was actually available.</p>
         `;
         anchor.insertAdjacentElement('afterend', section);
       }
@@ -198,7 +198,7 @@
   function dependencySentence(circuit) {
     if (circuit.state === 'waiting') return 'No real latch is available yet.';
     if (circuit.mode === 'local') return 'Uses the captured latch time and fixed local geometry; no live feed dependency remains after capture.';
-    if (circuit.mode === 'sealed') return 'Identifies the actual normalized latch. Hypothetical breaker state is deliberately excluded.';
+    if (circuit.mode === 'actual') return 'Outside the hypothetical bus. See the actual Witness Seal instrument for its real availability and digest state.';
 
     const names = new Map(core.FEEDS.map((feed) => [feed.id, `${feed.source} ${feed.label}`]));
     const causes = [];
