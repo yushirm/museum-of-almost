@@ -933,3 +933,54 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Load-Bearing Sample
+
+Feature:
+
+**The Load-Bearing Sample / Pull One Pin**
+
+Design outcome:
+
+- Concept A, **The Contribution Matrix**, was discarded as the least additive because its leave-one-out sensitivity would otherwise become another statistics table.
+- Concept B, **The Load-Bearing Sample**, supplied the structural-engineering mechanic in which a current aggregate rests on current observational supports.
+- Concept C, **Pull One Pin**, supplied the convention-breaking interaction in which one current observation is subtracted from an explicitly hypothetical recomputation while the real latch remains authoritative beside it.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`06da32042db0b1aa45a74df2a4914f65939041be`
+
+Pull request:
+
+`#72 — Add the Load-Bearing Sample`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `216`;
+- conclusion: `success`.
+
+What succeeded:
+
+- fixed one-point leave-one-out sensitivity across the thirteen current normalized weather points and exactly five existing local headlines: minimum temperature, maximum temperature, mean wind, maximum wind, and the count of points reporting precipitation;
+- the real normalized `MuseumCommonsSnapshot.weather` headline remains authoritative while every one-point-omitted result is explicitly labeled hypothetical;
+- four textual point states remain distinct: `LOAD-BEARING FOR THIS HEADLINE`, `HEADLINE UNCHANGED`, `SOLE SUPPORT FOR THIS HEADLINE`, and `MISSING FOR THIS CLAIM`;
+- unique extrema change the corresponding min/max headline, interior values can leave extrema unchanged, mean-wind omissions preserve the reducer’s one-decimal arithmetic-mean rule, and precipitation membership preserves the existing finite `> 0` rule;
+- `0 mm` remains an evaluable zero that leaves the positive precipitation count unchanged rather than being expanded into a complete “dry” weather claim;
+- a last finite value is treated as sole support because omitting it makes that one headline unavailable, while missing current claim values cannot be pulled as though they contributed;
+- focused regression guards are pinned to the actual current `data-core.js` min, max, mean-wind, max-wind, and positive-precipitation aggregation branches so semantic drift fails loudly;
+- **UNCHANGED DOES NOT MEAN UNIMPORTANT** remains an explicit invariant: neither an unchanged nor a load-bearing result becomes importance, redundancy, confidence, uncertainty, quality, reliability, causality, representativeness, or ranking;
+- only one point can be omitted at a time, with no multi-point search, optimization, influence percentage, or shared score across unlike quantities;
+- memory-only claim and pin selection reset on every new real Commons latch and no previous-latch fallback is used;
+- the full hypothetical rig is omitted from print while a compact qualified five-claim load-bearing/evaluable count remains on the field sheet;
+- no added data request, response clone, raw-provider retention, alternate normalizer, polling, timer loop, persistence, visitor text or numeric input, location access, analytics, telemetry, remote runtime asset, account, cloud state, or dependency;
+- responsive, keyboard, reduced-motion, increased-contrast, live-region, disabled-missing-control, and print handling;
+- coherent same-origin v32 offline-shell upgrade preserving Page Four v30, Same Answer Machine v31, Border Office v29, and all prior Museum assets;
+- two real two-parent reconciliations preserved concurrent Page Four and Same Answer Machine releases rather than accepting CI on a stale branch;
+- run `214` was rejected after the focused test required the stronger exact documentation invariant `UNCHANGED DOES NOT MEAN UNIMPORTANT`; only corrected, fully reconciled run `216` is accepted as feature-complete evidence.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
