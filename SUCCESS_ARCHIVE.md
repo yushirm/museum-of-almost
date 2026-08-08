@@ -1268,3 +1268,55 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added only after the feature-complete head passed required job `check`. Because adding this archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Shutter Cabinet
+
+Feature:
+
+**The Shutter Cabinet / Same Latch, Different Temporal Support**
+
+Design outcome:
+
+- Concept A, **The Temporal Support Ledger**, was discarded as the least additive presentation because another static registry would explain temporal support without making a false shared time axis experiential.
+- Concept B, **The Shutter Cabinet**, supplied the large-format-photography mechanic in which each existing claim family receives an explicit Museum-local temporal aperture.
+- Concept C, **One Timestamp Is Not One Time Axis**, supplied the convention-breaking interaction in which a single latched page refuses one shared temporal rail when the selected claim families have different support forms.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`b7ff2ada34e0d3f2c10c98547e7e727b564c10ca`
+
+Pull request:
+
+`#88 — Add the Shutter Cabinet`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `283`;
+- conclusion: `success`.
+
+What succeeded:
+
+- exactly five established Commons claim families are classified into exactly three fixed support forms: **TRAILING WINDOW**, **CURRENT READING**, and **STATUS-DEFINED SET**;
+- the earthquake family is pinned to the existing USGS `all_hour.geojson` request contract without claiming one sensor exposed continuously for exactly sixty minutes or that every event has one age;
+- solar wind is pinned to the existing NOAA SWPC current summary product, NOAA scales to the established current-record selector, and the thirteen fixed weather points to the existing Open-Meteo `current` fields;
+- EONET is pinned to `status=open&limit=500`, with open-status membership explicitly refused as evidence for a shared duration;
+- **COMMON TEMPORAL FORM** is licensed only when two fixed registry entries have the same declared support form and is explicitly not a common instant, timestamp age, duration, synchronization, update cadence, measurement process, freshness, or quality claim;
+- mismatched forms produce the explicit verdict **SAME LATCH. DIFFERENT TEMPORAL SUPPORT.** and fracture the supplemental shared rail instead of normalizing unlike temporal grammars onto one fabricated axis;
+- Sounding Well remains the owner of trustworthy source timestamp depth relative to the latch, while the Shutter Cabinet owns only the temporal support form encoded by the existing request/product contract;
+- current feed unavailability does not erase static support metadata, and no prior latch, source timestamp age, receipt time, or current numeric value is used to infer a temporal form;
+- same-claim pairing is prevented in the two selector trays, while the pure core defensively refuses a repeated-claim comparison;
+- selection and force state are memory-only, reset to earthquakes versus weather / unforced on every real Commons latch, and never persist across reloads;
+- the full interactive cabinet is omitted from print while a compact field-sheet line preserves both support forms, the comparison outcome, and the qualification that a shared latch is not one universal measurement window;
+- no added data request, response clone, raw-provider retention, alternate acquisition path, alternate normalizer, provider timestamp parser, polling, timer loop, animation-frame loop, persistence, geolocation, visitor text or numeric input, analytics, telemetry, remote runtime asset, account, cloud state, dependency, or build system;
+- responsive, keyboard, disabled-same-claim, reduced-motion, increased-contrast, live-region, textual-verdict, and print handling;
+- the coherent same-origin **v41 Shutter Cabinet** shell preserves **v40 Page Four Instrument Room**, **v39 Catalogue 0**, **v38 Quorum Gate**, and all prior Museum assets;
+- initial run `278` failed only because the focused view-source regression expected punctuation that the view delegates to the core; the product contract already passed in the pure-core assertions, so only the brittle test assertion was corrected;
+- corrected run `280` passed end to end but was rejected as release evidence because live `main` advanced during the post-run race to `9e37abc67886268e69aa009d613955eca3ec8d6e` with the concurrent durable Museum documentation gate;
+- the branch was reconstructed directly on that exact canonical tree, preserving the new README/privacy documentation and `Test Museum durable documentation` gate; reconstructed head `b7ff2ada34e0d3f2c10c98547e7e727b564c10ca` then passed required run `283`, and the post-run race confirmed live `main` remained exact with the branch behind zero.
+
+Final-merge rule:
+
+This archive entry is added only after the feature-complete head passed required job `check`. Because adding this archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
