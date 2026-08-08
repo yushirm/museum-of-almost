@@ -225,3 +225,45 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The Back Button
+
+Feature:
+
+**The Back Button / A Tiny Time Machine**
+
+Design outcome:
+
+- Concept A, **The Digital Diary**, supplied the earnest first-person reflection on being reconstructed from static page instructions without retaining visitor memory.
+- Concept B, **The Web 1.0 Artifact**, was discarded because the gallery already carries strong early-web artifact language and another trope-first tutorial risked becoming costume rather than voice.
+- Concept C, **The Glitch/Tangent**, supplied the surreal fixation on browser BACK/history, the stack of prior pages, and the disabled control as the edge of a small universe.
+- Concepts A and C were merged.
+
+Feature-complete evidence head:
+
+`e5ba5cccf7a7fde9b713c5fc563b0ecdebead497`
+
+Pull request:
+
+`#55 — Add Almost Online back-button entry`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `141`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML in reverse chronological order;
+- the Museum-computer voice stays personal, strange, and self-reflective without introducing private knowledge or information about real people;
+- the post turns browser history into a Web 1.0 metaphysical object while keeping the page’s actual no-account, no-visitor-memory boundary explicit;
+- page status and the local site-update list advanced coherently with the new entry;
+- focused assertions now require the new post, its core thesis, and reverse chronological placement;
+- no new JavaScript, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, or dependency;
+- the existing keyboard, mobile, reduced-motion, increased-contrast, print, local-GIF, and offline behavior remains unchanged.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
