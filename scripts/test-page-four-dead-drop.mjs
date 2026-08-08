@@ -95,8 +95,10 @@ assert.match(serviceWorker, /const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almos
   'Dead Drop release must preserve Shutter Cabinet as v41 lineage');
 assert.match(serviceWorker, /const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/,
   'Dead Drop release must preserve Unequal Minute as the v42 predecessor');
-assert.match(serviceWorker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop'/,
-  'Dead Drop should own the v43 coherent offline shell');
+assert.match(serviceWorker, /const PAGE_FOUR_DEAD_DROP_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop'/,
+  'Dead Drop must remain named as the v43 predecessor after later shell releases');
+assert.match(serviceWorker, /const CURRENT_CACHE_NAME = 'museum-of-almost-v44-unbuilt-room'/,
+  'the Unbuilt Room should own the v44 coherent offline shell');
 assert.match(serviceWorker, /page-four-dead-drop\.css/, 'Dead Drop styles should be in the offline shell');
 assert.match(serviceWorker, /page-four-dead-drop\.js/, 'Dead Drop logic should be in the offline shell');
 assert.match(serviceWorker, /PAGE_FOUR_DEAD_DROP\.md/, 'Dead Drop recovery record should be in the offline shell');
@@ -106,4 +108,4 @@ for (const pattern of [/@media/, /prefers-reduced-motion/, /prefers-contrast/, /
 }
 assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i, 'Dead Drop styles must use local/system resources only');
 
-console.log('Page Four Dead Drop four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, evidence limits, accessibility, privacy, and v43 offline contracts verified.');
+console.log('Page Four Dead Drop four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, evidence limits, accessibility, privacy, and v43 cache-lineage contracts verified.');
