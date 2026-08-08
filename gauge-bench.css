@@ -1,0 +1,366 @@
+.gauge-bench-section {
+  border-top: 1px solid var(--line, #7f8b8f);
+  margin-top: clamp(3rem, 8vw, 6rem);
+  padding-top: clamp(2rem, 5vw, 4rem);
+}
+
+.gauge-bench-heading {
+  max-width: 78ch;
+}
+
+.gauge-bench-heading h2 {
+  margin: 0.4rem 0 0.8rem;
+  font-size: clamp(1.8rem, 5vw, 3.8rem);
+  line-height: 0.98;
+}
+
+.gauge-bench-selectors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.gauge-bench-tray {
+  border: 1px solid var(--line, #7f8b8f);
+  padding: 1rem;
+  min-width: 0;
+}
+
+.gauge-bench-tray-label {
+  margin: 0 0 0.75rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.gauge-bench-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.gauge-bench-claim {
+  appearance: none;
+  min-height: 44px;
+  border: 1px solid currentColor;
+  border-radius: 0;
+  padding: 0.6rem 0.45rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.gauge-bench-claim[aria-pressed="true"] {
+  outline: 2px solid currentColor;
+  outline-offset: -5px;
+  font-weight: 800;
+}
+
+.gauge-bench-claim:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.gauge-bench-claim:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+.gauge-bench-verdict {
+  border: 2px solid currentColor;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  margin: 1rem 0;
+}
+
+.gauge-bench-outcome {
+  display: block;
+  margin: 0.35rem 0 0.65rem;
+  font-size: clamp(1.6rem, 6vw, 4.6rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+}
+
+.gauge-bench-reason {
+  max-width: 78ch;
+  margin: 0;
+}
+
+.gauge-bench-specimen {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.gauge-bench-specimen-card {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+  border: 1px solid var(--line, currentColor);
+  padding: 1rem;
+}
+
+.gauge-bench-specimen-card > strong {
+  font-size: clamp(1rem, 2.8vw, 1.35rem);
+}
+
+.gauge-bench-specimen-card > b {
+  font-size: clamp(1.7rem, 5vw, 3.4rem);
+  line-height: 1;
+}
+
+.gauge-bench-specimen-card > small {
+  max-width: 55ch;
+  line-height: 1.45;
+}
+
+.gauge-bench-stage {
+  margin: 1rem 0;
+  min-height: 190px;
+  border: 1px solid var(--line, currentColor);
+  padding: clamp(1rem, 3vw, 1.5rem);
+  overflow: hidden;
+}
+
+.gauge-bench-common-rail {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.8fr) minmax(12rem, 1.8fr) minmax(7rem, 0.8fr);
+  align-items: center;
+  gap: 0;
+  min-height: 150px;
+}
+
+.gauge-bench-mark {
+  display: grid;
+  gap: 0.35rem;
+  align-content: center;
+  min-height: 92px;
+  padding: 0.85rem;
+  border: 2px solid currentColor;
+  text-align: center;
+}
+
+.gauge-bench-mark span {
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+}
+
+.gauge-bench-mark b {
+  font-size: clamp(1.15rem, 3vw, 1.8rem);
+}
+
+.gauge-bench-bridge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 0.35rem;
+  min-height: 112px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.gauge-bench-bridge::before,
+.gauge-bench-bridge::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 50%;
+  border-top: 2px solid currentColor;
+  z-index: -1;
+}
+
+.gauge-bench-bridge::before {
+  left: 0;
+}
+
+.gauge-bench-bridge::after {
+  right: 0;
+}
+
+.gauge-bench-bridge > span,
+.gauge-bench-bridge > strong,
+.gauge-bench-bridge > small {
+  background: var(--paper, #f4f1e8);
+  padding-inline: 0.4rem;
+}
+
+.gauge-bench-bridge > span {
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+}
+
+.gauge-bench-bridge > strong {
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
+}
+
+.gauge-bench-bridge > small {
+  max-width: 35ch;
+  line-height: 1.35;
+}
+
+.gauge-bench-split-axis {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.9fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.75rem;
+  min-height: 150px;
+}
+
+.gauge-bench-half-axis {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 1rem;
+  border-top: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+}
+
+.gauge-bench-half-axis:first-child {
+  border-left: 2px solid currentColor;
+}
+
+.gauge-bench-half-axis:last-child {
+  border-right: 2px solid currentColor;
+  text-align: right;
+}
+
+.gauge-bench-half-axis span {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.gauge-bench-half-axis b {
+  overflow-wrap: anywhere;
+  font-size: clamp(1.5rem, 4vw, 2.6rem);
+}
+
+.gauge-bench-break {
+  display: grid;
+  place-content: center;
+  gap: 0.55rem;
+  padding: 1rem;
+  border-inline: 3px dashed currentColor;
+  text-align: center;
+  transform: skewX(-3deg);
+}
+
+.gauge-bench-break > * {
+  transform: skewX(3deg);
+}
+
+.gauge-bench-break strong {
+  font-size: clamp(1.2rem, 4vw, 2.2rem);
+  line-height: 1;
+}
+
+.gauge-bench-break span {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.gauge-bench-doctrine {
+  max-width: 78ch;
+  border-left: 4px solid currentColor;
+  padding-left: 1rem;
+}
+
+.field-sheet-gauge-bench {
+  display: inline-block;
+  margin-top: 0.6rem;
+}
+
+@media (max-width: 760px) {
+  .gauge-bench-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gauge-bench-common-rail,
+  .gauge-bench-split-axis {
+    grid-template-columns: 1fr;
+  }
+
+  .gauge-bench-bridge::before,
+  .gauge-bench-bridge::after {
+    left: 50%;
+    right: auto;
+    width: 0;
+    height: 50%;
+    border-top: 0;
+    border-left: 2px solid currentColor;
+  }
+
+  .gauge-bench-bridge::before {
+    top: 0;
+  }
+
+  .gauge-bench-bridge::after {
+    top: 50%;
+  }
+
+  .gauge-bench-half-axis,
+  .gauge-bench-half-axis:first-child,
+  .gauge-bench-half-axis:last-child {
+    border: 2px solid currentColor;
+    text-align: left;
+  }
+
+  .gauge-bench-break {
+    min-height: 110px;
+    border-inline: 0;
+    border-block: 3px dashed currentColor;
+    transform: skewY(-2deg);
+  }
+
+  .gauge-bench-break > * {
+    transform: skewY(2deg);
+  }
+}
+
+@media (max-width: 620px) {
+  .gauge-bench-selectors,
+  .gauge-bench-specimen {
+    grid-template-columns: 1fr;
+  }
+
+  .gauge-bench-buttons {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gauge-bench-break,
+  .gauge-bench-break > * {
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .gauge-bench-tray,
+  .gauge-bench-specimen-card,
+  .gauge-bench-stage {
+    border-width: 2px;
+  }
+
+  .gauge-bench-claim,
+  .gauge-bench-verdict {
+    border-width: 3px;
+  }
+}
+
+@media print {
+  .gauge-bench-section {
+    display: none !important;
+  }
+
+  .field-sheet-gauge-bench {
+    display: inline-block !important;
+  }
+}

@@ -46,7 +46,11 @@
                                         load('./border-office-core.js', 'borderOfficeCore', () => {
                                           load('./border-office.js', 'borderOfficeView', () => {
                                             load('./load-bearing-sample-core.js', 'loadBearingSampleCore', () => {
-                                              load('./load-bearing-sample.js', 'loadBearingSampleView');
+                                              load('./load-bearing-sample.js', 'loadBearingSampleView', () => {
+                                                load('./gauge-bench-core.js', 'gaugeBenchCore', () => {
+                                                  load('./gauge-bench.js', 'gaugeBenchView');
+                                                });
+                                              });
                                             });
                                           });
                                         });
