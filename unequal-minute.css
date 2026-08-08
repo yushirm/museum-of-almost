@@ -168,7 +168,7 @@
 .unequal-minute-track-fill {
   position: absolute;
   inset: 0 auto 0 0;
-  width: calc(var(--unequal-minute-lapse) * 100%);
+  width: var(--unequal-minute-lapse);
   background: linear-gradient(90deg, rgba(209, 104, 255, 0.62), rgba(132, 232, 255, 0.82));
 }
 
