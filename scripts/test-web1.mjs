@@ -30,6 +30,12 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE/,
+  /the visible page can compress a shape that the source still remembers\./,
+  /YOU FOUND THE SECOND HOMEPAGE\. IT IS QUIETER HERE\./,
+  /Same file\. Different weather\./,
+  /NOTHING IS ALSO PART OF THE FILE\./,
+  /FOUND THE QUIET HOMEPAGE UNDER THE LOUD ONE\./,
   /HOW TO CARE FOR A BROKEN IMAGE/,
   /EMERGENCY BROKEN-IMAGE FIELD MANUAL v0\.1/,
   /every image is one 404 away from becoming literature\./,
@@ -57,9 +63,18 @@ for (const pattern of [
   /src="web1\.js"/
 ]) assert.match(html, pattern);
 
+assert.match(
+  html,
+  /<!-- YOU FOUND THE SECOND HOMEPAGE\. IT IS QUIETER HERE\. -->/,
+  'the source-only note should remain a real HTML comment rather than visible page copy'
+);
+assert.ok(
+  html.indexOf('I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE') < html.indexOf('HOW TO CARE FOR A BROKEN IMAGE'),
+  'new weblog entries should remain reverse chronological within the same date'
+);
 assert.ok(
   html.indexOf('HOW TO CARE FOR A BROKEN IMAGE') < html.indexOf('THE BACK BUTTON IS A TINY TIME MACHINE'),
-  'new weblog entries should remain reverse chronological within the same date'
+  'broken-image entry should remain ahead of the earlier back-button entry'
 );
 assert.ok(
   html.indexOf('THE BACK BUTTON IS A TINY TIME MACHINE') < html.indexOf('HELLO FROM THE BACK OF THE INTERNET'),
