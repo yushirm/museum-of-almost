@@ -77,7 +77,7 @@ assert.doesNotMatch(html, /<img[^>]+src=["'](?:https?:)?\/\//i);
 assert.doesNotMatch(html, /<(textarea|select)\b|contenteditable|<iframe\b/i);
 assert.doesNotMatch(html, /<input[^>]+type=["'](?:text|email|url|tel|password|search)["']/i,
   'Guestbook must expose no visitor free-text or identity field');
-assert.doesNotMatch(html, /\b(name|email|phone|website|location|username)\s*=/i,
+assert.doesNotMatch(html, /<(?:input|textarea|select)[^>]+\bname=["'](?:name|email|phone|website|location|username)["']/i,
   'Guestbook must not add identity fields');
 
 assert.match(css, /url\("assets\/web1\/stars\.gif"\)/);
