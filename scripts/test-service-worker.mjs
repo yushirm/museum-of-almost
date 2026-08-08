@@ -21,7 +21,8 @@ assert.match(source, /const REDSHIFT_RULER_CACHE_NAME = 'museum-of-almost-v26-re
 assert.match(source, /const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer'/);
 assert.match(source, /const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-origin-machine'/);
 assert.match(source, /const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v30-page-four'/);
+assert.match(source, /const PAGE_FOUR_CACHE_NAME = 'museum-of-almost-v30-page-four'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v31-same-answer-machine'/);
 for (const asset of [
   './',
   './index.html',
@@ -101,6 +102,9 @@ for (const asset of [
   './origin-machine.css',
   './origin-machine-core.js',
   './origin-machine.js',
+  './same-answer-machine.css',
+  './same-answer-core.js',
+  './same-answer-machine.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -132,6 +136,7 @@ for (const asset of [
   './GRAVITATIONAL_COPY_ROOM.md',
   './REDSHIFT_RULER.md',
   './ORIGIN_MACHINE.md',
+  './SAME_ANSWER_MACHINE.md',
   './WEB1_HOME.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
@@ -162,4 +167,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Page Four and the existing galleries are present in the fresh-online cached-offline shell.');
+console.log('Page Four, Same Answer Machine, and the existing galleries are present in the fresh-online cached-offline shell.');

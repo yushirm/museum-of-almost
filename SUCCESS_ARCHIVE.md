@@ -887,3 +887,49 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — DEEP SPACE / ALMOST — The Same Answer Machine
+
+Feature:
+
+**The Same Answer Machine / Three Histories, One Redshift**
+
+Design outcome:
+
+- Concept A, **The Expansion-History Comparator**, supplied the exact distinction between a fixed endpoint scale-factor ratio and a history-dependent path integral.
+- Concept B, **The Route Planner**, was discarded because a navigation metaphor would introduce false agency and imply that photons choose among alternative routes through one cosmological history.
+- Concept C, **Three Buttons That Give the Same Answer**, supplied the convention-breaking interaction in which valid history selections deliberately leave the headline `z = 1` result unchanged.
+- Concepts A and C were merged.
+
+Feature-complete evidence head:
+
+`1e61d4e7678c4bae4b0ad26012c221ad5afb11f4`
+
+Pull request:
+
+`#70 — Add Deep Space Same Answer Machine`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `211`;
+- conclusion: `success`.
+
+What succeeded:
+
+- three fixed analytic toy histories all begin at `a_emit = 0.5` and end at `a_obs = 1`, so every case preserves the same endpoint `z = 1` result;
+- exact dimensionless path-integral values are `2 ln 2`, `4(1 - ln 2)`, and `pi / 2` for the linear, early-growth, and late-growth histories;
+- each analytic integral is independently checked against a 100,000-slice midpoint numerical integration rather than only against its own closed-form implementation;
+- the invariant hero result remains visibly unchanged while the selected curve, formula, five-sample semantic table, and dimensionless `J` ledger update with live-region feedback;
+- all three curves remain visible with shared endpoints, selected emphasis, and distinct dash patterns, while the SVG is explicitly decorative and exact text remains authoritative;
+- `J` is never relabeled as a physical distance, lookback time, cosmic age, Hubble parameter, Friedmann solution, or real-Universe fit;
+- the standard `http://www.w3.org/2000/svg` namespace identifier is explicitly treated as a DOM namespace rather than a network destination, while every other HTTP(S) string remains forbidden in feature runtime;
+- deterministic Instrument 07 → 08 → 09 → 10 → 11 progressive loading preserves `deep-space.html` unchanged;
+- no data-service or external runtime request, visitor text or numeric input, storage, cookies, history state, IndexedDB, location access, analytics, telemetry, polling, timer loop, animation-frame loop, remote media, account, cloud state, or dependency;
+- responsive, keyboard, reduced-motion, increased-contrast, semantic-table, dash-pattern, live-region, and print handling;
+- coherent same-origin v31 offline-shell upgrade preserving Page Four v30, Border Office v29, Origin Machine v28, Pink Links, The Neighbors, Offcut Drawer v27, and all prior Museum assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
