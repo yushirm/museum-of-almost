@@ -157,6 +157,186 @@
     else archiveSidebar.append(log);
   }
 
+  function injectProvenanceStyles() {
+    if (document.getElementById('page-four-provenance-style')) return;
+
+    const style = document.createElement('style');
+    style.id = 'page-four-provenance-style';
+    style.textContent = `
+      .provenance-rewind{position:relative;margin-top:2rem;padding:clamp(1rem,3vw,2rem);border:1px solid rgba(184,238,117,.28);background:linear-gradient(100deg,rgba(10,13,9,.98),rgba(17,15,9,.96));box-shadow:inset 0 0 36px rgba(0,0,0,.55)}
+      .provenance-rewind::before{content:"FICTIONAL CLAIM / PROVENANCE TRACE";position:absolute;top:-.72rem;right:1rem;padding:.28rem .55rem;border:1px solid #b8ee75;background:#080b07;color:#b8ee75;font-size:.64rem;letter-spacing:.12em}
+      .provenance-rewind header{display:grid;gap:.55rem;padding-bottom:1rem;border-bottom:1px dashed rgba(184,238,117,.26)}
+      .provenance-rewind header>span,.provenance-boundary,.provenance-stage-label,.provenance-source,.provenance-rule{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;letter-spacing:.09em;text-transform:uppercase}
+      .provenance-rewind header>span{color:#8fbf55;font-size:.72rem}.provenance-rewind h2{margin:0;color:#edf8d8;font-size:clamp(1.8rem,5vw,4rem);line-height:.95}.provenance-rewind header p{max-width:72ch;margin:0;color:#b7bea3;line-height:1.55}.provenance-boundary{color:#d99a86!important;font-size:.64rem}
+      .provenance-tape{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;margin-top:1rem;padding:clamp(1rem,3vw,1.6rem);border:1px solid rgba(208,167,91,.32);background:repeating-linear-gradient(0deg,rgba(208,167,91,.035) 0 1px,transparent 1px 5px),#0b0c08}
+      .provenance-stage{min-width:0}.provenance-stage-label{display:block;margin-bottom:.7rem;color:#d0a75b;font-size:.68rem}.provenance-claim{margin:0;color:#fff3d5;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.25rem,3vw,2.15rem);line-height:1.3}.provenance-source{margin:.8rem 0 0;color:#879174;font-size:.65rem;line-height:1.5}.provenance-state{align-self:start;min-width:9rem;padding:.7rem;border:1px solid rgba(184,238,117,.28);color:#b8ee75;text-align:center;font-size:.68rem;font-weight:700;letter-spacing:.08em}
+      .provenance-delta{display:grid;grid-template-columns:auto 1fr;gap:.65rem;margin:1rem 0 0;padding:.8rem;border-left:3px solid #d0a75b;background:rgba(208,167,91,.055);color:#c7cbb9;font-size:.76rem;line-height:1.55}.provenance-delta strong{color:#e5c784}
+      .provenance-trace{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.35rem;margin:1rem 0}.provenance-trace span{min-height:2.6rem;display:grid;place-items:center;padding:.45rem;border:1px solid rgba(184,238,117,.17);color:#728063;font-size:.62rem;text-align:center}.provenance-trace span[data-active="true"]{border-color:#b8ee75;color:#e8ffd0;background:rgba(143,191,85,.09)}
+      .provenance-controls{display:flex;flex-wrap:wrap;gap:.65rem}.provenance-controls button{min-height:44px;padding:.65rem .85rem;border:1px solid #8fbf55;background:#070a06;color:#d9efb9;font:inherit;font-size:.72rem;font-weight:700;cursor:pointer}.provenance-controls button:disabled{opacity:.42;cursor:default}.provenance-controls button:not(:disabled):hover{background:#14200e}.provenance-controls button:focus-visible{outline:3px solid #b8ee75;outline-offset:3px}
+      .provenance-live{min-height:1.4em;margin:.8rem 0 0;color:#879174;font-size:.7rem}.provenance-rule{margin:1rem 0 0;padding:.75rem;border:1px dashed rgba(184,238,117,.28);color:#b8ee75;text-align:center;font-size:.7rem}
+      @media(max-width:700px){.provenance-tape{grid-template-columns:1fr}.provenance-state{width:fit-content}.provenance-trace{grid-template-columns:repeat(2,minmax(0,1fr))}.provenance-delta{grid-template-columns:1fr}.provenance-rewind::before{position:static;display:inline-block;margin-bottom:.8rem}}
+      @media(prefers-reduced-motion:reduce){.provenance-rewind *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+      @media(prefers-contrast:more){.provenance-rewind,.provenance-tape,.provenance-state,.provenance-trace span,.provenance-controls button{border-color:currentColor}.provenance-rewind header p,.provenance-delta,.provenance-live{color:#fff}}
+      @media print{.provenance-rewind{break-before:page;color:#000;background:#fff;box-shadow:none}.provenance-rewind::before,.provenance-controls,.provenance-live{display:none!important}.provenance-tape,.provenance-state,.provenance-trace span,.provenance-delta{color:#000;background:#fff;border-color:#555}.provenance-rewind *{color:#000!important}}
+    `;
+    document.head.append(style);
+  }
+
+  function mountProvenanceRewind() {
+    const footer = document.querySelector('.archive-footer');
+    if (!footer || document.getElementById('provenance-rewind')) return;
+
+    injectProvenanceStyles();
+
+    const stages = [
+      {
+        label: 'HANDOFF 04 / EVIDENCE BOARD CLAIM',
+        state: 'MOST ASSERTIVE WORDING',
+        claim: 'THE NORTH CUT FIGURE RETURNS EVERY THIRTEEN NIGHTS.',
+        source: 'FICTIONAL SYNTHESIS / NO PRIMARY SUPPORT FOR RECURRENCE OR INTERVAL',
+        delta: 'The archive added a recurring identity and an exact thirteen-night schedule. Neither survives upstream.'
+      },
+      {
+        label: 'HANDOFF 03 / CASE SUMMARY',
+        state: 'COMPRESSED SUMMARY',
+        claim: 'Several files describe the same tall figure returning to North Cut.',
+        source: 'FICTIONAL CASE SUMMARY / MULTIPLE UNVERIFIED FILES',
+        delta: 'The summary turned resemblance into sameness and separate sightings into a return.'
+      },
+      {
+        label: 'HANDOFF 02 / RETELLING',
+        state: 'UNRESOLVED RESEMBLANCE',
+        claim: 'Two fictional accounts mention something tall near a treeline. Their dates, distance estimates and descriptions do not agree.',
+        source: 'FICTIONAL RETELLING / ACCOUNTS DO NOT SHARE A VERIFIED SCALE OR DATE',
+        delta: 'A vague resemblance remains. The shared identity, location precision and schedule are gone.'
+      },
+      {
+        label: 'HANDOFF 01 / EARLIEST SURVIVING NOTE',
+        state: 'OBSERVED, NOT IDENTIFIED',
+        claim: '20:11 — movement at treeline. One observer. Distance unknown. No scale. Could not identify.',
+        source: 'FICTIONAL FIELD NOTE / SINGLE OBSERVATION',
+        delta: 'This is as far back as the fictional record goes. It contains no identity, recurrence, cause or interval.'
+      }
+    ];
+
+    let stageIndex = 0;
+
+    const section = document.createElement('section');
+    section.id = 'provenance-rewind';
+    section.className = 'provenance-rewind';
+    section.setAttribute('aria-labelledby', 'provenance-rewind-title');
+
+    const heading = document.createElement('header');
+    const eyebrow = document.createElement('span');
+    eyebrow.textContent = '13 / PROVENANCE REWIND / CLAIM ANATOMY';
+    const title = document.createElement('h2');
+    title.id = 'provenance-rewind-title';
+    title.textContent = 'THE MORE WE OPEN, THE LESS IT KNOWS.';
+    const intro = document.createElement('p');
+    intro.textContent = 'Start with the archive’s most confident sentence, then rewind one handoff at a time. Nothing is solved. Each step restores context the next retelling compressed away.';
+    const boundary = document.createElement('p');
+    boundary.className = 'provenance-boundary';
+    boundary.textContent = 'FICTIONAL CASE // THIS TRACE DEMONSTRATES HOW WORDING CAN GAIN CERTAINTY WHILE SOURCES LOSE DETAIL';
+    heading.append(eyebrow, title, intro, boundary);
+
+    const tape = document.createElement('div');
+    tape.className = 'provenance-tape';
+    const stage = document.createElement('div');
+    stage.className = 'provenance-stage';
+    const stageLabel = document.createElement('span');
+    stageLabel.className = 'provenance-stage-label';
+    const claim = document.createElement('p');
+    claim.className = 'provenance-claim';
+    const source = document.createElement('p');
+    source.className = 'provenance-source';
+    stage.append(stageLabel, claim, source);
+    const state = document.createElement('div');
+    state.className = 'provenance-state';
+    tape.append(stage, state);
+
+    const delta = document.createElement('p');
+    delta.className = 'provenance-delta';
+    const deltaLabel = document.createElement('strong');
+    deltaLabel.textContent = 'WHAT CHANGED:';
+    const deltaText = document.createElement('span');
+    delta.append(deltaLabel, deltaText);
+
+    const trace = document.createElement('div');
+    trace.className = 'provenance-trace';
+    trace.setAttribute('aria-label', 'Four handoffs from amplified claim back to earliest surviving fictional note');
+    const traceLabels = ['04 BOARD CLAIM', '03 CASE SUMMARY', '02 RETELLING', '01 FIELD NOTE'];
+    traceLabels.forEach((label) => {
+      const cell = document.createElement('span');
+      cell.textContent = label;
+      trace.append(cell);
+    });
+
+    const controls = document.createElement('div');
+    controls.className = 'provenance-controls';
+    const rewindButton = document.createElement('button');
+    rewindButton.type = 'button';
+    rewindButton.textContent = 'REWIND ONE HANDOFF';
+    const amplifyButton = document.createElement('button');
+    amplifyButton.type = 'button';
+    amplifyButton.textContent = 'RESTORE ONE HANDOFF';
+    controls.append(rewindButton, amplifyButton);
+
+    const live = document.createElement('p');
+    live.className = 'provenance-live';
+    live.setAttribute('role', 'status');
+    live.setAttribute('aria-live', 'polite');
+
+    const rule = document.createElement('p');
+    rule.className = 'provenance-rule';
+    rule.textContent = 'CONTEXT IS NOT A REWARD. IT IS THE CASE.';
+
+    function render() {
+      const current = stages[stageIndex];
+      stageLabel.textContent = current.label;
+      claim.textContent = current.claim;
+      source.textContent = current.source;
+      state.textContent = current.state;
+      deltaText.textContent = current.delta;
+      rewindButton.disabled = stageIndex === stages.length - 1;
+      amplifyButton.disabled = stageIndex === 0;
+      [...trace.children].forEach((cell, index) => {
+        cell.dataset.active = String(index === stageIndex);
+      });
+      live.textContent = stageIndex === stages.length - 1
+        ? 'Earliest surviving fictional note reached. The record stops before the archive’s certainty does.'
+        : `Handoff ${4 - stageIndex} of 4. Rewind to restore more source context.`;
+    }
+
+    rewindButton.addEventListener('click', () => {
+      if (stageIndex >= stages.length - 1) return;
+      stageIndex += 1;
+      render();
+      announce(`Provenance rewind: handoff ${4 - stageIndex} opened. The wording is less certain because more context is visible.`);
+    });
+
+    amplifyButton.addEventListener('click', () => {
+      if (stageIndex <= 0) return;
+      stageIndex -= 1;
+      render();
+      announce(`Provenance rewind: handoff ${4 - stageIndex} restored. The wording becomes more assertive as context is compressed.`);
+    });
+
+    section.append(heading, tape, delta, trace, controls, live, rule);
+    footer.insertAdjacentElement('beforebegin', section);
+
+    if (caseNav && !document.getElementById('provenance-rewind-link')) {
+      const link = document.createElement('a');
+      link.id = 'provenance-rewind-link';
+      link.href = '#provenance-rewind';
+      const number = document.createElement('span');
+      number.textContent = '13';
+      link.append(number, document.createTextNode(' Provenance rewind'));
+      caseNav.append(link);
+    }
+
+    render();
+  }
+
   function loadResearchWing() {
     if (!document.getElementById('page-four-research-style')) {
       const style = document.createElement('link');
@@ -206,12 +386,18 @@
       document.head.append(style);
     }
 
-    if (!document.getElementById('page-four-dead-drop-script')) {
+    const deadDropScript = document.getElementById('page-four-dead-drop-script');
+    if (!deadDropScript) {
       const script = document.createElement('script');
       script.id = 'page-four-dead-drop-script';
       script.src = 'page-four-dead-drop.js';
       script.defer = true;
+      script.addEventListener('load', mountProvenanceRewind, { once: true });
       document.body.append(script);
+    } else if (document.getElementById('dead-drop')) {
+      mountProvenanceRewind();
+    } else {
+      deadDropScript.addEventListener('load', mountProvenanceRewind, { once: true });
     }
   }
 
