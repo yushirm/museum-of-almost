@@ -24,7 +24,8 @@ const LOAD_BEARING_SAMPLE_CACHE_NAME = 'museum-of-almost-v32-load-bearing-sample
 const PAGE_FOUR_RUMOR_RELAY_CACHE_NAME = 'museum-of-almost-v33-page-four-rumor-relay';
 const GAUGE_BENCH_CACHE_NAME = 'museum-of-almost-v34-gauge-bench';
 const PAGE_FOUR_SIGNAL_ANOMALY_CACHE_NAME = 'museum-of-almost-v35-page-four-signal-anomaly';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice';
+const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v37-unequal-minute';
 const APP_SHELL = [
   './',
   './index.html',
@@ -115,6 +116,9 @@ const APP_SHELL = [
   './same-answer-machine.css',
   './same-answer-core.js',
   './same-answer-machine.js',
+  './unequal-minute.css',
+  './unequal-minute-core.js',
+  './unequal-minute.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -149,8 +153,10 @@ const APP_SHELL = [
   './REDSHIFT_RULER.md',
   './ORIGIN_MACHINE.md',
   './SAME_ANSWER_MACHINE.md',
+  './UNEQUAL_MINUTE.md',
   './WEB1_HOME.md',
-  './PAGE_FOUR_RESEARCH.md'
+  './PAGE_FOUR_RESEARCH.md',
+  './PAGE_FOUR_EVIDENCE_LATTICE.md'
 ];
 
 self.addEventListener('install', (event) => {

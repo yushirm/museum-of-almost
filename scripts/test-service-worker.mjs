@@ -27,7 +27,8 @@ assert.match(source, /const LOAD_BEARING_SAMPLE_CACHE_NAME = 'museum-of-almost-v
 assert.match(source, /const PAGE_FOUR_RUMOR_RELAY_CACHE_NAME = 'museum-of-almost-v33-page-four-rumor-relay'/);
 assert.match(source, /const GAUGE_BENCH_CACHE_NAME = 'museum-of-almost-v34-gauge-bench'/);
 assert.match(source, /const PAGE_FOUR_SIGNAL_ANOMALY_CACHE_NAME = 'museum-of-almost-v35-page-four-signal-anomaly'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice'/);
+assert.match(source, /const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v37-unequal-minute'/);
 for (const asset of [
   './',
   './index.html',
@@ -118,6 +119,9 @@ for (const asset of [
   './same-answer-machine.css',
   './same-answer-core.js',
   './same-answer-machine.js',
+  './unequal-minute.css',
+  './unequal-minute-core.js',
+  './unequal-minute.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -152,8 +156,10 @@ for (const asset of [
   './REDSHIFT_RULER.md',
   './ORIGIN_MACHINE.md',
   './SAME_ANSWER_MACHINE.md',
+  './UNEQUAL_MINUTE.md',
   './WEB1_HOME.md',
-  './PAGE_FOUR_RESEARCH.md'
+  './PAGE_FOUR_RESEARCH.md',
+  './PAGE_FOUR_EVIDENCE_LATTICE.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
 }
@@ -183,4 +189,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Page Four Evidence Lattice, Signal Anomaly, Rumor Relay, Gauge Bench, and the existing galleries are present in the fresh-online cached-offline v36 shell.');
+console.log('Page Four Evidence Lattice v36, Unequal Minute v37, Signal Anomaly, Rumor Relay, Gauge Bench, and the existing galleries are present in the fresh-online cached-offline shell.');
