@@ -40,7 +40,7 @@ for (const pattern of [
   /\.\/causal-signal-core\.js/,
   /\.\/causal-signal\.js/,
   /dataDeepSpaceModule|deepSpaceModule/,
-  /loadCausalSignalBox\(\)/
+  /loadCausalSignalBox\(/
 ]) assert.match(bootstrap, pattern, `Deep Space bootstrap missing ${pattern}`);
 
 for (const id of ['origin', 'edge', 'relay', 'deep', 'far', 'before']) {
