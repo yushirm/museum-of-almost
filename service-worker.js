@@ -12,7 +12,8 @@ const FRAME_SHIFTER_CACHE_NAME = 'museum-of-almost-v20-frame-shifter';
 const EXPOSURE_PLATE_CACHE_NAME = 'museum-of-almost-v21-exposure-plate';
 const REVERSE_LEDGER_CACHE_NAME = 'museum-of-almost-v22-reverse-ledger';
 const CAUSAL_SIGNAL_BOX_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v24-rest-score';
+const REST_SCORE_CACHE_NAME = 'museum-of-almost-v24-rest-score';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v25-gravitational-copy-room';
 const APP_SHELL = [
   './',
   './index.html',
@@ -73,6 +74,9 @@ const APP_SHELL = [
   './causal-signal.css',
   './causal-signal-core.js',
   './causal-signal.js',
+  './gravitational-copy.css',
+  './gravitational-copy-core.js',
+  './gravitational-copy.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -99,6 +103,7 @@ const APP_SHELL = [
   './POSSIBILITY_ENGINE.md',
   './FRAME_SHIFTER.md',
   './CAUSAL_SIGNAL_BOX.md',
+  './GRAVITATIONAL_COPY_ROOM.md',
   './WEB1_HOME.md'
 ];
 
