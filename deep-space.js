@@ -126,7 +126,21 @@
     });
   }
 
-  function loadSameAnswerMachine() {
+  function loadUnequalMinute() {
+    if (!document.querySelector('link[data-unequal-minute-styles]')) {
+      const stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.href = './unequal-minute.css';
+      stylesheet.dataset.unequalMinuteStyles = '';
+      document.head.append(stylesheet);
+    }
+
+    loadLocalScript('./unequal-minute-core.js', 'unequal-minute-core', () => {
+      loadLocalScript('./unequal-minute.js', 'unequal-minute-view');
+    });
+  }
+
+  function loadSameAnswerMachine(done = loadUnequalMinute) {
     if (!document.querySelector('link[data-same-answer-styles]')) {
       const stylesheet = document.createElement('link');
       stylesheet.rel = 'stylesheet';
@@ -136,7 +150,7 @@
     }
 
     loadLocalScript('./same-answer-core.js', 'same-answer-core', () => {
-      loadLocalScript('./same-answer-machine.js', 'same-answer-view');
+      loadLocalScript('./same-answer-machine.js', 'same-answer-view', done);
     });
   }
 

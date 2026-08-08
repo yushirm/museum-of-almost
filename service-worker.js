@@ -29,7 +29,8 @@ const SHUFFLE_TABLE_CACHE_NAME = 'museum-of-almost-v37-shuffle-table';
 const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quorum-gate';
 const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero';
 const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet';
+const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v42-unequal-minute';
 const APP_SHELL = [
   './',
   './index.html',
@@ -135,6 +136,9 @@ const APP_SHELL = [
   './same-answer-machine.css',
   './same-answer-core.js',
   './same-answer-machine.js',
+  './unequal-minute.css',
+  './unequal-minute-core.js',
+  './unequal-minute.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -173,6 +177,7 @@ const APP_SHELL = [
   './REDSHIFT_RULER.md',
   './ORIGIN_MACHINE.md',
   './SAME_ANSWER_MACHINE.md',
+  './UNEQUAL_MINUTE.md',
   './WEB1_HOME.md',
   './PAGE_FOUR_RESEARCH.md',
   './PAGE_FOUR_HESSDALEN.md'
