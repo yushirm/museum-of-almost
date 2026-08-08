@@ -16,7 +16,8 @@ assert.match(source, /const EXPOSURE_PLATE_CACHE_NAME = 'museum-of-almost-v21-ex
 assert.match(source, /const REVERSE_LEDGER_CACHE_NAME = 'museum-of-almost-v22-reverse-ledger'/);
 assert.match(source, /const CAUSAL_SIGNAL_BOX_CACHE_NAME = 'museum-of-almost-v23-causal-signal-box'/);
 assert.match(source, /const REST_SCORE_CACHE_NAME = 'museum-of-almost-v24-rest-score'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v25-gravitational-copy-room'/);
+assert.match(source, /const GRAVITATIONAL_COPY_ROOM_CACHE_NAME = 'museum-of-almost-v25-gravitational-copy-room'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler'/);
 for (const asset of [
   './',
   './index.html',
@@ -80,6 +81,9 @@ for (const asset of [
   './gravitational-copy.css',
   './gravitational-copy-core.js',
   './gravitational-copy.js',
+  './redshift-ruler.css',
+  './redshift-ruler-core.js',
+  './redshift-ruler.js',
   './almost-online.html',
   './web1.css',
   './web1.js',
@@ -107,6 +111,7 @@ for (const asset of [
   './FRAME_SHIFTER.md',
   './CAUSAL_SIGNAL_BOX.md',
   './GRAVITATIONAL_COPY_ROOM.md',
+  './REDSHIFT_RULER.md',
   './WEB1_HOME.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
@@ -137,4 +142,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Witness Seal, Possibility Engine, Isolation Board, Frame Shifter, Exposure Plate, Reverse Ledger, Causal Signal Box, Rest Score, and Gravitational Copy Room offline shell plus fresh-online cached-offline behavior verified.');
+console.log('Witness Seal, Possibility Engine, Isolation Board, Frame Shifter, Exposure Plate, Reverse Ledger, Causal Signal Box, Rest Score, Gravitational Copy Room, and Redshift Ruler offline shell plus fresh-online cached-offline behavior verified.');
