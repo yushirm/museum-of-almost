@@ -19,6 +19,8 @@ export const MAX_PUBLIC_ENTRIES = 24;
 export const MAX_STORED_ENTRIES = 240;
 export const MAX_SIGNS_PER_DAY = 120;
 export const MIN_SIGN_INTERVAL_MS = 5_000;
+export const MAX_HITS_PER_MINUTE = 300;
+export const HIT_WINDOW_MS = 60_000;
 
 export function validateSelection(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) return null;
@@ -59,4 +61,10 @@ export function isAllowedOrigin(requestOrigin, configuredOrigin) {
 export function startOfUtcDay(now) {
   const date = new Date(now);
   return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+}
+
+export function startOfHitWindow(now) {
+  const value = Number(now);
+  if (!Number.isFinite(value) || value < 0) return null;
+  return Math.floor(value / HIT_WINDOW_MS) * HIT_WINDOW_MS;
 }

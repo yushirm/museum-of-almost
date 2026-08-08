@@ -28,7 +28,7 @@ The shared feature is isolated behind one Cloudflare Worker and one D1 database.
 The Worker exposes only:
 
 - `GET /v1/state` for the global hit count and newest guestbook entries;
-- `POST /v1/hit` to atomically increment the global page-hit counter;
+- `POST /v1/hit` to claim a database-enforced minute-budget token and atomically increment the global page-hit counter;
 - `POST /v1/sign` to store one allowlisted phrase/stamp selection;
 - CORS preflight for the exact configured Museum origin.
 
@@ -38,7 +38,7 @@ The Worker does not store IP addresses, user-agent strings, referrers, browser f
 
 Guestbook vocabulary is finite and server-side allowlisted. This is intentional: automatically publishing arbitrary visitor text would create an unsafe path for personal information, harassment, links, or stored script content. The browser renders guestbook entries with DOM `textContent`, never user-controlled HTML.
 
-Abuse controls do not require a visitor identity. Cloudflare route-level rate-limit bindings use fixed route labels rather than IP/user keys, and the database additionally enforces a minimum interval, a daily accepted-entry cap, duplicate suppression, bounded retention, and a 256-byte request-body limit. See `GUESTBOOK_SECURITY.md`.
+Abuse controls do not require a visitor identity. D1 holds a global minute-window counter keyed only as `page-hit`; it stores no visitor identifier. The database also enforces a minimum guestbook interval, a daily accepted-entry cap, duplicate suppression, bounded retention, and a 256-byte request-body limit. See `GUESTBOOK_SECURITY.md`.
 
 If the isolated API is unavailable, Gallery 03 remains a usable static page and shows the shared counter/guestbook as unavailable.
 
@@ -94,9 +94,9 @@ The Difference Engine compares two existing fixed points. The selected pair and 
 
 ## Local cosmic reference instruments
 
-The **Cosmic Receive Desk**, **Celestial Escapement**, and **Planetary Heliodon / Earth Casts the Night** use only fixed local reference constants, existing Museum snapshot data, and local geometry. The Planetary Heliodon adds no network request and collects no visitor information.
+The **Cosmic Receive Desk**, **Celestial Escapement**, **Planetary Heliodon / Earth Casts the Night**, and **Witness Seal / One Now, Attested** use only fixed local reference constants, existing Museum snapshot data, local geometry, or browser-local cryptography. The Planetary Heliodon and Witness Seal add no network request and collect no visitor information.
 
-The derived subsolar point, antisolar point, terminator path, night-side hatching, and field-sheet copy exist only in page memory and the current DOM. They are not uploaded or persisted by the Museum.
+The derived subsolar point, antisolar point, terminator path, night-side hatching, witness digest, and field-sheet copy exist only in page memory and the current DOM. They are not uploaded or persisted by the Museum.
 
 ## Cosmic Signal Chain
 

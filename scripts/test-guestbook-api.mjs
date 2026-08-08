@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {
+  HIT_WINDOW_MS,
+  MAX_HITS_PER_MINUTE,
   MAX_PUBLIC_ENTRIES,
   MAX_SIGNS_PER_DAY,
   MAX_STORED_ENTRIES,
@@ -10,6 +12,7 @@ import {
   STAMP_OPTIONS,
   isAllowedOrigin,
   publicEntry,
+  startOfHitWindow,
   startOfUtcDay,
   validateSelection
 } from '../guestbook-api/policy.mjs';
@@ -36,18 +39,16 @@ assert.equal(validateSelection({ message: 'cool-site', stamp: 'alien', extra: 'n
 assert.equal(validateSelection('cool-site'), null);
 assert.ok(Object.keys(MESSAGE_OPTIONS).length >= 6);
 assert.ok(Object.keys(STAMP_OPTIONS).length >= 5);
-for (const value of Object.values(MESSAGE_OPTIONS)) {
-  assert.doesNotMatch(value, /https?:\/\/|@|<|>/);
-}
-for (const value of Object.values(STAMP_OPTIONS)) {
-  assert.ok(value.length <= 4);
-}
+for (const value of Object.values(MESSAGE_OPTIONS)) assert.doesNotMatch(value, /https?:\/\/|@|<|>/);
+for (const value of Object.values(STAMP_OPTIONS)) assert.ok(value.length <= 4);
 
 assert.equal(isAllowedOrigin('https://example.github.io', 'https://example.github.io/path'), true);
 assert.equal(isAllowedOrigin('https://evil.example', 'https://example.github.io'), false);
 assert.equal(isAllowedOrigin('http://example.github.io', 'https://example.github.io'), false);
 assert.equal(isAllowedOrigin('', 'https://example.github.io'), false);
 assert.equal(startOfUtcDay(Date.parse('2026-08-08T17:44:00Z')), Date.parse('2026-08-08T00:00:00Z'));
+assert.equal(startOfHitWindow(Date.parse('2026-08-08T17:44:59.999Z')), Date.parse('2026-08-08T17:44:00Z'));
+assert.equal(startOfHitWindow(-1), null);
 
 assert.deepEqual(publicEntry({
   id: 7,
@@ -66,6 +67,8 @@ assert.equal(MAX_PUBLIC_ENTRIES, 24);
 assert.equal(MAX_STORED_ENTRIES, 240);
 assert.equal(MAX_SIGNS_PER_DAY, 120);
 assert.equal(MIN_SIGN_INTERVAL_MS, 5000);
+assert.equal(MAX_HITS_PER_MINUTE, 300);
+assert.equal(HIT_WINDOW_MS, 60000);
 
 const worker = read('guestbook-api/worker.mjs');
 const schema = read('guestbook-api/schema.sql');
@@ -82,24 +85,23 @@ for (const pattern of [
   /X-Content-Type-Options/,
   /MAX_BODY_BYTES = 256/,
   /application\/json/,
+  /INSERT INTO write_windows/,
+  /ON CONFLICT\(key\) DO UPDATE SET/,
+  /RETURNING count/,
+  /count <= MAX_HITS_PER_MINUTE/,
   /UPDATE stats SET value = value \+ 1/,
   /RETURNING value/,
   /INSERT INTO guestbook_entries/,
   /RETURNING id/,
   /DELETE FROM guestbook_entries/,
-  /HIT_RATE_LIMITER\.limit/,
-  /SIGN_RATE_LIMITER\.limit/,
-  /key: 'page-hit'/,
-  /key: 'guestbook-sign'/,
   /SELECT COUNT\(\*\) FROM guestbook_entries/,
   /created_at > \?3 - \?6/,
   /message_id = \?1 AND stamp_id = \?2/,
   /service_unavailable/
 ]) assert.match(worker, pattern);
 
-assert.doesNotMatch(worker, /innerHTML|eval\(|new Function|document\.cookie|localStorage|sessionStorage/i);
-assert.doesNotMatch(worker, /cf-connecting-ip|user-agent|referer/i,
-  'Worker must not use visitor network/device identifiers for application state or rate-limit keys');
+assert.doesNotMatch(worker, /HIT_RATE_LIMITER|SIGN_RATE_LIMITER|cf-connecting-ip|user-agent|referer/i,
+  'Worker must not use edge/person identifiers or external limiter bindings');
 assert.doesNotMatch(worker, /console\.(?:log|info|warn|error)/,
   'Worker must not emit request data to application logs');
 assert.doesNotMatch(worker, /https?:\/\//,
@@ -107,9 +109,12 @@ assert.doesNotMatch(worker, /https?:\/\//,
 
 for (const pattern of [
   /CREATE TABLE IF NOT EXISTS stats/,
+  /CREATE TABLE IF NOT EXISTS write_windows/,
   /CREATE TABLE IF NOT EXISTS guestbook_entries/,
   /STRICT/,
   /CHECK \(value >= 0\)/,
+  /CHECK \(window_start >= 0\)/,
+  /CHECK \(count >= 0\)/,
   /CHECK \(length\(message_id\) BETWEEN 1 AND 32\)/,
   /CHECK \(length\(stamp_id\) BETWEEN 1 AND 24\)/
 ]) assert.match(schema, pattern);
@@ -118,19 +123,18 @@ assert.equal(schema, migration);
 assert.match(config, /"observability":\s*\{\s*"enabled": false/);
 assert.match(config, /"SITE_ORIGIN": "https:\/\/example\.github\.io"/);
 assert.match(config, /"database_id": "<D1_DATABASE_ID>"/);
-assert.match(config, /"HIT_RATE_LIMITER"/);
-assert.match(config, /"SIGN_RATE_LIMITER"/);
-assert.match(config, /"limit": 300/);
-assert.match(config, /"limit": 12/);
+assert.doesNotMatch(config, /ratelimits|RATE_LIMITER/i,
+  'deployment should require only the D1 binding and public site origin');
 assert.doesNotMatch(config, /api[_-]?token|password|secret/i);
 
 for (const pattern of [
   /does \*\*not\*\* accept or store names/i,
   /no free-text box/i,
   /fixed server-side allowlist/i,
+  /at most 300 accepted page-hit increments per UTC minute window/i,
   /request bodies are capped at 256 bytes/i,
-  /rate-limiter keys are fixed route labels/i,
-  /Do not commit Cloudflare account identifiers, API tokens, private URLs, or dashboard data/i
+  /single D1 row keyed only as `page-hit`/i,
+  /Do not commit Cloudflare account identifiers, API tokens, private URLs/i
 ]) assert.match(security, pattern);
 
-console.log('Shared counter/guestbook policy, API boundary, input allowlist, D1 schema, abuse controls, and no-identifier design verified.');
+console.log('Shared counter/guestbook policy, D1-global budgets, API boundary, input allowlist, schema, and no-identifier design verified.');

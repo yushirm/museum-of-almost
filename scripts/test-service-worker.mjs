@@ -6,8 +6,11 @@ const source = fs.readFileSync(new URL('../service-worker.js', import.meta.url),
 assert.match(source, /const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish'/);
 assert.match(source, /const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold'/);
 assert.match(source, /const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now'/);
+assert.match(source, /const PREVIOUS_PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer'/);
 assert.match(source, /const PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v17-shared-guestbook-ui'/);
+assert.match(source, /const WITNESS_SEAL_CACHE_NAME = 'museum-of-almost-v17-witness-seal'/);
+assert.match(source, /const POSSIBILITY_ENGINE_CACHE_NAME = 'museum-of-almost-v18-possibility-engine'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v19-shared-guestbook-ui'/);
 for (const asset of [
   './',
   './index.html',
@@ -35,6 +38,9 @@ for (const asset of [
   './planetary-heliodon.css',
   './faultline-core.js',
   './faultline.js',
+  './witness-seal-core.js',
+  './witness-seal.js',
+  './witness-seal.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -44,6 +50,9 @@ for (const asset of [
   './deep-space.css',
   './deep-space-core.js',
   './deep-space.js',
+  './possibility-engine.css',
+  './possibility-engine-core.js',
+  './possibility-engine.js',
   './almost-online.html',
   './web1.css',
   './guestbook.css',
@@ -59,10 +68,12 @@ for (const asset of [
   './SAMPLE_AND_HOLD.md',
   './SOUNDING_WELL.md',
   './FAULTLINE_CORE.md',
+  './WITNESS_SEAL.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
   './DEEP_SPACE.md',
+  './POSSIBILITY_ENGINE.md',
   './WEB1_HOME.md',
   './GUESTBOOK_SECURITY.md'
 ]) {
@@ -94,4 +105,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services or guestbook API');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Fresh-online, cached-offline shell including safe guestbook UI, with all cross-origin services excluded from service-worker caching, verified.');
+console.log('Witness Seal, Possibility Engine, and shared guestbook UI offline shell with fresh-online cached-offline behavior and cross-origin boundary verified.');

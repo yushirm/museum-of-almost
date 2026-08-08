@@ -1,10 +1,12 @@
 import {
+  MAX_HITS_PER_MINUTE,
   MAX_PUBLIC_ENTRIES,
   MAX_SIGNS_PER_DAY,
   MAX_STORED_ENTRIES,
   MIN_SIGN_INTERVAL_MS,
   isAllowedOrigin,
   publicEntry,
+  startOfHitWindow,
   startOfUtcDay,
   validateSelection
 } from './policy.mjs';
@@ -71,6 +73,29 @@ async function readState(db) {
   const hits = Number(counter.results?.[0]?.value ?? 0);
   const publicEntries = (entries.results || []).map(publicEntry).filter(Boolean);
   return { hits: Number.isSafeInteger(hits) && hits >= 0 ? hits : 0, entries: publicEntries };
+}
+
+async function takeHitToken(db, now) {
+  const windowStart = startOfHitWindow(now);
+  if (windowStart === null) return false;
+
+  const row = await db.prepare(`
+    INSERT INTO write_windows (key, window_start, count)
+    VALUES ('page-hit', ?1, 1)
+    ON CONFLICT(key) DO UPDATE SET
+      window_start = CASE
+        WHEN write_windows.window_start = excluded.window_start THEN write_windows.window_start
+        ELSE excluded.window_start
+      END,
+      count = CASE
+        WHEN write_windows.window_start = excluded.window_start THEN write_windows.count + 1
+        ELSE 1
+      END
+    RETURNING count
+  `).bind(windowStart).first();
+
+  const count = Number(row?.count);
+  return Number.isSafeInteger(count) && count > 0 && count <= MAX_HITS_PER_MINUTE;
 }
 
 async function recordHit(db) {
@@ -146,15 +171,12 @@ export default {
 
       if (url.pathname === '/v1/hit') {
         if (request.method !== 'POST') return methodNotAllowed(origin);
-        const allowed = await env.HIT_RATE_LIMITER.limit({ key: 'page-hit' });
-        if (!allowed.success) return json(origin, { error: 'rate_limited' }, 429);
+        if (!await takeHitToken(env.DB, Date.now())) return json(origin, { error: 'rate_limited' }, 429);
         return json(origin, { hits: await recordHit(env.DB) });
       }
 
       if (url.pathname === '/v1/sign') {
         if (request.method !== 'POST') return methodNotAllowed(origin);
-        const allowed = await env.SIGN_RATE_LIMITER.limit({ key: 'guestbook-sign' });
-        if (!allowed.success) return json(origin, { error: 'rate_limited' }, 429);
         const selection = validateSelection(await readSmallJson(request));
         if (!selection) return json(origin, { error: 'invalid_selection' }, 400);
 
