@@ -81,6 +81,28 @@ The section is mounted by the existing local `deep-space.js` bootstrap after the
 
 The signal box is entirely local. Beyond loading its own same-origin script and stylesheet assets, it makes no data-service or external request, accepts no visitor-entered coordinates or text, stores no dispatch state, and uses no timers, location access, analytics, telemetry, remote assets or dependencies.
 
+### Gravitational Copy Room / One Source, More Than One Image
+
+The eighth instrument uses an idealized circular point-mass gravitational lens normalized to an Einstein radius of `1`. A fixed fictional source identity, `SRC-01`, is placed at one of three fixed source offsets `y = beta / theta_E`.
+
+The local model uses:
+
+`y = x - 1/x`
+
+with non-aligned solutions:
+
+`x+ = (y + sqrt(y² + 4)) / 2`
+
+`x- = (y - sqrt(y² + 4)) / 2`
+
+For nonzero source offset, the interface deliberately renders two apparent-image cards carrying the same immutable source identity. Their opposite parity is written explicitly. This breaks the normal web assumption that repeated cards necessarily represent repeated records.
+
+For exact alignment, `y = 0`, the two one-dimensional roots at `x = +/-1` represent a continuous Einstein ring in the circular model. The interface therefore replaces the discrete cards with a ring state instead of pretending the aligned geometry is simply another two-image case.
+
+The stage is schematic and normalized. It is not a sky map, mass estimator, distance estimator, magnification tool, time-delay model, or real lens reconstruction. Exact numerical solutions remain authoritative. Full design, source basis, accessibility contract and rebuild rules are documented in `GRAVITATIONAL_COPY_ROOM.md`.
+
+The section mounts after the Causal Signal Box through the existing local `deep-space.js` bootstrap, preserving deterministic Instrument 07 → Instrument 08 order without rewriting the proven static document. Beyond normal same-origin local asset loading it makes no data-service or external request, accepts no visitor-entered astrophysical parameters, stores no case selection, and uses no timers, location access, analytics, telemetry, remote assets or dependencies.
+
 ## Accessibility
 
-The gallery uses semantic sections, visible keyboard focus, 44px minimum interactive targets, polite live regions for changing instrument readouts, a skip link, responsive layouts, `prefers-reduced-motion`, `prefers-contrast`, and print handling. The Possibility Engine also preserves a static initial possibility map and the full Success Archives in HTML so the historical record remains readable without JavaScript. The Frame Shifter duplicates every visual event-order change in text and removes its card transition under reduced-motion preferences. The Causal Signal Box writes every station and route state in text, gives refused dispatches immediate live-region feedback, lists each segment's `Δt` and `|Δx|`, and removes station transitions under reduced-motion preferences.
+The gallery uses semantic sections, visible keyboard focus, 44px minimum interactive targets, polite live regions for changing instrument readouts, a skip link, responsive layouts, `prefers-reduced-motion`, `prefers-contrast`, and print handling. The Possibility Engine also preserves a static initial possibility map and the full Success Archives in HTML so the historical record remains readable without JavaScript. The Frame Shifter duplicates every visual event-order change in text and removes its card transition under reduced-motion preferences. The Causal Signal Box writes every station and route state in text, gives refused dispatches immediate live-region feedback, lists each segment's `Δt` and `|Δx|`, and removes station transitions under reduced-motion preferences. The Gravitational Copy Room repeats shared source identity and parity in text, states the Einstein-ring case textually, and never relies on card duplication, mirroring, or animation alone to carry scientific meaning.
