@@ -22,7 +22,8 @@ const PAGE_FOUR_CACHE_NAME = 'museum-of-almost-v30-page-four';
 const SAME_ANSWER_MACHINE_CACHE_NAME = 'museum-of-almost-v31-same-answer-machine';
 const LOAD_BEARING_SAMPLE_CACHE_NAME = 'museum-of-almost-v32-load-bearing-sample';
 const PAGE_FOUR_RUMOR_RELAY_CACHE_NAME = 'museum-of-almost-v33-page-four-rumor-relay';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v34-gauge-bench';
+const GAUGE_BENCH_CACHE_NAME = 'museum-of-almost-v34-gauge-bench';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v35-page-four-signal-anomaly';
 const APP_SHELL = [
   './',
   './index.html',
