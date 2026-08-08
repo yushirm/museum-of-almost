@@ -3,6 +3,7 @@
 const PREVIOUS_CACHE_NAME = 'museum-of-almost-commons-now-v10-front-page-polish';
 const CACHE_NAME = 'museum-of-almost-commons-now-v11-sample-and-hold';
 const ACTIVE_CACHE_NAME = 'museum-of-almost-commons-now-v12-thickness-of-now';
+const PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer';
 const CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online';
 const APP_SHELL = [
   './',
