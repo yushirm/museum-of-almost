@@ -33,7 +33,8 @@ assert.match(source, /const QUORUM_GATE_CACHE_NAME = 'museum-of-almost-v38-quoru
 assert.match(source, /const CATALOGUE_ZERO_CACHE_NAME = 'museum-of-almost-v39-catalogue-zero'/);
 assert.match(source, /const PAGE_FOUR_INSTRUMENT_ROOM_CACHE_NAME = 'museum-of-almost-v40-page-four-instrument-room'/);
 assert.match(source, /const SHUTTER_CABINET_CACHE_NAME = 'museum-of-almost-v41-shutter-cabinet'/);
-assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/);
+assert.match(source, /const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-unequal-minute'/);
+assert.match(source, /const CURRENT_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop'/);
 for (const asset of [
   './',
   './index.html',
@@ -50,6 +51,8 @@ for (const asset of [
   './page-four-research.js',
   './page-four-instrument-room.css',
   './page-four-instrument-room.js',
+  './page-four-dead-drop.css',
+  './page-four-dead-drop.js',
   './commons-now.html',
   './styles.css',
   './sample-hold.css',
@@ -183,7 +186,8 @@ for (const asset of [
   './UNEQUAL_MINUTE.md',
   './WEB1_HOME.md',
   './PAGE_FOUR_RESEARCH.md',
-  './PAGE_FOUR_HESSDALEN.md'
+  './PAGE_FOUR_HESSDALEN.md',
+  './PAGE_FOUR_DEAD_DROP.md'
 ]) {
   assert.ok(source.includes(`'${asset}'`), `service worker should cache ${asset}`);
 }
@@ -213,4 +217,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Unequal Minute v42, Shutter Cabinet v41, Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries are present in the fresh-online cached-offline shell.');
+console.log('Page Four Dead Drop v43, Unequal Minute v42, Shutter Cabinet v41, Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, Evidence Lattice v36, Signal Anomaly v35, Gauge Bench v34, Shuffle Table v37, and the existing galleries are present in the fresh-online cached-offline shell.');

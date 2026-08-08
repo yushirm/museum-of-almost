@@ -9,6 +9,8 @@ const researchJs = fs.readFileSync(new URL('../page-four-research.js', import.me
 const researchCss = fs.readFileSync(new URL('../page-four-research.css', import.meta.url), 'utf8');
 const instrumentJs = fs.readFileSync(new URL('../page-four-instrument-room.js', import.meta.url), 'utf8');
 const instrumentCss = fs.readFileSync(new URL('../page-four-instrument-room.css', import.meta.url), 'utf8');
+const deadDropJs = fs.readFileSync(new URL('../page-four-dead-drop.js', import.meta.url), 'utf8');
+const deadDropCss = fs.readFileSync(new URL('../page-four-dead-drop.css', import.meta.url), 'utf8');
 const researchLedger = fs.readFileSync(new URL('../PAGE_FOUR_RESEARCH.md', import.meta.url), 'utf8');
 const entrance = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 
@@ -42,17 +44,18 @@ assert.match(entrance, /href="page-four-teaser\.css"/);
 assert.match(entrance, /GALLERY 04 · UNFILED \/ UNVERIFIED/);
 assert.match(entrance, /The fourth was not on the floor plan\./);
 
-for (const source of [html, css, teaser, js, researchJs, researchCss, instrumentJs, instrumentCss]) {
+for (const source of [html, css, teaser, js, researchJs, researchCss, instrumentJs, instrumentCss, deadDropJs, deadDropCss]) {
   assert.doesNotMatch(source, /https?:\/\//i, 'Page Four runtime must remain local-only');
 }
 assert.doesNotMatch(html, /<(input|textarea|select)\b|contenteditable/i, 'Page Four must not collect visitor free text');
 assert.doesNotMatch(html, /<iframe\b/i, 'Page Four must not embed third-party documents');
-const runtimeJs = [js, researchJs, instrumentJs].join('\n');
+const runtimeJs = [js, researchJs, instrumentJs, deadDropJs].join('\n');
 assert.doesNotMatch(runtimeJs, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i, 'Page Four must not add runtime network requests');
 assert.doesNotMatch(runtimeJs, /localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i, 'Page Four must not persist or personalize visitor data');
 assert.doesNotMatch(runtimeJs, /analytics|telemetry|tracking|gtag|dataLayer|mixpanel|segment|plausible|amplitude|hotjar/i, 'Page Four must remain tracking-free');
 assert.doesNotMatch(runtimeJs, /navigator\.share\b/, 'Page Four must not hand data to external share targets automatically');
-assert.doesNotMatch([researchJs, instrumentJs].join('\n'), /innerHTML|insertAdjacentHTML|document\.write/i, 'research evidence must mount through DOM nodes rather than HTML-string injection');
+assert.doesNotMatch([researchJs, instrumentJs, deadDropJs].join('\n'), /innerHTML|insertAdjacentHTML|document\.write/i, 'Page Four enhancements must mount through DOM nodes rather than HTML-string injection');
+assert.doesNotMatch(deadDropJs, /createElement\(['"](?:input|textarea|select)['"]\)|contenteditable/i, 'Page Four puzzles must remain fixed-choice rather than collecting visitor text');
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/, 'Page Four should participate in the local offline shell');
 assert.match(js, /getRandomValues/, 'random-file access should be local and non-identifying');
 assert.match(js, /aria-pressed/, 'reclassification control should expose state accessibly');
@@ -78,7 +81,10 @@ assert.match(js, /page-four-research\.css/, 'Page Four should mount the local re
 assert.match(js, /page-four-research\.js/, 'Page Four should mount the local research logic');
 assert.match(js, /page-four-instrument-room\.css/, 'Page Four should mount the local Instrument Room styles');
 assert.match(js, /page-four-instrument-room\.js/, 'Page Four should mount the local Instrument Room logic');
+assert.match(js, /page-four-dead-drop\.css/, 'Page Four should mount the local Dead Drop styles');
+assert.match(js, /page-four-dead-drop\.js/, 'Page Four should mount the local Dead Drop logic');
 assert.match(js, /loadResearchWing\(\)/, 'Page Four should progressively mount the research and investigation wings');
+assert.match(js, /loadDeadDrop\(\)/, 'Page Four should progressively mount the puzzle wing');
 assert.match(js, /addEventListener\('hashchange'/, 'shared case permalinks should keep active-file state synchronized');
 assert.match(js, /Shared case permalink opened:/, 'direct case permalinks should visibly activate and announce the selected file');
 
@@ -118,7 +124,7 @@ for (const pattern of [
 assert.match(researchLedger, /No third-party source is loaded at runtime\./, 'source ledger should preserve the runtime boundary');
 assert.match(researchLedger, /PAGE FOUR NOTE.*editorial interpretation or fictional connective tissue/s, 'source ledger should distinguish sourced fact from Page Four synthesis');
 
-for (const styles of [css, teaser, researchCss, instrumentCss]) {
+for (const styles of [css, teaser, researchCss, instrumentCss, deadDropCss]) {
   assert.match(styles, /@media/, 'Page Four styles need responsive/environment handling');
   assert.match(styles, /prefers-reduced-motion/, 'Page Four styles need reduced-motion handling');
   assert.match(styles, /prefers-contrast/, 'Page Four styles need high-contrast handling');
@@ -131,5 +137,7 @@ assert.match(researchCss, /min-height:\s*44px/, 'research interactions should pr
 assert.match(researchCss, /:focus-visible/, 'research interactions should expose visible keyboard focus');
 assert.match(instrumentCss, /min-height:\s*44px/, 'Instrument Room interactions should preserve a 44px target size');
 assert.match(instrumentCss, /:focus-visible/, 'Instrument Room interactions should expose visible keyboard focus');
+assert.match(deadDropCss, /min-height:\s*44px/, 'Dead Drop interactions should preserve a 44px target size');
+assert.match(deadDropCss, /:focus-visible/, 'Dead Drop interactions should expose visible keyboard focus');
 
-console.log('Page Four fictional archive, sourced evidence lattice, Hessdalen Instrument Room loader boundaries, local leak desk, shared permalinks, accessibility, no-network contract, and entrance reveal verified.');
+console.log('Page Four fictional archive, sourced evidence lattice, Hessdalen Instrument Room, Dead Drop puzzle loader, local leak desk, shared permalinks, accessibility, no-network contract, and entrance reveal verified.');
