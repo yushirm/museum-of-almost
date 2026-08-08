@@ -89,3 +89,48 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — COMMONS / NOW — The Isolation Board
+
+Feature:
+
+**The Isolation Board / What Survives a Lost Feed**
+
+Design outcome:
+
+- Concept A, **The Dependency Diagram**, was discarded as the least additive because the Commons already exposes much of its architecture through semantic and provenance instruments.
+- Concept B, **The Isolation Board**, supplied the fault-isolation breaker mechanic for the existing five-feed bus.
+- Concept C, **Deliberate Degradation**, supplied the convention-breaking idea that a useful web instrument can intentionally model having less evidence rather than always revealing more.
+- Concepts B and C were merged.
+
+Feature-complete evidence head:
+
+`3a18b724141fa9f673d94e1a47e199f662b4e1d2`
+
+Pull request:
+
+`#52 — Add the Isolation Board`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `126`;
+- conclusion: `success`.
+
+What succeeded:
+
+- five memory-only breakers mapped exactly to the existing USGS, NOAA FLOW, NOAA SCALES, Open-Meteo, and NASA feed channels;
+- actual provider unavailability kept categorically separate from visitor-triggered hypothetical isolation;
+- fixed circuit dependency evaluation with `powered`, `degraded`, `dark`, `local`, and `actual` states;
+- real snapshot data left untouched, with no request cancellation, replay, or alternate fetch path;
+- every hypothetical trip cleared on a new real `museum:commons-snapshot` event;
+- the Witness Seal kept outside the counterfactual and left authoritative for its own actual availability;
+- POWERED explicitly limited to a feed-dependency statement rather than a value-validity, timestamp-validity, quality, or completeness claim;
+- no additional runtime request, visitor input, storage, cookies, location access, analytics, telemetry, polling, remote media, or runtime dependency;
+- responsive, reduced-motion, increased-contrast, and print handling, with the hypothetical board omitted from the actual field sheet;
+- coherent same-origin offline-shell upgrade from the Possibility Engine baseline without discarding its assets.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.

@@ -7,7 +7,8 @@ const PREVIOUS_PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v15-gallery-foyer
 const PREVIOUS_CURRENT_CACHE_NAME = 'museum-of-almost-v16-fresh-online';
 const WITNESS_SEAL_CACHE_NAME = 'museum-of-almost-v17-witness-seal';
 const POSSIBILITY_ENGINE_CACHE_NAME = 'museum-of-almost-v18-possibility-engine';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v19-shared-guestbook-ui';
+const ISOLATION_BOARD_CACHE_NAME = 'museum-of-almost-v19-isolation-board';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v20-shared-guestbook-ui';
 const APP_SHELL = [
   './',
   './index.html',
@@ -38,6 +39,9 @@ const APP_SHELL = [
   './witness-seal-core.js',
   './witness-seal.js',
   './witness-seal.css',
+  './isolation-board-core.js',
+  './isolation-board.js',
+  './isolation-board.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -66,6 +70,7 @@ const APP_SHELL = [
   './SOUNDING_WELL.md',
   './FAULTLINE_CORE.md',
   './WITNESS_SEAL.md',
+  './ISOLATION_BOARD.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
