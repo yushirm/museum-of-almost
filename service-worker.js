@@ -17,7 +17,8 @@ const GRAVITATIONAL_COPY_ROOM_CACHE_NAME = 'museum-of-almost-v25-gravitational-c
 const REDSHIFT_RULER_CACHE_NAME = 'museum-of-almost-v26-redshift-ruler';
 const OFFCUT_DRAWER_CACHE_NAME = 'museum-of-almost-v27-offcut-drawer';
 const ORIGIN_MACHINE_CACHE_NAME = 'museum-of-almost-v28-origin-machine';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v29-border-office';
+const BORDER_OFFICE_CACHE_NAME = 'museum-of-almost-v29-border-office';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v30-load-bearing-sample';
 const APP_SHELL = [
   './',
   './index.html',
@@ -66,6 +67,9 @@ const APP_SHELL = [
   './border-office-core.js',
   './border-office.js',
   './border-office.css',
+  './load-bearing-sample-core.js',
+  './load-bearing-sample.js',
+  './load-bearing-sample.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -114,6 +118,7 @@ const APP_SHELL = [
   './REST_SCORE.md',
   './OFFCUT_DRAWER.md',
   './BORDER_OFFICE.md',
+  './LOAD_BEARING_SAMPLE.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',
