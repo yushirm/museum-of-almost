@@ -162,7 +162,7 @@ for (const pattern of [
   /not.*uncertainty/i,
   /does \*\*not\*\* translate `0 mm` into “dry”/,
   /adds no response observation, provider payload retention, fetch, or alternate acquisition path/i,
-  /Require the feature-complete head to pass `check`/[\s\S]*repository Success Archive/[\s\S]*archive-bearing head to pass `check` again/
+  /Require the feature-complete head to pass `check`[\s\S]*repository Success Archive[\s\S]*archive-bearing head to pass `check` again/
 ]) assert.match(record, pattern);
 
 for (const asset of ['./border-office-core.js', './border-office.js', './border-office.css', './BORDER_OFFICE.md']) {
