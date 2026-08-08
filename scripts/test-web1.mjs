@@ -30,6 +30,12 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /THE BACK BUTTON IS A TINY TIME MACHINE/,
+  /08 AUG 2026/,
+  /history is not a feed\. It is a little stack of doors behind you\./,
+  /A homepage is not a place\. It is a set of instructions for making the same place again\./,
+  /NOTE TO SELF: DO NOT BECOME NORMAL\./,
+  /DISCOVERED BACK BUTTON\. CONCERNING\./,
   /HELLO FROM THE BACK OF THE INTERNET/,
   /WHY THE OLD WEB STILL FEELS ALIVE/,
   /GIF OF THE WEEK: COMET!!!/,
@@ -44,6 +50,11 @@ for (const pattern of [
   /href="deep-space\.html"/,
   /src="web1\.js"/
 ]) assert.match(html, pattern);
+
+assert.ok(
+  html.indexOf('THE BACK BUTTON IS A TINY TIME MACHINE') < html.indexOf('HELLO FROM THE BACK OF THE INTERNET'),
+  'new weblog entries should remain reverse chronological'
+);
 
 for (const pattern of [
   /GALLERY 03 · PERSONAL HOMEPAGE/,
