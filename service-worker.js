@@ -24,7 +24,8 @@ const LOAD_BEARING_SAMPLE_CACHE_NAME = 'museum-of-almost-v32-load-bearing-sample
 const PAGE_FOUR_RUMOR_RELAY_CACHE_NAME = 'museum-of-almost-v33-page-four-rumor-relay';
 const GAUGE_BENCH_CACHE_NAME = 'museum-of-almost-v34-gauge-bench';
 const PAGE_FOUR_SIGNAL_ANOMALY_CACHE_NAME = 'museum-of-almost-v35-page-four-signal-anomaly';
-const CURRENT_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice';
+const PAGE_FOUR_EVIDENCE_LATTICE_CACHE_NAME = 'museum-of-almost-v36-page-four-evidence-lattice';
+const CURRENT_CACHE_NAME = 'museum-of-almost-v37-shuffle-table';
 const APP_SHELL = [
   './',
   './index.html',
@@ -85,6 +86,9 @@ const APP_SHELL = [
   './gauge-bench-core.js',
   './gauge-bench.js',
   './gauge-bench.css',
+  './shuffle-table-core.js',
+  './shuffle-table.js',
+  './shuffle-table.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -138,6 +142,7 @@ const APP_SHELL = [
   './BORDER_OFFICE.md',
   './LOAD_BEARING_SAMPLE.md',
   './GAUGE_BENCH.md',
+  './SHUFFLE_TABLE.md',
   './COSMIC_RECEIVE_DESK.md',
   './CELESTIAL_ESCAPEMENT.md',
   './PLANETARY_HELIODON.md',

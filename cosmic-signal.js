@@ -48,7 +48,11 @@
                                             load('./load-bearing-sample-core.js', 'loadBearingSampleCore', () => {
                                               load('./load-bearing-sample.js', 'loadBearingSampleView', () => {
                                                 load('./gauge-bench-core.js', 'gaugeBenchCore', () => {
-                                                  load('./gauge-bench.js', 'gaugeBenchView');
+                                                  load('./gauge-bench.js', 'gaugeBenchView', () => {
+                                                    load('./shuffle-table-core.js', 'shuffleTableCore', () => {
+                                                      load('./shuffle-table.js', 'shuffleTableView');
+                                                    });
+                                                  });
                                                 });
                                               });
                                             });
