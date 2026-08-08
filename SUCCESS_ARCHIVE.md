@@ -401,3 +401,44 @@ What succeeded:
 Final-merge rule:
 
 This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
+
+## 2026-08-08 — ALMOST ONLINE! — The Second Homepage
+
+Feature:
+
+**I Found a Second Homepage Inside the First One**
+
+Design outcome:
+
+- Concept A, **I Found the Space Between the Tags**, supplied the earnest diary reflection on indentation, line breaks, comments, and source formatting as a second architecture behind the rendered page.
+- Concept B, **The HTML Housekeeping Page**, was discarded because another tutorial immediately after the Broken-Image Field Manual would repeat the same structural joke.
+- Concept C, **Whitespace Is Where the Page Hides Its Weather**, supplied the surreal fixation on blank characters as corridors and rendered whitespace compression as folded rooms.
+- Concepts A and C were merged.
+
+Feature-complete evidence head:
+
+`ad9ffe3e899fab0881a8cff652c837cc7023fc3c`
+
+Pull request:
+
+`#59 — Add Almost Online second-homepage entry`
+
+Required-check evidence:
+
+- workflow: `Check museum`;
+- required job: `check`;
+- run: `154`;
+- conclusion: `success`.
+
+What succeeded:
+
+- a new 08 AUG 2026 weblog entry added directly to the static HTML ahead of the earlier same-date Broken-Image and Back Button entries;
+- the source-versus-rendered-page idea is made literal with a real source-only HTML comment inside the post;
+- wording explicitly limits whitespace-collapse claims to ordinary flowing text and acknowledges elements and CSS that preserve whitespace deliberately;
+- focused assertions require the new entry, hidden comment, core thesis, and same-date reverse chronology;
+- no new JavaScript, CSS, runtime request, storage, cookies, geolocation, analytics, telemetry, forms, visitor free-text, remote media, third-party runtime code, or dependency;
+- the existing keyboard, mobile, reduced-motion, increased-contrast, print, local-GIF, and offline behavior remains unchanged.
+
+Final-merge rule:
+
+This archive entry is added after the feature-complete head passed. Because adding the archive changes the branch head, the archive-bearing final head must pass the same required `check` job again before merge.
