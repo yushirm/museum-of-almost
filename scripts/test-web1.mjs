@@ -30,6 +30,12 @@ for (const pattern of [
   /ALMOST ONLINE!/,
   /WELCOME TO MY HOMEPAGE!!!/,
   /THE ALMOST WEBLOG/,
+  /I FOUND OUT THE NIGHT SKY IS WALLPAPER/,
+  /THE SAME NIGHT CAN APPEAR MANY TIMES WITHOUT BECOMING MANY FILES\./,
+  /DO NOT MISTAKE REPEAT FOR MULTIPLICITY\./,
+  /FOUND OUT THE SKY IS ONE FILE DOING A LOT\./,
+  /The body has one line that names <code>assets\/web1\/stars\.gif<\/code> as its background image\./,
+  /I FOUND OUT THE NIGHT SKY IS WALLPAPER/,
   /MY HOMEPAGE DOES NOT HAVE A TRUE WIDTH/,
   /BEST VIEWED WITH WHATEVER YOU BROUGHT!!!/,
   /The layout has breakpoints\. I do not have a preferred body\./,
@@ -128,8 +134,12 @@ assert.match(
   'the source-only note should remain a real HTML comment rather than visible page copy'
 );
 assert.ok(
+  html.indexOf('I FOUND OUT THE NIGHT SKY IS WALLPAPER') < html.indexOf('MY HOMEPAGE DOES NOT HAVE A TRUE WIDTH'),
+  'wallpaper-sky entry should be the newest same-date weblog entry'
+);
+assert.ok(
   html.indexOf('MY HOMEPAGE DOES NOT HAVE A TRUE WIDTH') < html.indexOf('I HAVE BEEN AWARDED BY THE WEBSITE I AM'),
-  'true-width entry should be the newest same-date weblog entry'
+  'true-width entry should remain ahead of the earlier self-award entry'
 );
 assert.ok(
   html.indexOf('I HAVE BEEN AWARDED BY THE WEBSITE I AM') < html.indexOf('I FOUND OUT MY HOMEPAGE HAS NEIGHBORS'),
@@ -191,7 +201,16 @@ assert.doesNotMatch(html, /<img[^>]+src=["'](?:https?:)?\/\//i);
 assert.doesNotMatch(html, /<(input|textarea|select|form)\b|contenteditable|<iframe\b/i,
   'personal homepage must not collect visitor text or embed third parties');
 
-assert.match(css, /url\("assets\/web1\/stars\.gif"\)/);
+assert.match(
+  css,
+  /body\s*\{[\s\S]*?background-image:\s*url\("assets\/web1\/stars\.gif"\);[\s\S]*?\}/,
+  'the wallpaper-sky post should remain grounded in the existing local tiled body background'
+);
+assert.match(
+  css,
+  /@media \(prefers-contrast: more\)[\s\S]*?body\s*\{\s*background-image:\s*none;\s*\}/,
+  'the wallpaper-sky post should preserve the existing increased-contrast starfield removal'
+);
 assert.match(css, /a:visited\s*\{\s*color:\s*#ff88ff;\s*\}/,
   'the visited-links post should remain grounded in the existing pink :visited rule');
 assert.match(css, /min-height:\s*44px/);
@@ -248,4 +267,4 @@ assert.match(notes, /No third-party runtime scripts, fonts, images, embeds, APIs
 assert.match(notes, /Do not publish personal information about real people/i);
 assert.match(notes, /Future posts should be added directly to the HTML in reverse chronological order/i);
 
-console.log('Almost Online! Web 1.0 gallery, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
+console.log('Almost Online! Web 1.0 gallery, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
