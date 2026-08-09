@@ -66,7 +66,50 @@
     panel.insertAdjacentElement('afterend', details);
   }
 
+  function mountReductionRegister() {
+    const aperture = document.querySelector('#temporal-aperture');
+    if (!aperture || document.querySelector('#reduction-register')) return;
+
+    const details = document.createElement('details');
+    details.id = 'reduction-register';
+    details.className = 'temporal-aperture';
+    details.innerHTML = `
+      <summary>
+        <span>THE REDUCTION REGISTER</span>
+        <strong>WHAT SURVIVES THE LATCH?</strong>
+      </summary>
+      <div class="temporal-aperture-body">
+        <p class="temporal-aperture-intro">Borrowed from scientific data reduction: a readable instrument is always a choice about what to preserve. COMMONS does not pretend its compact portrait is the source material itself. These are the deliberate reductions that make one shared “now” legible.</p>
+        <dl class="temporal-aperture-grid" aria-label="How Commons reduces each public feed for the visible snapshot">
+          <div>
+            <dt>01 · USGS EARTH</dt>
+            <dd><strong>EVENTS → SUMMARY</strong><span>The returned earthquake set becomes a count, strongest magnitude, mean depth, and a significant-event count. Individual event identities, coordinates, and timelines are not the headline portrait.</span></dd>
+          </div>
+          <div>
+            <dt>02 · NOAA FLOW</dt>
+            <dd><strong>MEASUREMENT → SPEED</strong><span>The visible snapshot keeps solar-wind speed and a local descriptive band. Source time remains available to the Sounding Well; no recent time-series history is turned into a trend.</span></dd>
+          </div>
+          <div>
+            <dt>03 · NOAA SCALES</dt>
+            <dd><strong>RECORD → G / S / R</strong><span>The current geomagnetic, solar-radiation, and radio-blackout categories stay separate. COMMONS does not combine them into one synthetic “space weather score.”</span></dd>
+          </div>
+          <div>
+            <dt>04 · OPEN-METEO WEATHER</dt>
+            <dd><strong>13 POINTS → RELATIONSHIPS</strong><span>Only current temperature, 10 m wind speed, and precipitation are requested at thirteen fixed coordinates. Ranges, means, pair differences, and the section are derived locally; no forecast history is requested.</span></dd>
+          </div>
+          <div>
+            <dt>05 · NASA EONET EVENTS</dt>
+            <dd><strong>OPEN SET → COUNTS</strong><span>Up to 500 open records become a total and the five most common categories. Titles and event coordinates are deliberately not reproduced in the visible snapshot.</span></dd>
+          </div>
+        </dl>
+        <p class="temporal-aperture-note"><strong>Reduction is not reality.</strong> A value can be honestly calculated and still be only one projection of a richer source. The page keeps the transformation explicit so compactness is never mistaken for completeness.</p>
+      </div>`;
+
+    aperture.insertAdjacentElement('afterend', details);
+  }
+
   mountTemporalAperture();
+  mountReductionRegister();
 
   load('./cosmic-signal-core.js', 'cosmicSignalCore', () => {
     load('./cosmic-signal-view.js', 'cosmicSignalView', () => {
