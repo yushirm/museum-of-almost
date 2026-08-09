@@ -24,6 +24,10 @@ for (const href of ['index.html', 'commons-now.html', 'deep-space.html', 'almost
   assert.ok(html.includes(`href="${href}"`), `missing return route ${href}`);
 }
 
+assert.match(html, /class="freight-lift" href="#catalogue"/, 'the corridor must retain Button 0 as the direct descent to Catalogue 0');
+assert.doesNotMatch(html, /<section class="lift"|id="lift-title"|DESCEND TO CATALOGUE 0/, 'Elsewhere should not restore the duplicate standalone freight-lift scene');
+assert.doesNotMatch(css, /\.lift-cage|\.lift-copy|\.lift-plate|\.primary-action/, 'retired lift-scene styling should not remain as dead CSS');
+
 const artifactIds = [...html.matchAll(/id="artifact-c0-(\d{3})"/g)].map((match) => match[1]);
 assert.deepEqual(artifactIds, ['001','002','003','004','005','006','007','008','009','010','011','012']);
 assert.equal((html.match(/data-artifact/g) || []).length, 12, 'Catalogue 0 should expose exactly twelve fixed fictional records');
@@ -77,4 +81,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, one retained corridor lift, accessible routes, and offline shell coverage.');
