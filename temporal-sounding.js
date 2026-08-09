@@ -171,6 +171,38 @@
         <ol id="sounding-lines" class="sounding-lines" aria-label="Temporal depth of source timestamps in the current latch"></ol>
         <p class="sounding-scale-note">Line depth is relative to the deepest comparable source timestamp in this latch. The written durations and timestamp labels are authoritative; depth is not a quality score, confidence score, or claim that every provider timestamp means the same thing.</p>
       </div>
+      <details class="temporal-aperture" style="grid-column: 1 / -1; margin-top: 0;">
+        <summary>
+          <span>OBSERVATION FOOTPRINT / THE SHAPE OF HERE</span>
+          <strong>Five feeds · five different spatial supports</strong>
+        </summary>
+        <div class="temporal-aperture-body">
+          <p class="temporal-aperture-intro">Borrowed from geostatistics: a measurement has a <strong>support</strong> — the point, set, area, or population over which its value is meaningful. The latch puts five feeds beside one another in time; it does not make them observe the same kind of place.</p>
+          <dl class="temporal-aperture-grid" aria-label="Spatial support of the five Commons feeds">
+            <div>
+              <dt>01 · USGS EARTH</dt>
+              <dd><strong>EVENT POINT SET</strong><span>A worldwide returned catalogue of earthquake events in the rolling past hour. The headline reduces that set; it is not a continuous crust field.</span></dd>
+            </div>
+            <div>
+              <dt>02 · NOAA FLOW</dt>
+              <dd><strong>NEAR-EARTH SPACE MEASUREMENT</strong><span>One current solar-wind product near Earth. It is not sampled at the thirteen surface stations and is not a globe-wide surface field.</span></dd>
+            </div>
+            <div>
+              <dt>03 · NOAA SCALES</dt>
+              <dd><strong>CATEGORICAL STATUS</strong><span>Current G/S space-weather scale states. They are operational categories, not values measured on a coordinate grid.</span></dd>
+            </div>
+            <div>
+              <dt>04 · OPEN-METEO WEATHER</dt>
+              <dd><strong>13 FIXED SURFACE POINTS</strong><span>Temperature, wind, and precipitation at thirteen baked-in coordinates. Space between the points remains unmeasured here.</span></dd>
+            </div>
+            <div>
+              <dt>05 · NASA EONET EVENTS</dt>
+              <dd><strong>OPEN EVENT SET</strong><span>Returned event records carry their own geometries; COMMONS deliberately reduces them to counts and categories rather than pretending they form continuous coverage.</span></dd>
+            </div>
+          </dl>
+          <p class="temporal-aperture-note"><strong>Same latch does not mean same footprint.</strong> These supports can coexist in one planetary portrait without becoming co-located, exhaustive, interchangeable, or evidence that one feed explains another.</p>
+        </div>
+      </details>
       <p id="sounding-status" class="sounding-status" role="status" aria-live="polite">Waiting for source timestamp metadata from the shared acquisition.</p>
       <p class="sounding-note"><strong>No fake timestamp.</strong> NASA EONET pairs dates with individual event geometries rather than publishing one feed-wide observation instant, so its channel is left unsounded instead of forcing unlike time semantics onto one scale.</p>
     `;
