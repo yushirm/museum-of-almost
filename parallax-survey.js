@@ -200,12 +200,54 @@
     limitsBody.append(limitsBoundary);
     limits.append(limitsSummary, limitsBody);
 
+    const sensitivity = make('details', 'readout');
+    sensitivity.id = 'sensitivity-ledger';
+    sensitivity.style.marginTop = 'clamp(1.5rem, 4vw, 3rem)';
+    const sensitivitySummary = make('summary', '', 'SENSITIVITY LEDGER · NUDGE ONE THING, WATCH WHAT MUST MOVE');
+    sensitivitySummary.style.minHeight = '44px';
+    sensitivitySummary.style.display = 'flex';
+    sensitivitySummary.style.alignItems = 'center';
+    sensitivitySummary.style.cursor = 'pointer';
+    sensitivitySummary.style.fontSize = '.72rem';
+    sensitivitySummary.style.fontWeight = '760';
+    sensitivitySummary.style.letterSpacing = '.1em';
+    sensitivitySummary.style.textTransform = 'uppercase';
+
+    const sensitivityBody = make('div', 'readout-grid');
+    sensitivityBody.style.marginTop = '1rem';
+    const sensitivityIntro = make('p', 'readout-note', 'A model boundary says where a toy should stop. Sensitivity analysis asks a different question inside the valid toy: if one input changes while the stated assumptions stay fixed, how strongly and in what direction must the output respond? These are exact scaling statements for the gallery equations, not forecasts for real observations.');
+    sensitivityIntro.style.maxWidth = '78ch';
+    sensitivityBody.append(sensitivityIntro);
+
+    const sensitivityCases = [
+      ['01 · LIGHT AS A CLOCK', 't = d / c', 'DOUBLE DISTANCE → DOUBLE LIGHT-TIME', 'With c fixed, light-time is directly proportional to the chosen distance. A 10% larger reference distance gives exactly 10% more one-way light-time inside this conversion.'],
+      ['02 · HORIZON SCALE', 'rₛ = 2GM / c²', 'DOUBLE MASS → DOUBLE SCHWARZSCHILD RADIUS', 'With G and c fixed, the Schwarzschild radius is directly proportional to mass. The clean scaling belongs to the idealized model; rotation and environment are still outside its walls.'],
+      ['09 · REDSHIFT RULER', 'λobs = λemit (1 + z)', 'DOUBLE (1 + z) → DOUBLE OBSERVED WAVELENGTH', 'The multiplicative stretch is 1 + z, not z by itself. Holding emitted wavelength fixed, a 10% increase in the stretch factor gives exactly 10% more observed wavelength.'],
+      ['13 · PARALLAX SURVEY', 'd ≈ 1 / p', 'HALVE PARALLAX → DOUBLE INFERRED DISTANCE', 'The inverse relation amplifies small-angle changes differently from a direct proportion. A 10% smaller parallax implies about 11.1% greater distance in this ideal small-angle relation, before measurement uncertainty enters.'],
+      ['12 · UNEQUAL MINUTE', 'Δτ = Δt √(1 − 1/R)', 'THE SAME ΔR DOES NOT GIVE THE SAME CLOCK CHANGE', 'The lapse factor is nonlinear in normalized radius R. Near the excluded horizon boundary, equal radial nudges can change the stationary-clock factor much more strongly than the same nudges farther out.']
+    ];
+
+    for (const [label, relation, perturbation, explanation] of sensitivityCases) {
+      const row = make('div', 'readout');
+      row.append(
+        make('span', 'metric-label', label),
+        make('strong', 'readout-value', relation),
+        make('p', 'metric-label', perturbation),
+        make('p', 'readout-note', explanation)
+      );
+      sensitivityBody.append(row);
+    }
+
+    const sensitivityBoundary = make('p', 'inventory-note', 'SENSITIVITY BOUNDARY · One-at-a-time perturbations reveal mathematical dependence, not observational uncertainty. They do not say how likely an input is to change, which omitted physics dominates, or how correlated parameters behave in a real fit.');
+    sensitivityBody.append(sensitivityBoundary);
+    sensitivity.append(sensitivitySummary, sensitivityBody);
+
     const routeBoundary = make('p', 'readout-note', 'READING ROUTES · These are ordinary in-page links, not recommendations, scores or a hidden sequence. They simply let one scientific relationship become a path through the existing gallery. Browser back returns you to the concordance.');
     routeBoundary.style.maxWidth = '78ch';
 
     const boundary = make('p', 'inventory-note', 'CONCORDANCE BOUNDARY · This is an editorial map of the gallery’s claim types and relationships, not a confidence score, hierarchy of truth, probability scale, or assertion that paired instruments share a single model. Numerical readouts and each instrument’s stated approximation remain authoritative.');
 
-    body.append(intro, grammar, crosscuts, limits, routeBoundary, boundary);
+    body.append(intro, grammar, crosscuts, limits, sensitivity, routeBoundary, boundary);
     details.append(summary, body);
     strata.append(details);
   }
