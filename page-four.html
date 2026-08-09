@@ -14,10 +14,15 @@
     .contradiction-register-body{position:relative;padding:1rem clamp(1rem,3vw,2rem) 3.4rem;border-top:1px dashed rgba(36,31,22,.35)}
     .contradiction-register .record-meta{margin-bottom:1rem}.contradiction-register p{max-width:72ch;margin:.8rem 0;font-size:.72rem;line-height:1.65}.contradiction-register a{font-weight:700;text-underline-offset:.2em}
     .contradiction-register em{position:static;display:block;max-width:54ch;margin:1.2rem 0 0 auto;font:700 italic .8rem/1.35 Georgia,serif;text-align:right;transform:rotate(-1deg)}.contradiction-register em small{font-weight:400}
-    @media(max-width:700px){.contradiction-register{margin-inline:.6rem}.contradiction-register-body{padding-bottom:1.2rem}.contradiction-register em{text-align:left;transform:none}}
-    @media(prefers-reduced-motion:reduce){.contradiction-register *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-    @media(prefers-contrast:more){.contradiction-register{border:2px solid currentColor}.contradiction-register summary{color:#000}}
-    @media print{.contradiction-register{color:#000;background:#fff;box-shadow:none;border-color:#555}.contradiction-register:not([open])>.contradiction-register-body{display:block}.contradiction-register summary{display:none}.contradiction-register a{color:#000}}
+    .disconfirmation-drawer{min-height:0;margin:1rem;border:1px solid rgba(184,238,117,.26);background:#090c08;color:#dce8c8;box-shadow:inset 0 0 30px rgba(0,0,0,.42)}
+    .disconfirmation-drawer>summary{min-height:52px;display:flex;align-items:center;padding:.8rem 1rem;color:#b8ee75;cursor:pointer;font-size:.7rem;font-weight:700;letter-spacing:.08em;list-style:none}
+    .disconfirmation-drawer>summary::-webkit-details-marker{display:none}.disconfirmation-drawer>summary::before{content:"+ ";margin-right:.5rem;color:#d0a75b}.disconfirmation-drawer[open]>summary::before{content:"− "}
+    .disconfirmation-body{padding:1rem;border-top:1px dashed rgba(184,238,117,.24)}.disconfirmation-intro{max-width:74ch;margin:0 0 1rem;color:#aeb7a0;font-size:.74rem;line-height:1.6}.disconfirmation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+    .disconfirmation-test{min-width:0;padding:.9rem;border:1px solid rgba(184,238,117,.16);background:rgba(184,238,117,.025)}.disconfirmation-test h3{margin:0 0 .5rem;color:#e5c784;font-size:.72rem;letter-spacing:.07em}.disconfirmation-test p{margin:.45rem 0;color:#c2c9b5;font-size:.7rem;line-height:1.55}.disconfirmation-test strong{color:#f0f5e7}.disconfirmation-test a{color:#cdeca6;font-weight:700;text-underline-offset:.18em}.disconfirmation-rule{margin:1rem 0 0;padding:.7rem;border-left:3px solid #d64f3a;color:#d99a86;font-size:.65rem;line-height:1.5;letter-spacing:.07em;text-transform:uppercase}
+    @media(max-width:700px){.contradiction-register{margin-inline:.6rem}.contradiction-register-body{padding-bottom:1.2rem}.contradiction-register em{text-align:left;transform:none}.disconfirmation-drawer{margin-inline:.6rem}.disconfirmation-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.contradiction-register *,.disconfirmation-drawer *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+    @media(prefers-contrast:more){.contradiction-register,.disconfirmation-drawer,.disconfirmation-test{border:2px solid currentColor}.contradiction-register summary{color:#000}.disconfirmation-intro,.disconfirmation-test p{color:#fff}}
+    @media print{.contradiction-register,.disconfirmation-drawer{color:#000;background:#fff;box-shadow:none;border-color:#555}.contradiction-register:not([open])>.contradiction-register-body,.disconfirmation-drawer:not([open])>.disconfirmation-body{display:block}.contradiction-register summary,.disconfirmation-drawer>summary{display:none}.contradiction-register a,.disconfirmation-drawer a,.disconfirmation-test,.disconfirmation-test *,.disconfirmation-rule{color:#000!important;background:#fff;border-color:#555}}
   </style>
 </head>
 <body>
@@ -208,6 +213,36 @@
             <p><strong>DOOR / DIAGRAM:</strong> <a href="#diagrams">File 05</a> contains a circle annotated “not a door”; <a href="#witnesses">Witness B</a> reports a door in rock. No dimensions, location or medium connect them. The contradiction is more useful than forcing a match.</p>
             <p><strong>THIRTEEN / TIMING:</strong> <a href="#broadcasts">Tape 04-13</a> preserves thirteen seconds while <a href="#field-notes">File 06</a> records unrelated clock times. Shared numbers are not a schedule, recurrence or mechanism.</p>
             <em>ARCHIVAL RULE:<br><small>A connection may be interesting. A disagreement may be evidence about the connection.</small></em>
+          </div>
+        </details>
+
+        <details class="disconfirmation-drawer" id="disconfirmation-drawer">
+          <summary>OPEN DISCONFIRMATION DRAWER / WHAT WOULD MAKE US LESS IMPRESSED?</summary>
+          <div class="disconfirmation-body">
+            <p class="disconfirmation-intro">A fictional archive can keep an interesting interpretation without protecting it from failure. These are not answers or puzzles. They are advance notes about what kind of observation would weaken four tempting readings already present in PAGE FOUR.</p>
+            <div class="disconfirmation-grid">
+              <article class="disconfirmation-test">
+                <h3>01 / “THE SAME TALL FIGURE”</h3>
+                <p><strong>Tempting reading:</strong> <a href="#cryptids">File 01</a> and <a href="#witnesses">Witness A</a> describe one recurring entity.</p>
+                <p><strong>Would weaken it:</strong> an independent scale reference showing incompatible heights, or dates that place the reports too far apart to support the same event.</p>
+              </article>
+              <article class="disconfirmation-test">
+                <h3>02 / “THE MAP MOVES”</h3>
+                <p><strong>Tempting reading:</strong> <a href="#maps">File 02</a> preserves a route that changes when observed.</p>
+                <p><strong>Would weaken it:</strong> two surviving copies whose differences match an ordinary revision history, printing error, or redrawn boundary.</p>
+              </article>
+              <article class="disconfirmation-test">
+                <h3>04 / “THE BROADCAST ARRIVES EARLY”</h3>
+                <p><strong>Tempting reading:</strong> <a href="#broadcasts">File 04</a> contains a voice before the microphone opens.</p>
+                <p><strong>Would weaken it:</strong> a clock-offset, tape-edit, cue-channel, or logging explanation that reproduces the apparent lead without requiring impossible timing.</p>
+              </article>
+              <article class="disconfirmation-test">
+                <h3>09 / “THE PATTERN MEANS SOMETHING”</h3>
+                <p><strong>Tempting reading:</strong> repeated shapes, numbers and phrases across <a href="#diagrams">File 05</a>, <a href="#field-notes">File 06</a>, and this board point to one mechanism.</p>
+                <p><strong>Would weaken it:</strong> the same pattern rate appearing after unrelated files are added, suggesting the archive is selecting coincidences rather than discovering a cause.</p>
+              </article>
+            </div>
+            <p class="disconfirmation-rule">FICTIONAL METHOD NOTE // AN INTERPRETATION THAT CANNOT LOSE IS NOT GETTING STRONGER. IT IS ONLY GETTING HARDER TO QUESTION.</p>
           </div>
         </details>
       </section>
