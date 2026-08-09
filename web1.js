@@ -397,6 +397,85 @@
     }
   }
 
+  function addStylesheetDressingRoom() {
+    const weblog = document.querySelector('.two-column');
+    const stylesheet = document.querySelector('link[rel="stylesheet"][href="web1.css"]');
+    if (!weblog || !stylesheet || document.getElementById('stylesheet-dressing-room')) return;
+
+    const section = document.createElement('section');
+    section.id = 'stylesheet-dressing-room';
+    section.className = 'webring';
+    section.setAttribute('aria-labelledby', 'stylesheet-dressing-room-title');
+
+    const title = document.createElement('h2');
+    title.id = 'stylesheet-dressing-room-title';
+    title.textContent = '~* STYLESHEET DRESSING ROOM *~';
+
+    const intro = document.createElement('p');
+    intro.append(
+      document.createTextNode('I found out most of what I call my appearance is one local stylesheet. So I made a fitting-room curtain: '),
+      strong('THE HTML CAN STAND HERE WITHOUT ITS COSTUME.'),
+      document.createTextNode(' The words, headings, links and buttons remain; the stars, borders, columns and typography stop deciding how they stand together.')
+    );
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.setAttribute('aria-pressed', 'false');
+    button.textContent = '[ TAKE OFF WEB1.CSS ]';
+    button.style.minHeight = '44px';
+    button.style.padding = '0.55rem 0.75rem';
+    button.style.font = 'inherit';
+    button.style.cursor = 'pointer';
+
+    const status = document.createElement('p');
+    status.className = 'smallprint';
+    status.setAttribute('aria-live', 'polite');
+    status.textContent = 'COSTUME STATUS: web1.css is on. This choice is temporary and is not stored.';
+
+    const note = document.createElement('p');
+    note.className = 'smallprint';
+    note.textContent = 'DRESSING ROOM POLICY: this only enables or disables the stylesheet already loaded from this Museum. It makes no new request, writes no preference, and tells nobody which version you looked at. If your browser requests reduced motion, animated GIFs are hidden while the stylesheet is off so removing the costume does not remove that protection.';
+
+    let plain = false;
+    let motionGuard = null;
+
+    button.addEventListener('click', () => {
+      plain = !plain;
+      stylesheet.disabled = plain;
+      button.setAttribute('aria-pressed', String(plain));
+      button.textContent = plain ? '[ PUT WEB1.CSS BACK ON ]' : '[ TAKE OFF WEB1.CSS ]';
+      status.textContent = plain
+        ? 'COSTUME STATUS: web1.css is off. You are looking at the browser arranging the same document with its defaults.'
+        : 'COSTUME STATUS: web1.css is on. This choice is temporary and is not stored.';
+
+      if (plain && !motionGuard) {
+        motionGuard = document.createElement('style');
+        motionGuard.id = 'stylesheet-dressing-room-motion-guard';
+        motionGuard.textContent = '@media (prefers-reduced-motion: reduce) { img[src$=".gif"] { visibility: hidden !important; } }';
+        document.head.append(motionGuard);
+      } else if (!plain && motionGuard) {
+        motionGuard.remove();
+        motionGuard = null;
+      }
+    });
+
+    section.append(title, intro, button, status, note);
+
+    const paperEscape = document.getElementById('paper-escape-hatch');
+    if (paperEscape) paperEscape.insertAdjacentElement('afterend', section);
+    else weblog.insertAdjacentElement('beforebegin', section);
+
+    const updates = document.querySelector('.updates');
+    if (updates && !document.getElementById('stylesheet-dressing-room-update')) {
+      const item = document.createElement('li');
+      item.id = 'stylesheet-dressing-room-update';
+      const updateDate = document.createElement('strong');
+      updateDate.textContent = '09 AUG:';
+      item.append(updateDate, document.createTextNode(' BUILT A DRESSING ROOM. THE HTML SURVIVES ITS COSTUME.'));
+      updates.prepend(item);
+    }
+  }
+
   function foldSiteUpdates() {
     const updates = document.querySelector('.updates');
     if (!updates || document.getElementById('older-site-updates')) return;
@@ -440,6 +519,7 @@
   addThoughtThreads();
   addLaterNotes();
   addPaperEscapeHatch();
+  addStylesheetDressingRoom();
   foldSiteUpdates();
 
   if ('serviceWorker' in navigator) {
