@@ -242,12 +242,54 @@
     sensitivityBody.append(sensitivityBoundary);
     sensitivity.append(sensitivitySummary, sensitivityBody);
 
+    const inverse = make('details', 'readout');
+    inverse.id = 'inverse-problem-ledger';
+    inverse.style.marginTop = 'clamp(1.5rem, 4vw, 3rem)';
+    const inverseSummary = make('summary', '', 'INFERENCE LEDGER · WHICH WAY DOES THE QUESTION RUN?');
+    inverseSummary.style.minHeight = '44px';
+    inverseSummary.style.display = 'flex';
+    inverseSummary.style.alignItems = 'center';
+    inverseSummary.style.cursor = 'pointer';
+    inverseSummary.style.fontSize = '.72rem';
+    inverseSummary.style.fontWeight = '760';
+    inverseSummary.style.letterSpacing = '.1em';
+    inverseSummary.style.textTransform = 'uppercase';
+
+    const inverseBody = make('div', 'readout-grid');
+    inverseBody.style.marginTop = '1rem';
+    const inverseIntro = make('p', 'readout-note', 'A forward problem starts with a model and predicts what should follow. An inverse problem starts with what reached the observer and asks what underlying state could have produced it. Running an equation backward is not automatically the same as making a unique inference: several hidden states can sometimes fit the same visible result.');
+    inverseIntro.style.maxWidth = '78ch';
+    inverseBody.append(inverseIntro);
+
+    const inverseCases = [
+      ['01 · LIGHT AS A CLOCK', 'FORWARD', 'KNOWN DISTANCE → LIGHT-TIME', 'The instrument chooses a reference distance and divides by c. Multiplying a measured delay by c would only become a distance inference after independently justifying what path the signal took and what else affected its travel time.'],
+      ['09 · REDSHIFT RULER', 'OBSERVATION → DERIVED RATIO', 'IDENTIFIED WAVELENGTHS → z', 'Once an emitted spectral feature is identified, the wavelength ratio determines z. Turning that redshift into a unique distance or cosmic age requires additional cosmological assumptions; redshift itself is not a distance label.'],
+      ['13 · PARALLAX SURVEY', 'GEOMETRIC INFERENCE', 'ANGLE + KNOWN BASELINE → DISTANCE', 'Parallax is unusually direct: geometry maps a measured angle and known orbital baseline to distance in the stated regime. At tiny angles, calibration and measurement uncertainty still decide whether the inverse result is useful.'],
+      ['08 · GRAVITATIONAL LENSING', 'INVERSE / MODEL-DEPENDENT', 'DISTORTED LIGHT → MASS DISTRIBUTION', 'A chosen mass model predicts deflection forward. Working backward from images requires source and lens geometry plus a mass model, and different mass arrangements can reproduce similar lensing observables. A schematic arc is therefore not a unique mass map.'],
+      ['11 · SAME ANSWER MACHINE', 'NON-IDENTIFIABLE INVERSE', 'ONE VISIBLE SNAPSHOT → MORE THAN ONE HISTORY', 'This instrument exists to demonstrate the failure of uniqueness: different parameter histories can land on the same displayed answer. Matching an outcome can constrain a model without identifying one inevitable cause.']
+    ];
+
+    for (const [label, direction, mapping, explanation] of inverseCases) {
+      const row = make('div', 'readout');
+      row.append(
+        make('span', 'metric-label', label),
+        make('strong', 'readout-value', direction),
+        make('p', 'metric-label', mapping),
+        make('p', 'readout-note', explanation)
+      );
+      inverseBody.append(row);
+    }
+
+    const inverseBoundary = make('p', 'inventory-note', 'INVERSE-PROBLEM BOUNDARY · This ledger labels direction and identifiability; it does not fit real observations, assign probabilities or priors, propagate measurement error, reconstruct images, or turn any schematic drawing into data. The gallery’s fixed examples remain explanatory toys.');
+    inverseBody.append(inverseBoundary);
+    inverse.append(inverseSummary, inverseBody);
+
     const routeBoundary = make('p', 'readout-note', 'READING ROUTES · These are ordinary in-page links, not recommendations, scores or a hidden sequence. They simply let one scientific relationship become a path through the existing gallery. Browser back returns you to the concordance.');
     routeBoundary.style.maxWidth = '78ch';
 
     const boundary = make('p', 'inventory-note', 'CONCORDANCE BOUNDARY · This is an editorial map of the gallery’s claim types and relationships, not a confidence score, hierarchy of truth, probability scale, or assertion that paired instruments share a single model. Numerical readouts and each instrument’s stated approximation remain authoritative.');
 
-    body.append(intro, grammar, crosscuts, limits, sensitivity, routeBoundary, boundary);
+    body.append(intro, grammar, crosscuts, limits, sensitivity, inverse, routeBoundary, boundary);
     details.append(summary, body);
     strata.append(details);
   }
