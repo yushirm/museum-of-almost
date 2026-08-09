@@ -195,6 +195,62 @@
     closingSection.insertAdjacentElement('beforebegin', section);
   }
 
+  function addMeasurementChain() {
+    const concordanceBody = document.querySelector('#cosmic-concordance > .instrument-body');
+    const firstLedger = document.getElementById('model-boundary-ledger');
+    if (!concordanceBody || !firstLedger || document.getElementById('measurement-chain')) return;
+
+    const section = document.createElement('section');
+    section.id = 'measurement-chain';
+    section.className = 'readout-grid';
+    section.setAttribute('aria-labelledby', 'measurement-chain-title');
+    section.style.marginTop = 'clamp(1.5rem, 4vw, 3rem)';
+
+    const title = document.createElement('h3');
+    title.id = 'measurement-chain-title';
+    title.style.margin = '0';
+    title.style.fontFamily = 'ui-serif, Georgia, serif';
+    title.style.fontWeight = '500';
+    title.style.fontSize = 'clamp(1.6rem, 3vw, 2.6rem)';
+    title.textContent = 'Measurement chain: from universe to claim';
+
+    const intro = document.createElement('p');
+    intro.className = 'readout-note';
+    intro.style.maxWidth = '78ch';
+    intro.textContent = 'Metrology treats a reported result as the end of a chain, not a raw fact that arrived fully formed. Deep Space already separates equations, models and inference; this cross-section shows the missing sequence between a physical phenomenon and the sentence we eventually write about it.';
+    section.append(title, intro);
+
+    const stages = [
+      ['1 · PHENOMENON', 'THE UNIVERSE DOES SOMETHING', 'Light propagates, spacetime bends, spectra stretch, stars shift against a background. The phenomenon exists before the gallery chooses how to represent it.'],
+      ['2 · OBSERVABLE', 'SOMETHING REACHES AN OBSERVER', 'A delay, wavelength, angle, image distortion or count becomes available to measurement. This is already narrower than the full physical state: not every property leaves an observable trace in the same channel.'],
+      ['3 · REDUCTION', 'CALIBRATION + RELATION → QUANTITY', 'A scale, baseline, identified spectral feature or model relation turns the observable into a number such as distance, redshift or characteristic radius. Exact arithmetic does not erase calibration choices or model boundaries.'],
+      ['4 · CLAIM', 'QUANTITY + CONTEXT → INTERPRETATION', 'The result supports a statement only at the level the chain warrants. Parallax can support a geometric distance; redshift alone does not uniquely supply cosmic age; a lensing pattern can constrain mass without becoming one inevitable mass map.']
+    ];
+
+    for (const [label, heading, text] of stages) {
+      const row = document.createElement('div');
+      row.className = 'readout';
+      const kicker = document.createElement('span');
+      kicker.className = 'metric-label';
+      kicker.textContent = label;
+      const value = document.createElement('strong');
+      value.className = 'readout-value';
+      value.textContent = heading;
+      const note = document.createElement('p');
+      note.className = 'readout-note';
+      note.textContent = text;
+      row.append(kicker, value, note);
+      section.append(row);
+    }
+
+    const boundary = document.createElement('p');
+    boundary.className = 'inventory-note';
+    boundary.textContent = 'MEASUREMENT-CHAIN BOUNDARY · This is a conceptual map, not a laboratory traceability certificate. The gallery does not ingest detector data, perform calibration, estimate uncertainty budgets or fit observations. Its fixed examples show why a trustworthy scientific claim must preserve the path from phenomenon to observable to reduction to interpretation.';
+    section.append(boundary);
+
+    concordanceBody.insertBefore(section, firstLedger);
+  }
+
   function loadCausalSignalBox(done) {
     if (!document.querySelector('link[data-causal-signal-styles]')) {
       const stylesheet = document.createElement('link');
@@ -219,7 +275,7 @@
     }
 
     loadLocalScript('./parallax-survey-core.js', 'parallax-survey-core', () => {
-      loadLocalScript('./parallax-survey.js', 'parallax-survey-view');
+      loadLocalScript('./parallax-survey.js', 'parallax-survey-view', addMeasurementChain);
     });
   }
 
