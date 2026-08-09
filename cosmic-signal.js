@@ -135,6 +135,26 @@
           </div>
         </dl>
         <p class="temporal-aperture-note"><strong>The firewall:</strong> the page may say <em>these things were visible in one shared now</em>. It may not turn adjacency into explanation.</p>
+        <p class="temporal-aperture-intro"><strong>THE CLAIM LICENSE · WHICH VERBS HAS THE SNAPSHOT EARNED?</strong> Borrowed from controlled scientific vocabularies: the strength of a sentence should not outrun the operation that produced it. COMMONS gives each kind of statement a verb boundary.</p>
+        <dl class="temporal-aperture-grid" aria-label="Claim verbs licensed by the Commons snapshot">
+          <div>
+            <dt>OBSERVE</dt>
+            <dd><strong>THE SOURCES REPORT</strong><span>Use for returned measurements, statuses, and set membership: a source reported a value, category, or currently open record in this acquisition.</span></dd>
+          </div>
+          <div>
+            <dt>DERIVE</dt>
+            <dd><strong>THE PAGE CALCULATES</strong><span>Use for transparent local transformations such as ranges, means, pair differences, geometry, and counts. The result belongs to the declared inputs and method, not to an unstated global population.</span></dd>
+          </div>
+          <div>
+            <dt>COMPARE</dt>
+            <dd><strong>THE SNAPSHOT CONTRASTS</strong><span>Use when two fixed windows or values are placed against one another inside one declared instrument. A contrast can describe difference without ranking importance, quality, risk, or cause.</span></dd>
+          </div>
+          <div>
+            <dt>INFER</dt>
+            <dd><strong>NOT LICENSED BY THIS PORTRAIT</strong><span>Do not use one latch to explain, predict, generalize to the whole planet, establish trend, or identify mechanism. Those verbs require evidence beyond this static cross-section.</span></dd>
+          </div>
+        </dl>
+        <p class="temporal-aperture-note"><strong>The language rule:</strong> COMMONS may observe, derive, and compare where its methods support those verbs. It must stop before explanation becomes implication.</p>
       </div>`;
 
     aperture.insertAdjacentElement('afterend', details);
