@@ -397,6 +397,38 @@
     }
   }
 
+  function foldSiteUpdates() {
+    const updates = document.querySelector('.updates');
+    if (!updates || document.getElementById('older-site-updates')) return;
+
+    const items = Array.from(updates.children).filter((item) => item.tagName === 'LI');
+    const visibleCount = 6;
+    if (items.length <= visibleCount) return;
+
+    const details = document.createElement('details');
+    details.id = 'older-site-updates';
+    details.className = 'smallprint';
+
+    const summary = document.createElement('summary');
+    summary.textContent = `OLDER SITE UPDATES // ${items.length - visibleCount} MORE`;
+    summary.style.minHeight = '44px';
+    summary.style.display = 'flex';
+    summary.style.alignItems = 'center';
+    summary.style.justifyContent = 'center';
+    summary.style.cursor = 'pointer';
+
+    const intro = document.createElement('p');
+    intro.textContent = 'I was keeping every update open at once. That turns a diary into scaffolding. The newest six stay on the wall; older notes are still here, folded rather than deleted.';
+
+    const archive = document.createElement('ul');
+    archive.className = 'updates';
+    archive.setAttribute('aria-label', 'Older site updates');
+    items.slice(visibleCount).forEach((item) => archive.append(item));
+
+    details.append(summary, intro, archive);
+    updates.insertAdjacentElement('afterend', details);
+  }
+
   function strong(text) {
     const element = document.createElement('strong');
     element.textContent = text;
@@ -408,6 +440,7 @@
   addThoughtThreads();
   addLaterNotes();
   addPaperEscapeHatch();
+  foldSiteUpdates();
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
