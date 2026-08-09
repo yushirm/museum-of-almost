@@ -190,7 +190,7 @@
 
     const note = document.createElement('p');
     note.className = 'smallprint';
-    note.textContent = 'THREAD INDEX POLICY: these paths are fixed editorial links to local posts on this page. They do not rank you, remember clicks, inspect browser history, or change based on who is visiting.';
+    note.textContent = 'THREAD INDEX POLICY: these paths are fixed editorial links to local posts on this page. They do not rank you, remember clicks, inspect where you have been, or change based on who is visiting.';
 
     section.append(title, intro, list, note);
 
