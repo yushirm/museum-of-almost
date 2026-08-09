@@ -31,6 +31,101 @@
     parent.append(plate);
   }
 
+  function mountConcordance() {
+    const strata = document.getElementById('cosmic-strata');
+    if (!strata || document.getElementById('cosmic-concordance')) return;
+
+    const details = make('details', 'instrument');
+    details.id = 'cosmic-concordance';
+    details.style.marginTop = 'clamp(1.5rem, 4vw, 3rem)';
+
+    const summary = make('summary', '', 'COSMIC CONCORDANCE · OPEN THE GALLERY’S EVIDENCE GRAMMAR');
+    summary.style.minHeight = '44px';
+    summary.style.display = 'flex';
+    summary.style.alignItems = 'center';
+    summary.style.padding = '1rem';
+    summary.style.cursor = 'pointer';
+    summary.style.fontSize = '.72rem';
+    summary.style.fontWeight = '760';
+    summary.style.letterSpacing = '.12em';
+    summary.style.textTransform = 'uppercase';
+
+    const body = make('div', 'instrument-body');
+    const intro = make('p', 'readout-note', 'The gallery mixes exact relations, rounded reference values, idealized models, observational inference and genuinely unresolved questions. These are not ranks of certainty: one instrument can contain an exact equation inside a deliberately simplified model. The concordance shows what kind of claim is doing the work, then cross-cuts instruments that answer different parts of the same cosmic problem.');
+    intro.style.maxWidth = '78ch';
+    intro.style.marginTop = '0';
+
+    const grammar = make('div', 'inventory-grid');
+    grammar.setAttribute('aria-label', 'Four evidence grammars used across Deep Space');
+
+    const groups = [
+      {
+        label: 'EXACT RELATIONS',
+        instruments: '01 · 06 · 07 · 09',
+        title: 'Definitions and invariant mathematics',
+        text: 'Light-time conversion, Lorentz transforms, causal reach and the redshift wavelength relation use fixed equations. Their arithmetic can be exact even when the chosen examples are simplified.'
+      },
+      {
+        label: 'IDEALIZED MODELS',
+        instruments: '02 · 08 · 10 · 11 · 12',
+        title: 'Useful universes with declared walls',
+        text: 'Schwarzschild geometry, point-mass lensing, homogeneous expansion and toy histories deliberately remove real-world complications so one physical relationship can remain visible.'
+      },
+      {
+        label: 'OBSERVATIONAL INFERENCE',
+        instruments: '03 · 13 · 14',
+        title: 'The universe inferred from what reaches us',
+        text: 'Cosmic composition, parallax distance and historical strata depend on observation plus interpretation. Rounded values and observational boundaries remain visibly different from definitions.'
+      },
+      {
+        label: 'OPEN / REVISION',
+        instruments: '04 · 05',
+        title: 'Where evidence narrows without closing',
+        text: 'The Unsolved Room protects live unknowns; the Possibility Engine preserves cases where evidence changed the map of plausible explanations without ending inquiry.'
+      }
+    ];
+
+    for (const group of groups) {
+      const card = make('article', 'inventory-card');
+      const kicker = make('p', 'metric-label', `${group.label} · ${group.instruments}`);
+      const title = make('h3', '', group.title);
+      const text = make('p', '', group.text);
+      card.append(kicker, title, text);
+      grammar.append(card);
+    }
+
+    const crosscuts = make('section', 'readout-grid');
+    crosscuts.setAttribute('aria-labelledby', 'cosmic-concordance-crosscuts');
+    crosscuts.style.marginTop = 'clamp(1.5rem, 4vw, 3rem)';
+    const crosscutTitle = make('h3', '', 'Crosscuts: read these instruments together');
+    crosscutTitle.id = 'cosmic-concordance-crosscuts';
+    crosscutTitle.style.margin = '0';
+    crosscutTitle.style.fontFamily = 'ui-serif, Georgia, serif';
+    crosscutTitle.style.fontWeight = '500';
+    crosscutTitle.style.fontSize = 'clamp(1.6rem, 3vw, 2.6rem)';
+    crosscuts.append(crosscutTitle);
+
+    const bridges = [
+      ['01 + 13 · LIGHT-TIME ↔ PARALLAX', 'Light travel time converts a known distance into delay; parallax works the other direction, turning a measured angle and known baseline into distance. Together they show why “how far?” and “how old is the light?” are related but not identical questions.'],
+      ['02 + 12 · HORIZON SCALE ↔ UNEQUAL CLOCKS', 'Both use the Schwarzschild family. One asks how mass sets a characteristic radius; the other asks how stationary clocks compare outside that radius. Sharing a model does not make the instruments interchangeable.'],
+      ['03 + 08 · COSMIC INVENTORY ↔ GRAVITATIONAL LENSING', 'Dark matter is not listed because it glows. Gravitational lensing is one of the ways mass can be inferred through its effect on light, linking the inventory’s unseen component to a measurable gravitational consequence.'],
+      ['06 + 07 · FRAME ORDER ↔ CAUSAL REACH', 'The Frame Shifter lets spacelike event order change with inertial frame. The Causal Signal Box asks the invariant question underneath: can a light-speed-or-slower influence connect the events at all?'],
+      ['09 + 14 · REDSHIFT ↔ COSMIC STRATA', 'Redshift records wavelength stretch between emission and observation; the strata arrange rounded cosmic history. Redshift alone is not an age label—the bridge exists to prevent that tempting shortcut.']
+    ];
+
+    for (const [label, text] of bridges) {
+      const row = make('div', 'readout');
+      row.append(make('span', 'metric-label', label), make('p', 'readout-note', text));
+      crosscuts.append(row);
+    }
+
+    const boundary = make('p', 'inventory-note', 'CONCORDANCE BOUNDARY · This is an editorial map of the gallery’s claim types and relationships, not a confidence score, hierarchy of truth, probability scale, or assertion that paired instruments share a single model. Numerical readouts and each instrument’s stated approximation remain authoritative.');
+
+    body.append(intro, grammar, crosscuts, boundary);
+    details.append(summary, body);
+    strata.append(details);
+  }
+
   function mount() {
     if (document.getElementById('parallax-survey-title')) return;
     const closing = document.querySelector('.cosmos-section[aria-labelledby="closing-title"]');
@@ -133,6 +228,7 @@
     shell.append(premise, cases, ledger);
     section.append(heading, shell);
     closing.parentNode.insertBefore(section, closing);
+    mountConcordance();
   }
 
   mount();
