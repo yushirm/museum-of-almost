@@ -37,7 +37,9 @@ assert.match(source, /const UNEQUAL_MINUTE_CACHE_NAME = 'museum-of-almost-v42-un
 assert.match(source, /const PAGE_FOUR_DEAD_DROP_CACHE_NAME = 'museum-of-almost-v43-page-four-dead-drop'/);
 assert.match(source, /const UNBUILT_ROOM_CACHE_NAME = 'museum-of-almost-v44-unbuilt-room'/);
 assert.match(source, /const PARALLAX_SURVEY_CACHE_NAME = 'museum-of-almost-v45-parallax-survey'/);
-assert.match(source, /const CURRENT_CACHE_NAME = PARALLAX_SURVEY_CACHE_NAME/,
+assert.match(source, /const SOLAR_BOUNDARY_CACHE_NAME = 'museum-of-almost-v46-solar-boundary-atlas'/);
+assert.match(source, /const SYNOPTIC_ALPHABET_CACHE_NAME = 'museum-of-almost-v47-synoptic-alphabet'/);
+assert.match(source, /const CURRENT_CACHE_NAME = SYNOPTIC_ALPHABET_CACHE_NAME/,
   'the dedicated service-worker contract should own which named generation is current');
 for (const asset of [
   './',
@@ -117,6 +119,15 @@ for (const asset of [
   './shutter-cabinet-core.js',
   './shutter-cabinet.js',
   './shutter-cabinet.css',
+  './weather-score-core.js',
+  './weather-score.js',
+  './weather-score.css',
+  './solar-boundary-core.js',
+  './solar-boundary.js',
+  './solar-boundary.css',
+  './synoptic-alphabet-core.js',
+  './synoptic-alphabet.js',
+  './synoptic-alphabet.css',
   './data-core.js',
   './temporal-sounding-core.js',
   './temporal-sounding.js',
@@ -229,4 +240,4 @@ assert.match(source, /caches\.delete/);
 assert.doesNotMatch(source, /https?:\/\//, 'service worker must not proxy or cache public live-data services');
 assert.doesNotMatch(source, /analytics|telemetry|pixel|beacon/i);
 
-console.log('Parallax Survey v45 is the current named generation; Unbuilt Room v44, Page Four Dead Drop v43, Unequal Minute v42, Shutter Cabinet v41, Page Four Instrument Room v40, Catalogue 0 v39, Quorum Gate v38, and the existing galleries remain in the fresh-online cached-offline shell.');
+console.log('Synoptic Alphabet v47 is the current named generation; Solar Boundary Atlas v46, Parallax Survey v45, and the existing galleries remain in the fresh-online cached-offline shell.');
