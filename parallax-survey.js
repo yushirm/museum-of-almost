@@ -159,12 +159,53 @@
       crosscuts.append(row);
     }
 
+    const limits = make('details', 'readout');
+    limits.id = 'model-boundary-ledger';
+    limits.style.marginTop = 'clamp(1.5rem, 4vw, 3rem)';
+    const limitsSummary = make('summary', '', 'MODEL BOUNDARY LEDGER · WHERE THE TOYS STOP WORKING');
+    limitsSummary.style.minHeight = '44px';
+    limitsSummary.style.display = 'flex';
+    limitsSummary.style.alignItems = 'center';
+    limitsSummary.style.cursor = 'pointer';
+    limitsSummary.style.fontSize = '.72rem';
+    limitsSummary.style.fontWeight = '760';
+    limitsSummary.style.letterSpacing = '.1em';
+    limitsSummary.style.textTransform = 'uppercase';
+
+    const limitsBody = make('div', 'readout-grid');
+    limitsBody.style.marginTop = '1rem';
+    const limitsIntro = make('p', 'readout-note', 'A useful model is not a miniature copy of reality. Numerical analysis asks a harder question than “is the equation right?”: under what conditions is this approximation still the right tool? These stop-signs belong to the instrument, not outside it.');
+    limitsIntro.style.maxWidth = '78ch';
+    limitsBody.append(limitsIntro);
+
+    const modelLimits = [
+      ['01 · LIGHT AS A CLOCK', 'distance ÷ c', 'Stop treating the conversion as a complete propagation model when gravitational delay, cosmological expansion, or a non-vacuum path matters. The gallery uses fixed reference distances to expose scale, not to reconstruct an observed signal path.'],
+      ['02 + 12 · SCHWARZSCHILD FAMILY', 'isolated · non-rotating · uncharged', 'Real astrophysical black holes rotate and sit in environments. Horizon scale and stationary-clock comparisons here deliberately use the Schwarzschild limit; do not carry these readouts unchanged into a rotating spacetime or through the horizon.'],
+      ['08 · GRAVITATIONAL LENSING', 'point-mass / thin-lens simplification', 'A real lens can have extended mass, multiple deflectors and line-of-sight structure. The instrument isolates how gravity can copy and redirect light; its schematic geometry is not an image-reconstruction pipeline.'],
+      ['10 + 11 · EXPANSION TOYS', 'homogeneous histories with chosen parameters', 'Toy expansion histories are explanatory counterfactuals, not fitted cosmologies. Change the matter-energy contents, curvature, parameterization or observational constraints and the resulting history changes with them.'],
+      ['13 · PARALLAX SURVEY', 'd(pc) ≈ 1 / p(arcsec)', 'The three cases assume the standard small-angle stellar-parallax relation and a clean baseline. At tiny measured angles, uncertainty, calibration, proper motion and orbital complications matter; the magnified sky drawings never become evidence.']
+    ];
+
+    for (const [label, model, boundaryText] of modelLimits) {
+      const row = make('div', 'readout');
+      row.append(
+        make('span', 'metric-label', label),
+        make('strong', 'readout-value', model),
+        make('p', 'readout-note', boundaryText)
+      );
+      limitsBody.append(row);
+    }
+
+    const limitsBoundary = make('p', 'inventory-note', 'MODEL-VALIDATION BOUNDARY · These are domain-of-use warnings, not error bars, confidence levels or claims that the listed omissions dominate every real observation. Each instrument’s stated equation, constants and caveats remain authoritative for its own toy problem.');
+    limitsBody.append(limitsBoundary);
+    limits.append(limitsSummary, limitsBody);
+
     const routeBoundary = make('p', 'readout-note', 'READING ROUTES · These are ordinary in-page links, not recommendations, scores or a hidden sequence. They simply let one scientific relationship become a path through the existing gallery. Browser back returns you to the concordance.');
     routeBoundary.style.maxWidth = '78ch';
 
     const boundary = make('p', 'inventory-note', 'CONCORDANCE BOUNDARY · This is an editorial map of the gallery’s claim types and relationships, not a confidence score, hierarchy of truth, probability scale, or assertion that paired instruments share a single model. Numerical readouts and each instrument’s stated approximation remain authoritative.');
 
-    body.append(intro, grammar, crosscuts, routeBoundary, boundary);
+    body.append(intro, grammar, crosscuts, limits, routeBoundary, boundary);
     details.append(summary, body);
     strata.append(details);
   }
