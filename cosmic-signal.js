@@ -103,6 +103,22 @@
           </div>
         </dl>
         <p class="temporal-aperture-note"><strong>Reduction is not reality.</strong> A value can be honestly calculated and still be only one projection of a richer source. The page keeps the transformation explicit so compactness is never mistaken for completeness.</p>
+        <p class="temporal-aperture-intro"><strong>THE SAMPLING FLOOR · WHAT CAN FALL BETWEEN SAMPLES?</strong> Borrowed from sampling theory: a measurement can be accurate at the points it observes and still miss structure that lives between those points or between observation times.</p>
+        <dl class="temporal-aperture-grid" aria-label="Sampling limits of the Commons snapshot">
+          <div>
+            <dt>SPACE</dt>
+            <dd><strong>13 POINTS ARE NOT A PLANETARY FIELD</strong><span>The weather range belongs to these fixed stations only. Conditions between them can be warmer, colder, wetter, calmer, or windier without appearing here.</span></dd>
+          </div>
+          <div>
+            <dt>TIME</dt>
+            <dd><strong>ONE LATCH IS NOT A TREND</strong><span>A refresh shows another sample, not the path between samples. Short-lived changes can begin and end without ever appearing on this page because COMMONS does not poll continuously.</span></dd>
+          </div>
+          <div>
+            <dt>WINDOWS</dt>
+            <dd><strong>COUNTS MOVE WHEN WINDOWS MOVE</strong><span>Past-hour earthquakes and open-event totals are set-membership views. A changed count can reflect an event entering or leaving a reporting window or status set, not an instantaneous change in planetary activity.</span></dd>
+          </div>
+        </dl>
+        <p class="temporal-aperture-note"><strong>No anti-aliasing claim.</strong> COMMONS does not sample densely enough in space or time to reconstruct everything the planet did between observations. The instrument shows what its samples support and leaves the unsampled world unsaid.</p>
       </div>`;
 
     aperture.insertAdjacentElement('afterend', details);
