@@ -108,6 +108,14 @@ assert.match(loaderSource, /13 POINTS ARE NOT A PLANETARY FIELD/i);
 assert.match(loaderSource, /ONE LATCH IS NOT A TREND/i);
 assert.match(loaderSource, /No anti-aliasing claim/i);
 assert.match(loaderSource, /The instrument shows what its samples support and leaves the unsampled world unsaid/i);
+assert.match(loaderSource, /THE CO-OCCURRENCE FIREWALL · ONE LATCH DOES NOT MAKE ONE CAUSE/i);
+assert.match(loaderSource, /SAME SNAPSHOT ≠ CAUSAL LINK/i);
+assert.match(loaderSource, /EARLIER ≠ EXPLANATION/i);
+assert.match(loaderSource, /NO CROSS-FEED STORY IS COMPUTED/i);
+assert.match(loaderSource, /does not correlate, regress, rank, predict, or score unlike feeds/i);
+assert.match(loaderSource, /may not turn adjacency into explanation/i);
+assert.doesNotMatch(loaderSource, /causes?\s+(?:the\s+)?(?:earthquake|weather|event)|earthquake\s+causes?|weather\s+causes?/i,
+  'the co-occurrence firewall must not introduce a cross-feed causal claim');
 assert.doesNotMatch(source, /setInterval|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
 assert.doesNotMatch(source, /analytics|telemetry|sendBeacon|XMLHttpRequest|WebSocket|EventSource/i);
 assert.doesNotMatch(source, /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i);
@@ -125,4 +133,4 @@ assert.match(styles, /@media print/);
 assert.doesNotMatch(styles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
 
-console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, sampling-floor boundaries, privacy boundary, accessibility hooks, and missing-value integrity verified.');
+console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, sampling-floor and co-occurrence causal boundaries, privacy boundary, accessibility hooks, and missing-value integrity verified.');
