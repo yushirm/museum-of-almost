@@ -75,6 +75,30 @@ for (const pattern of [
   /ALMOST ONLINE! \/ UNLISTED BULLETIN/,
   /STATIC ROUTES\. NO VISITOR STATE OR COUNTING\./
 ]) assert.match(js, pattern, `Page Four static sighting log missing ${pattern}`);
+
+for (const pattern of [
+  /FINDING AID \/ SUBJECT ACCESS/,
+  /THE FILES DO NOT AGREE ON WHY THEY RHYME\./,
+  /UNRELIABLE SCALE/,
+  /MISSING ORIGIN/,
+  /WITNESS FILTER/,
+  /PATTERN PRESSURE/,
+  /SHARED MOTIFS ARE EDITORIAL INDEX TERMS, NOT EVIDENCE OF A COMMON CAUSE\./,
+  /Shared index terms are not evidence of a common cause\./,
+  /mountFindingAid\(\)/
+]) assert.match(js, pattern, `Page Four finding aid missing ${pattern}`);
+assert.match(js, /files: \['cryptids', 'maps', 'diagrams'\]/, 'finding aid should connect scale-sensitive fictional files');
+assert.match(js, /files: \['maps', 'broadcasts', 'redactions'\]/, 'finding aid should connect records with missing origin metadata');
+assert.match(js, /files: \['cryptids', 'field-notes', 'witnesses'\]/, 'finding aid should connect witness-mediated records');
+assert.match(js, /files: \['celestial', 'diagrams', 'evidence'\]/, 'finding aid should connect pattern-pressure records');
+assert.match(js, /link\.href = `#\$\{fileId\}`/, 'finding aid should use local same-page case anchors');
+assert.match(js, /createElement\('details'\)/, 'finding aid should remain compact through a native disclosure surface');
+assert.match(js, /min-height:44px/, 'finding aid links should preserve accessible touch targets');
+assert.match(js, /@media\(max-width:700px\)/, 'finding aid should adapt to narrow screens');
+assert.match(js, /@media\(prefers-contrast:more\)/, 'finding aid should support increased contrast');
+assert.match(js, /@media print/, 'finding aid should have a printable fallback');
+assert.doesNotMatch(js, /setInterval|setTimeout|requestAnimationFrame/, 'finding aid should add no timers or animation loops');
+
 assert.match(js, /page-four-research\.css/, 'Page Four should mount the local research styles');
 assert.match(js, /page-four-research\.js/, 'Page Four should mount the local research logic');
 assert.match(js, /page-four-instrument-room\.css/, 'Page Four should mount the local Instrument Room styles');
@@ -138,4 +162,4 @@ assert.match(instrumentCss, /:focus-visible/, 'Instrument Room interactions shou
 assert.match(deadDropCss, /min-height:\s*44px/, 'Dead Drop interactions should preserve a 44px target size');
 assert.match(deadDropCss, /:focus-visible/, 'Dead Drop interactions should expose visible keyboard focus');
 
-console.log('Page Four fictional archive, sourced evidence lattice, Hessdalen Instrument Room, Dead Drop puzzle loader, local leak desk, shared permalinks, accessibility, no-network contract, and entrance reveal verified.');
+console.log('Page Four fictional archive, finding aid, sourced evidence lattice, Hessdalen Instrument Room, Dead Drop puzzle loader, local leak desk, shared permalinks, accessibility, no-network contract, and entrance reveal verified.');
