@@ -69,6 +69,7 @@ for (const pattern of [
 
 for (const requiredText of [
   'function mountConcordance()',
+  'function makeRouteLink(targetId, label)',
   'cosmic-concordance',
   'COSMIC CONCORDANCE · OPEN THE GALLERY’S EVIDENCE GRAMMAR',
   "label: 'EXACT RELATIONS'",
@@ -80,9 +81,27 @@ for (const requiredText of [
   '03 + 08 · COSMIC INVENTORY ↔ GRAVITATIONAL LENSING',
   '06 + 07 · FRAME ORDER ↔ CAUSAL REACH',
   '09 + 14 · REDSHIFT ↔ COSMIC STRATA',
+  "['light-title', 'GO TO 01 · LIGHT-TIME']",
+  "['parallax-survey-title', 'GO TO 13 · PARALLAX']",
+  "['gravity-title', 'GO TO 02 · HORIZON SCALE']",
+  "['unequal-minute-title', 'GO TO 12 · UNEQUAL CLOCKS']",
+  "['inventory-title', 'GO TO 03 · INVENTORY']",
+  "['gravitational-copy-title', 'GO TO 08 · LENSING']",
+  "['frame-shifter-title', 'GO TO 06 · FRAME ORDER']",
+  "['causal-signal-title', 'GO TO 07 · CAUSAL REACH']",
+  "['redshift-ruler-title', 'GO TO 09 · REDSHIFT']",
+  "['cosmic-strata-title', 'GO TO 14 · STRATA']",
+  'READING ROUTES · These are ordinary in-page links',
   'not a confidence score, hierarchy of truth, probability scale',
   'mountConcordance();'
 ]) assert.ok(viewSource.includes(requiredText), `Deep Space concordance missing: ${requiredText}`);
+
+const concordanceRoutePairCount = (viewSource.match(/targets: \[\[/g) || []).length;
+assert.equal(concordanceRoutePairCount, 5, 'each of the five concordance crosscuts should expose one native two-stop reading route');
+assert.match(viewSource, /link\.href = `#\$\{targetId\}`/,
+  'reading routes should use local fragment links rather than scripted navigation');
+assert.match(viewSource, /link\.style\.minHeight = '44px'/,
+  'reading-route links should preserve a touch-sized minimum target');
 
 assert.doesNotMatch(viewSource, /make\('button'|createElement\(['"]button|<button/i,
   'this generation intentionally exposes no new custom visitor control');
@@ -147,4 +166,4 @@ for (const asset of [
   './UNBUILT_ROOM.md'
 ]) assert.ok(serviceWorker.includes(`'${asset}'`), `offline shell should include ${asset}`);
 
-console.log('Parallax Survey geometry plus Deep Space cosmic concordance, cross-instrument evidence grammar, accessibility, privacy, no-network contract, lineage preservation, and progressive mount verified.');
+console.log('Parallax Survey geometry plus Deep Space cosmic concordance, native cross-instrument reading routes, accessibility, privacy, no-network contract, lineage preservation, and progressive mount verified.');

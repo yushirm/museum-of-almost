@@ -31,6 +31,18 @@
     parent.append(plate);
   }
 
+  function makeRouteLink(targetId, label) {
+    const link = make('a', '', label);
+    link.href = `#${targetId}`;
+    link.style.display = 'inline-flex';
+    link.style.alignItems = 'center';
+    link.style.minHeight = '44px';
+    link.style.padding = '.55rem .75rem';
+    link.style.border = '1px solid var(--line)';
+    link.style.textDecoration = 'none';
+    return link;
+  }
+
   function mountConcordance() {
     const strata = document.getElementById('cosmic-strata');
     if (!strata || document.getElementById('cosmic-concordance')) return;
@@ -106,22 +118,53 @@
     crosscuts.append(crosscutTitle);
 
     const bridges = [
-      ['01 + 13 · LIGHT-TIME ↔ PARALLAX', 'Light travel time converts a known distance into delay; parallax works the other direction, turning a measured angle and known baseline into distance. Together they show why “how far?” and “how old is the light?” are related but not identical questions.'],
-      ['02 + 12 · HORIZON SCALE ↔ UNEQUAL CLOCKS', 'Both use the Schwarzschild family. One asks how mass sets a characteristic radius; the other asks how stationary clocks compare outside that radius. Sharing a model does not make the instruments interchangeable.'],
-      ['03 + 08 · COSMIC INVENTORY ↔ GRAVITATIONAL LENSING', 'Dark matter is not listed because it glows. Gravitational lensing is one of the ways mass can be inferred through its effect on light, linking the inventory’s unseen component to a measurable gravitational consequence.'],
-      ['06 + 07 · FRAME ORDER ↔ CAUSAL REACH', 'The Frame Shifter lets spacelike event order change with inertial frame. The Causal Signal Box asks the invariant question underneath: can a light-speed-or-slower influence connect the events at all?'],
-      ['09 + 14 · REDSHIFT ↔ COSMIC STRATA', 'Redshift records wavelength stretch between emission and observation; the strata arrange rounded cosmic history. Redshift alone is not an age label—the bridge exists to prevent that tempting shortcut.']
+      {
+        label: '01 + 13 · LIGHT-TIME ↔ PARALLAX',
+        text: 'Light travel time converts a known distance into delay; parallax works the other direction, turning a measured angle and known baseline into distance. Together they show why “how far?” and “how old is the light?” are related but not identical questions.',
+        targets: [['light-title', 'GO TO 01 · LIGHT-TIME'], ['parallax-survey-title', 'GO TO 13 · PARALLAX']]
+      },
+      {
+        label: '02 + 12 · HORIZON SCALE ↔ UNEQUAL CLOCKS',
+        text: 'Both use the Schwarzschild family. One asks how mass sets a characteristic radius; the other asks how stationary clocks compare outside that radius. Sharing a model does not make the instruments interchangeable.',
+        targets: [['gravity-title', 'GO TO 02 · HORIZON SCALE'], ['unequal-minute-title', 'GO TO 12 · UNEQUAL CLOCKS']]
+      },
+      {
+        label: '03 + 08 · COSMIC INVENTORY ↔ GRAVITATIONAL LENSING',
+        text: 'Dark matter is not listed because it glows. Gravitational lensing is one of the ways mass can be inferred through its effect on light, linking the inventory’s unseen component to a measurable gravitational consequence.',
+        targets: [['inventory-title', 'GO TO 03 · INVENTORY'], ['gravitational-copy-title', 'GO TO 08 · LENSING']]
+      },
+      {
+        label: '06 + 07 · FRAME ORDER ↔ CAUSAL REACH',
+        text: 'The Frame Shifter lets spacelike event order change with inertial frame. The Causal Signal Box asks the invariant question underneath: can a light-speed-or-slower influence connect the events at all?',
+        targets: [['frame-shifter-title', 'GO TO 06 · FRAME ORDER'], ['causal-signal-title', 'GO TO 07 · CAUSAL REACH']]
+      },
+      {
+        label: '09 + 14 · REDSHIFT ↔ COSMIC STRATA',
+        text: 'Redshift records wavelength stretch between emission and observation; the strata arrange rounded cosmic history. Redshift alone is not an age label—the bridge exists to prevent that tempting shortcut.',
+        targets: [['redshift-ruler-title', 'GO TO 09 · REDSHIFT'], ['cosmic-strata-title', 'GO TO 14 · STRATA']]
+      }
     ];
 
-    for (const [label, text] of bridges) {
+    for (const bridge of bridges) {
       const row = make('div', 'readout');
-      row.append(make('span', 'metric-label', label), make('p', 'readout-note', text));
+      row.append(make('span', 'metric-label', bridge.label), make('p', 'readout-note', bridge.text));
+      const route = make('nav', '', '');
+      route.setAttribute('aria-label', `${bridge.label} reading route`);
+      route.style.display = 'flex';
+      route.style.flexWrap = 'wrap';
+      route.style.gap = '.5rem';
+      route.style.marginTop = '.75rem';
+      for (const [targetId, label] of bridge.targets) route.append(makeRouteLink(targetId, label));
+      row.append(route);
       crosscuts.append(row);
     }
 
+    const routeBoundary = make('p', 'readout-note', 'READING ROUTES · These are ordinary in-page links, not recommendations, scores or a hidden sequence. They simply let one scientific relationship become a path through the existing gallery. Browser back returns you to the concordance.');
+    routeBoundary.style.maxWidth = '78ch';
+
     const boundary = make('p', 'inventory-note', 'CONCORDANCE BOUNDARY · This is an editorial map of the gallery’s claim types and relationships, not a confidence score, hierarchy of truth, probability scale, or assertion that paired instruments share a single model. Numerical readouts and each instrument’s stated approximation remain authoritative.');
 
-    body.append(intro, grammar, crosscuts, boundary);
+    body.append(intro, grammar, crosscuts, routeBoundary, boundary);
     details.append(summary, body);
     strata.append(details);
   }
