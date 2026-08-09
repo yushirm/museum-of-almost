@@ -120,8 +120,6 @@ assert.doesNotMatch(css, /calc\(var\(--unequal-minute-lapse\)\s*\*\s*100%\)/,
   'track width must not depend on typed CSS number-by-percentage multiplication');
 
 for (const pattern of [
-  /function addPageFourSignalAnomaly/,
-  /addPageFourSignalAnomaly\(\)/,
   /function loadUnequalMinute/,
   /\.\/unequal-minute\.css/,
   /\.\/unequal-minute-core\.js/,
@@ -132,6 +130,10 @@ for (const pattern of [
   /function loadGravitationalCopyRoom\(done = loadRedshiftRuler\)/,
   /loadCausalSignalBox\(loadGravitationalCopyRoom\)/
 ]) assert.match(bootstrap, pattern);
+
+for (const pattern of [/addPageFourSignalAnomaly/, /page-four-signal-link/, /SIGNAL ANOMALY:/]) {
+  assert.doesNotMatch(bootstrap, pattern, `Unequal Minute must not require retired fictional anomaly ${pattern}`);
+}
 
 for (const pattern of [
   /Concept A — The Schwarzschild Clock Bench/,
