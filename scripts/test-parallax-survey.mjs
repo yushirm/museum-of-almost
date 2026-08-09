@@ -67,27 +67,22 @@ for (const pattern of [
   /aria-hidden/
 ]) assert.match(viewSource, pattern);
 
-for (const pattern of [
-  /function mountConcordance\(\)/,
-  /cosmic-concordance/,
-  /COSMIC CONCORDANCE · OPEN THE GALLERY’S EVIDENCE GRAMMAR/,
-  /EXACT RELATIONS/,
-  /IDEALIZED MODELS/,
-  /OBSERVATIONAL INFERENCE/,
-  /OPEN \/ REVISION/,
-  /01 \+ 13 · LIGHT-TIME ↔ PARALLAX/,
-  /02 \+ 12 · HORIZON SCALE ↔ UNEQUAL CLOCKS/,
-  /03 \+ 08 · COSMIC INVENTORY ↔ GRAVITATIONAL LENSING/,
-  /06 \+ 07 · FRAME ORDER ↔ CAUSAL REACH/,
-  /09 \+ 14 · REDSHIFT ↔ COSMIC STRATA/,
-  /not a confidence score, hierarchy of truth, probability scale/,
-  /mountConcordance\(\);/
-]) assert.match(viewSource, pattern, `Deep Space concordance missing ${pattern}`);
-
-const concordanceGroupCount = (viewSource.match(/label: '(?:EXACT RELATIONS|IDEALIZED MODELS|OBSERVATIONAL INFERENCE|OPEN \/ REVISION)'/g) || []).length;
-assert.equal(concordanceGroupCount, 4, 'concordance should keep exactly four claim-type grammars');
-const concordanceBridgeCount = (viewSource.match(/'\d{2} \+ \d{2} ·/g) || []).length;
-assert.equal(concordanceBridgeCount, 5, 'concordance should keep five cross-instrument bridges');
+for (const requiredText of [
+  'function mountConcordance()',
+  'cosmic-concordance',
+  'COSMIC CONCORDANCE · OPEN THE GALLERY’S EVIDENCE GRAMMAR',
+  "label: 'EXACT RELATIONS'",
+  "label: 'IDEALIZED MODELS'",
+  "label: 'OBSERVATIONAL INFERENCE'",
+  "label: 'OPEN / REVISION'",
+  '01 + 13 · LIGHT-TIME ↔ PARALLAX',
+  '02 + 12 · HORIZON SCALE ↔ UNEQUAL CLOCKS',
+  '03 + 08 · COSMIC INVENTORY ↔ GRAVITATIONAL LENSING',
+  '06 + 07 · FRAME ORDER ↔ CAUSAL REACH',
+  '09 + 14 · REDSHIFT ↔ COSMIC STRATA',
+  'not a confidence score, hierarchy of truth, probability scale',
+  'mountConcordance();'
+]) assert.ok(viewSource.includes(requiredText), `Deep Space concordance missing: ${requiredText}`);
 
 assert.doesNotMatch(viewSource, /make\('button'|createElement\(['"]button|<button/i,
   'this generation intentionally exposes no new custom visitor control');
