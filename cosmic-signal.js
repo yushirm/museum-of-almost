@@ -119,6 +119,22 @@
           </div>
         </dl>
         <p class="temporal-aperture-note"><strong>No anti-aliasing claim.</strong> COMMONS does not sample densely enough in space or time to reconstruct everything the planet did between observations. The instrument shows what its samples support and leaves the unsampled world unsaid.</p>
+        <p class="temporal-aperture-intro"><strong>THE CO-OCCURRENCE FIREWALL · ONE LATCH DOES NOT MAKE ONE CAUSE</strong> Borrowed from causal inference: putting unlike observations beside one another can invite a story the measurements did not establish. COMMONS treats shared display time as co-occurrence only.</p>
+        <dl class="temporal-aperture-grid" aria-label="Causal interpretation limits of the Commons snapshot">
+          <div>
+            <dt>ADJACENCY</dt>
+            <dd><strong>SAME SNAPSHOT ≠ CAUSAL LINK</strong><span>Earthquakes, near-Earth solar conditions, weather, and open-event records appear together because one visitor-triggered acquisition latched them together. Adjacency does not establish direction, mechanism, dependence, or common cause.</span></dd>
+          </div>
+          <div>
+            <dt>ORDER</dt>
+            <dd><strong>EARLIER ≠ EXPLANATION</strong><span>Even when source timestamps can be ordered, earlier and later observations alone do not identify a cause. A causal claim would require evidence and scientific assumptions beyond this single latched portrait.</span></dd>
+          </div>
+          <div>
+            <dt>COMPARISON</dt>
+            <dd><strong>NO CROSS-FEED STORY IS COMPUTED</strong><span>COMMONS does not correlate, regress, rank, predict, or score unlike feeds against one another. Its comparisons stay inside the declared scientific scope of each instrument.</span></dd>
+          </div>
+        </dl>
+        <p class="temporal-aperture-note"><strong>The firewall:</strong> the page may say <em>these things were visible in one shared now</em>. It may not turn adjacency into explanation.</p>
       </div>`;
 
     aperture.insertAdjacentElement('afterend', details);
