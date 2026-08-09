@@ -24,6 +24,50 @@
     document.body.append(script);
   }
 
+  function mountTemporalAperture() {
+    const panel = document.querySelector('#sample-hold-panel');
+    if (!panel || document.querySelector('#temporal-aperture')) return;
+
+    const details = document.createElement('details');
+    details.id = 'temporal-aperture';
+    details.className = 'temporal-aperture';
+    details.innerHTML = `
+      <summary>
+        <span>THE TEMPORAL APERTURE</span>
+        <strong>“NOW” HAS FIVE DIFFERENT WIDTHS</strong>
+      </summary>
+      <div class="temporal-aperture-body">
+        <p class="temporal-aperture-intro">The latch makes one coherent page update. It does not make the source observations simultaneous. Each feed answers a different kind of present.</p>
+        <dl class="temporal-aperture-grid">
+          <div>
+            <dt>EARTH · USGS</dt>
+            <dd><strong>ROLLING WINDOW</strong><span>Earthquakes reported in the past hour. A count over an interval, not an instant.</span></dd>
+          </div>
+          <div>
+            <dt>FLOW · NOAA</dt>
+            <dd><strong>LATEST MEASUREMENT</strong><span>The most recent solar-wind speed available from the service when this sample is acquired.</span></dd>
+          </div>
+          <div>
+            <dt>SCALES · NOAA</dt>
+            <dd><strong>CURRENT STATUS</strong><span>A current space-weather status product. Its meaning is categorical, not a synchronized sensor tick.</span></dd>
+          </div>
+          <div>
+            <dt>WEATHER · OPEN-METEO</dt>
+            <dd><strong>CURRENT FIELDS</strong><span>Thirteen fixed coordinates requested together and read as one weather sample for this page.</span></dd>
+          </div>
+          <div>
+            <dt>EVENTS · NASA EONET</dt>
+            <dd><strong>OPEN SET</strong><span>Events still listed as open. “Open” can persist across many moments; it is not an instantaneous measurement.</span></dd>
+          </div>
+        </dl>
+        <p class="temporal-aperture-note"><strong>So what is the Museum's “now”?</strong> A transaction boundary: five unlike temporal products are allowed to settle, then become visible together. The boundary is exact; simultaneity is not claimed.</p>
+      </div>`;
+
+    panel.insertAdjacentElement('afterend', details);
+  }
+
+  mountTemporalAperture();
+
   load('./cosmic-signal-core.js', 'cosmicSignalCore', () => {
     load('./cosmic-signal-view.js', 'cosmicSignalView', () => {
       load('./cosmic-latency-core.js', 'cosmicLatencyCore', () => {
