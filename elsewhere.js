@@ -8,22 +8,31 @@
   let cursor = -1;
 
   const handlingRoutes = Object.freeze({
-    'artifact-c0-001': { zone: 'ZONE B · BUILDING FABRIC', action: 'Support the key without testing it against unverified locks.', hold: 'No matching lock exists in the building survey.' },
-    'artifact-c0-002': { zone: 'ZONE A · PAPER / FILM', action: 'Sleeve flat; preserve both punched marks; do not validate the route.', hold: 'The railway line named by the ticket was never built.' },
-    'artifact-c0-003': { zone: 'ZONE A · PAPER / FILM', action: 'Store flat with full edge support; do not restore missing geography.', hold: 'The sheet keeps cartographic structure after the geography is removed.' },
-    'artifact-c0-004': { zone: 'ZONE A · PAPER / FILM', action: 'File with technical papers; avoid treating warranty language as proof of manufacture.', hold: 'The covered machine has no manufacturing record.' },
-    'artifact-c0-005': { zone: 'ZONE A · PAPER / FILM', action: 'Keep cool and dark; do not process, expose, or advance the stated date.', hold: 'The canister is labelled “Exposure: Tomorrow” while the fictional processing log finishes first.' },
-    'artifact-c0-006': { zone: 'ZONE B · BUILDING FABRIC', action: 'Brace in place where possible; document before any relocation.', hold: 'Removing the temporary exit may erase the reason it was accessioned.' },
-    'artifact-c0-007': { zone: 'ZONE A · PAPER / FILM', action: 'Sleeve with queue documents; preserve the printed zero as issued.', hold: 'The number precedes a queue whose first issued ticket is recorded as 001.' },
-    'artifact-c0-008': { zone: 'ZONE C · OPTICAL / UNASSIGNED', action: 'Box with labels; photograph under stable light without resolving the named date.', hold: 'The label describes an object category that cannot be reconciled with a calendar.' },
-    'artifact-c0-009': { zone: 'ZONE C · OPTICAL / UNASSIGNED', action: 'Store flat; image both sides; retain the unresolved destination wording.', hold: 'The pictured place is absent from the chart supplied with the record.' },
-    'artifact-c0-010': { zone: 'ZONE C · OPTICAL / UNASSIGNED', action: 'Keep sealed; attempt repeatable imaging without opening the enclosure.', hold: 'The object is catalogued as a fixed shadow that refuses reproduction.' },
-    'artifact-c0-011': { zone: 'ZONE A · PAPER / FILM', action: 'File with manuals; preserve pagination and model designation exactly.', hold: 'The instructions describe a model for which no machine is accessioned.' },
-    'artifact-c0-012': { zone: 'ZONE B · BUILDING FABRIC', action: 'Support as architectural signage; do not mount it on an invented room.', hold: 'The plaque names Room 0, which is absent from the building survey.' }
+    'artifact-c0-001': { zone: 'ZONE B · BUILDING FABRIC', zoneId: 'B', action: 'Support the key without testing it against unverified locks.', hold: 'No matching lock exists in the building survey.' },
+    'artifact-c0-002': { zone: 'ZONE A · PAPER / FILM', zoneId: 'A', action: 'Sleeve flat; preserve both punched marks; do not validate the route.', hold: 'The railway line named by the ticket was never built.' },
+    'artifact-c0-003': { zone: 'ZONE A · PAPER / FILM', zoneId: 'A', action: 'Store flat with full edge support; do not restore missing geography.', hold: 'The sheet keeps cartographic structure after the geography is removed.' },
+    'artifact-c0-004': { zone: 'ZONE A · PAPER / FILM', zoneId: 'A', action: 'File with technical papers; avoid treating warranty language as proof of manufacture.', hold: 'The covered machine has no manufacturing record.' },
+    'artifact-c0-005': { zone: 'ZONE A · PAPER / FILM', zoneId: 'A', action: 'Keep cool and dark; do not process, expose, or advance the stated date.', hold: 'The canister is labelled “Exposure: Tomorrow” while the fictional processing log finishes first.' },
+    'artifact-c0-006': { zone: 'ZONE B · BUILDING FABRIC', zoneId: 'B', action: 'Brace in place where possible; document before any relocation.', hold: 'Removing the temporary exit may erase the reason it was accessioned.' },
+    'artifact-c0-007': { zone: 'ZONE A · PAPER / FILM', zoneId: 'A', action: 'Sleeve with queue documents; preserve the printed zero as issued.', hold: 'The number precedes a queue whose first issued ticket is recorded as 001.' },
+    'artifact-c0-008': { zone: 'ZONE C · OPTICAL / UNASSIGNED', zoneId: 'C', action: 'Box with labels; photograph under stable light without resolving the named date.', hold: 'The label describes an object category that cannot be reconciled with a calendar.' },
+    'artifact-c0-009': { zone: 'ZONE C · OPTICAL / UNASSIGNED', zoneId: 'C', action: 'Store flat; image both sides; retain the unresolved destination wording.', hold: 'The pictured place is absent from the chart supplied with the record.' },
+    'artifact-c0-010': { zone: 'ZONE C · OPTICAL / UNASSIGNED', zoneId: 'C', action: 'Keep sealed; attempt repeatable imaging without opening the enclosure.', hold: 'The object is catalogued as a fixed shadow that refuses reproduction.' },
+    'artifact-c0-011': { zone: 'ZONE A · PAPER / FILM', zoneId: 'A', action: 'File with manuals; preserve pagination and model designation exactly.', hold: 'The instructions describe a model for which no machine is accessioned.' },
+    'artifact-c0-012': { zone: 'ZONE B · BUILDING FABRIC', zoneId: 'B', action: 'Support as architectural signage; do not mount it on an invented room.', hold: 'The plaque names Room 0, which is absent from the building survey.' }
   });
 
   const closeAll = () => {
     for (const record of records) record.open = false;
+  };
+
+  const markActiveRoute = (route, accession) => {
+    for (const zone of document.querySelectorAll('[data-storage-zone]')) {
+      const active = zone.dataset.storageZone === route.zoneId;
+      zone.classList.toggle('is-active-route', active);
+      if (active) zone.setAttribute('data-current-accession', accession);
+      else zone.removeAttribute('data-current-accession');
+    }
   };
 
   const updateTransferDesk = (record) => {
@@ -33,16 +42,22 @@
     if (!route) return;
     const accession = record.querySelector('summary span')?.textContent?.trim() || record.id.replace('artifact-', '').toUpperCase();
     const title = record.querySelector('summary strong')?.textContent?.trim() || 'Untitled record';
+    const accessionCode = accession.split(' · ')[0];
     const accessionNode = desk.querySelector('[data-transfer-accession]');
     const titleNode = desk.querySelector('[data-transfer-title]');
     const zoneNode = desk.querySelector('[data-transfer-zone]');
     const actionNode = desk.querySelector('[data-transfer-action]');
     const holdNode = desk.querySelector('[data-transfer-hold]');
+    const routeNode = desk.querySelector('[data-transfer-route]');
+    const traceNode = desk.querySelector('[data-transfer-trace]');
     if (accessionNode) accessionNode.textContent = accession;
     if (titleNode) titleNode.textContent = title;
     if (zoneNode) zoneNode.textContent = route.zone;
     if (actionNode) actionNode.textContent = route.action;
     if (holdNode) holdNode.textContent = route.hold;
+    if (routeNode) routeNode.textContent = `CATALOGUE 0 → ZONE ${route.zoneId} → CONTRADICTION HOLD`;
+    if (traceNode) traceNode.setAttribute('aria-label', `Trace ${accessionCode} storage route to Zone ${route.zoneId}`);
+    markActiveRoute(route, accessionCode);
   };
 
   const openRecord = (index) => {
@@ -71,7 +86,9 @@
       .environment-status{border:1px dashed currentColor;padding:1rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-transform:uppercase;font-size:.82rem;line-height:1.5}
       .environment-status strong{display:block;font-size:1.25rem;margin-top:.3rem}
       .environment-zones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
-      .environment-zone{display:flex;flex-direction:column;min-height:100%;border:1px solid currentColor;background:rgba(0,0,0,.14)}
+      .environment-zone{position:relative;display:flex;flex-direction:column;min-height:100%;border:1px solid currentColor;background:rgba(0,0,0,.14)}
+      .environment-zone.is-active-route{outline:3px double currentColor;outline-offset:4px;background:rgba(229,168,38,.08)}
+      .environment-zone.is-active-route::after{content:'CURRENT MOVEMENT · ' attr(data-current-accession);position:absolute;top:.55rem;right:.55rem;padding:.2rem .35rem;border:1px solid currentColor;background:#1d201a;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.58rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
       .environment-zone header{padding:1rem;border-bottom:1px solid currentColor}
       .environment-zone header span{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.8}
       .environment-zone h3{margin:.25rem 0 0;font-size:1.25rem}
@@ -93,13 +110,18 @@
       .transfer-grid dt{margin:0 0 .45rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
       .transfer-grid dd{margin:0;line-height:1.45}
       .transfer-grid strong{display:block;margin-bottom:.2rem}
+      .transfer-route-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.75rem 1rem;border-top:1px dashed currentColor}
+      .transfer-route{margin:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+      .transfer-trace{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.45rem .7rem;border:1px solid currentColor;color:inherit;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-decoration:none;text-transform:uppercase}
+      .transfer-trace:hover,.transfer-trace:focus-visible{background:currentColor;color:#1d201a}
       .transfer-hold{padding:1rem;border-top:1px dashed currentColor;background:rgba(229,168,38,.07)}
       .transfer-hold strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
       @media (max-width:800px){.environment-heading,.environment-zones{grid-template-columns:1fr}.environment-zone dl div{grid-template-columns:6.5rem 1fr}.transfer-grid{grid-template-columns:1fr}.transfer-grid>div+div{border-left:0;border-top:1px solid currentColor}}
+      @media (max-width:620px){.transfer-route-row{align-items:stretch;flex-direction:column}.transfer-trace{align-self:flex-start}}
       @media (max-width:520px){.transfer-desk header{grid-template-columns:1fr}.transfer-stamp{justify-self:start}}
-      @media (max-width:420px){.environment-board{padding:1rem}.environment-zone dl div{grid-template-columns:1fr;gap:.15rem}}
-      @media (prefers-contrast:more){.environment-board,.environment-zone,.environment-zone header,.transfer-desk,.transfer-desk header,.transfer-grid>div+div{border-width:2px}.environment-status{border-width:2px}}
-      @media print{.environment-board{box-shadow:none;break-inside:avoid}.environment-zone{break-inside:avoid}.transfer-desk{break-inside:avoid}}
+      @media (max-width:420px){.environment-board{padding:1rem}.environment-zone dl div{grid-template-columns:1fr;gap:.15rem}.environment-zone.is-active-route::after{position:static;display:block;margin:.65rem .65rem 0;width:max-content;max-width:calc(100% - 1.3rem)}}
+      @media (prefers-contrast:more){.environment-board,.environment-zone,.environment-zone header,.transfer-desk,.transfer-desk header,.transfer-grid>div+div,.transfer-trace{border-width:2px}.environment-status{border-width:2px}.environment-zone.is-active-route{outline-width:4px}}
+      @media print{.environment-board{box-shadow:none;break-inside:avoid}.environment-zone{break-inside:avoid}.transfer-desk{break-inside:avoid}.environment-zone.is-active-route{outline:0}.environment-zone.is-active-route::after,.transfer-trace{display:none}}
     `;
     document.head.append(style);
 
@@ -121,7 +143,7 @@
         </div>
       </div>
       <div class="environment-zones" aria-label="Three fictional conservation exception zones">
-        <article class="environment-zone">
+        <article class="environment-zone" data-storage-zone="A">
           <header><span>ZONE A · PAPER / FILM</span><h3>Keep the future out of the light.</h3></header>
           <dl>
             <div><dt>Target</dt><dd>Cool, stable, low-light storage.</dd></div>
@@ -130,7 +152,7 @@
           </dl>
           <p class="environment-conflict"><strong>Exception A0</strong>C0.005 is labelled “Exposure: Tomorrow,” while its fictional processing log says completion came first. Darkness may protect the material; the catalogue cannot say whether it also postpones the event.</p>
         </article>
-        <article class="environment-zone">
+        <article class="environment-zone" data-storage-zone="B">
           <header><span>ZONE B · BUILDING FABRIC</span><h3>Do not move the thing whose evidence is that it stayed.</h3></header>
           <dl>
             <div><dt>Target</dt><dd>Dry storage with clear access and stable mounting.</dd></div>
@@ -139,7 +161,7 @@
           </dl>
           <p class="environment-conflict"><strong>Exception B0</strong>C0.006 became accession-worthy because the temporary sign apparently outlasted the wall it redirected around. Removing it would improve storage and erase the institutional absurdity that justified keeping it.</p>
         </article>
-        <article class="environment-zone">
+        <article class="environment-zone" data-storage-zone="C">
           <header><span>ZONE C · OPTICAL / UNASSIGNED</span><h3>Measure without demanding that the object cooperate.</h3></header>
           <dl>
             <div><dt>Target</dt><dd>Stable illumination, repeatable imaging, sealed storage.</dd></div>
@@ -176,6 +198,10 @@
         <div><dt>Storage route</dt><dd data-transfer-zone></dd></div>
         <div><dt>Handling order</dt><dd data-transfer-action></dd></div>
       </dl>
+      <div class="transfer-route-row">
+        <p class="transfer-route" data-transfer-route aria-hidden="true"></p>
+        <a class="transfer-trace" data-transfer-trace href="#environment-board">TRACE STORAGE ROUTE ↑</a>
+      </div>
       <p class="transfer-hold"><strong>Contradiction hold</strong><span data-transfer-hold></span></p>
     `;
     catalogueRule.after(desk);
