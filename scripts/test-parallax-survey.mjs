@@ -91,6 +91,14 @@ for (const requiredText of [
   "['causal-signal-title', 'GO TO 07 · CAUSAL REACH']",
   "['redshift-ruler-title', 'GO TO 09 · REDSHIFT']",
   "['cosmic-strata-title', 'GO TO 14 · STRATA']",
+  'MODEL BOUNDARY LEDGER · WHERE THE TOYS STOP WORKING',
+  'SENSITIVITY LEDGER · NUDGE ONE THING, WATCH WHAT MUST MOVE',
+  'DOUBLE DISTANCE → DOUBLE LIGHT-TIME',
+  'DOUBLE MASS → DOUBLE SCHWARZSCHILD RADIUS',
+  'DOUBLE (1 + z) → DOUBLE OBSERVED WAVELENGTH',
+  'HALVE PARALLAX → DOUBLE INFERRED DISTANCE',
+  'THE SAME ΔR DOES NOT GIVE THE SAME CLOCK CHANGE',
+  'One-at-a-time perturbations reveal mathematical dependence, not observational uncertainty',
   'READING ROUTES · These are ordinary in-page links',
   'not a confidence score, hierarchy of truth, probability scale',
   'mountConcordance();'
@@ -102,6 +110,10 @@ assert.match(viewSource, /link\.href = `#\$\{targetId\}`/,
   'reading routes should use local fragment links rather than scripted navigation');
 assert.match(viewSource, /link\.style\.minHeight = '44px'/,
   'reading-route links should preserve a touch-sized minimum target');
+assert.match(viewSource, /sensitivitySummary\.style\.minHeight = '44px'/,
+  'the sensitivity ledger summary should preserve a touch-sized minimum target');
+assert.equal((viewSource.match(/const sensitivityCases = \[/g) || []).length, 1,
+  'the sensitivity layer should remain one compact nested ledger rather than another instrument surface');
 
 assert.doesNotMatch(viewSource, /make\('button'|createElement\(['"]button|<button/i,
   'this generation intentionally exposes no new custom visitor control');
@@ -166,4 +178,4 @@ for (const asset of [
   './UNBUILT_ROOM.md'
 ]) assert.ok(serviceWorker.includes(`'${asset}'`), `offline shell should include ${asset}`);
 
-console.log('Parallax Survey geometry plus Deep Space cosmic concordance, native cross-instrument reading routes, accessibility, privacy, no-network contract, lineage preservation, and progressive mount verified.');
+console.log('Parallax Survey geometry plus Deep Space cosmic concordance, native reading routes, model boundaries, sensitivity analysis, accessibility, privacy, no-network contract, lineage preservation, and progressive mount verified.');
