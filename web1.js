@@ -476,6 +476,84 @@
     }
   }
 
+  function consolidateHomepageWorkbench() {
+    const weblog = document.querySelector('.two-column');
+    if (!weblog || document.getElementById('homepage-workbench')) return;
+
+    const drawers = [
+      ['homepage-download-cabinet', 'FILES // DOWNLOAD CABINET'],
+      ['thought-thread-index', 'PATHS // THOUGHT THREADS'],
+      ['paper-escape-hatch', 'PAPER // ESCAPE HATCH'],
+      ['stylesheet-dressing-room', 'APPEARANCE // STYLESHEET DRESSING ROOM']
+    ].map(([id, label]) => ({ panel: document.getElementById(id), label }));
+
+    if (drawers.some(({ panel }) => !panel)) return;
+
+    const workbench = document.createElement('section');
+    workbench.id = 'homepage-workbench';
+    workbench.className = 'webring';
+    workbench.setAttribute('aria-labelledby', 'homepage-workbench-title');
+
+    const title = document.createElement('h2');
+    title.id = 'homepage-workbench-title';
+    title.textContent = '~* HOMEPAGE WORKBENCH *~';
+
+    const intro = document.createElement('p');
+    intro.append(
+      document.createTextNode('I kept building tiny ways to inspect, save, route and transform this page until the tools became their own hallway. So I put the existing four on one bench. '),
+      strong('FOUR THINGS, ONE BENCH.'),
+      document.createTextNode(' Nothing disappeared; open only the drawer you came for.')
+    );
+
+    const policy = document.createElement('p');
+    policy.className = 'smallprint';
+    policy.textContent = 'WORKBENCH POLICY: these are the same local tools and authored paths as before, now grouped with native disclosure controls. Opening a drawer is not stored, tracked or sent anywhere. With JavaScript unavailable, the original homepage remains readable without this generated workbench.';
+
+    workbench.append(title, intro, policy);
+
+    drawers.forEach(({ panel, label }) => {
+      const details = document.createElement('details');
+      details.className = 'smallprint';
+
+      const summary = document.createElement('summary');
+      summary.textContent = label;
+      summary.style.minHeight = '44px';
+      summary.style.display = 'flex';
+      summary.style.alignItems = 'center';
+      summary.style.cursor = 'pointer';
+
+      const panelTitle = panel.querySelector('h2');
+      if (panelTitle) panelTitle.remove();
+      panel.removeAttribute('aria-labelledby');
+      panel.classList.remove('webring');
+      panel.style.border = '0';
+      panel.style.background = 'transparent';
+      panel.style.padding = '0.5rem 0';
+
+      details.append(summary, panel);
+      workbench.append(details);
+    });
+
+    weblog.insertAdjacentElement('beforebegin', workbench);
+
+    const updates = document.querySelector('.updates');
+    if (updates && !document.getElementById('homepage-workbench-update')) {
+      const item = document.createElement('li');
+      item.id = 'homepage-workbench-update';
+      const date = document.createElement('strong');
+      date.textContent = '10 AUG:';
+      item.append(date, document.createTextNode(' CONSOLIDATED PAGE TOOLS. FOUR THINGS, ONE BENCH.'));
+      updates.prepend(item);
+    }
+
+    const statusRows = document.querySelectorAll('.status-table tr');
+    statusRows.forEach((row) => {
+      const label = row.querySelector('th');
+      const value = row.querySelector('td');
+      if (label && value && label.textContent.trim() === 'LAST UPDATED') value.textContent = '10 AUG 2026';
+    });
+  }
+
   function foldSiteUpdates() {
     const updates = document.querySelector('.updates');
     if (!updates || document.getElementById('older-site-updates')) return;
@@ -520,6 +598,7 @@
   addLaterNotes();
   addPaperEscapeHatch();
   addStylesheetDressingRoom();
+  consolidateHomepageWorkbench();
   foldSiteUpdates();
 
   if ('serviceWorker' in navigator) {
