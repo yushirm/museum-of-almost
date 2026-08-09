@@ -94,6 +94,10 @@
     load('./solar-boundary.js', 'solarBoundaryView');
   });
 
+  load('./synoptic-alphabet-core.js', 'synopticAlphabetCore', () => {
+    load('./synoptic-alphabet.js', 'synopticAlphabetView');
+  });
+
   load('./faultline-core.js', 'faultlineCore', () => {
     load('./faultline.js', 'faultlineView');
   });
