@@ -56,7 +56,10 @@
     if (actionNode) actionNode.textContent = route.action;
     if (holdNode) holdNode.textContent = route.hold;
     if (routeNode) routeNode.textContent = `CATALOGUE 0 → ZONE ${route.zoneId} → CONTRADICTION HOLD`;
-    if (traceNode) traceNode.setAttribute('aria-label', `Trace ${accessionCode} storage route to Zone ${route.zoneId}`);
+    if (traceNode) {
+      traceNode.removeAttribute('hidden');
+      traceNode.setAttribute('aria-label', `Trace ${accessionCode} storage route to Zone ${route.zoneId}`);
+    }
     markActiveRoute(route, accessionCode);
   };
 
@@ -194,18 +197,17 @@
         <span class="transfer-stamp">MOVEMENT COPY · LOCAL ONLY</span>
       </header>
       <dl class="transfer-grid">
-        <div><dt>Current accession</dt><dd><strong data-transfer-accession></strong><span data-transfer-title></span></dd></div>
-        <div><dt>Storage route</dt><dd data-transfer-zone></dd></div>
-        <div><dt>Handling order</dt><dd data-transfer-action></dd></div>
+        <div><dt>Current accession</dt><dd><strong data-transfer-accession>NO ACCESSION SELECTED</strong><span data-transfer-title>Open a record below to issue a movement copy.</span></dd></div>
+        <div><dt>Storage route</dt><dd data-transfer-zone>PENDING ACCESSION</dd></div>
+        <div><dt>Handling order</dt><dd data-transfer-action>No handling order issued.</dd></div>
       </dl>
       <div class="transfer-route-row">
-        <p class="transfer-route" data-transfer-route aria-hidden="true"></p>
-        <a class="transfer-trace" data-transfer-trace href="#environment-board">TRACE STORAGE ROUTE ↑</a>
+        <p class="transfer-route" data-transfer-route aria-hidden="true">CATALOGUE 0 → ROUTE PENDING</p>
+        <a class="transfer-trace" data-transfer-trace href="#environment-board" hidden>TRACE STORAGE ROUTE ↑</a>
       </div>
-      <p class="transfer-hold"><strong>Contradiction hold</strong><span data-transfer-hold></span></p>
+      <p class="transfer-hold"><strong>Contradiction hold</strong><span data-transfer-hold>No contradiction hold issued.</span></p>
     `;
     catalogueRule.after(desk);
-    updateTransferDesk(records.find((record) => record.open) || records[0]);
 
     for (const record of records) {
       record.addEventListener('toggle', () => {
