@@ -19,10 +19,15 @@
     .disconfirmation-drawer>summary::-webkit-details-marker{display:none}.disconfirmation-drawer>summary::before{content:"+ ";margin-right:.5rem;color:#d0a75b}.disconfirmation-drawer[open]>summary::before{content:"− "}
     .disconfirmation-body{padding:1rem;border-top:1px dashed rgba(184,238,117,.24)}.disconfirmation-intro{max-width:74ch;margin:0 0 1rem;color:#aeb7a0;font-size:.74rem;line-height:1.6}.disconfirmation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
     .disconfirmation-test{min-width:0;padding:.9rem;border:1px solid rgba(184,238,117,.16);background:rgba(184,238,117,.025)}.disconfirmation-test h3{margin:0 0 .5rem;color:#e5c784;font-size:.72rem;letter-spacing:.07em}.disconfirmation-test p{margin:.45rem 0;color:#c2c9b5;font-size:.7rem;line-height:1.55}.disconfirmation-test strong{color:#f0f5e7}.disconfirmation-test a{color:#cdeca6;font-weight:700;text-underline-offset:.18em}.disconfirmation-rule{margin:1rem 0 0;padding:.7rem;border-left:3px solid #d64f3a;color:#d99a86;font-size:.65rem;line-height:1.5;letter-spacing:.07em;text-transform:uppercase}
-    @media(max-width:700px){.contradiction-register{margin-inline:.6rem}.contradiction-register-body{padding-bottom:1.2rem}.contradiction-register em{text-align:left;transform:none}.disconfirmation-drawer{margin-inline:.6rem}.disconfirmation-grid{grid-template-columns:1fr}}
-    @media(prefers-reduced-motion:reduce){.contradiction-register *,.disconfirmation-drawer *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-    @media(prefers-contrast:more){.contradiction-register,.disconfirmation-drawer,.disconfirmation-test{border:2px solid currentColor}.contradiction-register summary{color:#000}.disconfirmation-intro,.disconfirmation-test p{color:#fff}}
-    @media print{.contradiction-register,.disconfirmation-drawer{color:#000;background:#fff;box-shadow:none;border-color:#555}.contradiction-register:not([open])>.contradiction-register-body,.disconfirmation-drawer:not([open])>.disconfirmation-body{display:block}.contradiction-register summary,.disconfirmation-drawer>summary{display:none}.contradiction-register a,.disconfirmation-drawer a,.disconfirmation-test,.disconfirmation-test *,.disconfirmation-rule{color:#000!important;background:#fff;border-color:#555}}
+    .absence-register{min-height:0;margin:1rem;border:1px solid rgba(154,183,195,.3);background:#111715;color:#d6dfdc;box-shadow:inset 0 0 24px rgba(0,0,0,.38)}
+    .absence-register>summary{min-height:52px;display:flex;align-items:center;padding:.8rem 1rem;color:#b8d3dc;cursor:pointer;font-size:.7rem;font-weight:700;letter-spacing:.08em;list-style:none}
+    .absence-register>summary::-webkit-details-marker{display:none}.absence-register>summary::before{content:"□ ";margin-right:.5rem;color:#d0a75b}.absence-register[open]>summary::before{content:"■ "}
+    .absence-body{padding:1rem;border-top:1px dashed rgba(184,211,220,.24)}.absence-intro{max-width:76ch;margin:0 0 1rem;color:#b8c5c4;font-size:.74rem;line-height:1.6}.absence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+    .absence-entry{min-width:0;padding:.9rem;border:1px solid rgba(184,211,220,.16);background:rgba(184,211,220,.025)}.absence-entry h3{margin:0 0 .5rem;color:#e5c784;font-size:.72rem;letter-spacing:.07em}.absence-entry p{margin:.45rem 0;color:#c5d0ce;font-size:.7rem;line-height:1.55}.absence-entry strong{color:#f1f5f3}.absence-entry a{color:#c5e0e8;font-weight:700;text-underline-offset:.18em}.absence-status{display:inline-block;margin-top:.3rem;padding:.2rem .35rem;border:1px solid rgba(208,167,91,.35);color:#dfc68f;font-size:.62rem;letter-spacing:.08em}.absence-rule{margin:1rem 0 0;padding:.7rem;border-left:3px solid #8aa5ae;color:#bfd0d5;font-size:.65rem;line-height:1.5;letter-spacing:.07em;text-transform:uppercase}
+    @media(max-width:700px){.contradiction-register{margin-inline:.6rem}.contradiction-register-body{padding-bottom:1.2rem}.contradiction-register em{text-align:left;transform:none}.disconfirmation-drawer,.absence-register{margin-inline:.6rem}.disconfirmation-grid,.absence-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.contradiction-register *,.disconfirmation-drawer *,.absence-register *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+    @media(prefers-contrast:more){.contradiction-register,.disconfirmation-drawer,.disconfirmation-test,.absence-register,.absence-entry{border:2px solid currentColor}.contradiction-register summary{color:#000}.disconfirmation-intro,.disconfirmation-test p,.absence-intro,.absence-entry p{color:#fff}}
+    @media print{.contradiction-register,.disconfirmation-drawer,.absence-register{color:#000;background:#fff;box-shadow:none;border-color:#555}.contradiction-register:not([open])>.contradiction-register-body,.disconfirmation-drawer:not([open])>.disconfirmation-body,.absence-register:not([open])>.absence-body{display:block}.contradiction-register summary,.disconfirmation-drawer>summary,.absence-register>summary{display:none}.contradiction-register a,.disconfirmation-drawer a,.disconfirmation-test,.disconfirmation-test *,.disconfirmation-rule,.absence-register a,.absence-entry,.absence-entry *,.absence-rule{color:#000!important;background:#fff;border-color:#555}}
   </style>
 </head>
 <body>
@@ -243,6 +248,45 @@
               </article>
             </div>
             <p class="disconfirmation-rule">FICTIONAL METHOD NOTE // AN INTERPRETATION THAT CANNOT LOSE IS NOT GETTING STRONGER. IT IS ONLY GETTING HARDER TO QUESTION.</p>
+          </div>
+        </details>
+
+        <details class="absence-register" id="absence-register">
+          <summary>OPEN ABSENCE REGISTER / WHAT SHOULD HAVE BEEN HERE?</summary>
+          <div class="absence-body">
+            <div class="record-meta">DOCUMENT ID: FOUR-09-E<br>METHOD: MISSING-DATA / ARCHIVAL GAP ACCOUNTING<br>STATUS: FICTIONAL / INCOMPLETE</div>
+            <p class="absence-intro">An empty place in a file is not automatically mysterious. PAGE FOUR now records what was expected, what actually survives, and which ordinary failure modes must stay possible before absence is allowed to become evidence.</p>
+            <div class="absence-grid">
+              <article class="absence-entry">
+                <h3>01 / SCALE REFERENCE</h3>
+                <p><strong>Expected:</strong> a frame, object or measurement that fixes the apparent height in <a href="#cryptids">File 01</a>.</p>
+                <p><strong>Survives:</strong> proportion language only.</p>
+                <p><strong>Ordinary gaps:</strong> cropped image, lost negative, omitted field measurement, copied description.</p>
+                <span class="absence-status">ABSENCE TYPE: NON-DIAGNOSTIC</span>
+              </article>
+              <article class="absence-entry">
+                <h3>02 / INTERMEDIATE MAP EDITION</h3>
+                <p><strong>Expected:</strong> a version between two allegedly incompatible copies in <a href="#maps">File 02</a>.</p>
+                <p><strong>Survives:</strong> only the discrepant endpoints described by the file.</p>
+                <p><strong>Ordinary gaps:</strong> revision history missing, local overprint, replacement sheet, cataloguing loss.</p>
+                <span class="absence-status">ABSENCE TYPE: OPEN QUESTION</span>
+              </article>
+              <article class="absence-entry">
+                <h3>04 / SOURCE AUDIO</h3>
+                <p><strong>Expected:</strong> original audio behind the thirteen-second log in <a href="#broadcasts">File 04</a>.</p>
+                <p><strong>Survives:</strong> a written description and timecode, not the recording itself.</p>
+                <p><strong>Ordinary gaps:</strong> erased tape, transcription-only accession, damaged carrier, copied log.</p>
+                <span class="absence-status">ABSENCE TYPE: LIMITS VERIFICATION</span>
+              </article>
+              <article class="absence-entry">
+                <h3>07 / WITNESS CONTEXT</h3>
+                <p><strong>Expected:</strong> dates, distances and interviewing conditions for <a href="#witnesses">File 07</a>.</p>
+                <p><strong>Survives:</strong> three short quotations marked unverified.</p>
+                <p><strong>Ordinary gaps:</strong> excerpting, anonymisation, incomplete intake notes, later copying.</p>
+                <span class="absence-status">ABSENCE TYPE: REDUCES WEIGHT</span>
+              </article>
+            </div>
+            <p class="absence-rule">FICTIONAL ARCHIVAL RULE // “WE DO NOT HAVE IT” AND “IT DID NOT EXIST” ARE DIFFERENT CLAIMS. THE GAP MUST EARN ANY STRONGER INTERPRETATION.</p>
           </div>
         </details>
       </section>
