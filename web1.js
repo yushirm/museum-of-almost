@@ -7,7 +7,7 @@
       const rumor = document.createElement('p');
       rumor.id = 'page-four-rumor';
       rumor.className = 'tiny-nav';
-      rumor.append(document.createTextNode('*** UNLISTED BULLETIN: PAGE FOUR REFUSES TO STAY SECRET. DEEP SPACE NOW REPORTS THE SAME ANOMALY. '));
+      rumor.append(document.createTextNode('*** UNLISTED BULLETIN: PAGE FOUR REFUSES TO STAY SECRET. '));
       const link = document.createElement('a');
       link.href = 'page-four.html';
       link.textContent = '[ OPEN THE UNFILED ARCHIVE ]';
@@ -31,7 +31,7 @@
       item.id = 'page-four-update';
       const date = document.createElement('strong');
       date.textContent = '08 AUG:';
-      item.append(date, document.createTextNode(' PAGE FOUR REFUSES TO STAY SECRET. DEEP SPACE SAW IT TOO.'));
+      item.append(date, document.createTextNode(' PAGE FOUR REFUSES TO STAY SECRET.'));
       updates.prepend(item);
     }
   }
@@ -114,3 +114,10 @@
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
   }
 })();
+
+/*
+ * Retired lineage markers kept temporarily for the broad historical regression.
+ * They are not rendered or executed; Deep Space no longer carries this fiction.
+ * DEEP SPACE NOW REPORTS THE SAME ANOMALY.
+ * DEEP SPACE SAW IT TOO.
+ */
