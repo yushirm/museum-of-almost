@@ -103,6 +103,11 @@ assert.match(appSource, /AbortController/);
 assert.match(source, /MutationObserver/);
 assert.match(source, /reading order is not a causal timeline/i);
 assert.match(source, /No automatic polling/i);
+assert.match(loaderSource, /THE SAMPLING FLOOR · WHAT CAN FALL BETWEEN SAMPLES\?/i);
+assert.match(loaderSource, /13 POINTS ARE NOT A PLANETARY FIELD/i);
+assert.match(loaderSource, /ONE LATCH IS NOT A TREND/i);
+assert.match(loaderSource, /No anti-aliasing claim/i);
+assert.match(loaderSource, /The instrument shows what its samples support and leaves the unsampled world unsaid/i);
 assert.doesNotMatch(source, /setInterval|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
 assert.doesNotMatch(source, /analytics|telemetry|sendBeacon|XMLHttpRequest|WebSocket|EventSource/i);
 assert.doesNotMatch(source, /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i);
@@ -120,4 +125,4 @@ assert.match(styles, /@media print/);
 assert.doesNotMatch(styles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
 
-console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, privacy boundary, accessibility hooks, and missing-value integrity verified.');
+console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, sampling-floor boundaries, privacy boundary, accessibility hooks, and missing-value integrity verified.');
