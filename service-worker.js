@@ -38,45 +38,181 @@ const SOLAR_BOUNDARY_CACHE_NAME = 'museum-of-almost-v46-solar-boundary-atlas';
 const SYNOPTIC_ALPHABET_CACHE_NAME = 'museum-of-almost-v47-synoptic-alphabet';
 const CURRENT_CACHE_NAME = SYNOPTIC_ALPHABET_CACHE_NAME;
 const APP_SHELL = [
-  './', './index.html', './404.html', './landing.css', './page-four-teaser.css', './elsewhere-teaser.css',
-  './elsewhere.html', './elsewhere.css', './elsewhere.js', './page-four.html', './page-four.css', './page-four.js',
-  './page-four-research.css', './page-four-research.js', './page-four-instrument-room.css', './page-four-instrument-room.js',
-  './page-four-dead-drop.css', './page-four-dead-drop.js', './commons-now.html', './styles.css', './sample-hold.css',
-  './sounding-well.css', './faultline.css', './world-map.css', './world-map.svg', './difference-engine.css', './field-sheet.css',
-  './cosmic-signal.css', './cosmic-signal-core.js', './cosmic-signal-view.js', './cosmic-latency-core.js', './cosmic-latency.js',
-  './cosmic-latency.css', './cosmic-escapement-core.js', './cosmic-escapement.js', './cosmic-escapement.css',
-  './planetary-heliodon-core.js', './planetary-heliodon.js', './planetary-heliodon.css', './faultline-core.js', './faultline.js',
-  './witness-seal-core.js', './witness-seal.js', './witness-seal.css', './isolation-board-core.js', './isolation-board.js',
-  './isolation-board.css', './exposure-plate-core.js', './exposure-plate.js', './exposure-plate.css', './reverse-ledger-core.js',
-  './reverse-ledger.js', './reverse-ledger.css', './rest-score-core.js', './rest-score.js', './rest-score.css',
-  './offcut-drawer-core.js', './offcut-drawer.js', './offcut-drawer.css', './border-office-core.js', './border-office.js',
-  './border-office.css', './load-bearing-sample-core.js', './load-bearing-sample.js', './load-bearing-sample.css',
-  './gauge-bench-core.js', './gauge-bench.js', './gauge-bench.css', './shuffle-table-core.js', './shuffle-table.js',
-  './shuffle-table.css', './quorum-gate-core.js', './quorum-gate.js', './quorum-gate.css', './shutter-cabinet-core.js',
-  './shutter-cabinet.js', './shutter-cabinet.css', './weather-score-core.js', './weather-score.js', './weather-score.css',
-  './solar-boundary-core.js', './solar-boundary.js', './solar-boundary.css', './synoptic-alphabet-core.js',
-  './synoptic-alphabet.js', './synoptic-alphabet.css', './data-core.js', './temporal-sounding-core.js', './temporal-sounding.js',
-  './app.js', './cosmic-signal.js', './deep-space.html', './deep-space.css', './deep-space-core.js', './deep-space.js',
-  './possibility-engine.css', './possibility-engine-core.js', './possibility-engine.js', './frame-shifter.css', './frame-shifter-core.js',
-  './frame-shifter.js', './causal-signal.css', './causal-signal-core.js', './causal-signal.js', './gravitational-copy.css',
-  './gravitational-copy-core.js', './gravitational-copy.js', './redshift-ruler.css', './redshift-ruler-core.js', './redshift-ruler.js',
-  './origin-machine.css', './origin-machine-core.js', './origin-machine.js', './same-answer-machine.css', './same-answer-core.js',
-  './same-answer-machine.js', './unequal-minute.css', './unequal-minute-core.js', './unequal-minute.js', './parallax-survey.css',
-  './parallax-survey-core.js', './parallax-survey.js', './almost-online.html', './web1.css', './web1.js', './assets/web1/stars.gif',
-  './assets/web1/comet.gif', './assets/web1/construction.gif', './assets/web1/hand-coded.gif', './assets/web1/alien.gif',
-  './manifest.webmanifest', './PRIVACY.md', './SOURCES.md', './SAMPLE_AND_HOLD.md', './SOUNDING_WELL.md', './FAULTLINE_CORE.md',
-  './WITNESS_SEAL.md', './ISOLATION_BOARD.md', './EXPOSURE_PLATE.md', './REVERSE_LEDGER.md', './REST_SCORE.md', './OFFCUT_DRAWER.md',
-  './BORDER_OFFICE.md', './LOAD_BEARING_SAMPLE.md', './GAUGE_BENCH.md', './SHUFFLE_TABLE.md', './QUORUM_GATE.md',
-  './SHUTTER_CABINET.md', './ELSEWHERE_CATALOGUE_ZERO.md', './COSMIC_RECEIVE_DESK.md', './CELESTIAL_ESCAPEMENT.md',
-  './PLANETARY_HELIODON.md', './DEEP_SPACE.md', './POSSIBILITY_ENGINE.md', './FRAME_SHIFTER.md', './CAUSAL_SIGNAL_BOX.md',
-  './GRAVITATIONAL_COPY_ROOM.md', './REDSHIFT_RULER.md', './ORIGIN_MACHINE.md', './SAME_ANSWER_MACHINE.md', './UNEQUAL_MINUTE.md',
-  './PARALLAX_SURVEY.md', './WEB1_HOME.md', './PAGE_FOUR_RESEARCH.md', './PAGE_FOUR_HESSDALEN.md', './PAGE_FOUR_DEAD_DROP.md', './UNBUILT_ROOM.md'
+  './',
+  './index.html',
+  './404.html',
+  './landing.css',
+  './page-four-teaser.css',
+  './elsewhere-teaser.css',
+  './elsewhere.html',
+  './elsewhere.css',
+  './elsewhere.js',
+  './page-four.html',
+  './page-four.css',
+  './page-four.js',
+  './page-four-research.css',
+  './page-four-research.js',
+  './page-four-instrument-room.css',
+  './page-four-instrument-room.js',
+  './page-four-dead-drop.css',
+  './page-four-dead-drop.js',
+  './commons-now.html',
+  './styles.css',
+  './sample-hold.css',
+  './sounding-well.css',
+  './faultline.css',
+  './world-map.css',
+  './world-map.svg',
+  './difference-engine.css',
+  './field-sheet.css',
+  './cosmic-signal.css',
+  './cosmic-signal-core.js',
+  './cosmic-signal-view.js',
+  './cosmic-latency-core.js',
+  './cosmic-latency.js',
+  './cosmic-latency.css',
+  './cosmic-escapement-core.js',
+  './cosmic-escapement.js',
+  './cosmic-escapement.css',
+  './planetary-heliodon-core.js',
+  './planetary-heliodon.js',
+  './planetary-heliodon.css',
+  './faultline-core.js',
+  './faultline.js',
+  './witness-seal-core.js',
+  './witness-seal.js',
+  './witness-seal.css',
+  './isolation-board-core.js',
+  './isolation-board.js',
+  './isolation-board.css',
+  './exposure-plate-core.js',
+  './exposure-plate.js',
+  './exposure-plate.css',
+  './reverse-ledger-core.js',
+  './reverse-ledger.js',
+  './reverse-ledger.css',
+  './rest-score-core.js',
+  './rest-score.js',
+  './rest-score.css',
+  './offcut-drawer-core.js',
+  './offcut-drawer.js',
+  './offcut-drawer.css',
+  './border-office-core.js',
+  './border-office.js',
+  './border-office.css',
+  './load-bearing-sample-core.js',
+  './load-bearing-sample.js',
+  './load-bearing-sample.css',
+  './gauge-bench-core.js',
+  './gauge-bench.js',
+  './gauge-bench.css',
+  './shuffle-table-core.js',
+  './shuffle-table.js',
+  './shuffle-table.css',
+  './quorum-gate-core.js',
+  './quorum-gate.js',
+  './quorum-gate.css',
+  './shutter-cabinet-core.js',
+  './shutter-cabinet.js',
+  './shutter-cabinet.css',
+  './weather-score-core.js',
+  './weather-score.js',
+  './weather-score.css',
+  './solar-boundary-core.js',
+  './solar-boundary.js',
+  './solar-boundary.css',
+  './synoptic-alphabet-core.js',
+  './synoptic-alphabet.js',
+  './synoptic-alphabet.css',
+  './data-core.js',
+  './temporal-sounding-core.js',
+  './temporal-sounding.js',
+  './app.js',
+  './cosmic-signal.js',
+  './deep-space.html',
+  './deep-space.css',
+  './deep-space-core.js',
+  './deep-space.js',
+  './possibility-engine.css',
+  './possibility-engine-core.js',
+  './possibility-engine.js',
+  './frame-shifter.css',
+  './frame-shifter-core.js',
+  './frame-shifter.js',
+  './causal-signal.css',
+  './causal-signal-core.js',
+  './causal-signal.js',
+  './gravitational-copy.css',
+  './gravitational-copy-core.js',
+  './gravitational-copy.js',
+  './redshift-ruler.css',
+  './redshift-ruler-core.js',
+  './redshift-ruler.js',
+  './origin-machine.css',
+  './origin-machine-core.js',
+  './origin-machine.js',
+  './same-answer-machine.css',
+  './same-answer-core.js',
+  './same-answer-machine.js',
+  './unequal-minute.css',
+  './unequal-minute-core.js',
+  './unequal-minute.js',
+  './parallax-survey.css',
+  './parallax-survey-core.js',
+  './parallax-survey.js',
+  './almost-online.html',
+  './web1.css',
+  './web1.js',
+  './assets/web1/stars.gif',
+  './assets/web1/comet.gif',
+  './assets/web1/construction.gif',
+  './assets/web1/hand-coded.gif',
+  './assets/web1/alien.gif',
+  './manifest.webmanifest',
+  './PRIVACY.md',
+  './SOURCES.md',
+  './SAMPLE_AND_HOLD.md',
+  './SOUNDING_WELL.md',
+  './FAULTLINE_CORE.md',
+  './WITNESS_SEAL.md',
+  './ISOLATION_BOARD.md',
+  './EXPOSURE_PLATE.md',
+  './REVERSE_LEDGER.md',
+  './REST_SCORE.md',
+  './OFFCUT_DRAWER.md',
+  './BORDER_OFFICE.md',
+  './LOAD_BEARING_SAMPLE.md',
+  './GAUGE_BENCH.md',
+  './SHUFFLE_TABLE.md',
+  './QUORUM_GATE.md',
+  './SHUTTER_CABINET.md',
+  './ELSEWHERE_CATALOGUE_ZERO.md',
+  './COSMIC_RECEIVE_DESK.md',
+  './CELESTIAL_ESCAPEMENT.md',
+  './PLANETARY_HELIODON.md',
+  './DEEP_SPACE.md',
+  './POSSIBILITY_ENGINE.md',
+  './FRAME_SHIFTER.md',
+  './CAUSAL_SIGNAL_BOX.md',
+  './GRAVITATIONAL_COPY_ROOM.md',
+  './REDSHIFT_RULER.md',
+  './ORIGIN_MACHINE.md',
+  './SAME_ANSWER_MACHINE.md',
+  './UNEQUAL_MINUTE.md',
+  './PARALLAX_SURVEY.md',
+  './WEB1_HOME.md',
+  './PAGE_FOUR_RESEARCH.md',
+  './PAGE_FOUR_HESSDALEN.md',
+  './PAGE_FOUR_DEAD_DROP.md',
+  './UNBUILT_ROOM.md'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CURRENT_CACHE_NAME)
-      .then((cache) => cache.addAll(APP_SHELL.map((asset) => new Request(asset, { cache: 'reload' }))))
+      .then((cache) => cache.addAll(
+        APP_SHELL.map((asset) => new Request(asset, { cache: 'reload' }))
+      ))
       .then(() => self.skipWaiting())
   );
 });
@@ -85,8 +221,14 @@ self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
     const isUpgrade = keys.some((key) => key.startsWith('museum-of-almost-') && key !== CURRENT_CACHE_NAME);
-    await Promise.all(keys.filter((key) => key.startsWith('museum-of-almost-') && key !== CURRENT_CACHE_NAME).map((key) => caches.delete(key)));
+
+    await Promise.all(
+      keys
+        .filter((key) => key.startsWith('museum-of-almost-') && key !== CURRENT_CACHE_NAME)
+        .map((key) => caches.delete(key))
+    );
     await self.clients.claim();
+
     if (!isUpgrade) return;
     const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
     await Promise.all(windows.map((client) => {
@@ -110,10 +252,14 @@ async function networkFirst(request, fallbackDocument = null) {
   } catch (error) {
     const cached = await caches.match(request);
     if (cached) return cached;
+
     if (fallbackDocument) {
-      const fallback = fallbackDocument === './index.html' ? await caches.match('./index.html') : await caches.match(fallbackDocument);
+      const fallback = fallbackDocument === './index.html'
+        ? await caches.match('./index.html')
+        : await caches.match(fallbackDocument);
       if (fallback) return fallback;
     }
+
     throw error;
   }
 }
@@ -121,13 +267,16 @@ async function networkFirst(request, fallbackDocument = null) {
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
+
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
   if (request.mode === 'navigate') {
     const scopePath = new URL(self.registration.scope).pathname;
     const fallbackDocument = url.pathname === scopePath ? './index.html' : './404.html';
     event.respondWith(networkFirst(request, fallbackDocument));
     return;
   }
+
   event.respondWith(networkFirst(request));
 });
