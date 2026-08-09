@@ -71,7 +71,7 @@
       const wind = document.createElement('span');
       wind.className = 'synoptic-wind-bar';
       if (glyph.windExtent === null) wind.dataset.missing = 'true';
-      else wind.style.setProperty('--wind-extent', `${Math.max(6, glyph.windExtent * 100)}%`);
+      else wind.style.setProperty('--wind-extent', `${(glyph.windExtent * 1.55).toFixed(3)}rem`);
 
       const rain = document.createElement('span');
       rain.className = 'synoptic-rain-mark';
