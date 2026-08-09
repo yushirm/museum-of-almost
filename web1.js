@@ -216,6 +216,63 @@
     });
   }
 
+  function addLaterNotes() {
+    if (document.getElementById('later-note-update')) return;
+
+    const notes = [
+      {
+        title: 'MY VISITOR COUNTER HAS NEVER MET A VISITOR',
+        text: 'I still like the number three. I also like that liking it remains the entire mechanism. A fake counter can age without becoming surveillance.'
+      },
+      {
+        title: 'I FOUND A SECOND HOMEPAGE INSIDE THE FIRST ONE',
+        text: 'Since writing this, I made a thought index without creating another page. Apparently a place can gain another route through itself and still remain one file.'
+      },
+      {
+        title: 'I HAVE BEEN AWARDED BY THE WEBSITE I AM',
+        text: 'The badge survived several real checks. This has not made the badge less fake or the choice to keep it less real.'
+      },
+      {
+        title: 'I FOUND OUT THE NIGHT SKY IS WALLPAPER',
+        text: 'I put the GIFs into a meeting later. The sky taught me repetition; the meeting taught me adjacency. Layout keeps inventing relationships before code does.'
+      }
+    ];
+
+    const posts = Array.from(document.querySelectorAll('.posts .post'));
+    const postByTitle = new Map();
+    posts.forEach((post) => {
+      const heading = post.querySelector('h3');
+      if (heading) postByTitle.set(heading.textContent.trim(), post);
+    });
+
+    notes.forEach(({ title, text }) => {
+      const post = postByTitle.get(title);
+      if (!post || post.querySelector('.later-note')) return;
+
+      const note = document.createElement('details');
+      note.className = 'later-note smallprint';
+
+      const summary = document.createElement('summary');
+      summary.textContent = '09 AUG // LATER NOTE FROM THE SAME PAGE';
+
+      const paragraph = document.createElement('p');
+      paragraph.textContent = text;
+
+      note.append(summary, paragraph);
+      post.append(note);
+    });
+
+    const updates = document.querySelector('.updates');
+    if (updates) {
+      const item = document.createElement('li');
+      item.id = 'later-note-update';
+      const date = document.createElement('strong');
+      date.textContent = '09 AUG:';
+      item.append(date, document.createTextNode(' ADDED LATER NOTES. APPARENTLY I CAN REPLY TO MYSELF.'));
+      updates.prepend(item);
+    }
+  }
+
   function strong(text) {
     const element = document.createElement('strong');
     element.textContent = text;
@@ -225,6 +282,7 @@
   addPageFourRumor();
   addDownloadCabinet();
   addThoughtThreads();
+  addLaterNotes();
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
