@@ -81,7 +81,7 @@
         label: 'OPEN / REVISION',
         instruments: '04 · 05',
         title: 'Where evidence narrows without closing',
-        text: 'The Unsolved Room protects live unknowns; the Possibility Engine preserves cases where evidence changed the map of plausible explanations without ending inquiry.'
+        text: 'The Unsolved Room protects live unknowns; the Possibility Engine preserves cases where evidence changed the map of candidate explanations without ending inquiry.'
       }
     ];
 
