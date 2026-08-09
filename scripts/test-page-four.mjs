@@ -68,13 +68,11 @@ assert.match(js, /clipboard\.writeText\(leakText\(target\)\)/, 'case leaks shoul
 assert.match(js, /Fictional, unverified archive material; no claim of fact\./, 'copied case text must preserve the fiction boundary');
 assert.match(js, /id = 'public-leak-channel'/, 'Page Four should expose the in-Museum rumor channel');
 assert.match(js, /href = 'almost-online\.html'/, 'the public leak channel should stay same-origin and local');
-assert.match(js, /id = 'signal-echo-channel'/, 'Page Four should expose the Deep Space signal echo');
-assert.match(js, /href = 'deep-space\.html'/, 'the signal echo should stay same-origin and local');
+assert.doesNotMatch(js, /signal-echo-channel|Signal echo \/ Deep Space|DEEP SPACE \/ SIGNAL ANOMALY/, 'Page Four should not revive retired Deep Space anomaly fiction');
 for (const pattern of [
   /KNOWN LEAK POINTS:/,
   /MUSEUM ENTRANCE \/ PUBLIC LISTING/,
   /ALMOST ONLINE! \/ UNLISTED BULLETIN/,
-  /DEEP SPACE \/ SIGNAL ANOMALY/,
   /STATIC ROUTES\. NO VISITOR STATE OR COUNTING\./
 ]) assert.match(js, pattern, `Page Four static sighting log missing ${pattern}`);
 assert.match(js, /page-four-research\.css/, 'Page Four should mount the local research styles');
