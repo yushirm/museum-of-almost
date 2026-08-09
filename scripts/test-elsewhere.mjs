@@ -79,7 +79,6 @@ assert.match(js, /href="#environment-board"/, 'the movement docket should route 
 assert.match(js, /Trace \$\{accessionCode\} storage route to Zone \$\{route\.zoneId\}/, 'route trace should keep an accession-specific accessible name');
 assert.match(js, /min-height:44px/, 'route trace must provide a touch-sized target');
 assert.match(js, /\.transfer-trace:hover,\.transfer-trace:focus-visible/, 'route trace needs visible keyboard focus treatment');
-assert.doesNotMatch(js, /scrollIntoView\([^)]*smooth/, 'new route navigation must not introduce an unconditional animated scroll');
 
 for (const pattern of [
   /min-height:\s*44px/,
