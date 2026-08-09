@@ -9,7 +9,7 @@
 .synoptic-temperature-spine{position:absolute;left:1.12rem;top:.65rem;bottom:.65rem;width:1px;background:currentColor}
 .synoptic-temperature-notch{position:absolute;left:-.28rem;width:.58rem;height:2px;background:currentColor;transform:translateY(50%)}
 .synoptic-temperature-notch[data-missing="true"]{display:none}
-.synoptic-wind-bar{position:absolute;left:2.08rem;top:2.12rem;width:calc(1.55rem * var(--wind-extent,0));max-width:1.55rem;height:2px;background:currentColor;transform-origin:left center}
+.synoptic-wind-bar{position:absolute;left:2.08rem;top:2.12rem;width:var(--wind-extent,0rem);max-width:1.55rem;height:2px;background:currentColor;transform-origin:left center}
 .synoptic-wind-bar[data-missing="true"]{display:none}
 .synoptic-rain-mark{position:absolute;left:1.78rem;top:1.78rem;width:.78rem;height:.78rem;border:2px solid currentColor;border-radius:50%}
 .synoptic-rain-mark[data-state="present"]{background:currentColor}.synoptic-rain-mark[data-state="missing"]{display:none}
