@@ -121,16 +121,6 @@
       channel.append(number, document.createTextNode(' Public leak channel'));
       caseNav.append(channel);
     }
-
-    if (caseNav && !document.getElementById('signal-echo-channel')) {
-      const channel = document.createElement('a');
-      channel.id = 'signal-echo-channel';
-      channel.href = 'deep-space.html';
-      const number = document.createElement('span');
-      number.textContent = '??';
-      channel.append(number, document.createTextNode(' Signal echo / Deep Space'));
-      caseNav.append(channel);
-    }
   }
 
   function addRumorSightings() {
@@ -146,12 +136,10 @@
     entrance.textContent = 'MUSEUM ENTRANCE / PUBLIC LISTING';
     const web = document.createElement('span');
     web.textContent = 'ALMOST ONLINE! / UNLISTED BULLETIN';
-    const space = document.createElement('span');
-    space.textContent = 'DEEP SPACE / SIGNAL ANOMALY';
     const boundary = document.createElement('small');
     boundary.textContent = 'STATIC ROUTES. NO VISITOR STATE OR COUNTING.';
 
-    log.append(title, entrance, web, space, boundary);
+    log.append(title, entrance, web, boundary);
     const fictionLabel = archiveSidebar.querySelector('.fiction-label');
     if (fictionLabel) archiveSidebar.insertBefore(log, fictionLabel);
     else archiveSidebar.append(log);
