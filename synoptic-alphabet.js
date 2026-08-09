@@ -33,12 +33,25 @@
         <p><strong>Refusal:</strong> no wind direction, pressure, cloud cover, front analysis, interpolation or inferred condition. Numeric text remains authoritative.</p>
       </div>
       <ol id="synoptic-alphabet-list" class="synoptic-alphabet-list" aria-label="Thirteen linked Museum station glyphs"></ol>
+      <div class="synoptic-relay" aria-labelledby="synoptic-relay-title">
+        <div>
+          <strong id="synoptic-relay-title">CARRY THIS WINDOW FORWARD</strong>
+          <p>Selection can now cross the seam between observing one point and comparing two. The Difference Engine below remains the authoritative comparison surface.</p>
+        </div>
+        <div class="synoptic-relay-controls" role="group" aria-label="Patch the selected station into the Difference Engine">
+          <button type="button" data-synoptic-patch="a">PATCH SELECTED AS A</button>
+          <button type="button" data-synoptic-patch="b">PATCH SELECTED AS B</button>
+        </div>
+        <p id="synoptic-relay-status" class="synoptic-relay-status" role="status" aria-live="polite">POINT 01 is ready to carry into either comparison end.</p>
+      </div>
       <p class="synoptic-alphabet-note">Inspired by the compression principle of synoptic station notation; this is not WMO station-model notation and should not be read as one.</p>
     </div>`;
   anchor.insertAdjacentElement('afterend', section);
 
   const list = section.querySelector('#synoptic-alphabet-list');
   const status = section.querySelector('#synoptic-alphabet-status');
+  const relayStatus = section.querySelector('#synoptic-relay-status');
+  const relayButtons = [...section.querySelectorAll('[data-synoptic-patch]')];
   let selectedId = currentSelectedStationId();
 
   document.addEventListener(SNAPSHOT_EVENT, (event) => {
@@ -52,6 +65,10 @@
     const id = stationControl.dataset.station || stationControl.querySelector('.station-card-id')?.textContent?.match(/\d+/)?.[0];
     if (id) selectGlyph(id);
   });
+
+  for (const button of relayButtons) {
+    button.addEventListener('click', () => patchSelected(button.dataset.synopticPatch));
+  }
 
   render(globalThis.MuseumCommonsSnapshot);
 
@@ -71,6 +88,30 @@
       button.setAttribute('aria-pressed', String(active));
     }
     updateStatus(core.buildAlphabet(globalThis.MuseumCommonsSnapshot));
+    if (relayStatus) relayStatus.textContent = `POINT ${selectedId} is ready to carry into either comparison end.`;
+  }
+
+  function patchSelected(target) {
+    if (target !== 'a' && target !== 'b') return;
+    const targetLabel = target.toUpperCase();
+    const arm = document.querySelector(`#patch-${target}`);
+    if (!(arm instanceof HTMLButtonElement)) {
+      if (relayStatus) relayStatus.textContent = 'The Difference Engine is unavailable in this rendering.';
+      return;
+    }
+
+    arm.click();
+    const expectedLabel = `Patch point ${selectedId} to end ${targetLabel}`;
+    const patchPoint = [...document.querySelectorAll('.patch-point')]
+      .find((button) => button.getAttribute('aria-label') === expectedLabel);
+
+    if (!(patchPoint instanceof HTMLButtonElement)) {
+      if (relayStatus) relayStatus.textContent = `POINT ${selectedId} could not be carried to end ${targetLabel}. Use the Difference Engine patchbay below.`;
+      return;
+    }
+
+    patchPoint.click();
+    if (relayStatus) relayStatus.textContent = `POINT ${selectedId} is now patched as end ${targetLabel}. The Difference Engine below shows the resulting comparison.`;
   }
 
   function updateStatus(glyphs) {
@@ -139,5 +180,6 @@
     }
 
     updateStatus(glyphs);
+    if (relayStatus) relayStatus.textContent = `POINT ${selectedId} is ready to carry into either comparison end.`;
   }
 })();
