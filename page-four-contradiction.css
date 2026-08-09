@@ -1,0 +1,67 @@
+.contradiction-register {
+  min-height: 0;
+  margin: 1rem;
+  border: 1px solid rgba(208, 167, 91, 0.32);
+  color: #241f16;
+  background: #bcae86;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
+}
+
+.contradiction-register summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: #342817;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  list-style: none;
+}
+
+.contradiction-register summary::-webkit-details-marker { display: none; }
+.contradiction-register summary::before { content: "> "; margin-right: 0.45rem; }
+.contradiction-register[open] summary::before { content: "v "; }
+
+.contradiction-register-body {
+  position: relative;
+  padding: 1rem clamp(1rem, 3vw, 2rem) 3.4rem;
+  border-top: 1px dashed rgba(36, 31, 22, 0.35);
+}
+
+.contradiction-register .record-meta { margin-bottom: 1rem; }
+.contradiction-register p { max-width: 72ch; margin: 0.8rem 0; font-size: 0.72rem; line-height: 1.65; }
+.contradiction-register a { font-weight: 700; text-underline-offset: 0.2em; }
+.contradiction-register em {
+  position: static;
+  display: block;
+  max-width: 54ch;
+  margin: 1.2rem 0 0 auto;
+  font: 700 italic 0.8rem/1.35 Georgia, serif;
+  text-align: right;
+  transform: rotate(-1deg);
+}
+.contradiction-register em small { font-weight: 400; }
+
+@media (max-width: 700px) {
+  .contradiction-register { margin-inline: 0.6rem; }
+  .contradiction-register-body { padding-bottom: 1.2rem; }
+  .contradiction-register em { text-align: left; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contradiction-register * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}
+
+@media (prefers-contrast: more) {
+  .contradiction-register { border: 2px solid currentColor; }
+  .contradiction-register summary { color: #000; }
+}
+
+@media print {
+  .contradiction-register { color: #000; background: #fff; box-shadow: none; border-color: #555; }
+  .contradiction-register:not([open]) > .contradiction-register-body { display: block; }
+  .contradiction-register summary { display: none; }
+  .contradiction-register a { color: #000; }
+}
