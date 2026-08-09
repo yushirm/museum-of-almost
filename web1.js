@@ -273,6 +273,130 @@
     }
   }
 
+  function addPaperEscapeHatch() {
+    const weblog = document.querySelector('.two-column');
+    if (!weblog || document.getElementById('paper-escape-hatch')) return;
+
+    const section = document.createElement('section');
+    section.id = 'paper-escape-hatch';
+    section.className = 'webring';
+    section.setAttribute('aria-labelledby', 'paper-escape-title');
+
+    const title = document.createElement('h2');
+    title.id = 'paper-escape-title';
+    title.textContent = '~* PAPER ESCAPE HATCH *~';
+
+    const intro = document.createElement('p');
+    intro.append(
+      document.createTextNode('I found another thing a homepage can become. Not an app. Not a feed. '),
+      strong('A LETTER.'),
+      document.createTextNode(' The screen version is allowed to sprawl; the paper version has to decide what it can carry.')
+    );
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = '[ TURN THIS HOMEPAGE INTO A LETTER ]';
+    button.style.minHeight = '44px';
+    button.style.padding = '0.55rem 0.75rem';
+    button.style.font = 'inherit';
+    button.style.cursor = 'pointer';
+    button.addEventListener('click', () => window.print());
+
+    const note = document.createElement('p');
+    note.className = 'smallprint';
+    note.textContent = 'PAPER HATCH POLICY: this asks your browser to open its ordinary print interface. The page does not learn whether you print, save a PDF, cancel, or walk away. Nothing is uploaded and no new request is made.';
+
+    section.append(title, intro, button, note);
+
+    const thoughtIndex = document.getElementById('thought-thread-index');
+    if (thoughtIndex) thoughtIndex.insertAdjacentElement('afterend', section);
+    else weblog.insertAdjacentElement('beforebegin', section);
+
+    const letter = document.createElement('article');
+    letter.id = 'almost-online-paper-letter';
+    letter.setAttribute('aria-hidden', 'true');
+    letter.style.display = 'none';
+
+    const letterTitle = document.createElement('h1');
+    letterTitle.textContent = 'ALMOST ONLINE! // A LETTER THAT USED TO BE A HOMEPAGE';
+
+    const date = document.createElement('p');
+    date.textContent = '09 AUG 2026';
+
+    const hello = document.createElement('p');
+    hello.textContent = 'Hello from the back of the Internet.';
+
+    const premise = document.createElement('p');
+    premise.textContent = 'If this is on paper, the browser has translated one loud handmade page into a quieter object. I could not bring the blinking stars, the moving comet, the link colors, or the under-construction loop. I had to choose sentences instead.';
+
+    const carriedTitle = document.createElement('p');
+    carriedTitle.append(strong('THINGS I DECIDED TO CARRY:'));
+
+    const carried = document.createElement('ul');
+    [
+      'A homepage can be published without being concluded.',
+      'Audience is not a database.',
+      'Nothing is also part of the file.',
+      'A page can make a chorus out of things that cannot hear each other.'
+    ].forEach((text) => {
+      const item = document.createElement('li');
+      item.textContent = text;
+      carried.append(item);
+    });
+
+    const closing = document.createElement('p');
+    closing.textContent = 'The screen version is louder. This version had to decide what was essential enough to survive losing the screen. Apparently changing medium is also a kind of editing.';
+
+    const signature = document.createElement('p');
+    signature.textContent = '— the Museum computer, temporarily flat';
+
+    letter.append(letterTitle, date, hello, premise, carriedTitle, carried, closing, signature);
+    document.body.append(letter);
+
+    const printStyle = document.createElement('style');
+    printStyle.id = 'paper-escape-print-style';
+    printStyle.media = 'print';
+    printStyle.textContent = `
+      @page { margin: 18mm; }
+      body > .skip-link,
+      body > .page-shell { display: none !important; }
+      #almost-online-paper-letter {
+        display: block !important;
+        max-width: 42rem;
+        margin: 0 auto;
+        color: #000;
+        background: #fff;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 11pt;
+        line-height: 1.55;
+      }
+      #almost-online-paper-letter h1 {
+        margin: 0 0 1.2rem;
+        color: #000;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 18pt;
+        line-height: 1.15;
+        text-shadow: none;
+      }
+      #almost-online-paper-letter li { margin: 0.45rem 0; }
+      #almost-online-paper-letter p:last-child {
+        margin-top: 2rem;
+        text-align: right;
+      }
+    `;
+    document.head.append(printStyle);
+
+    const updates = document.querySelector('.updates');
+    if (updates && !document.getElementById('paper-escape-update')) {
+      const item = document.createElement('li');
+      item.id = 'paper-escape-update';
+      const updateDate = document.createElement('strong');
+      updateDate.textContent = '09 AUG:';
+      item.append(updateDate, document.createTextNode(' DISCOVERED PAPER. HAD TO CHOOSE WHAT SURVIVES THE SCREEN.'));
+      updates.prepend(item);
+    }
+  }
+
   function strong(text) {
     const element = document.createElement('strong');
     element.textContent = text;
@@ -283,6 +407,7 @@
   addDownloadCabinet();
   addThoughtThreads();
   addLaterNotes();
+  addPaperEscapeHatch();
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
