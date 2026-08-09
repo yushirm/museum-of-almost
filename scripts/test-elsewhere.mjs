@@ -69,6 +69,18 @@ assert.match(js, /C0\.002 ticket · C0\.003 map · C0\.004 warranty · C0\.005 f
 assert.match(js, /C0\.008 object label · C0\.009 postcard · C0\.010 boxed shadow\./, 'Zone C board should use the same route order as the transfer desk');
 assert.match(js, /catalogueRule\.after\(desk\)/, 'transfer desk should deepen the existing catalogue rather than create another top-level section');
 
+for (const zone of ['A', 'B', 'C']) {
+  assert.match(js, new RegExp(`data-storage-zone=\\"${zone}\\"`), `environment board should expose Zone ${zone} as a route destination`);
+}
+assert.match(js, /markActiveRoute\(route, accessionCode\)/, 'transfer updates should mark the matching conservation zone');
+assert.match(js, /zone\.classList\.toggle\('is-active-route', active\)/, 'only the selected storage zone should receive the active movement state');
+assert.match(js, /CATALOGUE 0 → ZONE \$\{route\.zoneId\} → CONTRADICTION HOLD/, 'the handling desk should expose a compact route trace');
+assert.match(js, /href="#environment-board"/, 'the movement docket should route visitors to the existing environment board');
+assert.match(js, /Trace \$\{accessionCode\} storage route to Zone \$\{route\.zoneId\}/, 'route trace should keep an accession-specific accessible name');
+assert.match(js, /min-height:44px/, 'route trace must provide a touch-sized target');
+assert.match(js, /\.transfer-trace:hover,\.transfer-trace:focus-visible/, 'route trace needs visible keyboard focus treatment');
+assert.doesNotMatch(js, /scrollIntoView\([^)]*smooth/, 'new route navigation must not introduce an unconditional animated scroll');
+
 for (const pattern of [
   /min-height:\s*44px/,
   /:focus-visible/,
@@ -96,4 +108,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, one retained corridor lift, an accession-linked transfer desk, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, one retained corridor lift, accession-linked handling and storage-route tracing, accessible routes, and offline shell coverage.');
