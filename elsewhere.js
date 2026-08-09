@@ -7,8 +7,42 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let cursor = -1;
 
+  const handlingRoutes = Object.freeze({
+    'artifact-c0-001': { zone: 'ZONE B · BUILDING FABRIC', action: 'Support the key without testing it against unverified locks.', hold: 'No matching lock exists in the building survey.' },
+    'artifact-c0-002': { zone: 'ZONE A · PAPER / FILM', action: 'Sleeve flat; preserve both punched marks; do not validate the route.', hold: 'The railway line named by the ticket was never built.' },
+    'artifact-c0-003': { zone: 'ZONE A · PAPER / FILM', action: 'Store flat with full edge support; do not restore missing geography.', hold: 'The sheet keeps cartographic structure after the geography is removed.' },
+    'artifact-c0-004': { zone: 'ZONE A · PAPER / FILM', action: 'File with technical papers; avoid treating warranty language as proof of manufacture.', hold: 'The covered machine has no manufacturing record.' },
+    'artifact-c0-005': { zone: 'ZONE A · PAPER / FILM', action: 'Keep cool and dark; do not process, expose, or advance the stated date.', hold: 'The canister is labelled “Exposure: Tomorrow” while the fictional processing log finishes first.' },
+    'artifact-c0-006': { zone: 'ZONE B · BUILDING FABRIC', action: 'Brace in place where possible; document before any relocation.', hold: 'Removing the temporary exit may erase the reason it was accessioned.' },
+    'artifact-c0-007': { zone: 'ZONE A · PAPER / FILM', action: 'Sleeve with queue documents; preserve the printed zero as issued.', hold: 'The number precedes a queue whose first issued ticket is recorded as 001.' },
+    'artifact-c0-008': { zone: 'ZONE C · OPTICAL / UNASSIGNED', action: 'Box with labels; photograph under stable light without resolving the named date.', hold: 'The label describes an object category that cannot be reconciled with a calendar.' },
+    'artifact-c0-009': { zone: 'ZONE C · OPTICAL / UNASSIGNED', action: 'Store flat; image both sides; retain the unresolved destination wording.', hold: 'The pictured place is absent from the chart supplied with the record.' },
+    'artifact-c0-010': { zone: 'ZONE C · OPTICAL / UNASSIGNED', action: 'Keep sealed; attempt repeatable imaging without opening the enclosure.', hold: 'The object is catalogued as a fixed shadow that refuses reproduction.' },
+    'artifact-c0-011': { zone: 'ZONE A · PAPER / FILM', action: 'File with manuals; preserve pagination and model designation exactly.', hold: 'The instructions describe a model for which no machine is accessioned.' },
+    'artifact-c0-012': { zone: 'ZONE B · BUILDING FABRIC', action: 'Support as architectural signage; do not mount it on an invented room.', hold: 'The plaque names Room 0, which is absent from the building survey.' }
+  });
+
   const closeAll = () => {
     for (const record of records) record.open = false;
+  };
+
+  const updateTransferDesk = (record) => {
+    const desk = document.querySelector('#transfer-desk');
+    if (!desk || !record) return;
+    const route = handlingRoutes[record.id];
+    if (!route) return;
+    const accession = record.querySelector('summary span')?.textContent?.trim() || record.id.replace('artifact-', '').toUpperCase();
+    const title = record.querySelector('summary strong')?.textContent?.trim() || 'Untitled record';
+    const accessionNode = desk.querySelector('[data-transfer-accession]');
+    const titleNode = desk.querySelector('[data-transfer-title]');
+    const zoneNode = desk.querySelector('[data-transfer-zone]');
+    const actionNode = desk.querySelector('[data-transfer-action]');
+    const holdNode = desk.querySelector('[data-transfer-hold]');
+    if (accessionNode) accessionNode.textContent = accession;
+    if (titleNode) titleNode.textContent = title;
+    if (zoneNode) zoneNode.textContent = route.zone;
+    if (actionNode) actionNode.textContent = route.action;
+    if (holdNode) holdNode.textContent = route.hold;
   };
 
   const openRecord = (index) => {
@@ -17,6 +51,7 @@
     closeAll();
     const record = records[cursor];
     record.open = true;
+    updateTransferDesk(record);
     const title = record.querySelector('summary strong')?.textContent?.trim() || `Record ${cursor + 1}`;
     if (status) status.textContent = `Misfile ${cursor + 1} of ${records.length}: ${title}.`;
     record.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
@@ -48,10 +83,23 @@
       .environment-conflict strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
       .environment-order{margin:1rem 0 0;padding:1rem;border-left:4px solid currentColor;background:rgba(0,0,0,.18)}
       .environment-order strong{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-transform:uppercase}
-      @media (max-width:800px){.environment-heading,.environment-zones{grid-template-columns:1fr}.environment-zone dl div{grid-template-columns:6.5rem 1fr}}
+      .transfer-desk{margin:1.5rem 0 2rem;border:1px solid currentColor;background:rgba(0,0,0,.12)}
+      .transfer-desk header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:end;padding:1rem;border-bottom:1px solid currentColor}
+      .transfer-desk header p{margin:0;max-width:58ch}
+      .transfer-stamp{padding:.35rem .55rem;border:1px solid currentColor;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+      .transfer-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.9fr) minmax(0,1.3fr);margin:0}
+      .transfer-grid>div{min-width:0;padding:1rem}
+      .transfer-grid>div+div{border-left:1px solid currentColor}
+      .transfer-grid dt{margin:0 0 .45rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
+      .transfer-grid dd{margin:0;line-height:1.45}
+      .transfer-grid strong{display:block;margin-bottom:.2rem}
+      .transfer-hold{padding:1rem;border-top:1px dashed currentColor;background:rgba(229,168,38,.07)}
+      .transfer-hold strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
+      @media (max-width:800px){.environment-heading,.environment-zones{grid-template-columns:1fr}.environment-zone dl div{grid-template-columns:6.5rem 1fr}.transfer-grid{grid-template-columns:1fr}.transfer-grid>div+div{border-left:0;border-top:1px solid currentColor}}
+      @media (max-width:520px){.transfer-desk header{grid-template-columns:1fr}.transfer-stamp{justify-self:start}}
       @media (max-width:420px){.environment-board{padding:1rem}.environment-zone dl div{grid-template-columns:1fr;gap:.15rem}}
-      @media (prefers-contrast:more){.environment-board,.environment-zone,.environment-zone header{border-width:2px}.environment-status{border-width:2px}}
-      @media print{.environment-board{box-shadow:none;break-inside:avoid}.environment-zone{break-inside:avoid}}
+      @media (prefers-contrast:more){.environment-board,.environment-zone,.environment-zone header,.transfer-desk,.transfer-desk header,.transfer-grid>div+div{border-width:2px}.environment-status{border-width:2px}}
+      @media print{.environment-board{box-shadow:none;break-inside:avoid}.environment-zone{break-inside:avoid}.transfer-desk{break-inside:avoid}}
     `;
     document.head.append(style);
 
@@ -77,7 +125,7 @@
           <header><span>ZONE A · PAPER / FILM</span><h3>Keep the future out of the light.</h3></header>
           <dl>
             <div><dt>Target</dt><dd>Cool, stable, low-light storage.</dd></div>
-            <div><dt>Assigned</dt><dd>C0.002 ticket · C0.003 map · C0.005 film canister.</dd></div>
+            <div><dt>Assigned</dt><dd>C0.002 ticket · C0.003 map · C0.004 warranty · C0.005 film · C0.007 queue ticket · C0.011 manual.</dd></div>
             <div><dt>Routine action</dt><dd>Box, support, limit handling, record condition.</dd></div>
           </dl>
           <p class="environment-conflict"><strong>Exception A0</strong>C0.005 is labelled “Exposure: Tomorrow,” while its fictional processing log says completion came first. Darkness may protect the material; the catalogue cannot say whether it also postpones the event.</p>
@@ -95,7 +143,7 @@
           <header><span>ZONE C · OPTICAL / UNASSIGNED</span><h3>Measure without demanding that the object cooperate.</h3></header>
           <dl>
             <div><dt>Target</dt><dd>Stable illumination, repeatable imaging, sealed storage.</dd></div>
-            <div><dt>Assigned</dt><dd>C0.009 postcard · C0.010 boxed shadow · C0.008 object label.</dd></div>
+            <div><dt>Assigned</dt><dd>C0.008 object label · C0.009 postcard · C0.010 boxed shadow.</dd></div>
             <div><dt>Routine action</dt><dd>Photograph, compare, quarantine unexplained change.</dd></div>
           </dl>
           <p class="environment-conflict"><strong>Exception C0</strong>C0.010 is catalogued as a fixed shadow that refuses reproduction. The normal conservation record depends on repeatable images; this fictional object makes “document the condition” the condition that cannot be met.</p>
@@ -107,11 +155,45 @@
     catalogue.before(section);
   };
 
+  const installTransferDesk = () => {
+    const catalogueRule = document.querySelector('.catalogue-rule');
+    if (!catalogueRule || document.querySelector('#transfer-desk') || !records.length) return;
+    const desk = document.createElement('aside');
+    desk.className = 'transfer-desk';
+    desk.id = 'transfer-desk';
+    desk.setAttribute('aria-labelledby', 'transfer-title');
+    desk.innerHTML = `
+      <header>
+        <div>
+          <p class="kicker">COLLECTIONS TRANSFER / HANDLING DESK</p>
+          <h3 id="transfer-title">Every object gets a route. No route resolves the object.</h3>
+          <p>Open any accession record below. This docket follows that existing record through the fictional storage plan and states the ordinary handling action that can proceed without pretending its provenance problem has been solved.</p>
+        </div>
+        <span class="transfer-stamp">MOVEMENT COPY · LOCAL ONLY</span>
+      </header>
+      <dl class="transfer-grid">
+        <div><dt>Current accession</dt><dd><strong data-transfer-accession></strong><span data-transfer-title></span></dd></div>
+        <div><dt>Storage route</dt><dd data-transfer-zone></dd></div>
+        <div><dt>Handling order</dt><dd data-transfer-action></dd></div>
+      </dl>
+      <p class="transfer-hold"><strong>Contradiction hold</strong><span data-transfer-hold></span></p>
+    `;
+    catalogueRule.after(desk);
+    updateTransferDesk(records.find((record) => record.open) || records[0]);
+
+    for (const record of records) {
+      record.addEventListener('toggle', () => {
+        if (record.open) updateTransferDesk(record);
+      });
+    }
+  };
+
   if (button) {
     button.addEventListener('click', () => openRecord(cursor + 1));
   }
 
   installEnvironmentBoard();
+  installTransferDesk();
 
   if (reducedMotion) {
     document.documentElement.dataset.reducedMotion = 'true';
