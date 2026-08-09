@@ -65,19 +65,19 @@
     {
       id: 'evidence',
       number: 'LOCK 04',
-      title: 'THE EVIDENCE TEST',
-      challenge: 'Only one statement keeps the Instrument Room’s original limits intact.',
-      prompt: 'Which claim survives cross-examination?',
+      title: 'THE SOURCE COUNT',
+      challenge: 'A: original fictional field note from one observer.  B: “copied from A.”  C: “summary of A/B packet.”',
+      prompt: 'How many independent observations does this packet establish?',
       options: [
-        { label: 'RADAR — three probable visual/radar coincidences were recorded, with important limits.', correct: true },
-        { label: 'RADIO — repeating spectrum spikes were recorded at the same time as the lights.', correct: false },
-        { label: 'SEISMIC — no local seismic activity proves the lights were non-physical.', correct: false }
+        { label: 'THREE — three records exist.', correct: false },
+        { label: 'TWO — A and B agree.', correct: false },
+        { label: 'ONE AT MOST — B and C descend from A.', correct: true }
       ],
       hints: [
-        'The right answer preserves a caveat instead of converting a record into a cause.',
-        'The radio spikes were not simultaneous with the lights, and a seismic null does not prove another mechanism.'
+        'Count source ancestors, not sheets of paper.',
+        'A copy can multiply records without multiplying observations.'
       ],
-      solvedMessage: 'Claim accepted. Coincidence remains coincidence; the caveats stay attached.',
+      solvedMessage: 'Claim accepted. Three documents, one surviving source family. Repetition is not independent corroboration.',
       fragment: 'LIFT'
     }
   ];

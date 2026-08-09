@@ -28,9 +28,12 @@ for (const pattern of [
   /○ ○ ●  ○ ○ ●  ○ ○ \?/,
   /WKH ILOH LV QRW KHUH/,
   /Exactly one statement is true\. Which drawer holds the envelope\?/,
-  /RADAR — three probable visual\/radar coincidences were recorded, with important limits\./,
-  /RADIO — repeating spectrum spikes were recorded at the same time as the lights\./,
-  /SEISMIC — no local seismic activity proves the lights were non-physical\./
+  /THE SOURCE COUNT/,
+  /original fictional field note from one observer/,
+  /ONE AT MOST — B and C descend from A\./,
+  /Count source ancestors, not sheets of paper\./,
+  /A copy can multiply records without multiplying observations\./,
+  /Three documents, one surviving source family\. Repetition is not independent corroboration\./
 ]) assert.match(js, pattern, `Dead Drop puzzle content missing ${pattern}`);
 
 for (const fragment of ['05', 'LEVEL −1', 'FREIGHT', 'LIFT']) {
@@ -106,4 +109,4 @@ for (const pattern of [/@media/, /prefers-reduced-motion/, /prefers-contrast/, /
 }
 assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i, 'Dead Drop styles must use local/system resources only');
 
-console.log('Page Four Dead Drop four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, evidence limits, accessibility, privacy, and v43 cache-lineage contracts verified.');
+console.log('Page Four Dead Drop four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, source-independence evidence limits, accessibility, privacy, and v43 cache-lineage contracts verified.');
