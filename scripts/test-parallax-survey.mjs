@@ -3,6 +3,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 
+process.on('uncaughtExceptionMonitor', (error) => {
+  const message = String(error && error.stack ? error.stack : error).replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
+  console.error(`::error title=Parallax Survey regression::${message}`);
+});
+
 const root = path.resolve(new URL('..', import.meta.url).pathname);
 const read = (name) => fs.readFileSync(path.join(root, name), 'utf8');
 const require = createRequire(import.meta.url);
