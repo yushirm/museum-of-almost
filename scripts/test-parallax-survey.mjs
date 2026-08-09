@@ -115,8 +115,8 @@ assert.match(serviceWorker, /const PAGE_FOUR_DEAD_DROP_CACHE_NAME = 'museum-of-a
   'Page Four v43 must remain named in cache lineage');
 assert.match(serviceWorker, /const UNBUILT_ROOM_CACHE_NAME = 'museum-of-almost-v44-unbuilt-room'/,
   'Unbuilt Room v44 must remain named in cache lineage');
-assert.match(serviceWorker, /const PARALLAX_SURVEY_CACHE_NAME = 'museum-of-almost-v45-parallax-survey'/);
-assert.match(serviceWorker, /const CURRENT_CACHE_NAME = PARALLAX_SURVEY_CACHE_NAME/);
+assert.match(serviceWorker, /const PARALLAX_SURVEY_CACHE_NAME = 'museum-of-almost-v45-parallax-survey'/,
+  'Parallax Survey v45 must remain named in cache lineage even after later generations become current');
 for (const asset of [
   './parallax-survey.css',
   './parallax-survey-core.js',
@@ -130,4 +130,4 @@ for (const asset of [
   './UNBUILT_ROOM.md'
 ]) assert.ok(serviceWorker.includes(`'${asset}'`), `offline shell should include ${asset}`);
 
-console.log('Parallax Survey fixed synthetic geometry, inverse small-angle distance relation, control-free static presentation, scientific boundary, accessibility, privacy, v44 Unbuilt Room lineage preservation, v45 cache ownership, and progressive mount verified.');
+console.log('Parallax Survey fixed synthetic geometry, inverse small-angle distance relation, control-free static presentation, scientific boundary, accessibility, privacy, v44 Unbuilt Room and v45 Parallax lineage preservation, and progressive mount verified.');
