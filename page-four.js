@@ -145,6 +145,115 @@
     else archiveSidebar.append(log);
   }
 
+  function injectFindingAidStyles() {
+    if (document.getElementById('page-four-finding-aid-style')) return;
+
+    const style = document.createElement('style');
+    style.id = 'page-four-finding-aid-style';
+    style.textContent = `
+      .finding-aid{margin:0 0 2rem;border-block:1px solid rgba(164,190,118,.22);background:rgba(5,8,5,.58)}
+      .finding-aid summary{min-height:64px;display:grid;grid-template-columns:minmax(9rem,.28fr) minmax(0,.72fr);gap:1rem 2rem;align-items:center;padding:1rem;cursor:pointer;list-style:none}
+      .finding-aid summary::-webkit-details-marker{display:none}.finding-aid summary::after{content:"OPEN +";grid-column:1;color:#8fbf55;font-size:.62rem;font-weight:700;letter-spacing:.11em}.finding-aid[open] summary::after{content:"CLOSE −"}
+      .finding-aid summary span{color:#8fbf55;font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.finding-aid summary strong{color:#edf8d8;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.35rem,3vw,2.3rem);font-weight:500;line-height:1.05}
+      .finding-aid summary:focus-visible{outline:3px solid #b8ee75;outline-offset:3px}.finding-aid-body{padding:0 1rem 1.2rem}.finding-aid-intro{max-width:76ch;margin:0 0 1rem;color:#b7bea3;line-height:1.55}
+      .finding-aid-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid rgba(164,190,118,.18);border-left:1px solid rgba(164,190,118,.18)}.finding-aid-entry{min-width:0;padding:1rem;border-right:1px solid rgba(164,190,118,.18);border-bottom:1px solid rgba(164,190,118,.18)}
+      .finding-aid-entry h3{margin:0;color:#d0a75b;font-size:.72rem;letter-spacing:.09em}.finding-aid-entry p{margin:.55rem 0;color:#aeb7a0;font-size:.76rem;line-height:1.5}.finding-aid-links{display:flex;flex-wrap:wrap;gap:.4rem}.finding-aid-links a{min-height:44px;display:inline-flex;align-items:center;padding:.45rem .6rem;border:1px solid rgba(184,238,117,.24);color:#dce8c8;font-size:.66rem;text-decoration:none}.finding-aid-links a:hover{border-color:#b8ee75;background:rgba(143,191,85,.08)}.finding-aid-links a:focus-visible{outline:3px solid #b8ee75;outline-offset:2px}
+      .finding-aid-boundary{margin:1rem 0 0;padding:.7rem;border-left:3px solid #d64f3a;color:#d99a86;font-size:.65rem;line-height:1.5;letter-spacing:.07em;text-transform:uppercase}
+      @media(max-width:700px){.finding-aid summary{grid-template-columns:1fr;gap:.45rem}.finding-aid summary::after{grid-column:auto}.finding-aid-grid{grid-template-columns:1fr}}
+      @media(prefers-contrast:more){.finding-aid,.finding-aid-grid,.finding-aid-entry,.finding-aid-links a{border-color:currentColor}.finding-aid-intro,.finding-aid-entry p{color:#fff}}
+      @media print{.finding-aid{color:#000;background:#fff;border-color:#555}.finding-aid summary{display:none}.finding-aid:not([open])>.finding-aid-body{display:block}.finding-aid-body,.finding-aid-entry,.finding-aid-links a,.finding-aid-boundary{color:#000!important;background:#fff;border-color:#555}}
+    `;
+    document.head.append(style);
+  }
+
+  function mountFindingAid() {
+    const caseGrid = document.querySelector('.case-grid');
+    if (!caseGrid || document.getElementById('finding-aid')) return;
+
+    injectFindingAidStyles();
+
+    const threads = [
+      {
+        term: 'UNRELIABLE SCALE',
+        files: ['cryptids', 'maps', 'diagrams'],
+        note: 'Distance, size, orientation or proportion is doing more work than the surviving record can support.'
+      },
+      {
+        term: 'MISSING ORIGIN',
+        files: ['maps', 'broadcasts', 'redactions'],
+        note: 'A route, transmission or fragment survives after its source metadata has gone missing. Shared absence does not imply a shared source.'
+      },
+      {
+        term: 'WITNESS FILTER',
+        files: ['cryptids', 'field-notes', 'witnesses'],
+        note: 'Observation arrives through viewpoint, memory and retelling. Similar language may describe the recorder as much as the event.'
+      },
+      {
+        term: 'PATTERN PRESSURE',
+        files: ['celestial', 'diagrams', 'evidence'],
+        note: 'The archive notices repeated shapes, timings and alignments. An index may preserve resemblance without promoting it to mechanism.'
+      }
+    ];
+
+    const details = document.createElement('details');
+    details.id = 'finding-aid';
+    details.className = 'finding-aid';
+
+    const summary = document.createElement('summary');
+    const label = document.createElement('span');
+    label.textContent = 'FINDING AID / SUBJECT ACCESS';
+    const title = document.createElement('strong');
+    title.textContent = 'THE FILES DO NOT AGREE ON WHY THEY RHYME.';
+    summary.append(label, title);
+
+    const body = document.createElement('div');
+    body.className = 'finding-aid-body';
+    const intro = document.createElement('p');
+    intro.className = 'finding-aid-intro';
+    intro.textContent = 'Archivists use finding aids to expose relationships without rewriting the records themselves. PAGE FOUR now keeps four hand-authored subject threads across its existing fictional files. Each thread names a recurring archival problem, not a hidden explanation.';
+
+    const grid = document.createElement('div');
+    grid.className = 'finding-aid-grid';
+    threads.forEach((thread) => {
+      const entry = document.createElement('article');
+      entry.className = 'finding-aid-entry';
+      const heading = document.createElement('h3');
+      heading.textContent = thread.term;
+      const note = document.createElement('p');
+      note.textContent = thread.note;
+      const links = document.createElement('nav');
+      links.className = 'finding-aid-links';
+      links.setAttribute('aria-label', `${thread.term} cross-references`);
+
+      thread.files.forEach((fileId) => {
+        const target = caseById(fileId);
+        if (!target) return;
+        const link = document.createElement('a');
+        link.href = `#${fileId}`;
+        link.textContent = caseTitle(target);
+        link.addEventListener('click', () => {
+          markActive(target);
+          announce(`Finding aid: ${thread.term.toLowerCase()} cross-reference opened. Shared index terms are not evidence of a common cause.`);
+        });
+        links.append(link);
+      });
+
+      entry.append(heading, note, links);
+      grid.append(entry);
+    });
+
+    const boundary = document.createElement('p');
+    boundary.className = 'finding-aid-boundary';
+    boundary.textContent = 'FICTIONAL CROSS-REFERENCES // SHARED MOTIFS ARE EDITORIAL INDEX TERMS, NOT EVIDENCE OF A COMMON CAUSE.';
+
+    body.append(intro, grid, boundary);
+    details.append(summary, body);
+    details.addEventListener('toggle', () => {
+      if (details.open) announce('Finding aid opened. Cross-references describe recurring archival problems, not a solved pattern.');
+    });
+    caseGrid.insertAdjacentElement('beforebegin', details);
+  }
+
   function injectProvenanceStyles() {
     if (document.getElementById('page-four-provenance-style')) return;
 
@@ -253,9 +362,9 @@
     trace.className = 'provenance-trace';
     trace.setAttribute('aria-label', 'Four handoffs from amplified claim back to earliest surviving fictional note');
     const traceLabels = ['04 BOARD CLAIM', '03 CASE SUMMARY', '02 RETELLING', '01 FIELD NOTE'];
-    traceLabels.forEach((label) => {
+    traceLabels.forEach((traceLabel) => {
       const cell = document.createElement('span');
-      cell.textContent = label;
+      cell.textContent = traceLabel;
       trace.append(cell);
     });
 
@@ -438,6 +547,7 @@
 
   addLeakDesk();
   addRumorSightings();
+  mountFindingAid();
   loadResearchWing();
 
   const sharedCase = caseById(globalThis.location.hash.replace(/^#/, ''));
