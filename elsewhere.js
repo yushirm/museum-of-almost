@@ -103,12 +103,14 @@
       .environment-conflict strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
       .environment-order{margin:1rem 0 0;padding:1rem;border-left:4px solid currentColor;background:rgba(0,0,0,.18)}
       .environment-order strong{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-transform:uppercase}
-      .salvage-drawer{margin:1rem 0 0;border:1px dashed currentColor;background:rgba(0,0,0,.1)}
-      .salvage-drawer summary{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:48px;padding:.75rem 1rem;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.75rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+      .salvage-drawer,.dependency-drawer{margin:1rem 0 0;border:1px dashed currentColor;background:rgba(0,0,0,.1)}
+      .salvage-drawer summary,.dependency-drawer summary{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:48px;padding:.75rem 1rem;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.75rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
       .salvage-drawer summary::after{content:'OPEN CARD +';white-space:nowrap;font-size:.68rem}
-      .salvage-drawer[open] summary{border-bottom:1px dashed currentColor}
+      .dependency-drawer summary::after{content:'TRACE DEPENDENCIES +';white-space:nowrap;font-size:.68rem}
+      .salvage-drawer[open] summary,.dependency-drawer[open] summary{border-bottom:1px dashed currentColor}
       .salvage-drawer[open] summary::after{content:'CLOSE CARD −'}
-      .salvage-intro{margin:0;padding:1rem 1rem .25rem;max-width:74ch}
+      .dependency-drawer[open] summary::after{content:'CLOSE MAP −'}
+      .salvage-intro,.dependency-intro{margin:0;padding:1rem 1rem .25rem;max-width:74ch}
       .salvage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:1rem}
       .salvage-case{padding:1rem;border:1px solid currentColor;background:rgba(0,0,0,.12)}
       .salvage-case:nth-child(even){border-left:0}
@@ -116,8 +118,15 @@
       .salvage-case h3{margin:0 0 .65rem;font-size:1rem}
       .salvage-case p{margin:.4rem 0;font-size:.9rem;line-height:1.5}
       .salvage-case strong{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase}
-      .salvage-rule{margin:0 1rem 1rem;padding:1rem;border-left:4px solid currentColor;background:rgba(229,168,38,.07)}
-      .salvage-rule strong{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-transform:uppercase}
+      .salvage-rule,.dependency-rule{margin:0 1rem 1rem;padding:1rem;border-left:4px solid currentColor;background:rgba(229,168,38,.07)}
+      .salvage-rule strong,.dependency-rule strong{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-transform:uppercase}
+      .dependency-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin:1rem;background:currentColor;border:1px solid currentColor}
+      .dependency-service{padding:1rem;background:#1d201a}
+      .dependency-service h3{margin:0 0 .7rem;font-size:1rem}
+      .dependency-service dl{margin:0;display:grid;gap:.65rem}
+      .dependency-service dl div{display:grid;grid-template-columns:7.5rem 1fr;gap:.75rem}
+      .dependency-service dt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;opacity:.72}
+      .dependency-service dd{margin:0;font-size:.9rem;line-height:1.45}
       .transfer-desk{margin:1.5rem 0 2rem;border:1px solid currentColor;background:rgba(0,0,0,.12)}
       .transfer-desk header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:end;padding:1rem;border-bottom:1px solid currentColor}
       .transfer-desk header p{margin:0;max-width:58ch}
@@ -135,11 +144,11 @@
       .transfer-hold{padding:1rem;border-top:1px dashed currentColor;background:rgba(229,168,38,.07)}
       .transfer-hold strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
       @media (max-width:800px){.environment-heading,.environment-zones{grid-template-columns:1fr}.environment-zone dl div{grid-template-columns:6.5rem 1fr}.transfer-grid{grid-template-columns:1fr}.transfer-grid>div+div{border-left:0;border-top:1px solid currentColor}}
-      @media (max-width:620px){.salvage-grid{grid-template-columns:1fr}.salvage-case:nth-child(even),.salvage-case:nth-child(n+3){border-left:1px solid currentColor}.salvage-case+.salvage-case{border-top:0}.transfer-route-row{align-items:stretch;flex-direction:column}.transfer-trace{align-self:flex-start}}
-      @media (max-width:520px){.transfer-desk header{grid-template-columns:1fr}.transfer-stamp{justify-self:start}.salvage-drawer summary{align-items:flex-start;flex-direction:column}}
+      @media (max-width:620px){.salvage-grid,.dependency-grid{grid-template-columns:1fr}.salvage-case:nth-child(even),.salvage-case:nth-child(n+3){border-left:1px solid currentColor}.salvage-case+.salvage-case{border-top:0}.transfer-route-row{align-items:stretch;flex-direction:column}.transfer-trace{align-self:flex-start}}
+      @media (max-width:520px){.transfer-desk header{grid-template-columns:1fr}.transfer-stamp{justify-self:start}.salvage-drawer summary,.dependency-drawer summary{align-items:flex-start;flex-direction:column}.dependency-service dl div{grid-template-columns:1fr;gap:.15rem}}
       @media (max-width:420px){.environment-board{padding:1rem}.environment-zone dl div{grid-template-columns:1fr;gap:.15rem}.environment-zone.is-active-route::after{position:static;display:block;margin:.65rem .65rem 0;width:max-content;max-width:calc(100% - 1.3rem)}}
-      @media (prefers-contrast:more){.environment-board,.environment-zone,.environment-zone header,.salvage-drawer,.salvage-case,.transfer-desk,.transfer-desk header,.transfer-grid>div+div,.transfer-trace{border-width:2px}.environment-status{border-width:2px}.environment-zone.is-active-route{outline-width:4px}}
-      @media print{.environment-board{box-shadow:none}.environment-zone,.salvage-drawer,.salvage-case,.transfer-desk{break-inside:avoid}.salvage-drawer:not([open])>*:not(summary){display:block}.environment-zone.is-active-route{outline:0}.environment-zone.is-active-route::after,.transfer-trace{display:none}}
+      @media (prefers-contrast:more){.environment-board,.environment-zone,.environment-zone header,.salvage-drawer,.dependency-drawer,.salvage-case,.dependency-grid,.transfer-desk,.transfer-desk header,.transfer-grid>div+div,.transfer-trace{border-width:2px}.environment-status{border-width:2px}.environment-zone.is-active-route{outline-width:4px}}
+      @media print{.environment-board{box-shadow:none}.environment-zone,.salvage-drawer,.dependency-drawer,.salvage-case,.dependency-service,.transfer-desk{break-inside:avoid}.salvage-drawer:not([open])>*:not(summary),.dependency-drawer:not([open])>*:not(summary){display:block}.environment-zone.is-active-route{outline:0}.environment-zone.is-active-route::after,.transfer-trace{display:none}}
     `;
     document.head.append(style);
 
@@ -215,6 +224,45 @@
           </article>
         </div>
         <p class="salvage-rule"><strong>Emergency rule 0:</strong> Save people first, then stabilise material reality. Impossible provenance never outranks an ordinary fire door, a dry surface, or a safe lifting route.</p>
+      </details>
+      <details class="dependency-drawer">
+        <summary>BUILDING SERVICES / DEPENDENCY MAP · ONE ORDINARY FAILURE CAN REACH SEVERAL IMPOSSIBLE OBJECTS</summary>
+        <p class="dependency-intro">Reliability engineering asks which functions depend on the same supporting service before that service fails. Catalogue 0 applies the same question to the building. These are not predictions or live alarms: they are a fictional maintenance map showing where ordinary infrastructure couples otherwise unrelated accessions.</p>
+        <div class="dependency-grid" aria-label="Fictional building-service dependencies across Catalogue 0">
+          <article class="dependency-service">
+            <h3>01 · HVAC / HUMIDITY CONTROL</h3>
+            <dl>
+              <div><dt>Supports</dt><dd>Zone A paper and film; stable sealed storage in Zone C.</dd></div>
+              <div><dt>Couples</dt><dd>C0.002–005, C0.007, C0.008–011 can share one mundane environmental failure despite unrelated provenance.</dd></div>
+              <div><dt>Work order</dt><dd>Freeze non-essential movement; stabilise the room before interpreting any apparent object change.</dd></div>
+            </dl>
+          </article>
+          <article class="dependency-service">
+            <h3>02 · CONTROLLED LIGHT / IMAGING POWER</h3>
+            <dl>
+              <div><dt>Supports</dt><dd>Zone C comparison photography and condition documentation.</dd></div>
+              <div><dt>Couples</dt><dd>C0.008 label, C0.009 postcard and C0.010 boxed shadow all become less documentable at once.</dd></div>
+              <div><dt>Work order</dt><dd>Record the documentation gap. Do not convert missing images into evidence of object behaviour.</dd></div>
+            </dl>
+          </article>
+          <article class="dependency-service">
+            <h3>03 · DRAINAGE / WATER ISOLATION</h3>
+            <dl>
+              <div><dt>Supports</dt><dd>Dry storage across Zone A and lower-level circulation.</dd></div>
+              <div><dt>Couples</dt><dd>A leak can threaten six paper/film accessions while also closing the route needed to move them safely.</dd></div>
+              <div><dt>Work order</dt><dd>Stop the water, isolate electrics where required, then salvage by material vulnerability rather than catalogue drama.</dd></div>
+            </dl>
+          </article>
+          <article class="dependency-service">
+            <h3>04 · FREIGHT LIFT / SERVICE CORRIDOR</h3>
+            <dl>
+              <div><dt>Supports</dt><dd>All accession movement between Catalogue 0, conservation zones and the rest of the museum.</dd></div>
+              <div><dt>Couples</dt><dd>Every route can become unavailable without changing a single object's assigned storage destination.</dd></div>
+              <div><dt>Work order</dt><dd>Stabilise in place and reopen the route. A transport failure is not a provenance event.</dd></div>
+            </dl>
+          </article>
+        </div>
+        <p class="dependency-rule"><strong>Dependency rule 0:</strong> Shared failure does not imply shared origin. When several accessions change status together, inspect the building before inventing a relationship among the objects.</p>
       </details>
       <p class="environment-order"><strong>Standing order 0:</strong> Do not optimise the collection into normality. Stabilise the material where possible; preserve the contradiction only as a clearly fictional catalogue fact.</p>
     `;
