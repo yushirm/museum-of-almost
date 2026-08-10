@@ -199,3 +199,145 @@
 
   render();
 })();
+
+(function initialiseResolutionBench() {
+  const closingSection = document.querySelector('[aria-labelledby="closing-title"]');
+  if (!closingSection || document.getElementById('resolution-bench')) return;
+
+  const wavelengthNm = 550;
+  const pairSeparationArcsec = 0.10;
+  const apertures = [
+    { id: 'small', label: '0.10 m', diameterM: 0.10 },
+    { id: 'medium', label: '1.00 m', diameterM: 1.00 },
+    { id: 'large', label: '4.00 m', diameterM: 4.00 }
+  ];
+  let selected = apertures[1];
+
+  function make(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (typeof text === 'string') node.textContent = text;
+    return node;
+  }
+
+  function rayleighArcsec(diameterM) {
+    const radians = (1.22 * wavelengthNm * 1e-9) / diameterM;
+    return radians * 206265;
+  }
+
+  const section = make('section', 'cosmos-section');
+  section.id = 'resolution-bench';
+  section.setAttribute('aria-labelledby', 'resolution-bench-title');
+
+  const heading = make('div', 'section-heading');
+  const eyebrow = make('p', 'eyebrow', 'INSTRUMENT 16 · THE RESOLUTION BENCH');
+  const title = make('h2', '', 'Two stars can exist where one blur arrives.');
+  title.id = 'resolution-bench-title';
+  const intro = make('p', '', 'Keep one idealized pair of equal-brightness point sources fixed at 0.10 arcsecond separation. Change only the diameter of a perfect circular aperture and watch the diffraction limit decide whether this toy observer can separate them.');
+  heading.append(eyebrow, title, intro);
+
+  const shell = make('div', 'instrument');
+  const controls = make('div', 'instrument-controls');
+  controls.setAttribute('role', 'group');
+  controls.setAttribute('aria-label', 'Choose an ideal circular aperture diameter');
+
+  const body = make('div', 'instrument-body');
+  body.style.display = 'grid';
+  body.style.gap = '1rem';
+
+  const field = make('div', 'resolution-field');
+  field.setAttribute('aria-hidden', 'true');
+  field.style.position = 'relative';
+  field.style.minHeight = '230px';
+  field.style.overflow = 'hidden';
+  field.style.borderRadius = '1rem';
+  field.style.border = '1px solid rgba(173, 195, 255, 0.28)';
+  field.style.background = 'radial-gradient(circle at 50% 50%, rgba(57, 72, 128, 0.22), rgba(7, 5, 17, 0.96) 68%)';
+
+  const guide = make('span', '', 'schematic focal-plane view');
+  guide.style.position = 'absolute';
+  guide.style.left = '1rem';
+  guide.style.top = '0.85rem';
+  guide.style.fontSize = '0.72rem';
+  guide.style.letterSpacing = '0.08em';
+  guide.style.textTransform = 'uppercase';
+  guide.style.opacity = '0.7';
+  field.append(guide);
+
+  const starA = make('span');
+  const starB = make('span');
+  [starA, starB].forEach((star, index) => {
+    star.style.position = 'absolute';
+    star.style.top = '50%';
+    star.style.left = index === 0 ? 'calc(50% - 18px)' : 'calc(50% + 18px)';
+    star.style.transform = 'translate(-50%, -50%)';
+    star.style.borderRadius = '50%';
+    star.style.background = 'radial-gradient(circle, rgba(255,255,255,0.98) 0 6%, rgba(190,210,255,0.76) 16%, rgba(115,150,255,0.24) 52%, rgba(100,135,255,0) 72%)';
+  });
+  field.append(starA, starB);
+
+  const readout = make('div', 'readout-grid');
+  readout.setAttribute('aria-live', 'polite');
+
+  function metric(label, initialValue, id) {
+    const box = make('div', 'readout');
+    box.append(make('span', 'metric-label', label));
+    const value = make('strong', 'readout-value', initialValue);
+    value.id = id;
+    box.append(value);
+    return box;
+  }
+
+  readout.append(
+    metric('Aperture diameter', '1.00 m', 'resolution-aperture'),
+    metric('Rayleigh limit at 550 nm', '0.138 arcsec', 'resolution-limit'),
+    metric('Fixed source separation', '0.100 arcsec', 'resolution-separation'),
+    metric('Idealized result', 'NOT RESOLVED', 'resolution-result')
+  );
+  const note = make('p', 'readout-note', 'The visual blur is schematic; the numerical Rayleigh value is authoritative for this toy model.');
+  note.id = 'resolution-note';
+  readout.append(note);
+
+  const boundary = make('p', 'inventory-note', 'DIFFRACTION BOUNDARY · This bench uses the Rayleigh approximation θ ≈ 1.22 λ / D for an ideal circular aperture, monochromatic light at 550 nm, and equal-brightness point sources. It does not model atmosphere, detector sampling, optical aberrations, source contrast, signal-to-noise, deconvolution, interferometry, or a real telescope. “Not resolved” means this idealized aperture cannot separate the pair by this criterion; it does not mean only one source exists.');
+
+  function render() {
+    const limit = rayleighArcsec(selected.diameterM);
+    const resolved = pairSeparationArcsec >= limit;
+    const visualDiameter = Math.max(18, Math.min(150, (limit / pairSeparationArcsec) * 42));
+
+    controls.querySelectorAll('button').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.apertureId === selected.id));
+    });
+
+    [starA, starB].forEach((star) => {
+      star.style.width = `${visualDiameter}px`;
+      star.style.height = `${visualDiameter}px`;
+    });
+
+    document.getElementById('resolution-aperture').textContent = selected.label;
+    document.getElementById('resolution-limit').textContent = `${limit.toFixed(3)} arcsec`;
+    document.getElementById('resolution-separation').textContent = `${pairSeparationArcsec.toFixed(3)} arcsec`;
+    document.getElementById('resolution-result').textContent = resolved ? 'RESOLVED BY THIS CRITERION' : 'NOT RESOLVED BY THIS CRITERION';
+    note.textContent = resolved
+      ? `The pair separation is larger than the ${limit.toFixed(3)} arcsec Rayleigh limit. The schematic point-spread patterns separate, but real observing performance can still be worse.`
+      : `The pair separation is smaller than the ${limit.toFixed(3)} arcsec Rayleigh limit. Two sources remain in the scene even though this idealized aperture does not separate them.`;
+  }
+
+  apertures.forEach((aperture) => {
+    const button = make('button', '', aperture.label);
+    button.type = 'button';
+    button.dataset.apertureId = aperture.id;
+    button.setAttribute('aria-pressed', String(aperture.id === selected.id));
+    button.addEventListener('click', () => {
+      selected = aperture;
+      render();
+    });
+    controls.append(button);
+  });
+
+  body.append(field, readout, boundary);
+  shell.append(controls, body);
+  section.append(heading, shell);
+  closingSection.insertAdjacentElement('beforebegin', section);
+  render();
+})();
