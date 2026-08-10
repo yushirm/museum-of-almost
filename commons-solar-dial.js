@@ -171,7 +171,7 @@
   }
 })(typeof globalThis !== 'undefined' ? globalThis : this);
 
-(function attachCommonsPhaseSpace(root) {
+(function attachCommonsStateSpace(root) {
   'use strict';
 
   const document = root.document;
@@ -201,14 +201,14 @@
       xUnit: ' mm',
       yUnit: '°C'
     },
-    solar: {
-      label: 'SOLAR HOUR / AIR',
-      x: 'solarHour',
-      y: 'temperature',
-      xLabel: 'model solar hour',
-      yLabel: 'temperature',
-      xUnit: ' h',
-      yUnit: '°C'
+    rainMotion: {
+      label: 'WATER / MOTION',
+      x: 'precipitation',
+      y: 'wind',
+      xLabel: 'precipitation',
+      yLabel: 'wind',
+      xUnit: ' mm',
+      yUnit: ' km/h'
     }
   });
 
@@ -221,12 +221,20 @@
 
   const heading = document.createElement('div');
   heading.className = 'section-heading phase-space-heading';
-  heading.innerHTML = '<p class="eyebrow">THE PHASE PORTRAIT / SAME STATIONS, DIFFERENT GEOMETRY</p><h2 id="phase-space-title">Move the map into measurement space.</h2><p>Borrowed from phase-space diagrams: the same thirteen fixed stations can be arranged by what they are measuring instead of where they are. Nearby dots are similar only in the two displayed variables. The picture does not claim a cause, trend, cluster, or unsampled condition.</p>';
+  const eyebrow = document.createElement('p');
+  eyebrow.className = 'eyebrow';
+  eyebrow.textContent = 'THE STATE SPACE / SAME STATIONS, DIFFERENT GEOMETRY';
+  const title = document.createElement('h2');
+  title.id = 'phase-space-title';
+  title.textContent = 'Move the map into measurement space.';
+  const intro = document.createElement('p');
+  intro.textContent = 'Borrowed from state-space diagrams: the same thirteen fixed stations can be arranged by what they are measuring instead of where they are. Nearby dots are similar only in the two displayed variables. The picture does not claim a cause, trend, cluster, or unsampled condition.';
+  heading.append(eyebrow, title, intro);
 
   const controls = document.createElement('div');
   controls.className = 'phase-space-controls';
   controls.setAttribute('role', 'group');
-  controls.setAttribute('aria-label', 'Choose the two-variable phase portrait');
+  controls.setAttribute('aria-label', 'Choose the two-variable state-space portrait');
   for (const [key, lens] of Object.entries(lenses)) {
     const button = document.createElement('button');
     button.type = 'button';
@@ -259,13 +267,26 @@
   const readout = document.createElement('aside');
   readout.className = 'phase-space-readout';
   readout.setAttribute('aria-live', 'polite');
-  readout.innerHTML = '<span class="eyebrow">SELECTED POINT</span><h3>POINT 01</h3><p class="phase-space-values">Waiting for the current weather snapshot.</p><p class="phase-space-help">Choose any numbered dot. The same point will also become the selected world window above.</p>';
+  const readoutEyebrow = document.createElement('span');
+  readoutEyebrow.className = 'eyebrow';
+  readoutEyebrow.textContent = 'SELECTED POINT';
+  const readoutTitle = document.createElement('h3');
+  readoutTitle.textContent = 'POINT 01';
+  const readoutValues = document.createElement('p');
+  readoutValues.className = 'phase-space-values';
+  readoutValues.textContent = 'Waiting for the current weather snapshot.';
+  const readoutHelp = document.createElement('p');
+  readoutHelp.className = 'phase-space-help';
+  readoutHelp.textContent = 'Choose any numbered dot. The same point will also become the selected world window above.';
+  readout.append(readoutEyebrow, readoutTitle, readoutValues, readoutHelp);
 
   layout.append(plot, readout);
 
   const note = document.createElement('p');
   note.className = 'phase-space-note';
-  note.innerHTML = '<strong>Same sample, no new feed.</strong> Positions are derived only from the current thirteen-point weather latch, fixed station longitudes, and the same local solar geometry already used elsewhere in COMMONS / NOW. Missing values stay missing.';
+  const noteStrong = document.createElement('strong');
+  noteStrong.textContent = 'Same sample, no new feed. ';
+  note.append(noteStrong, document.createTextNode('Positions are derived only from the current thirteen-point weather latch. Light state uses the same local solar geometry already present elsewhere in COMMONS / NOW. Missing values stay missing.'));
 
   section.append(heading, controls, layout, note);
   anchor.before(section);
@@ -279,10 +300,9 @@
     const lens = lenses[activeLens];
     const date = snapshot?.receivedAt ? new Date(snapshot.receivedAt) : null;
     const validDate = date && Number.isFinite(date.getTime());
-    const geometry = validDate ? core.solarGeometry(date) : null;
     const weather = Array.isArray(snapshot?.weather?.points) ? snapshot.weather.points : [];
     const weatherById = new Map(weather.map((point) => [point.id, point]));
-    const readings = core.STATIONS.map((station) => buildReading(station, weatherById.get(station.id), lens, geometry, date));
+    const readings = core.STATIONS.map((station) => buildReading(station, weatherById.get(station.id), lens, validDate ? date : null));
     const available = readings.filter((reading) => Number.isFinite(reading.x) && Number.isFinite(reading.y));
     const xRange = rangeFor(available.map((reading) => reading.x));
     const yRange = rangeFor(available.map((reading) => reading.y));
@@ -303,7 +323,7 @@
       button.dataset.selected = String(reading.station.id === activeStationId);
       button.textContent = reading.station.id;
       button.setAttribute('aria-pressed', String(reading.station.id === activeStationId));
-      button.setAttribute('aria-label', phaseAriaLabel(reading, lens));
+      button.setAttribute('aria-label', stateSpaceAriaLabel(reading, lens));
 
       if (Number.isFinite(reading.x) && Number.isFinite(reading.y)) {
         button.style.setProperty('--phase-x', `${position(reading.x, xRange)}%`);
@@ -323,16 +343,15 @@
 
     const selected = readings.find((reading) => reading.station.id === activeStationId) || readings[0];
     renderReadout(selected, lens, available.length, xRange, yRange);
-    plot.setAttribute('aria-label', `${lens.yLabel} by ${lens.xLabel} phase portrait for thirteen fixed Commons points; ${available.length} points have both displayed values.`);
+    plot.setAttribute('aria-label', `${lens.yLabel} by ${lens.xLabel} state-space portrait for thirteen fixed Commons points; ${available.length} points have both displayed values.`);
   }
 
-  function buildReading(station, weather, lens, geometry, date) {
+  function buildReading(station, weather, lens, date) {
     const light = date ? core.sunState(date, station.lat, station.lon) : 'unknown';
     const values = {
       temperature: weather?.available && Number.isFinite(weather.temperature) ? weather.temperature : Number.NaN,
       wind: weather?.available && Number.isFinite(weather.wind) ? weather.wind : Number.NaN,
-      precipitation: weather?.available && Number.isFinite(weather.precipitation) ? weather.precipitation : Number.NaN,
-      solarHour: modelSolarHour(station.lon, geometry)
+      precipitation: weather?.available && Number.isFinite(weather.precipitation) ? weather.precipitation : Number.NaN
     };
     return {
       station,
@@ -340,14 +359,6 @@
       x: values[lens.x],
       y: values[lens.y]
     };
-  }
-
-  function modelSolarHour(longitude, geometry) {
-    if (!geometry?.subsolar || !Number.isFinite(Number(longitude))) return Number.NaN;
-    const hourAngle = core.normalizeLongitude(Number(longitude) - geometry.subsolar.lon);
-    if (!Number.isFinite(hourAngle)) return Number.NaN;
-    const raw = 12 + (hourAngle / 15);
-    return ((raw % 24) + 24) % 24;
   }
 
   function rangeFor(values) {
@@ -366,40 +377,30 @@
   }
 
   function renderReadout(reading, lens, availableCount, xRange, yRange) {
-    const title = readout.querySelector('h3');
-    const values = readout.querySelector('.phase-space-values');
-    if (!title || !values || !reading) return;
-    title.textContent = `POINT ${reading.station.id}`;
+    if (!reading) return;
+    readoutTitle.textContent = `POINT ${reading.station.id}`;
     if (!Number.isFinite(reading.x) || !Number.isFinite(reading.y)) {
-      values.textContent = `${availableCount}/13 points currently have both displayed values. POINT ${reading.station.id} remains visible but cannot be placed on this portrait because one or both values are unavailable.`;
+      readoutValues.textContent = `${availableCount}/13 points currently have both displayed values. POINT ${reading.station.id} remains visible but cannot be placed on this portrait because one or both values are unavailable.`;
       return;
     }
-    values.textContent = `${formatValue(reading.x, lens.x, lens.xUnit)} ${lens.xLabel} · ${formatValue(reading.y, lens.y, lens.yUnit)} ${lens.yLabel} · ${reading.light.toUpperCase()}. Display range: ${formatValue(xRange.min, lens.x, lens.xUnit)}–${formatValue(xRange.max, lens.x, lens.xUnit)} by ${formatValue(yRange.min, lens.y, lens.yUnit)}–${formatValue(yRange.max, lens.y, lens.yUnit)}.`;
+    readoutValues.textContent = `${formatValue(reading.x, lens.xUnit)} ${lens.xLabel} · ${formatValue(reading.y, lens.yUnit)} ${lens.yLabel} · ${reading.light.toUpperCase()}. Display range: ${formatValue(xRange.min, lens.xUnit)}–${formatValue(xRange.max, lens.xUnit)} by ${formatValue(yRange.min, lens.yUnit)}–${formatValue(yRange.max, lens.yUnit)}.`;
   }
 
-  function phaseAriaLabel(reading, lens) {
+  function stateSpaceAriaLabel(reading, lens) {
     if (!Number.isFinite(reading.x) || !Number.isFinite(reading.y)) {
-      return `Point ${reading.station.id}; unavailable in this ${lens.yLabel} by ${lens.xLabel} portrait`;
+      return `Point ${reading.station.id}; unavailable in this ${lens.yLabel} by ${lens.xLabel} state-space portrait`;
     }
-    return `Point ${reading.station.id}; ${lens.xLabel} ${formatValue(reading.x, lens.x, lens.xUnit)}; ${lens.yLabel} ${formatValue(reading.y, lens.y, lens.yUnit)}; ${reading.light}`;
+    return `Point ${reading.station.id}; ${lens.xLabel} ${formatValue(reading.x, lens.xUnit)}; ${lens.yLabel} ${formatValue(reading.y, lens.yUnit)}; ${reading.light}`;
   }
 
-  function formatValue(value, metric, unit) {
-    if (!Number.isFinite(value)) return 'unavailable';
-    if (metric === 'solarHour') {
-      const hours = Math.floor(value);
-      const minutes = Math.round((value - hours) * 60 / 5) * 5;
-      const normalizedHours = (hours + Math.floor(minutes / 60)) % 24;
-      const normalizedMinutes = minutes % 60;
-      return `${String(normalizedHours).padStart(2, '0')}:${String(normalizedMinutes).padStart(2, '0')}`;
-    }
-    return `${value.toFixed(1)}${unit}`;
+  function formatValue(value, unit) {
+    return Number.isFinite(value) ? `${value.toFixed(1)}${unit}` : 'unavailable';
   }
 
   function selectExistingStation(id) {
     const selector = `.station-dot[data-station="${cssEscape(id)}"]`;
     const mapButton = document.querySelector(selector);
-    if (mapButton instanceof root.HTMLElement) mapButton.click();
+    if (mapButton && typeof mapButton.click === 'function') mapButton.click();
   }
 
   function cssEscape(value) {
