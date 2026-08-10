@@ -795,6 +795,75 @@
     }
   }
 
+  function addTabSemaphore() {
+    const marquee = document.querySelector('.marquee');
+    if (!marquee || document.getElementById('tab-semaphore')) return;
+
+    const originalTitle = document.title;
+    const signals = [
+      'ALMOST ONLINE! // I FOUND THE TAB',
+      'ALMOST ONLINE! // THIS SIGN IS OUTSIDE THE PAGE',
+      'ALMOST ONLINE! // STILL HERE, JUST ONE LEVEL UP',
+      originalTitle
+    ];
+    let signalIndex = -1;
+
+    const panel = document.createElement('div');
+    panel.id = 'tab-semaphore';
+    panel.className = 'tiny-nav';
+    panel.setAttribute('aria-label', 'Tab semaphore browser-title experiment');
+
+    const label = document.createElement('strong');
+    label.textContent = 'TAB SEMAPHORE // BROWSER CHROME';
+
+    const intro = document.createElement('span');
+    intro.textContent = ' I discovered the page has a tiny sign outside its own body: the browser tab. ';
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = '[ SEND NEXT TAB SIGNAL ]';
+    button.style.minHeight = '44px';
+    button.style.padding = '0.45rem 0.65rem';
+    button.style.margin = '0.35rem';
+    button.style.font = 'inherit';
+    button.style.cursor = 'pointer';
+
+    const status = document.createElement('span');
+    status.className = 'smallprint';
+    status.setAttribute('aria-live', 'polite');
+    status.textContent = ' SIGNAL STATUS: idle. The ordinary page title is showing.';
+
+    const policy = document.createElement('span');
+    policy.className = 'smallprint';
+    policy.textContent = ' TAB POLICY: each press replaces only this document’s current title with one fixed authored phrase. No timer runs, no notification is sent, the address and navigation stack stay untouched, no focus is stolen, nothing is stored, and no request leaves the Museum. Reloading or leaving the page restores ordinary browser behavior.';
+
+    button.addEventListener('click', () => {
+      signalIndex = (signalIndex + 1) % signals.length;
+      document.title = signals[signalIndex];
+      const returnedHome = signalIndex === signals.length - 1;
+      status.textContent = returnedHome
+        ? ' SIGNAL STATUS: ordinary title restored. The semaphore is ready to start again.'
+        : ` SIGNAL STATUS: ${signalIndex + 1} of ${signals.length - 1} is now written in the browser tab.`;
+      button.textContent = returnedHome ? '[ SEND FIRST TAB SIGNAL ]' : '[ SEND NEXT TAB SIGNAL ]';
+    });
+
+    panel.append(label, intro, button, status, document.createElement('br'), policy);
+
+    const rumor = document.getElementById('page-four-rumor');
+    if (rumor) rumor.insertAdjacentElement('afterend', panel);
+    else marquee.insertAdjacentElement('afterend', panel);
+
+    const updates = document.querySelector('.updates');
+    if (updates && !document.getElementById('tab-semaphore-update')) {
+      const item = document.createElement('li');
+      item.id = 'tab-semaphore-update';
+      const date = document.createElement('strong');
+      date.textContent = '10 AUG:';
+      item.append(date, document.createTextNode(' FOUND THE BROWSER TAB. APPARENTLY THE HOMEPAGE HAS AN OUTSIDE SIGN.'));
+      updates.prepend(item);
+    }
+  }
+
   function foldSiteUpdates() {
     const updates = document.querySelector('.updates');
     if (!updates || document.getElementById('older-site-updates')) return;
@@ -842,6 +911,7 @@
   consolidateHomepageWorkbench();
   addHomepageTuningFork();
   addHtmlXray();
+  addTabSemaphore();
   foldSiteUpdates();
 
   if ('serviceWorker' in navigator) {
