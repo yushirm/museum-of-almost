@@ -36,7 +36,8 @@ const UNBUILT_ROOM_CACHE_NAME = 'museum-of-almost-v44-unbuilt-room';
 const PARALLAX_SURVEY_CACHE_NAME = 'museum-of-almost-v45-parallax-survey';
 const SOLAR_BOUNDARY_CACHE_NAME = 'museum-of-almost-v46-solar-boundary-atlas';
 const SYNOPTIC_ALPHABET_CACHE_NAME = 'museum-of-almost-v47-synoptic-alphabet';
-const CURRENT_CACHE_NAME = SYNOPTIC_ALPHABET_CACHE_NAME;
+const LONGITUDE_CLOCK_CACHE_NAME = 'museum-of-almost-v48-longitude-clock';
+const CURRENT_CACHE_NAME = LONGITUDE_CLOCK_CACHE_NAME;
 const APP_SHELL = [
   './',
   './index.html',
@@ -57,6 +58,8 @@ const APP_SHELL = [
   './page-four-dead-drop.css',
   './page-four-dead-drop.js',
   './commons-now.html',
+  './commons-solar-dial.css',
+  './commons-solar-dial.js',
   './styles.css',
   './sample-hold.css',
   './sounding-well.css',
