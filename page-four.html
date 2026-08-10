@@ -8,6 +8,11 @@
   <title>Page Four — The Unfiled Archive</title>
   <link rel="stylesheet" href="page-four.css">
   <style>
+    .archive-methods-desk{min-height:0;margin:1rem;border:1px solid rgba(208,167,91,.28);background:#0b0d0a;color:#dce8c8;box-shadow:inset 0 0 30px rgba(0,0,0,.32)}
+    .archive-methods-desk>summary{min-height:52px;display:flex;align-items:center;padding:.8rem 1rem;color:#e5c784;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.08em;list-style:none}
+    .archive-methods-desk>summary::-webkit-details-marker{display:none}.archive-methods-desk>summary::before{content:"▤ ";margin-right:.5rem;color:#b8ee75}.archive-methods-desk[open]>summary::before{content:"▥ "}
+    .archive-methods-body{padding:.2rem 0 1rem;border-top:1px dashed rgba(208,167,91,.24)}
+    .archive-methods-desk .contradiction-register,.archive-methods-desk .disconfirmation-drawer,.archive-methods-desk .absence-register{margin:.75rem}
     .contradiction-register{min-height:0;margin:1rem;border:1px solid rgba(208,167,91,.32);color:#241f16;background:#bcae86;box-shadow:0 10px 20px rgba(0,0,0,.28)}
     .contradiction-register summary{min-height:48px;display:flex;align-items:center;padding:.75rem 1rem;color:#342817;cursor:pointer;font-size:.7rem;font-weight:700;letter-spacing:.05em;list-style:none}
     .contradiction-register summary::-webkit-details-marker{display:none}.contradiction-register summary::before{content:"> ";margin-right:.45rem}.contradiction-register[open] summary::before{content:"v "}
@@ -24,10 +29,10 @@
     .absence-register>summary::-webkit-details-marker{display:none}.absence-register>summary::before{content:"□ ";margin-right:.5rem;color:#d0a75b}.absence-register[open]>summary::before{content:"■ "}
     .absence-body{padding:1rem;border-top:1px dashed rgba(184,211,220,.24)}.absence-intro{max-width:76ch;margin:0 0 1rem;color:#b8c5c4;font-size:.74rem;line-height:1.6}.absence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
     .absence-entry{min-width:0;padding:.9rem;border:1px solid rgba(184,211,220,.16);background:rgba(184,211,220,.025)}.absence-entry h3{margin:0 0 .5rem;color:#e5c784;font-size:.72rem;letter-spacing:.07em}.absence-entry p{margin:.45rem 0;color:#c5d0ce;font-size:.7rem;line-height:1.55}.absence-entry strong{color:#f1f5f3}.absence-entry a{color:#c5e0e8;font-weight:700;text-underline-offset:.18em}.absence-status{display:inline-block;margin-top:.3rem;padding:.2rem .35rem;border:1px solid rgba(208,167,91,.35);color:#dfc68f;font-size:.62rem;letter-spacing:.08em}.absence-rule{margin:1rem 0 0;padding:.7rem;border-left:3px solid #8aa5ae;color:#bfd0d5;font-size:.65rem;line-height:1.5;letter-spacing:.07em;text-transform:uppercase}
-    @media(max-width:700px){.contradiction-register{margin-inline:.6rem}.contradiction-register-body{padding-bottom:1.2rem}.contradiction-register em{text-align:left;transform:none}.disconfirmation-drawer,.absence-register{margin-inline:.6rem}.disconfirmation-grid,.absence-grid{grid-template-columns:1fr}}
-    @media(prefers-reduced-motion:reduce){.contradiction-register *,.disconfirmation-drawer *,.absence-register *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-    @media(prefers-contrast:more){.contradiction-register,.disconfirmation-drawer,.disconfirmation-test,.absence-register,.absence-entry{border:2px solid currentColor}.contradiction-register summary{color:#000}.disconfirmation-intro,.disconfirmation-test p,.absence-intro,.absence-entry p{color:#fff}}
-    @media print{.contradiction-register,.disconfirmation-drawer,.absence-register{color:#000;background:#fff;box-shadow:none;border-color:#555}.contradiction-register:not([open])>.contradiction-register-body,.disconfirmation-drawer:not([open])>.disconfirmation-body,.absence-register:not([open])>.absence-body{display:block}.contradiction-register summary,.disconfirmation-drawer>summary,.absence-register>summary{display:none}.contradiction-register a,.disconfirmation-drawer a,.disconfirmation-test,.disconfirmation-test *,.disconfirmation-rule,.absence-register a,.absence-entry,.absence-entry *,.absence-rule{color:#000!important;background:#fff;border-color:#555}}
+    @media(max-width:700px){.archive-methods-desk{margin-inline:.6rem}.archive-methods-desk .contradiction-register,.archive-methods-desk .disconfirmation-drawer,.archive-methods-desk .absence-register{margin:.6rem}.contradiction-register{margin-inline:.6rem}.contradiction-register-body{padding-bottom:1.2rem}.contradiction-register em{text-align:left;transform:none}.disconfirmation-drawer,.absence-register{margin-inline:.6rem}.disconfirmation-grid,.absence-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.archive-methods-desk *,.contradiction-register *,.disconfirmation-drawer *,.absence-register *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+    @media(prefers-contrast:more){.archive-methods-desk,.contradiction-register,.disconfirmation-drawer,.disconfirmation-test,.absence-register,.absence-entry{border:2px solid currentColor}.archive-methods-desk>summary{color:#fff}.contradiction-register summary{color:#000}.disconfirmation-intro,.disconfirmation-test p,.absence-intro,.absence-entry p{color:#fff}}
+    @media print{.archive-methods-desk,.contradiction-register,.disconfirmation-drawer,.absence-register{color:#000;background:#fff;box-shadow:none;border-color:#555}.archive-methods-desk:not([open])>.archive-methods-body,.contradiction-register:not([open])>.contradiction-register-body,.disconfirmation-drawer:not([open])>.disconfirmation-body,.absence-register:not([open])>.absence-body{display:block}.archive-methods-desk>summary,.contradiction-register summary,.disconfirmation-drawer>summary,.absence-register>summary{display:none}.contradiction-register a,.disconfirmation-drawer a,.disconfirmation-test,.disconfirmation-test *,.disconfirmation-rule,.absence-register a,.absence-entry,.absence-entry *,.absence-rule{color:#000!important;background:#fff;border-color:#555}}
   </style>
 </head>
 <body>
@@ -210,84 +215,89 @@
           <div class="coordinates" aria-hidden="true">43°??' N<br>72°??' W<br><small>coordinates corrupted</small></div>
         </div>
 
-        <details class="contradiction-register" id="contradiction-register">
-          <summary>OPEN CONTRADICTION REGISTER / WHAT DOES NOT LINE UP</summary>
-          <div class="contradiction-register-body">
-            <div class="record-meta">DOCUMENT ID: FOUR-09-D<br>METHOD: SOURCE CRITICISM / EVIDENCE HANDLING<br>STATUS: FICTIONAL / UNRESOLVED</div>
-            <p><strong>FIGURE / SCALE:</strong> <a href="#cryptids">File 01</a> and <a href="#witnesses">File 07</a> both use “too tall” language, but neither surviving record establishes a shared scale, distance, date or identity. Resemblance retained; sameness withheld.</p>
-            <p><strong>DOOR / DIAGRAM:</strong> <a href="#diagrams">File 05</a> contains a circle annotated “not a door”; <a href="#witnesses">Witness B</a> reports a door in rock. No dimensions, location or medium connect them. The contradiction is more useful than forcing a match.</p>
-            <p><strong>THIRTEEN / TIMING:</strong> <a href="#broadcasts">Tape 04-13</a> preserves thirteen seconds while <a href="#field-notes">File 06</a> records unrelated clock times. Shared numbers are not a schedule, recurrence or mechanism.</p>
-            <p><strong>CUSTODY / COPY:</strong> <a href="#broadcasts">File 04</a> preserves a written description and timecode, while the Absence Register records that the source audio does not survive here. Without a documented handoff from original carrier to transcription, consistent wording cannot establish that the record travelled intact. An intact description is not an intact chain of custody.</p>
-            <em>ARCHIVAL RULE:<br><small>A connection may be interesting. A disagreement—or a broken evidence trail—may be evidence about the connection.</small></em>
-          </div>
-        </details>
+        <details class="archive-methods-desk" id="archive-methods-desk">
+          <summary>OPEN ARCHIVE METHODS DESK / THREE WAYS TO QUESTION A FILE</summary>
+          <div class="archive-methods-body">
+            <details class="contradiction-register" id="contradiction-register" open>
+              <summary>CONTRADICTION REGISTER / WHAT DOES NOT LINE UP</summary>
+              <div class="contradiction-register-body">
+                <div class="record-meta">DOCUMENT ID: FOUR-09-D<br>METHOD: SOURCE CRITICISM / EVIDENCE HANDLING<br>STATUS: FICTIONAL / UNRESOLVED</div>
+                <p><strong>FIGURE / SCALE:</strong> <a href="#cryptids">File 01</a> and <a href="#witnesses">File 07</a> both use “too tall” language, but neither surviving record establishes a shared scale, distance, date or identity. Resemblance retained; sameness withheld.</p>
+                <p><strong>DOOR / DIAGRAM:</strong> <a href="#diagrams">File 05</a> contains a circle annotated “not a door”; <a href="#witnesses">Witness B</a> reports a door in rock. No dimensions, location or medium connect them. The contradiction is more useful than forcing a match.</p>
+                <p><strong>THIRTEEN / TIMING:</strong> <a href="#broadcasts">Tape 04-13</a> preserves thirteen seconds while <a href="#field-notes">File 06</a> records unrelated clock times. Shared numbers are not a schedule, recurrence or mechanism.</p>
+                <p><strong>CUSTODY / COPY:</strong> <a href="#broadcasts">File 04</a> preserves a written description and timecode, while the Absence Register records that the source audio does not survive here. Without a documented handoff from original carrier to transcription, consistent wording cannot establish that the record travelled intact. An intact description is not an intact chain of custody.</p>
+                <em>ARCHIVAL RULE:<br><small>A connection may be interesting. A disagreement—or a broken evidence trail—may be evidence about the connection.</small></em>
+              </div>
+            </details>
 
-        <details class="disconfirmation-drawer" id="disconfirmation-drawer">
-          <summary>OPEN DISCONFIRMATION DRAWER / WHAT WOULD MAKE US LESS IMPRESSED?</summary>
-          <div class="disconfirmation-body">
-            <p class="disconfirmation-intro">A fictional archive can keep an interesting interpretation without protecting it from failure. These are not answers or puzzles. They are advance notes about what kind of observation would weaken four tempting readings already present in PAGE FOUR.</p>
-            <div class="disconfirmation-grid">
-              <article class="disconfirmation-test">
-                <h3>01 / “THE SAME TALL FIGURE”</h3>
-                <p><strong>Tempting reading:</strong> <a href="#cryptids">File 01</a> and <a href="#witnesses">Witness A</a> describe one recurring entity.</p>
-                <p><strong>Would weaken it:</strong> an independent scale reference showing incompatible heights, or dates that place the reports too far apart to support the same event.</p>
-              </article>
-              <article class="disconfirmation-test">
-                <h3>02 / “THE MAP MOVES”</h3>
-                <p><strong>Tempting reading:</strong> <a href="#maps">File 02</a> preserves a route that changes when observed.</p>
-                <p><strong>Would weaken it:</strong> two surviving copies whose differences match an ordinary revision history, printing error, or redrawn boundary.</p>
-              </article>
-              <article class="disconfirmation-test">
-                <h3>04 / “THE BROADCAST ARRIVES EARLY”</h3>
-                <p><strong>Tempting reading:</strong> <a href="#broadcasts">File 04</a> contains a voice before the microphone opens.</p>
-                <p><strong>Would weaken it:</strong> a clock-offset, tape-edit, cue-channel, or logging explanation that reproduces the apparent lead without requiring impossible timing.</p>
-              </article>
-              <article class="disconfirmation-test">
-                <h3>09 / “THE PATTERN MEANS SOMETHING”</h3>
-                <p><strong>Tempting reading:</strong> repeated shapes, numbers and phrases across <a href="#diagrams">File 05</a>, <a href="#field-notes">File 06</a>, and this board point to one mechanism.</p>
-                <p><strong>Would weaken it:</strong> the same pattern rate appearing after unrelated files are added, suggesting the archive is selecting coincidences rather than discovering a cause.</p>
-              </article>
-            </div>
-            <p class="disconfirmation-rule">FICTIONAL METHOD NOTE // AN INTERPRETATION THAT CANNOT LOSE IS NOT GETTING STRONGER. IT IS ONLY GETTING HARDER TO QUESTION.</p>
-          </div>
-        </details>
+            <details class="disconfirmation-drawer" id="disconfirmation-drawer" open>
+              <summary>DISCONFIRMATION DRAWER / WHAT WOULD MAKE US LESS IMPRESSED?</summary>
+              <div class="disconfirmation-body">
+                <p class="disconfirmation-intro">A fictional archive can keep an interesting interpretation without protecting it from failure. These are not answers or puzzles. They are advance notes about what kind of observation would weaken four tempting readings already present in PAGE FOUR.</p>
+                <div class="disconfirmation-grid">
+                  <article class="disconfirmation-test">
+                    <h3>01 / “THE SAME TALL FIGURE”</h3>
+                    <p><strong>Tempting reading:</strong> <a href="#cryptids">File 01</a> and <a href="#witnesses">Witness A</a> describe one recurring entity.</p>
+                    <p><strong>Would weaken it:</strong> an independent scale reference showing incompatible heights, or dates that place the reports too far apart to support the same event.</p>
+                  </article>
+                  <article class="disconfirmation-test">
+                    <h3>02 / “THE MAP MOVES”</h3>
+                    <p><strong>Tempting reading:</strong> <a href="#maps">File 02</a> preserves a route that changes when observed.</p>
+                    <p><strong>Would weaken it:</strong> two surviving copies whose differences match an ordinary revision history, printing error, or redrawn boundary.</p>
+                  </article>
+                  <article class="disconfirmation-test">
+                    <h3>04 / “THE BROADCAST ARRIVES EARLY”</h3>
+                    <p><strong>Tempting reading:</strong> <a href="#broadcasts">File 04</a> contains a voice before the microphone opens.</p>
+                    <p><strong>Would weaken it:</strong> a clock-offset, tape-edit, cue-channel, or logging explanation that reproduces the apparent lead without requiring impossible timing.</p>
+                  </article>
+                  <article class="disconfirmation-test">
+                    <h3>09 / “THE PATTERN MEANS SOMETHING”</h3>
+                    <p><strong>Tempting reading:</strong> repeated shapes, numbers and phrases across <a href="#diagrams">File 05</a>, <a href="#field-notes">File 06</a>, and this board point to one mechanism.</p>
+                    <p><strong>Would weaken it:</strong> the same pattern rate appearing after unrelated files are added, suggesting the archive is selecting coincidences rather than discovering a cause.</p>
+                  </article>
+                </div>
+                <p class="disconfirmation-rule">FICTIONAL METHOD NOTE // AN INTERPRETATION THAT CANNOT LOSE IS NOT GETTING STRONGER. IT IS ONLY GETTING HARDER TO QUESTION.</p>
+              </div>
+            </details>
 
-        <details class="absence-register" id="absence-register">
-          <summary>OPEN ABSENCE REGISTER / WHAT SHOULD HAVE BEEN HERE?</summary>
-          <div class="absence-body">
-            <div class="record-meta">DOCUMENT ID: FOUR-09-E<br>METHOD: MISSING-DATA / ARCHIVAL GAP ACCOUNTING<br>STATUS: FICTIONAL / INCOMPLETE</div>
-            <p class="absence-intro">An empty place in a file is not automatically mysterious. PAGE FOUR now records what was expected, what actually survives, and which ordinary failure modes must stay possible before absence is allowed to become evidence.</p>
-            <div class="absence-grid">
-              <article class="absence-entry">
-                <h3>01 / SCALE REFERENCE</h3>
-                <p><strong>Expected:</strong> a frame, object or measurement that fixes the apparent height in <a href="#cryptids">File 01</a>.</p>
-                <p><strong>Survives:</strong> proportion language only.</p>
-                <p><strong>Ordinary gaps:</strong> cropped image, lost negative, omitted field measurement, copied description.</p>
-                <span class="absence-status">ABSENCE TYPE: NON-DIAGNOSTIC</span>
-              </article>
-              <article class="absence-entry">
-                <h3>02 / INTERMEDIATE MAP EDITION</h3>
-                <p><strong>Expected:</strong> a version between two allegedly incompatible copies in <a href="#maps">File 02</a>.</p>
-                <p><strong>Survives:</strong> only the discrepant endpoints described by the file.</p>
-                <p><strong>Ordinary gaps:</strong> revision history missing, local overprint, replacement sheet, cataloguing loss.</p>
-                <span class="absence-status">ABSENCE TYPE: OPEN QUESTION</span>
-              </article>
-              <article class="absence-entry">
-                <h3>04 / SOURCE AUDIO</h3>
-                <p><strong>Expected:</strong> original audio behind the thirteen-second log in <a href="#broadcasts">File 04</a>.</p>
-                <p><strong>Survives:</strong> a written description and timecode, not the recording itself.</p>
-                <p><strong>Ordinary gaps:</strong> erased tape, transcription-only accession, damaged carrier, copied log.</p>
-                <span class="absence-status">ABSENCE TYPE: LIMITS VERIFICATION</span>
-              </article>
-              <article class="absence-entry">
-                <h3>07 / WITNESS CONTEXT</h3>
-                <p><strong>Expected:</strong> dates, distances and interviewing conditions for <a href="#witnesses">File 07</a>.</p>
-                <p><strong>Survives:</strong> three short quotations marked unverified.</p>
-                <p><strong>Ordinary gaps:</strong> excerpting, anonymisation, incomplete intake notes, later copying.</p>
-                <span class="absence-status">ABSENCE TYPE: REDUCES WEIGHT</span>
-              </article>
-            </div>
-            <p class="absence-rule">FICTIONAL ARCHIVAL RULE // “WE DO NOT HAVE IT” AND “IT DID NOT EXIST” ARE DIFFERENT CLAIMS. THE GAP MUST EARN ANY STRONGER INTERPRETATION.</p>
+            <details class="absence-register" id="absence-register" open>
+              <summary>ABSENCE REGISTER / WHAT SHOULD HAVE BEEN HERE?</summary>
+              <div class="absence-body">
+                <div class="record-meta">DOCUMENT ID: FOUR-09-E<br>METHOD: MISSING-DATA / ARCHIVAL GAP ACCOUNTING<br>STATUS: FICTIONAL / INCOMPLETE</div>
+                <p class="absence-intro">An empty place in a file is not automatically mysterious. PAGE FOUR now records what was expected, what actually survives, and which ordinary failure modes must stay possible before absence is allowed to become evidence.</p>
+                <div class="absence-grid">
+                  <article class="absence-entry">
+                    <h3>01 / SCALE REFERENCE</h3>
+                    <p><strong>Expected:</strong> a frame, object or measurement that fixes the apparent height in <a href="#cryptids">File 01</a>.</p>
+                    <p><strong>Survives:</strong> proportion language only.</p>
+                    <p><strong>Ordinary gaps:</strong> cropped image, lost negative, omitted field measurement, copied description.</p>
+                    <span class="absence-status">ABSENCE TYPE: NON-DIAGNOSTIC</span>
+                  </article>
+                  <article class="absence-entry">
+                    <h3>02 / INTERMEDIATE MAP EDITION</h3>
+                    <p><strong>Expected:</strong> a version between two allegedly incompatible copies in <a href="#maps">File 02</a>.</p>
+                    <p><strong>Survives:</strong> only the discrepant endpoints described by the file.</p>
+                    <p><strong>Ordinary gaps:</strong> revision history missing, local overprint, replacement sheet, cataloguing loss.</p>
+                    <span class="absence-status">ABSENCE TYPE: OPEN QUESTION</span>
+                  </article>
+                  <article class="absence-entry">
+                    <h3>04 / SOURCE AUDIO</h3>
+                    <p><strong>Expected:</strong> original audio behind the thirteen-second log in <a href="#broadcasts">File 04</a>.</p>
+                    <p><strong>Survives:</strong> a written description and timecode, not the recording itself.</p>
+                    <p><strong>Ordinary gaps:</strong> erased tape, transcription-only accession, damaged carrier, copied log.</p>
+                    <span class="absence-status">ABSENCE TYPE: LIMITS VERIFICATION</span>
+                  </article>
+                  <article class="absence-entry">
+                    <h3>07 / WITNESS CONTEXT</h3>
+                    <p><strong>Expected:</strong> dates, distances and interviewing conditions for <a href="#witnesses">File 07</a>.</p>
+                    <p><strong>Survives:</strong> three short quotations marked unverified.</p>
+                    <p><strong>Ordinary gaps:</strong> excerpting, anonymisation, incomplete intake notes, later copying.</p>
+                    <span class="absence-status">ABSENCE TYPE: REDUCES WEIGHT</span>
+                  </article>
+                </div>
+                <p class="absence-rule">FICTIONAL ARCHIVAL RULE // “WE DO NOT HAVE IT” AND “IT DID NOT EXIST” ARE DIFFERENT CLAIMS. THE GAP MUST EARN ANY STRONGER INTERPRETATION.</p>
+              </div>
+            </details>
           </div>
         </details>
       </section>
