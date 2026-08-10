@@ -433,9 +433,8 @@ h1 {
 
 /*
  * LINK ECHO // SAME DOOR, DIFFERENT WALL
- * When one repeated local doorway is hovered or keyboard-focused, every doorway
- * to that same authored room answers. This is relationship, not tracking: CSS
- * compares fixed href strings already present in the document and stores nothing.
+ * One repeated local doorway can reveal its siblings without turning clicks into
+ * data. The selectors compare fixed href strings already authored in this page.
  */
 .page-shell:has(a[href="./"]:hover) a[href="./"],
 .page-shell:has(a[href="./"]:focus-visible) a[href="./"],
@@ -450,6 +449,12 @@ h1 {
   outline: 2px dotted var(--cyan);
   outline-offset: 2px;
   text-decoration-thickness: 2px;
+}
+
+/* The doorway with actual keyboard focus must remain distinct from its echoes. */
+.page-shell a:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 4px;
 }
 
 @keyframes web1-blink {
@@ -551,6 +556,11 @@ h1 {
     color: var(--white);
     background: var(--black);
     outline: 3px solid var(--white);
+  }
+
+  .page-shell a:focus-visible {
+    outline: 4px double var(--yellow);
+    outline-offset: 4px;
   }
 }
 
