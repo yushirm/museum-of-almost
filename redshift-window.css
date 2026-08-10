@@ -1,0 +1,171 @@
+.redshift-window-shell {
+  border: 1px solid var(--line);
+  background: rgba(7, 5, 17, 0.78);
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.redshift-window-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+.redshift-window-controls button {
+  min-height: 44px;
+  border: 1px solid var(--line);
+  background: rgba(132, 232, 255, 0.05);
+  color: inherit;
+  padding: 0.7rem 0.9rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.redshift-window-controls button[aria-pressed="true"] {
+  border-color: var(--accent, #84e8ff);
+  background: rgba(132, 232, 255, 0.14);
+}
+
+.redshift-spectrum {
+  position: relative;
+  min-height: 15rem;
+  overflow: hidden;
+  border: 1px solid rgba(132, 232, 255, 0.22);
+  background: linear-gradient(180deg, rgba(132, 232, 255, 0.03), rgba(111, 59, 209, 0.06));
+}
+
+.redshift-visible-window {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 2.727%;
+  width: 36.364%;
+  border-inline: 1px dashed rgba(255, 255, 255, 0.38);
+  background: linear-gradient(90deg, rgba(91, 72, 255, 0.12), rgba(74, 176, 255, 0.10) 24%, rgba(101, 255, 181, 0.10) 48%, rgba(255, 225, 92, 0.10) 68%, rgba(255, 96, 72, 0.11));
+}
+
+.redshift-visible-window span {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.6rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.redshift-axis {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2.25rem;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.redshift-axis-label {
+  position: absolute;
+  bottom: 0.55rem;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.66rem;
+  white-space: nowrap;
+}
+
+.redshift-line {
+  position: absolute;
+  top: 3.4rem;
+  bottom: 2.25rem;
+  width: 2px;
+  background: currentColor;
+}
+
+.redshift-line::before {
+  content: attr(data-line-label);
+  position: absolute;
+  top: -1.55rem;
+  left: 0.45rem;
+  color: currentColor;
+  font-size: 0.68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.redshift-line::after {
+  content: attr(data-observed-label);
+  position: absolute;
+  bottom: 0.35rem;
+  left: 0.45rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.64rem;
+  white-space: nowrap;
+}
+
+.redshift-line[data-line-id="hbeta"] { color: #8ac7ff; }
+.redshift-line[data-line-id="oiii"] { color: #85f0bc; }
+.redshift-line[data-line-id="halpha"] { color: #ff8c7a; }
+
+.redshift-window-readout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.redshift-window-readout > div {
+  padding: 0.9rem;
+  border: 1px solid rgba(132, 232, 255, 0.14);
+}
+
+.redshift-window-readout strong,
+.redshift-window-readout span {
+  display: block;
+}
+
+.redshift-window-readout span {
+  margin-bottom: 0.35rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.redshift-window-note {
+  max-width: 76ch;
+  margin: 1rem 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .redshift-spectrum { min-height: 18rem; }
+  .redshift-window-readout { grid-template-columns: 1fr; }
+  .redshift-line::before,
+  .redshift-line::after { writing-mode: vertical-rl; }
+  .redshift-line::before { top: -0.1rem; }
+  .redshift-line::after { bottom: 0.2rem; }
+}
+
+@media (prefers-contrast: more) {
+  .redshift-window-shell,
+  .redshift-spectrum,
+  .redshift-window-controls button,
+  .redshift-window-readout > div { border: 2px solid currentColor; }
+}
+
+@media print {
+  .redshift-window-shell,
+  .redshift-spectrum,
+  .redshift-window-readout > div {
+    color: #000;
+    background: #fff;
+    border-color: #555;
+  }
+  .redshift-window-controls { display: none; }
+  .redshift-visible-window { background: #eee; border-color: #777; }
+  .redshift-visible-window span,
+  .redshift-axis-label,
+  .redshift-line::after,
+  .redshift-window-readout span,
+  .redshift-window-note { color: #000; }
+}
