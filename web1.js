@@ -554,6 +554,135 @@
     });
   }
 
+  function addHomepageTuningFork() {
+    const weblog = document.querySelector('.two-column');
+    if (!weblog || document.getElementById('homepage-tuning-fork')) return;
+
+    const section = document.createElement('section');
+    section.id = 'homepage-tuning-fork';
+    section.className = 'webring';
+    section.setAttribute('aria-labelledby', 'homepage-tuning-fork-title');
+
+    const title = document.createElement('h2');
+    title.id = 'homepage-tuning-fork-title';
+    title.textContent = '~* HOMEPAGE TUNING FORK *~';
+
+    const intro = document.createElement('p');
+    intro.append(
+      document.createTextNode('I found out the browser can make a tiny sound without me storing an audio file. So I gave this page four notes: '),
+      strong('HEADER → WEBLOG → SIDEBAR → FOOTER.'),
+      document.createTextNode(' It is not a soundtrack. It is a very small proof that a homepage can briefly become an instrument.')
+    );
+
+    const score = document.createElement('ol');
+    score.setAttribute('aria-label', 'Four-note hand-authored homepage phrase');
+    [
+      'HEADER // arrive',
+      'WEBLOG // wander',
+      'SIDEBAR // notice the odd little things',
+      'FOOTER // leave a door open'
+    ].forEach((text) => {
+      const item = document.createElement('li');
+      item.textContent = text;
+      score.append(item);
+    });
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = '[ LET THE HOMEPAGE HUM ]';
+    button.style.minHeight = '44px';
+    button.style.padding = '0.55rem 0.75rem';
+    button.style.font = 'inherit';
+    button.style.cursor = 'pointer';
+
+    const status = document.createElement('p');
+    status.className = 'smallprint';
+    status.setAttribute('aria-live', 'polite');
+    status.textContent = 'TUNING FORK STATUS: silent until you press the button.';
+
+    const policy = document.createElement('p');
+    policy.className = 'smallprint';
+    policy.textContent = 'TUNING FORK POLICY: the four-note phrase is hand-authored and synthesized locally with the browser Web Audio API only after you press the button. It does not load an audio file, record a microphone, inspect volume settings, remember plays, send telemetry, or contact another server. If Web Audio is unavailable, the written score remains the whole exhibit.';
+
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    let activeContext = null;
+    let playToken = 0;
+
+    if (!AudioContextClass) {
+      button.disabled = true;
+      button.textContent = '[ WEB AUDIO UNAVAILABLE HERE ]';
+      status.textContent = 'TUNING FORK STATUS: this browser does not expose Web Audio. The written score still works as the exhibit.';
+    } else {
+      button.addEventListener('click', async () => {
+        const token = ++playToken;
+        const previous = activeContext;
+        activeContext = null;
+        if (previous && previous.state !== 'closed') {
+          try { await previous.close(); } catch (_) {}
+        }
+
+        const context = new AudioContextClass();
+        activeContext = context;
+
+        try {
+          if (context.state === 'suspended') await context.resume();
+          if (token !== playToken || activeContext !== context) {
+            if (context.state !== 'closed') await context.close();
+            return;
+          }
+
+          const notes = [262, 330, 392, 523];
+          const start = context.currentTime + 0.05;
+          notes.forEach((frequency, index) => {
+            const oscillator = context.createOscillator();
+            const gain = context.createGain();
+            const noteStart = start + (index * 0.42);
+            const noteEnd = noteStart + 0.28;
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(frequency, noteStart);
+            gain.gain.setValueAtTime(0.0001, noteStart);
+            gain.gain.exponentialRampToValueAtTime(0.12, noteStart + 0.03);
+            gain.gain.exponentialRampToValueAtTime(0.0001, noteEnd);
+            oscillator.connect(gain);
+            gain.connect(context.destination);
+            oscillator.start(noteStart);
+            oscillator.stop(noteEnd + 0.02);
+          });
+
+          status.textContent = 'TUNING FORK STATUS: humming four notes. Nothing is being recorded.';
+
+          window.setTimeout(() => {
+            if (token !== playToken || activeContext !== context) return;
+            activeContext = null;
+            if (context.state !== 'closed') context.close().catch(() => {});
+            status.textContent = 'TUNING FORK STATUS: quiet again. Press the button to replay the same hand-authored phrase.';
+          }, 1900);
+        } catch (_) {
+          if (activeContext === context) activeContext = null;
+          if (context.state !== 'closed') context.close().catch(() => {});
+          status.textContent = 'TUNING FORK STATUS: the browser declined to start audio. Nothing else changed.';
+        }
+      });
+    }
+
+    section.append(title, intro, score, button, status, policy);
+
+    const workbench = document.getElementById('homepage-workbench');
+    if (workbench) workbench.insertAdjacentElement('afterend', section);
+    else weblog.insertAdjacentElement('beforebegin', section);
+
+    const updates = document.querySelector('.updates');
+    if (updates && !document.getElementById('homepage-tuning-fork-update')) {
+      const item = document.createElement('li');
+      item.id = 'homepage-tuning-fork-update';
+      const date = document.createElement('strong');
+      date.textContent = '10 AUG:';
+      item.append(date, document.createTextNode(' DISCOVERED AUDIO WITHOUT AN AUDIO FILE. THE HOMEPAGE CAN HUM.'));
+      updates.prepend(item);
+    }
+  }
+
   function foldSiteUpdates() {
     const updates = document.querySelector('.updates');
     if (!updates || document.getElementById('older-site-updates')) return;
@@ -599,6 +728,7 @@
   addPaperEscapeHatch();
   addStylesheetDressingRoom();
   consolidateHomepageWorkbench();
+  addHomepageTuningFork();
   foldSiteUpdates();
 
   if ('serviceWorker' in navigator) {
