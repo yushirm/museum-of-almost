@@ -16,18 +16,7 @@
   <link rel="stylesheet" href="cosmic-latency.css" data-cosmic-latency-styles>
   <link rel="stylesheet" href="cosmic-escapement.css" data-celestial-escapement-styles>
   <link rel="stylesheet" href="planetary-heliodon.css" data-planetary-heliodon-styles>
-  <style>
-    .solar-dial-section{padding:clamp(2rem,6vw,5rem) clamp(1rem,4vw,3rem);border-block:1px solid rgba(28,34,37,.16);background:linear-gradient(180deg,rgba(242,239,230,.94),rgba(225,229,221,.72))}
-    .solar-dial-heading{max-width:72rem;margin:0 auto 1.5rem}.solar-dial-heading h2{max-width:18ch}.solar-dial-heading p:last-child{max-width:72ch}
-    .solar-dial-layout{display:grid;grid-template-columns:minmax(18rem,.9fr) minmax(22rem,1.1fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:center;max-width:72rem;margin:0 auto}
-    .solar-dial-instrument{position:relative;width:min(100%,34rem);aspect-ratio:1;margin-inline:auto}.solar-dial-face{display:block;width:100%;height:100%;overflow:visible}
-    .solar-dial-ring{fill:rgba(255,255,255,.38);stroke:rgba(28,34,37,.36);stroke-width:1.5}.solar-dial-inner-ring{fill:none;stroke:rgba(28,34,37,.13);stroke-width:1;stroke-dasharray:2 5}
-    .solar-dial-tick,.solar-dial-major-tick{stroke:rgba(28,34,37,.34);stroke-width:1}.solar-dial-major-tick{stroke-width:2}.solar-dial-hour-label{fill:#30383a;font:700 12px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-anchor:middle;dominant-baseline:middle}
-    .solar-dial-marker circle{fill:#dde3de;stroke:#30383a;stroke-width:1.5}.solar-dial-marker[data-light="day"] circle{fill:#f4d77c}.solar-dial-marker[data-light="twilight"] circle{fill:#d9b9a7}.solar-dial-marker[data-light="night"] circle{fill:#70808b}.solar-dial-marker text{fill:#182023;font:700 9px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-anchor:middle;dominant-baseline:middle}.solar-dial-marker[data-light="night"] text{fill:#fff}
-    .solar-dial-center{position:absolute;inset:50% auto auto 50%;width:9.5rem;transform:translate(-50%,-50%);text-align:center;pointer-events:none}.solar-dial-center span,.solar-dial-center small{display:block;text-transform:uppercase;letter-spacing:.08em;font-size:.68rem}.solar-dial-center strong{display:block;margin:.35rem 0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(1rem,2.7vw,1.45rem)}
-    .solar-dial-copy{min-width:0}.solar-dial-summary{margin:0 0 1rem;padding:1rem;border-left:3px solid currentColor;font-size:clamp(1rem,1.8vw,1.2rem);line-height:1.55}.solar-dial-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin:0;padding:0;list-style:none}.solar-dial-list li{min-width:0;padding:.72rem .8rem;border:1px solid rgba(28,34,37,.16);background:rgba(255,255,255,.42)}.solar-dial-list strong,.solar-dial-list span,.solar-dial-list small{display:block}.solar-dial-list strong{font-size:.72rem;letter-spacing:.07em}.solar-dial-list span{margin-top:.18rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92rem}.solar-dial-list small{margin-top:.22rem;color:#50595b;font-size:.68rem;letter-spacing:.04em}.solar-dial-list li[data-light="day"]{border-left:4px solid #b68b17}.solar-dial-list li[data-light="twilight"]{border-left:4px solid #a66d55}.solar-dial-list li[data-light="night"]{border-left:4px solid #526774}.solar-dial-note{max-width:72rem;margin:1.25rem auto 0;font-size:.78rem;line-height:1.6}
-    @media(max-width:780px){.solar-dial-layout{grid-template-columns:1fr}}@media(max-width:480px){.solar-dial-list{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){.solar-dial-section *,.solar-dial-section *::before,.solar-dial-section *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}@media(prefers-contrast:more){.solar-dial-ring{stroke:currentColor}.solar-dial-list li{border-color:currentColor}.solar-dial-marker circle{stroke-width:3}}@media print{.solar-dial-section{break-inside:avoid;background:#fff}.solar-dial-list li{background:#fff;border-color:#555}}
-  </style>
+  <link rel="stylesheet" href="commons-solar-dial.css">
 </head>
 <body data-loading="false" data-source-count="0">
   <a class="skip-link" href="#main">Skip to the world snapshot</a>
@@ -88,13 +77,39 @@
     </section>
 
     <section class="headline-grid" aria-label="Current world headline metrics">
-      <article class="headline-card headline-earth"><span>EARTHQUAKES · PAST HOUR</span><strong id="quake-count">—</strong><p><b id="quake-strongest">—</b> strongest</p><small id="quake-depth">No earthquake snapshot</small></article>
-      <article class="headline-card headline-sky"><span>SOLAR WIND · NOW</span><strong id="solar-wind">—</strong><p id="solar-state">No space-weather snapshot</p><small>NOAA Space Weather Prediction Center</small></article>
-      <article class="headline-card headline-events"><span>OPEN NATURAL EVENTS</span><strong id="event-count">—</strong><p>currently listed in this snapshot</p><small>NASA Earth Observatory Natural Event Tracker</small></article>
-      <article class="headline-card headline-weather"><span>13-POINT WEATHER RANGE</span><strong id="weather-range">—</strong><p id="weather-wind">No weather snapshot</p><small id="weather-rain">—</small></article>
+      <article class="headline-card headline-earth">
+        <span>EARTHQUAKES · PAST HOUR</span>
+        <strong id="quake-count">—</strong>
+        <p><b id="quake-strongest">—</b> strongest</p>
+        <small id="quake-depth">No earthquake snapshot</small>
+      </article>
+
+      <article class="headline-card headline-sky">
+        <span>SOLAR WIND · NOW</span>
+        <strong id="solar-wind">—</strong>
+        <p id="solar-state">No space-weather snapshot</p>
+        <small>NOAA Space Weather Prediction Center</small>
+      </article>
+
+      <article class="headline-card headline-events">
+        <span>OPEN NATURAL EVENTS</span>
+        <strong id="event-count">—</strong>
+        <p>currently listed in this snapshot</p>
+        <small>NASA Earth Observatory Natural Event Tracker</small>
+      </article>
+
+      <article class="headline-card headline-weather">
+        <span>13-POINT WEATHER RANGE</span>
+        <strong id="weather-range">—</strong>
+        <p id="weather-wind">No weather snapshot</p>
+        <small id="weather-rain">—</small>
+      </article>
     </section>
 
-    <section class="world-sentence-panel" aria-labelledby="world-sentence-title"><span id="world-sentence-title">RIGHT NOW, IN ONE SENTENCE</span><p id="world-sentence">Reading the commons…</p></section>
+    <section class="world-sentence-panel" aria-labelledby="world-sentence-title">
+      <span id="world-sentence-title">RIGHT NOW, IN ONE SENTENCE</span>
+      <p id="world-sentence">Reading the commons…</p>
+    </section>
 
     <section class="solar-dial-section" aria-labelledby="solar-dial-title">
       <div class="solar-dial-heading section-heading">
@@ -102,76 +117,287 @@
         <h2 id="solar-dial-title">The same now does not look like the same time of day.</h2>
         <p>Borrowed from horology and sundials: the thirteen fixed longitudes are placed on one twenty-four-hour dial using the same simplified solar geometry that COMMONS already uses for day, twilight, and night. The latch stays singular; local solar hour rotates around it.</p>
       </div>
+
       <div class="solar-dial-layout">
         <div class="solar-dial-instrument">
           <svg class="solar-dial-face" viewBox="0 0 400 400" role="img" aria-labelledby="solar-dial-svg-title solar-dial-svg-desc">
-            <title id="solar-dial-svg-title">Longitude clock for the thirteen fixed Commons points</title><desc id="solar-dial-svg-desc">A twenty-four-hour dial waiting for the first Commons snapshot.</desc>
-            <circle class="solar-dial-ring" cx="200" cy="200" r="172"></circle><circle class="solar-dial-inner-ring" cx="200" cy="200" r="124"></circle><g id="solar-dial-ticks" aria-hidden="true"></g><g id="solar-dial-points" aria-hidden="true"></g>
+            <title id="solar-dial-svg-title">Longitude clock for the thirteen fixed Commons points</title>
+            <desc id="solar-dial-svg-desc">A twenty-four-hour dial waiting for the first Commons snapshot.</desc>
+            <circle class="solar-dial-ring" cx="200" cy="200" r="172"></circle>
+            <circle class="solar-dial-inner-ring" cx="200" cy="200" r="124"></circle>
+            <g id="solar-dial-ticks" aria-hidden="true"></g>
+            <g id="solar-dial-points" aria-hidden="true"></g>
           </svg>
-          <div class="solar-dial-center" aria-hidden="true"><span>ONE LATCH</span><strong id="solar-dial-latch">—</strong><small>UTC reference</small></div>
+          <div class="solar-dial-center" aria-hidden="true">
+            <span>ONE LATCH</span>
+            <strong id="solar-dial-latch">—</strong>
+            <small>UTC reference</small>
+          </div>
         </div>
-        <div class="solar-dial-copy"><p id="solar-dial-summary" class="solar-dial-summary" role="status" aria-live="polite">Waiting for the first latched snapshot.</p><ol id="solar-dial-list" class="solar-dial-list" aria-label="Model solar hour and light state for all thirteen fixed Commons points"></ol></div>
+
+        <div class="solar-dial-copy">
+          <p id="solar-dial-summary" class="solar-dial-summary" role="status" aria-live="polite">Waiting for the first latched snapshot.</p>
+          <ol id="solar-dial-list" class="solar-dial-list" aria-label="Model solar hour and light state for all thirteen fixed Commons points"></ol>
+        </div>
       </div>
+
       <p class="solar-dial-note"><strong>Not civil time.</strong> Each displayed solar hour is a longitude-derived model time rounded to five minutes and tied to this snapshot’s solar geometry. It does not request time-zone boundaries, daylight-saving rules, visitor location, or another public service. Latitude still matters to whether a point is in day, twilight, or night.</p>
     </section>
 
     <section class="windows-section" aria-labelledby="windows-title">
-      <div class="section-heading"><p class="eyebrow">THIRTEEN WINDOWS</p><h2 id="windows-title">A fixed sample across the planet.</h2><p>The thirteen sampling points are fixed, non-personal coordinates. They do not follow population, borders, popularity, or the visitor. Some fall on land. Some fall at sea. That is deliberate.</p></div>
+      <div class="section-heading">
+        <p class="eyebrow">THIRTEEN WINDOWS</p>
+        <h2 id="windows-title">A fixed sample across the planet.</h2>
+        <p>The thirteen sampling points are fixed, non-personal coordinates. They do not follow population, borders, popularity, or the visitor. Some fall on land. Some fall at sea. That is deliberate.</p>
+      </div>
+
       <div class="world-layout">
         <div class="world-map-wrap">
-          <div class="world-map" aria-label="Equirectangular world map with thirteen fixed global weather points"><img class="world-map-image" src="world-map.svg" alt="" aria-hidden="true"><div class="world-map-grid" aria-hidden="true"></div><div class="equator" aria-hidden="true"></div><div class="prime-meridian" aria-hidden="true"></div><div id="station-points" class="station-points" role="group" aria-label="Thirteen fixed global weather points"></div><span class="map-label map-label-n">90°N</span><span class="map-label map-label-s">90°S</span><span class="map-label map-label-w">180°W</span><span class="map-label map-label-e">180°E</span></div>
-          <div class="map-legend" aria-label="Map legend"><span><i class="legend-dot legend-day"></i> daylight</span><span><i class="legend-dot legend-twilight"></i> twilight</span><span><i class="legend-dot legend-night"></i> night</span><strong id="daylight-count">—</strong></div>
+          <div class="world-map" aria-label="Equirectangular world map with thirteen fixed global weather points">
+            <img class="world-map-image" src="world-map.svg" alt="" aria-hidden="true">
+            <div class="world-map-grid" aria-hidden="true"></div>
+            <div class="equator" aria-hidden="true"></div>
+            <div class="prime-meridian" aria-hidden="true"></div>
+            <div id="station-points" class="station-points" role="group" aria-label="Thirteen fixed global weather points"></div>
+            <span class="map-label map-label-n">90°N</span>
+            <span class="map-label map-label-s">90°S</span>
+            <span class="map-label map-label-w">180°W</span>
+            <span class="map-label map-label-e">180°E</span>
+          </div>
+          <div class="map-legend" aria-label="Map legend">
+            <span><i class="legend-dot legend-day"></i> daylight</span>
+            <span><i class="legend-dot legend-twilight"></i> twilight</span>
+            <span><i class="legend-dot legend-night"></i> night</span>
+            <strong id="daylight-count">—</strong>
+          </div>
           <p class="map-source-note">Basemap: Natural Earth 110m land, public domain, simplified and stored locally. Projection: equirectangular. Longitude and latitude are placed directly on the grid, but the picture does not preserve area, shape, or surface distance; use the Difference Engine for numerical surface distance between sampled points. No map or tile service is contacted.</p>
         </div>
-        <aside class="station-detail" aria-live="polite"><span class="eyebrow">SELECTED WINDOW</span><h3 id="station-name">POINT 01</h3><p id="station-coordinates">35.67° S · 74.26° E</p><dl><div><dt>Temperature</dt><dd id="station-temperature">—</dd></div><div><dt>Wind</dt><dd id="station-wind">—</dd></div><div><dt>Precipitation</dt><dd id="station-rain">—</dd></div><div><dt>Light</dt><dd id="station-light">—</dd></div></dl></aside>
+
+        <aside class="station-detail" aria-live="polite">
+          <span class="eyebrow">SELECTED WINDOW</span>
+          <h3 id="station-name">POINT 01</h3>
+          <p id="station-coordinates">35.67° S · 74.26° E</p>
+          <dl>
+            <div><dt>Temperature</dt><dd id="station-temperature">—</dd></div>
+            <div><dt>Wind</dt><dd id="station-wind">—</dd></div>
+            <div><dt>Precipitation</dt><dd id="station-rain">—</dd></div>
+            <div><dt>Light</dt><dd id="station-light">—</dd></div>
+          </dl>
+        </aside>
       </div>
-      <div id="station-list" class="station-list" aria-label="All thirteen weather windows"></div><p class="attribution">Weather data: Open-Meteo. Fixed coordinates only; browser location is never requested.</p>
+
+      <div id="station-list" class="station-list" aria-label="All thirteen weather windows"></div>
+      <p class="attribution">Weather data: Open-Meteo. Fixed coordinates only; browser location is never requested.</p>
     </section>
 
     <section class="difference-section" aria-labelledby="difference-title">
-      <div class="section-heading"><p class="eyebrow">THE DIFFERENCE ENGINE</p><h2 id="difference-title">How different can the same planet be at the same moment?</h2><p>Patch any two fixed windows together. The circuit compares only the current snapshot: distance, temperature, wind, precipitation, and light. It does not rank places or keep a history.</p></div>
-      <div class="difference-console"><div class="patchbay" aria-labelledby="patchbay-title"><div class="patchbay-heading"><span id="patchbay-title">PATCH CABLE</span><p>Choose which cable end to move, then choose a numbered socket.</p></div><div class="patch-targets" role="group" aria-label="Choose which comparison end to patch"><button id="patch-a" class="patch-target" type="button" aria-pressed="true" data-active="true">END A · POINT 01</button><button id="patch-b" class="patch-target" type="button" aria-pressed="false" data-active="false">END B · POINT 09</button></div><div id="difference-points" class="patch-points" role="group" aria-label="Patch one of thirteen fixed points to the active end"></div><p id="patch-help" class="patch-help">End A is armed. Choose any fixed point below; the other end stays connected.</p></div>
-        <div class="difference-instrument"><div class="lens-controls" role="group" aria-label="Choose a comparison lens"><button class="lens-button" type="button" data-lens="temperature" data-active="true" aria-pressed="true">Temperature</button><button class="lens-button" type="button" data-lens="wind" data-active="false" aria-pressed="false">Wind</button><button class="lens-button" type="button" data-lens="precipitation" data-active="false" aria-pressed="false">Precipitation</button><button class="lens-button" type="button" data-lens="light" data-active="false" aria-pressed="false">Light</button><button class="lens-button" type="button" data-lens="distance" data-active="false" aria-pressed="false">Distance</button></div><p id="difference-readout" class="difference-readout" aria-live="polite">Waiting for the current weather snapshot.</p><div id="difference-scale" class="difference-scale" data-lens="temperature"><div class="difference-track" aria-hidden="true"><span id="difference-marker-a" class="difference-marker difference-marker-a" style="--position: 0%">A 01</span><span id="difference-marker-b" class="difference-marker difference-marker-b" style="--position: 100%">B 09</span></div><p id="difference-scale-label">13-point observed range</p></div><dl class="difference-metrics" aria-label="Current difference between patched points"><div><dt>Surface distance</dt><dd id="difference-distance">—</dd></div><div><dt>Temperature A − B</dt><dd id="difference-temperature">—</dd></div><div><dt>Wind A − B</dt><dd id="difference-wind">—</dd></div><div><dt>Precipitation A − B</dt><dd id="difference-rain">—</dd></div><div><dt>Light A · B</dt><dd id="difference-light">—</dd></div></dl></div></div>
+      <div class="section-heading">
+        <p class="eyebrow">THE DIFFERENCE ENGINE</p>
+        <h2 id="difference-title">How different can the same planet be at the same moment?</h2>
+        <p>Patch any two fixed windows together. The circuit compares only the current snapshot: distance, temperature, wind, precipitation, and light. It does not rank places or keep a history.</p>
+      </div>
+
+      <div class="difference-console">
+        <div class="patchbay" aria-labelledby="patchbay-title">
+          <div class="patchbay-heading">
+            <span id="patchbay-title">PATCH CABLE</span>
+            <p>Choose which cable end to move, then choose a numbered socket.</p>
+          </div>
+          <div class="patch-targets" role="group" aria-label="Choose which comparison end to patch">
+            <button id="patch-a" class="patch-target" type="button" aria-pressed="true" data-active="true">END A · POINT 01</button>
+            <button id="patch-b" class="patch-target" type="button" aria-pressed="false" data-active="false">END B · POINT 09</button>
+          </div>
+          <div id="difference-points" class="patch-points" role="group" aria-label="Patch one of thirteen fixed points to the active end"></div>
+          <p id="patch-help" class="patch-help">End A is armed. Choose any fixed point below; the other end stays connected.</p>
+        </div>
+
+        <div class="difference-instrument">
+          <div class="lens-controls" role="group" aria-label="Choose a comparison lens">
+            <button class="lens-button" type="button" data-lens="temperature" data-active="true" aria-pressed="true">Temperature</button>
+            <button class="lens-button" type="button" data-lens="wind" data-active="false" aria-pressed="false">Wind</button>
+            <button class="lens-button" type="button" data-lens="precipitation" data-active="false" aria-pressed="false">Precipitation</button>
+            <button class="lens-button" type="button" data-lens="light" data-active="false" aria-pressed="false">Light</button>
+            <button class="lens-button" type="button" data-lens="distance" data-active="false" aria-pressed="false">Distance</button>
+          </div>
+
+          <p id="difference-readout" class="difference-readout" aria-live="polite">Waiting for the current weather snapshot.</p>
+
+          <div id="difference-scale" class="difference-scale" data-lens="temperature">
+            <div class="difference-track" aria-hidden="true">
+              <span id="difference-marker-a" class="difference-marker difference-marker-a" style="--position: 0%">A 01</span>
+              <span id="difference-marker-b" class="difference-marker difference-marker-b" style="--position: 100%">B 09</span>
+            </div>
+            <p id="difference-scale-label">13-point observed range</p>
+          </div>
+
+          <dl class="difference-metrics" aria-label="Current difference between patched points">
+            <div><dt>Surface distance</dt><dd id="difference-distance">—</dd></div>
+            <div><dt>Temperature A − B</dt><dd id="difference-temperature">—</dd></div>
+            <div><dt>Wind A − B</dt><dd id="difference-wind">—</dd></div>
+            <div><dt>Precipitation A − B</dt><dd id="difference-rain">—</dd></div>
+            <div><dt>Light A · B</dt><dd id="difference-light">—</dd></div>
+          </dl>
+        </div>
+      </div>
+
       <p class="attribution">The Difference Engine derives everything from the existing thirteen-point weather snapshot and local geometry. It makes no additional network request.</p>
     </section>
 
     <section class="planetary-section" aria-labelledby="planetary-section-title">
-      <div class="section-heading"><p class="eyebrow">PLANETARY SECTION / FIELD SHEET</p><h2 id="planetary-section-title">Cut through the planet as it is now.</h2><p>Architecture uses a section drawing to reveal what a plan view hides. Here the thirteen fixed stations become discrete measured posts from west to east. The page does not interpolate the unmeasured space between them.</p></div>
-      <div class="field-sheet-print-title" aria-hidden="true"><strong>COMMONS / NOW — PLANETARY FIELD SHEET</strong><span>The page forgets. This sheet can remember one snapshot.</span></div>
-      <div id="field-sheet" class="field-sheet"><div class="field-sheet-header"><strong>13 FIXED POSTS · WEST → EAST</strong><span id="section-status">Waiting for current weather.</span></div><div class="section-instrument"><svg id="planetary-section-plot" class="planetary-section-plot" viewBox="0 0 1000 360" role="img" aria-labelledby="section-plot-title section-plot-desc"><title id="section-plot-title">Planetary section through thirteen fixed world samples</title><desc id="section-plot-desc">Thirteen discrete posts ordered west to east. Temperature controls post height; wind and precipitation are separate marks; light is labeled. No values are interpolated between posts.</desc><g id="section-guides" aria-hidden="true"></g><g id="section-posts" aria-hidden="true"></g></svg></div><div class="section-legend" aria-label="Planetary section legend"><strong>READING KEY</strong><span>post height = temperature within this 13-point snapshot</span><span><i class="legend-wind"></i> flag length = wind within this snapshot</span><span><i class="legend-rain"></i> rain mark = current precipitation</span><span>post tone = day / twilight / night</span></div><p class="section-no-interpolation"><strong>No connecting line.</strong> The stations are measurements, not a continuous weather transect. Unmeasured space stays unmeasured.</p><div class="section-table-wrap"><table class="section-table"><thead><tr><th>Point</th><th>Longitude</th><th>Temperature</th><th>Wind</th><th>Precipitation</th><th>Light</th></tr></thead><tbody id="section-table-body"><tr><td colspan="6">Waiting for the current snapshot.</td></tr></tbody></table></div><div class="field-sheet-meta"><span><strong id="field-sheet-time">No live snapshot yet</strong></span><span>Sources: USGS · NOAA SWPC · Open-Meteo · NASA EONET</span><span>Weather: 13 fixed coordinates · Open-Meteo</span><span>No account · no location · no stored visitor history</span></div></div>
-      <div class="field-sheet-actions"><button id="field-sheet-button" type="button">Make field sheet</button><p class="field-sheet-help">This opens the browser’s native print dialog. Print on paper or choose a local PDF destination if your browser provides one. The Museum does not upload or save the sheet.</p></div>
+      <div class="section-heading">
+        <p class="eyebrow">PLANETARY SECTION / FIELD SHEET</p>
+        <h2 id="planetary-section-title">Cut through the planet as it is now.</h2>
+        <p>Architecture uses a section drawing to reveal what a plan view hides. Here the thirteen fixed stations become discrete measured posts from west to east. The page does not interpolate the unmeasured space between them.</p>
+      </div>
+
+      <div class="field-sheet-print-title" aria-hidden="true">
+        <strong>COMMONS / NOW — PLANETARY FIELD SHEET</strong>
+        <span>The page forgets. This sheet can remember one snapshot.</span>
+      </div>
+
+      <div id="field-sheet" class="field-sheet">
+        <div class="field-sheet-header">
+          <strong>13 FIXED POSTS · WEST → EAST</strong>
+          <span id="section-status">Waiting for current weather.</span>
+        </div>
+
+        <div class="section-instrument">
+          <svg id="planetary-section-plot" class="planetary-section-plot" viewBox="0 0 1000 360" role="img" aria-labelledby="section-plot-title section-plot-desc">
+            <title id="section-plot-title">Planetary section through thirteen fixed world samples</title>
+            <desc id="section-plot-desc">Thirteen discrete posts ordered west to east. Temperature controls post height; wind and precipitation are separate marks; light is labeled. No values are interpolated between posts.</desc>
+            <g id="section-guides" aria-hidden="true"></g>
+            <g id="section-posts" aria-hidden="true"></g>
+          </svg>
+        </div>
+
+        <div class="section-legend" aria-label="Planetary section legend">
+          <strong>READING KEY</strong>
+          <span>post height = temperature within this 13-point snapshot</span>
+          <span><i class="legend-wind"></i> flag length = wind within this snapshot</span>
+          <span><i class="legend-rain"></i> rain mark = current precipitation</span>
+          <span>post tone = day / twilight / night</span>
+        </div>
+
+        <p class="section-no-interpolation"><strong>No connecting line.</strong> The stations are measurements, not a continuous weather transect. Unmeasured space stays unmeasured.</p>
+
+        <div class="section-table-wrap">
+          <table class="section-table">
+            <thead>
+              <tr>
+                <th>Point</th>
+                <th>Longitude</th>
+                <th>Temperature</th>
+                <th>Wind</th>
+                <th>Precipitation</th>
+                <th>Light</th>
+              </tr>
+            </thead>
+            <tbody id="section-table-body">
+              <tr><td colspan="6">Waiting for the current snapshot.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="field-sheet-meta">
+          <span><strong id="field-sheet-time">No live snapshot yet</strong></span>
+          <span>Sources: USGS · NOAA SWPC · Open-Meteo · NASA EONET</span>
+          <span>Weather: 13 fixed coordinates · Open-Meteo</span>
+          <span>No account · no location · no stored visitor history</span>
+        </div>
+      </div>
+
+      <div class="field-sheet-actions">
+        <button id="field-sheet-button" type="button">Make field sheet</button>
+        <p class="field-sheet-help">This opens the browser’s native print dialog. Print on paper or choose a local PDF destination if your browser provides one. The Museum does not upload or save the sheet.</p>
+      </div>
     </section>
 
-    <section class="signal-grid" aria-label="Detailed live signals"><article class="signal-panel"><div class="signal-heading"><span>EARTH</span><h2>Movement is ordinary.</h2></div><p>The earthquake count is a rolling past-hour feed from the USGS. Small events are included because the point is not disaster spectacle; it is the constant movement of the crust.</p><div class="signal-number-row"><span>strongest now</span><strong id="quake-strongest-copy">See headline above</strong></div></article><article class="signal-panel"><div class="signal-heading"><span>SKY</span><h2>The Sun is touching Earth.</h2></div><p>Solar wind is a stream of charged particles arriving from the Sun. The value above is the current speed reported by NOAA SWPC, not a forecast or score.</p><div class="signal-number-row"><span>measurement</span><strong>km/s</strong></div></article><article class="signal-panel signal-events-panel"><div class="signal-heading"><span>ACTIVE EVENTS</span><h2>Some conditions remain open.</h2></div><p>NASA EONET groups currently open natural events from multiple reporting sources. The list below shows only aggregate categories; event titles and coordinates are not reproduced here.</p><ul id="event-categories" class="event-categories"><li>No category snapshot</li></ul></article></section>
+    <section class="signal-grid" aria-label="Detailed live signals">
+      <article class="signal-panel">
+        <div class="signal-heading">
+          <span>EARTH</span>
+          <h2>Movement is ordinary.</h2>
+        </div>
+        <p>The earthquake count is a rolling past-hour feed from the USGS. Small events are included because the point is not disaster spectacle; it is the constant movement of the crust.</p>
+        <div class="signal-number-row">
+          <span>strongest now</span>
+          <strong id="quake-strongest-copy">See headline above</strong>
+        </div>
+      </article>
 
-    <section class="plain-language" aria-labelledby="plain-title"><div class="section-heading"><p class="eyebrow">WHAT THIS ACTUALLY DOES</p><h2 id="plain-title">Four public services. Five current feeds.</h2></div><div class="plain-grid"><article><strong>1</strong><h3>Loads once.</h3><p>When the page opens, it requests five current feeds across four public services: USGS, NOAA SWPC, Open-Meteo, and NASA EONET. NOAA supplies two of those feeds. It does not poll in the background.</p></article><article><strong>2</strong><h3>Samples fixed places.</h3><p>The weather request uses thirteen coordinates baked into the site. They are unrelated to whoever is visiting.</p></article><article><strong>3</strong><h3>Stores no visitor history.</h3><p>No local visitor profile, action log, location, identifier, score, or previous snapshot is kept by the application.</p></article><article><strong>4</strong><h3>Fails visibly.</h3><p>If a public service is unavailable, its metric shows as unavailable. The page does not invent a replacement number.</p></article></div></section>
+      <article class="signal-panel">
+        <div class="signal-heading">
+          <span>SKY</span>
+          <h2>The Sun is touching Earth.</h2>
+        </div>
+        <p>Solar wind is a stream of charged particles arriving from the Sun. The value above is the current speed reported by NOAA SWPC, not a forecast or score.</p>
+        <div class="signal-number-row">
+          <span>measurement</span>
+          <strong>km/s</strong>
+        </div>
+      </article>
+
+      <article class="signal-panel signal-events-panel">
+        <div class="signal-heading">
+          <span>ACTIVE EVENTS</span>
+          <h2>Some conditions remain open.</h2>
+        </div>
+        <p>NASA EONET groups currently open natural events from multiple reporting sources. The list below shows only aggregate categories; event titles and coordinates are not reproduced here.</p>
+        <ul id="event-categories" class="event-categories">
+          <li>No category snapshot</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="plain-language" aria-labelledby="plain-title">
+      <div class="section-heading">
+        <p class="eyebrow">WHAT THIS ACTUALLY DOES</p>
+        <h2 id="plain-title">Four public services. Five current feeds.</h2>
+      </div>
+      <div class="plain-grid">
+        <article>
+          <strong>1</strong>
+          <h3>Loads once.</h3>
+          <p>When the page opens, it requests five current feeds across four public services: USGS, NOAA SWPC, Open-Meteo, and NASA EONET. NOAA supplies two of those feeds. It does not poll in the background.</p>
+        </article>
+        <article>
+          <strong>2</strong>
+          <h3>Samples fixed places.</h3>
+          <p>The weather request uses thirteen coordinates baked into the site. They are unrelated to whoever is visiting.</p>
+        </article>
+        <article>
+          <strong>3</strong>
+          <h3>Stores no visitor history.</h3>
+          <p>No local visitor profile, action log, location, identifier, score, or previous snapshot is kept by the application.</p>
+        </article>
+        <article>
+          <strong>4</strong>
+          <h3>Fails visibly.</h3>
+          <p>If a public service is unavailable, its metric shows as unavailable. The page does not invent a replacement number.</p>
+        </article>
+      </div>
+    </section>
+
     <p id="live-status" class="live-status" role="status" aria-live="polite">Preparing the fixed world sample.</p>
   </main>
 
-  <footer class="site-footer"><div><strong>COMMONS / NOW</strong><span>A live public instrument. No analytics. No account. No personal location.</span></div><nav aria-label="Project information"><a href="SOURCES.md">Sources</a><a href="PRIVACY.md">Privacy</a></nav></footer>
+  <footer class="site-footer">
+    <div>
+      <strong>COMMONS / NOW</strong>
+      <span>A live public instrument. No analytics. No account. No personal location.</span>
+    </div>
+    <nav aria-label="Project information">
+      <a href="SOURCES.md">Sources</a>
+      <a href="PRIVACY.md">Privacy</a>
+    </nav>
+  </footer>
 
   <script src="data-core.js" defer></script>
   <script src="offcut-drawer-core.js" defer></script>
   <script src="temporal-sounding-core.js" defer></script>
   <script src="temporal-sounding.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="commons-solar-dial.js" defer></script>
   <script src="cosmic-signal.js" defer></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      'use strict';
-      const core=globalThis.MuseumCommonsCore,doc=document;if(!core||!Array.isArray(core.STATIONS))return;
-      const NS='http://www.w3.org/2000/svg',EVENT='museum:commons-snapshot',ui={ticks:doc.querySelector('#solar-dial-ticks'),points:doc.querySelector('#solar-dial-points'),latch:doc.querySelector('#solar-dial-latch'),summary:doc.querySelector('#solar-dial-summary'),list:doc.querySelector('#solar-dial-list'),desc:doc.querySelector('#solar-dial-svg-desc')};if(!ui.ticks||!ui.points||!ui.list)return;
-      const svg=(name,attrs)=>{const node=doc.createElementNS(NS,name);for(const[key,value]of Object.entries(attrs))node.setAttribute(key,String(value));return node};
-      const polar=(radius,angle)=>{const radians=(angle-90)*Math.PI/180;return{x:200+Math.cos(radians)*radius,y:200+Math.sin(radians)*radius}};
-      const formatUtc=date=>new Intl.DateTimeFormat('en',{timeZone:'UTC',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(date)+' UTC';
-      const formatLongitude=value=>{const n=Number(value);return Number.isFinite(n)?`${Math.abs(n).toFixed(2)}° ${n>=0?'E':'W'}`:'longitude unavailable'};
-      const modelMinutes=(lon,geometry)=>{if(!geometry?.subsolar||!Number.isFinite(Number(lon)))return NaN;const angle=core.normalizeLongitude(Number(lon)-geometry.subsolar.lon);if(!Number.isFinite(angle))return NaN;const wrapped=(((720+angle*4)%1440)+1440)%1440;return(Math.round(wrapped/5)*5)%1440};
-      const formatSolar=minutes=>{const m=((Math.round(minutes)%1440)+1440)%1440;return`${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`};
-      for(let hour=0;hour<24;hour+=1){const angle=hour*15,inner=hour%6===0?144:hour%3===0?150:156,a=polar(inner,angle),b=polar(166,angle);ui.ticks.append(svg('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:hour%6===0?'solar-dial-major-tick':'solar-dial-tick'}))}for(const[hour,label]of[[0,'00'],[6,'06'],[12,'12'],[18,'18']]){const p=polar(132,hour*15),text=svg('text',{x:p.x,y:p.y,class:'solar-dial-hour-label'});text.textContent=label;ui.ticks.append(text)}
-      function listItem(station,minutes,light){const li=doc.createElement('li');li.dataset.light=light;const id=doc.createElement('strong'),time=doc.createElement('span'),state=doc.createElement('small');id.textContent=`POINT ${station.id}`;time.textContent=Number.isFinite(minutes)?`${formatSolar(minutes)} model solar`:'awaiting latch';state.textContent=`${light.toUpperCase()} · ${formatLongitude(station.lon)}`;li.append(id,time,state);return li}
-      function render(snapshot){const date=snapshot?.receivedAt?new Date(snapshot.receivedAt):null,valid=date&&Number.isFinite(date.getTime());ui.points.replaceChildren();ui.list.replaceChildren();if(!valid){if(ui.latch)ui.latch.textContent='—';if(ui.summary)ui.summary.textContent='Waiting for the first latched snapshot.';if(ui.desc)ui.desc.textContent='A twenty-four-hour dial waiting for the first Commons snapshot.';for(const station of core.STATIONS)ui.list.append(listItem(station,null,'unknown'));return}const geometry=core.solarGeometry(date),counts={day:0,twilight:0,night:0,unknown:0};for(const station of core.STATIONS){const light=core.sunState(date,station.lat,station.lon),minutes=modelMinutes(station.lon,geometry),point=polar(112,(minutes/1440)*360),group=svg('g',{class:'solar-dial-marker','data-light':light,transform:`translate(${point.x} ${point.y})`}),circle=svg('circle',{r:12}),label=svg('text',{x:0,y:1});counts[light]=(counts[light]||0)+1;label.textContent=station.id;group.append(circle,label);ui.points.append(group);ui.list.append(listItem(station,minutes,light))}if(ui.latch)ui.latch.textContent=formatUtc(date);if(ui.summary)ui.summary.textContent=`${counts.day}/13 fixed points are in daylight, ${counts.twilight}/13 in civil twilight, and ${counts.night}/13 in night at this one latch.`;if(ui.desc)ui.desc.textContent=`Twenty-four-hour model solar dial for thirteen fixed Commons points at ${formatUtc(date)}. ${counts.day} are in daylight, ${counts.twilight} in twilight, and ${counts.night} in night.`}
-      render(globalThis.MuseumCommonsSnapshot||null);doc.addEventListener(EVENT,event=>render(event.detail?.snapshot||globalThis.MuseumCommonsSnapshot||null));
-    },{once:true});
-  </script>
 </body>
 </html>
