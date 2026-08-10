@@ -195,13 +195,187 @@
   line-height: 1.6;
 }
 
+.phase-space-section {
+  padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid rgba(28, 34, 37, 0.16);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.phase-space-heading,
+.phase-space-controls,
+.phase-space-layout,
+.phase-space-note {
+  width: min(72rem, 100%);
+  margin-inline: auto;
+}
+
+.phase-space-heading h2 {
+  max-width: 20ch;
+}
+
+.phase-space-heading p:last-child {
+  max-width: 76ch;
+}
+
+.phase-space-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+}
+
+.phase-space-controls button {
+  min-height: 44px;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(28, 34, 37, 0.34);
+  background: transparent;
+  color: inherit;
+  font: 700 0.72rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.phase-space-controls button[aria-pressed="true"] {
+  background: #1c2225;
+  color: #f6f3ea;
+}
+
+.phase-space-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(15rem, 0.45fr);
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: stretch;
+  margin-top: 1rem;
+}
+
+.phase-space-plot {
+  position: relative;
+  min-height: clamp(22rem, 55vw, 34rem);
+  border: 1px solid rgba(28, 34, 37, 0.24);
+  background:
+    linear-gradient(rgba(28, 34, 37, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 34, 37, 0.07) 1px, transparent 1px),
+    rgba(250, 248, 241, 0.72);
+  background-size: 20% 20%;
+  overflow: hidden;
+}
+
+.phase-space-axis {
+  position: absolute;
+  z-index: 2;
+  color: #30383a;
+  font: 700 0.68rem/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.phase-space-axis-y {
+  top: 0.75rem;
+  left: 0.8rem;
+}
+
+.phase-space-axis-x {
+  right: 0.8rem;
+  bottom: 0.75rem;
+}
+
+.phase-space-points {
+  position: absolute;
+  inset: 2.5rem 2.25rem 2.7rem 2.75rem;
+}
+
+.phase-space-point {
+  position: absolute;
+  left: var(--phase-x);
+  top: var(--phase-y);
+  min-width: 38px;
+  min-height: 38px;
+  transform: translate(-50%, -50%);
+  border: 2px solid #263033;
+  border-radius: 50%;
+  background: #dde3de;
+  color: #182023;
+  font: 800 0.7rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  cursor: pointer;
+}
+
+.phase-space-point[data-light="day"] {
+  background: #f4d77c;
+}
+
+.phase-space-point[data-light="twilight"] {
+  background: #d9b9a7;
+}
+
+.phase-space-point[data-light="night"] {
+  background: #70808b;
+  color: #fff;
+}
+
+.phase-space-point[data-available="false"] {
+  border-style: dashed;
+  background: #f6f3ea;
+  color: #697173;
+}
+
+.phase-space-point[data-selected="true"] {
+  box-shadow: 0 0 0 4px rgba(28, 34, 37, 0.22);
+  border-width: 3px;
+}
+
+.phase-space-point:focus-visible,
+.phase-space-controls button:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+.phase-space-readout {
+  padding: 1.1rem;
+  border: 1px solid rgba(28, 34, 37, 0.24);
+  background: rgba(242, 239, 230, 0.86);
+}
+
+.phase-space-readout h3 {
+  margin: 0.4rem 0 0.75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+}
+
+.phase-space-values,
+.phase-space-help,
+.phase-space-note {
+  line-height: 1.6;
+}
+
+.phase-space-values {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.phase-space-help {
+  margin: 1rem 0 0;
+  font-size: 0.78rem;
+  color: #50595b;
+}
+
+.phase-space-note {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+}
+
 @media (max-width: 780px) {
-  .solar-dial-layout {
+  .solar-dial-layout,
+  .phase-space-layout {
     grid-template-columns: 1fr;
   }
 
   .solar-dial-list {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .phase-space-plot {
+    min-height: 26rem;
   }
 }
 
@@ -209,12 +383,24 @@
   .solar-dial-list {
     grid-template-columns: 1fr;
   }
+
+  .phase-space-points {
+    inset: 2.5rem 1.7rem 2.7rem 2.1rem;
+  }
+
+  .phase-space-point {
+    min-width: 34px;
+    min-height: 34px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .solar-dial-section *,
   .solar-dial-section *::before,
-  .solar-dial-section *::after {
+  .solar-dial-section *::after,
+  .phase-space-section *,
+  .phase-space-section *::before,
+  .phase-space-section *::after {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
@@ -224,24 +410,36 @@
 @media (prefers-contrast: more) {
   .solar-dial-ring,
   .solar-dial-list li,
-  .solar-dial-summary {
+  .solar-dial-summary,
+  .phase-space-plot,
+  .phase-space-readout,
+  .phase-space-controls button {
     border-color: currentColor;
     stroke: currentColor;
   }
 
-  .solar-dial-marker circle {
+  .solar-dial-marker circle,
+  .phase-space-point {
     stroke-width: 3;
+    border-width: 3px;
   }
 }
 
 @media print {
-  .solar-dial-section {
+  .solar-dial-section,
+  .phase-space-section {
     break-inside: avoid;
     background: #fff;
   }
 
-  .solar-dial-list li {
+  .solar-dial-list li,
+  .phase-space-plot,
+  .phase-space-readout {
     background: #fff;
     border-color: #555;
+  }
+
+  .phase-space-controls {
+    display: none;
   }
 }
