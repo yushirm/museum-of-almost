@@ -835,7 +835,7 @@
 
     const policy = document.createElement('span');
     policy.className = 'smallprint';
-    policy.textContent = ' TAB POLICY: each press replaces only this document’s current title with one fixed authored phrase. No timer runs, no notification is sent, no browser history entry is added, no focus is stolen, nothing is stored, and no request leaves the Museum. Reloading or leaving the page restores ordinary browser behavior.';
+    policy.textContent = ' TAB POLICY: each press replaces only this document’s current title with one fixed authored phrase. No timer runs, no notification is sent, the address and navigation stack stay untouched, no focus is stolen, nothing is stored, and no request leaves the Museum. Reloading or leaving the page restores ordinary browser behavior.';
 
     button.addEventListener('click', () => {
       signalIndex = (signalIndex + 1) % signals.length;
