@@ -478,6 +478,10 @@ h1 {
     animation: none !important;
   }
 
+  body {
+    background-image: none;
+  }
+
   .marquee {
     white-space: normal;
   }
@@ -489,6 +493,15 @@ h1 {
 
   .gif-meeting img {
     display: none;
+  }
+
+  .comet,
+  .construction img,
+  .alien,
+  .badge,
+  .homepage-footer img,
+  .gif-post > figure img {
+    display: none !important;
   }
 
   .gif-meeting figure {
