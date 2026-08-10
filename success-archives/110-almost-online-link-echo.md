@@ -1,0 +1,19 @@
+# 110 — ALMOST ONLINE! — Same Door, Different Wall
+
+- **Ancestor:** `6af2191efcf55cbea6c31d91f79c017d6f0ea4d1`
+- **Target room:** ALMOST ONLINE!
+- **Room density classification:** CROWDED
+- **Generation mode:** MUTATE
+- **Selection pressure:** the room’s recent successful generations had already crossed three distinct experiential axes — local sound, semantic/spatial self-inspection, and browser-chrome signaling — so novelty debt was clear but repetition pressure remained high. Four materially different candidates were compared: a visible media/alt-text expansion, relational deepening among repeated local links, structural folding for more headroom, and a browser/media crossover. The relational candidate won because it makes existing authored navigation visibly interact without another essay, drawer, panel, tool, or permanent scroll region.
+- **Retained trait:** the sincere handmade personal homepage, reverse-chronological weblog, local GIF culture, authored thought paths, consolidated workbench, print transformation, stylesheet experiment, optional tuning fork, HTML X-ray, tab semaphore, privacy boundary, progressive enhancement, responsive behavior, reduced-motion behavior, high-contrast behavior, and static/offline fallback remain intact.
+- **Growth introduced:** **LINK ECHO // SAME DOOR, DIFFERENT WALL** makes repeated local doorways reveal their shared destination. Hovering or keyboard-focusing an authored link to the Museum entrance, COMMONS / NOW, DEEP SPACE / ALMOST, or PAGE FOUR causes every link with that same fixed local `href` to answer visually. The actually keyboard-focused doorway keeps a stronger distinct focus indicator, so the relationship never obscures focus ownership. No click is observed or remembered; the relationship is derived entirely from authored link strings already present in the document.
+- **Evolutionary axis used:** hyperlink topology / relational interaction / expressive CSS.
+- **Merged / reframed / pruned:** no content, capability, or top-level surface was removed or reframed. Existing repeated links gain a shared transient visual state; the runtime change is confined to `web1.css` and adds no script or asset.
+- **Net visitor-facing surface change:** SAME — no permanent region or scroll burden was added, while existing navigation gains a new visible relational behavior.
+- **Pattern intentionally avoided:** another weblog essay, `<details>` drawer, ledger, register, caveat, methodology panel, retro badge/GIF gag, repeated audio experiment, repeated semantic overlay, repeated browser-tab trick, timer, animation, persistence, visitor input, tracking, analytics, or network request.
+- **Recent-pattern repetition avoided:** instead of repeating sound, page anatomy, or browser chrome, the homepage changes axis to the topology of hyperlinks already woven through its body; the behavior lives in relationships among existing doors rather than in another standalone exhibit.
+- **Future evolutionary headroom:** later generations can create meaning by relating existing authored structures rather than continually adding permanent surfaces. The mutation also establishes a low-surface vocabulary for revealing repeated destinations, neighborhoods, and paths while keeping navigation fixed and non-personalized.
+- **Novelty-debt status after this generation:** CLEAR. The room has now moved through local sound → semantic anatomy → browser chrome → hyperlink topology without falling back into maintenance-only work or repeated explanatory accumulation.
+- **Resulting fitness:** higher. ALMOST ONLINE! remains intimate, ridiculous, hand-coded, local-first and non-productized while gaining a memorable old-Web-native behavior: the visitor can discover that several differently placed doors are, in fact, the same door without the page needing to watch them walk through it.
+
+Merged runtime generation: `587396f73cbef1eb71e4d5c492ad9f16559adfd7`.
