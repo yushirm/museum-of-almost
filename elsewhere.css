@@ -407,3 +407,169 @@ main { padding-block: 1rem 4rem; }
   .artifact summary::after { display: none; }
   .artifact:not([open]) .artifact-body { display: none; }
 }
+
+/* Movement rail: turns the existing handling docket into a spatial collections route. */
+#transfer-desk {
+  position: relative;
+  overflow: hidden;
+}
+
+#transfer-desk::before {
+  content: "MOVEMENT RAIL · ACCESSION → STORAGE → HOLD";
+  display: block;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px dashed currentColor;
+  color: var(--safety);
+  background: rgba(229,168,38,0.06);
+  font: 800 0.68rem/1.35 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+#transfer-desk .transfer-grid {
+  position: relative;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding-top: 2.9rem;
+  background:
+    linear-gradient(90deg, rgba(229,168,38,0.04), transparent 32%, rgba(229,168,38,0.04) 68%, transparent),
+    rgba(0,0,0,0.08);
+}
+
+#transfer-desk .transfer-grid::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 1.7rem;
+  left: calc(16.666% + 1rem);
+  right: calc(16.666% + 1rem);
+  height: 3px;
+  background: currentColor;
+  opacity: 0.28;
+}
+
+body:has(.artifact[open]) #transfer-desk .transfer-grid::before {
+  background: var(--safety);
+  opacity: 0.9;
+}
+
+#transfer-desk .transfer-grid > div {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  padding-top: 1.1rem;
+}
+
+#transfer-desk .transfer-grid > div::before {
+  content: "";
+  position: absolute;
+  top: -1.95rem;
+  left: 50%;
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 3px solid var(--concrete);
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 1px currentColor;
+  transform: translateX(-50%);
+}
+
+body:has(.artifact[open]) #transfer-desk .transfer-grid > div::before {
+  background: var(--safety);
+}
+
+#transfer-desk .transfer-grid > div::after {
+  position: absolute;
+  top: -2.75rem;
+  left: 50%;
+  width: max-content;
+  max-width: 90%;
+  padding-inline: 0.25rem;
+  color: var(--muted);
+  background: #1d201a;
+  font: 800 0.58rem/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+}
+
+#transfer-desk .transfer-grid > div:nth-child(1)::after { content: "01 · accession"; }
+#transfer-desk .transfer-grid > div:nth-child(2)::after { content: "02 · storage"; }
+#transfer-desk .transfer-grid > div:nth-child(3)::after { content: "03 · handling"; }
+
+#transfer-desk .transfer-route-row {
+  position: relative;
+  border-top: 3px double currentColor;
+  background: rgba(229,168,38,0.08);
+}
+
+#transfer-desk .transfer-route {
+  color: var(--paper);
+  letter-spacing: 0.09em;
+}
+
+body:has(.artifact[open]) #transfer-desk .transfer-route {
+  color: var(--safety);
+}
+
+#transfer-desk .transfer-hold {
+  border-left: 5px solid var(--rust);
+  background:
+    repeating-linear-gradient(135deg, rgba(147,75,47,0.06) 0 10px, transparent 10px 20px),
+    rgba(229,168,38,0.04);
+}
+
+@media (max-width: 800px) {
+  #transfer-desk .transfer-grid {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+    padding-left: 2.9rem;
+  }
+
+  #transfer-desk .transfer-grid::before {
+    top: 1.6rem;
+    bottom: 1.6rem;
+    left: 1.45rem;
+    right: auto;
+    width: 3px;
+    height: auto;
+  }
+
+  #transfer-desk .transfer-grid > div {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  #transfer-desk .transfer-grid > div::before {
+    top: 50%;
+    left: -1.9rem;
+    transform: translate(-50%, -50%);
+  }
+
+  #transfer-desk .transfer-grid > div::after {
+    top: 0.3rem;
+    left: 0;
+    max-width: 100%;
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  #transfer-desk::before,
+  #transfer-desk .transfer-grid::before,
+  #transfer-desk .transfer-route-row,
+  #transfer-desk .transfer-hold {
+    border-color: currentColor;
+  }
+  #transfer-desk .transfer-grid::before { opacity: 1; }
+}
+
+@media print {
+  #transfer-desk::before,
+  #transfer-desk .transfer-grid::before,
+  #transfer-desk .transfer-grid > div::before,
+  #transfer-desk .transfer-grid > div::after {
+    display: none;
+  }
+  #transfer-desk .transfer-grid { padding: 0; background: transparent; }
+  #transfer-desk .transfer-hold { background: transparent; }
+}
