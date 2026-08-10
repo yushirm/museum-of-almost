@@ -73,7 +73,7 @@
   const readout = document.createElement('div');
   readout.className = 'redshift-window-readout';
   readout.setAttribute('aria-live', 'polite');
-  readout.innerHTML = '<div><span>Selected redshift</span><strong id="redshift-window-z">z = 0.0</strong></div><div><span>What changed</span><strong id="redshift-window-state">Rest wavelengths</strong></div>';
+  readout.innerHTML = '<div><span>Selected redshift</span><strong id="redshift-window-z">z = 0.0</strong></div><div><span>What changed</span><strong id="redshift-window-state">Rest wavelengths</strong></div><div><span>Observed lines</span><strong id="redshift-window-lines">Hβ 486.1 nm · [O III] 500.7 nm · Hα 656.3 nm</strong></div>';
 
   const note = document.createElement('p');
   note.className = 'redshift-window-note';
@@ -110,9 +110,13 @@
       : anyVisible
         ? 'The reference spectrum now straddles visible and infrared wavelengths'
         : 'All three reference lines have shifted beyond the visible window';
+    const observedSummary = lines
+      .map((line) => `${line.label} ${observedNm(line.restNm, redshift).toFixed(1)} nm`)
+      .join(' · ');
 
     document.getElementById('redshift-window-z').textContent = `z = ${redshift.toFixed(1)}`;
     document.getElementById('redshift-window-state').textContent = state;
+    document.getElementById('redshift-window-lines').textContent = observedSummary;
     note.textContent = redshift === 0
       ? 'At z = 0 the markers sit at their rounded rest wavelengths. The fingerprint is defined by the pattern of lines, not by one colour.'
       : `At z = ${redshift.toFixed(1)}, every marker is multiplied by the same factor of ${(1 + redshift).toFixed(1)}. Their spacing stretches in wavelength while their identity as this reference pattern is preserved.`;
