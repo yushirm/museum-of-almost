@@ -686,6 +686,115 @@
     }
   }
 
+  function addHtmlXray() {
+    const statusBox = document.querySelector('.status-box');
+    if (!statusBox || document.getElementById('html-xray-controls')) return;
+
+    const targets = [
+      [document.querySelector('.homepage-header'), 'HTML: <header> // HOMEPAGE HEADER'],
+      [document.getElementById('homepage-workbench'), 'HTML: <section> // HOMEPAGE WORKBENCH'],
+      [document.getElementById('homepage-tuning-fork'), 'HTML: <section> // TUNING FORK'],
+      [document.querySelector('.posts'), 'HTML: <section> // WEBLOG'],
+      [document.querySelector('.sidebar'), 'HTML: <aside> // SIDEBAR'],
+      [document.querySelector('.homepage-footer'), 'HTML: <footer> // HOMEPAGE FOOTER']
+    ].filter(([element]) => element);
+
+    if (targets.length < 4) return;
+
+    targets.forEach(([element, label]) => element.setAttribute('data-html-xray-label', label));
+
+    const style = document.createElement('style');
+    style.id = 'html-xray-style';
+    style.textContent = `
+      body.html-xray-active [data-html-xray-label] {
+        position: relative;
+        outline: 2px dashed #00ffff !important;
+        outline-offset: 4px;
+      }
+      body.html-xray-active [data-html-xray-label]::before {
+        content: attr(data-html-xray-label);
+        position: absolute;
+        z-index: 20;
+        top: .25rem;
+        right: .25rem;
+        max-width: calc(100% - .5rem);
+        padding: .2rem .35rem;
+        border: 1px solid #00ffff;
+        background: #000020;
+        color: #00ffff;
+        font: 700 .68rem/1.25 "Courier New", Courier, monospace;
+        letter-spacing: .04em;
+        pointer-events: none;
+      }
+      @media (prefers-contrast: more) {
+        body.html-xray-active [data-html-xray-label] { outline: 3px solid currentColor !important; }
+        body.html-xray-active [data-html-xray-label]::before { border: 2px solid currentColor; background: #000; color: #fff; }
+      }
+      @media print {
+        #html-xray-controls { display: none !important; }
+        body.html-xray-active [data-html-xray-label] { outline: none !important; }
+        body.html-xray-active [data-html-xray-label]::before { display: none !important; }
+      }
+    `;
+    document.head.append(style);
+
+    const controls = document.createElement('div');
+    controls.id = 'html-xray-controls';
+    controls.className = 'counter-box';
+    controls.style.gridColumn = '1 / -1';
+
+    const label = document.createElement('span');
+    label.className = 'counter-label';
+    label.textContent = 'HTML X-RAY // SEMANTIC BONES';
+
+    const intro = document.createElement('p');
+    intro.className = 'smallprint';
+    intro.append(
+      document.createTextNode('I keep calling this a homepage as if that is one object. It is also a stack of named parts. '),
+      strong('I CAN SHOW YOU THE TAG-SHAPED BONES WITHOUT TAKING THE PAGE APART.')
+    );
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.setAttribute('aria-pressed', 'false');
+    button.textContent = '[ SHOW MY HTML BONES ]';
+    button.style.minHeight = '44px';
+    button.style.padding = '0.55rem 0.75rem';
+    button.style.font = 'inherit';
+    button.style.cursor = 'pointer';
+
+    const status = document.createElement('p');
+    status.className = 'smallprint';
+    status.setAttribute('aria-live', 'polite');
+    status.textContent = `X-RAY STATUS: off. ${targets.length} authored structural landmarks are ready to be labelled.`;
+
+    const policy = document.createElement('p');
+    policy.className = 'smallprint';
+    policy.textContent = 'X-RAY POLICY: this is a fixed local overlay on structural elements already in the page. It does not serialize the DOM, inspect your browser, measure you, store a setting, contact a server, or reveal hidden visitor data. The labels are authored descriptions, not a developer-tools dump.';
+
+    button.addEventListener('click', () => {
+      const active = document.body.classList.toggle('html-xray-active');
+      button.setAttribute('aria-pressed', String(active));
+      button.textContent = active ? '[ HIDE MY HTML BONES ]' : '[ SHOW MY HTML BONES ]';
+      status.textContent = active
+        ? `X-RAY STATUS: on. ${targets.length} page regions are showing their semantic tags.`
+        : `X-RAY STATUS: off. ${targets.length} authored structural landmarks are ready to be labelled.`;
+    });
+
+    controls.append(label, intro, button, status, policy);
+    statusBox.append(controls);
+
+    const updates = document.querySelector('.updates');
+    if (updates && !document.getElementById('html-xray-update')) {
+      const item = document.createElement('li');
+      item.id = 'html-xray-update';
+      const date = document.createElement('strong');
+      date.textContent = '10 AUG:';
+      item.append(date, document.createTextNode(' FOUND MY HTML BONES. THE PAGE CAN LABEL ITS OWN ANATOMY.'));
+      updates.prepend(item);
+    }
+  }
+
   function foldSiteUpdates() {
     const updates = document.querySelector('.updates');
     if (!updates || document.getElementById('older-site-updates')) return;
@@ -732,6 +841,7 @@
   addStylesheetDressingRoom();
   consolidateHomepageWorkbench();
   addHomepageTuningFork();
+  addHtmlXray();
   foldSiteUpdates();
 
   if ('serviceWorker' in navigator) {
