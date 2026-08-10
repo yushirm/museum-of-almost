@@ -646,18 +646,21 @@
             gain.gain.exponentialRampToValueAtTime(0.0001, noteEnd);
             oscillator.connect(gain);
             gain.connect(context.destination);
+
+            if (index === notes.length - 1) {
+              oscillator.addEventListener('ended', () => {
+                if (token !== playToken || activeContext !== context) return;
+                activeContext = null;
+                if (context.state !== 'closed') context.close().catch(() => {});
+                status.textContent = 'TUNING FORK STATUS: quiet again. Press the button to replay the same hand-authored phrase.';
+              }, { once: true });
+            }
+
             oscillator.start(noteStart);
             oscillator.stop(noteEnd + 0.02);
           });
 
           status.textContent = 'TUNING FORK STATUS: humming four notes. Nothing is being recorded.';
-
-          window.setTimeout(() => {
-            if (token !== playToken || activeContext !== context) return;
-            activeContext = null;
-            if (context.state !== 'closed') context.close().catch(() => {});
-            status.textContent = 'TUNING FORK STATUS: quiet again. Press the button to replay the same hand-authored phrase.';
-          }, 1900);
         } catch (_) {
           if (activeContext === context) activeContext = null;
           if (context.state !== 'closed') context.close().catch(() => {});
