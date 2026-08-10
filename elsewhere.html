@@ -8,6 +8,10 @@
   <title>ELSEWHERE / CATALOGUE 0 — The Museum of Almost</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="elsewhere.css">
+  <style>
+    .packing-bench{margin:2.2rem 0;padding:clamp(1rem,3vw,1.6rem);border:1px solid rgba(214,196,139,.34);background:linear-gradient(135deg,rgba(214,196,139,.06),rgba(7,10,8,.76));box-shadow:inset 0 0 0 1px rgba(0,0,0,.24)}
+    .packing-bench-header{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(16rem,.85fr);gap:1.2rem;align-items:end;margin-bottom:1.25rem}.packing-bench h2{margin:.15rem 0 .45rem}.packing-intro{margin:0;max-width:70ch;color:#c7cbbf;line-height:1.65}.packing-rule{margin:0;padding:.8rem;border-left:3px solid #d6c48b;background:rgba(0,0,0,.22);font-size:.78rem;line-height:1.55}.packing-selector{margin:0;padding:0;border:0}.packing-selector legend{margin-bottom:.7rem;font-size:.72rem;font-weight:700;letter-spacing:.12em}.packing-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem}.packing-options button{min-height:48px;padding:.65rem .55rem;border:1px solid rgba(214,196,139,.32);background:#11140f;color:#dfe2d7;font:inherit;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-align:center;cursor:pointer}.packing-options button:focus-visible{outline:3px solid #f4df9d;outline-offset:3px}.packing-options button[aria-pressed="true"]{background:#d6c48b;color:#191b15;border-color:#f4df9d}.packing-case{position:relative;min-height:18rem;margin-top:1rem;padding:1rem;border:2px solid #786f4e;background:repeating-linear-gradient(90deg,#171812 0,#171812 18px,#1c1e17 18px,#1c1e17 36px);overflow:hidden}.packing-case::before,.packing-case::after{content:"";position:absolute;inset:.9rem;border:1px dashed rgba(225,213,168,.36);pointer-events:none}.packing-case::after{inset:50% 1.4rem auto;border-top:1px solid rgba(225,213,168,.22);border-right:0;border-bottom:0;border-left:0}.packing-plan{position:relative;z-index:1;display:grid;grid-template-columns:minmax(9rem,.75fr) minmax(0,1.25fr);gap:1rem;min-height:15.7rem;align-items:center}.packing-plan[hidden]{display:none}.packing-plan-visual{position:relative;min-height:12rem;border:1px solid rgba(232,220,177,.3);background:rgba(7,8,6,.6)}.packing-plan-visual span{position:absolute;display:block}.paper-object{inset:34% 19%;border:2px solid #d9c997;background:#e7dbb5;transform:rotate(-2deg)}.paper-pad-a{inset:17% 12% auto;height:14%;border:1px solid #9a916f}.paper-pad-b{inset:auto 12% 17%;height:14%;border:1px solid #9a916f}.fabric-object{inset:23% 28%;border:5px double #c8b76c;background:#393a2d}.fabric-brace-a{left:17%;top:12%;bottom:12%;width:8%;background:#777158}.fabric-brace-b{right:17%;top:12%;bottom:12%;width:8%;background:#777158}.optical-object{inset:25% 24%;border:2px solid #91988b;background:#0b0c0a;box-shadow:inset 0 0 0 10px #252922}.optical-shape{left:39%;top:34%;width:22%;height:34%;background:#020302;border-radius:48% 52% 44% 56%}.packing-copy h3{margin:0 0 .65rem;color:#e9d894;font-size:clamp(1rem,2vw,1.25rem)}.packing-copy p{margin:.5rem 0;color:#cbd0c3;font-size:.82rem;line-height:1.6}.packing-copy strong{color:#f0e6bf}.packing-copy .packing-status{margin-top:1rem;padding-top:.7rem;border-top:1px dashed rgba(214,196,139,.32);color:#d6c48b;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}@media(max-width:720px){.packing-bench-header,.packing-plan{grid-template-columns:1fr}.packing-options{grid-template-columns:1fr}.packing-case{min-height:25rem}.packing-plan{min-height:22.5rem}.packing-plan-visual{min-height:10rem}}@media(prefers-contrast:more){.packing-bench,.packing-case,.packing-options button,.packing-plan-visual{border-color:currentColor}.packing-rule{border-left-color:currentColor}}
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#catalogue">Skip to Catalogue 0</a>
@@ -238,6 +242,58 @@
       </div>
     </section>
 
+    <section class="packing-bench" aria-labelledby="packing-title">
+      <div class="packing-bench-header">
+        <div>
+          <p class="kicker">PACKING BENCH / CRATE TRIAL 0</p>
+          <h2 id="packing-title">One crate. Three incompatible jobs.</h2>
+          <p class="packing-intro">The provenance can remain impossible while the packing problem stays stubbornly physical. Choose an accession and the bench changes what it supports, restrains and refuses to assume.</p>
+        </div>
+        <p class="packing-rule"><strong>PACKING RULE 0:</strong> Start with material, condition, dimensions and handling risk. A crate can protect an object from shock, abrasion and environmental hazards; it cannot make the catalogue story true.</p>
+      </div>
+
+      <fieldset class="packing-selector">
+        <legend>SELECT ACCESSION FOR THE CRATE TRIAL</legend>
+        <div class="packing-options" aria-label="Packing bench accessions">
+          <button type="button" data-pack-choice="paper" aria-pressed="true">C0.002 · PAPER TICKET</button>
+          <button type="button" data-pack-choice="fabric" aria-pressed="false">C0.006 · EXIT SIGN</button>
+          <button type="button" data-pack-choice="optical" aria-pressed="false">C0.010 · SHADOW BOX</button>
+        </div>
+
+        <div class="packing-case" aria-live="polite">
+          <article class="packing-plan plan-paper" data-pack-plan="paper">
+            <div class="packing-plan-visual" aria-hidden="true"><span class="paper-pad-a"></span><span class="paper-object"></span><span class="paper-pad-b"></span></div>
+            <div class="packing-copy">
+              <h3>C0.002 / FLAT SUPPORT BEFORE DESTINATION</h3>
+              <p><strong>Observed problem:</strong> a small paper object with two punched marks. The cancelled railway is a record problem; bends, abrasion and pressure are material ones.</p>
+              <p><strong>Bench decision:</strong> keep it flat between stable supports, restrain movement without loading the punched areas, and carry the accession identity beside the object rather than writing new certainty onto it.</p>
+              <p class="packing-status">FIT: PAPER SUPPORT · PROVENANCE: UNCHANGED</p>
+            </div>
+          </article>
+
+          <article class="packing-plan plan-fabric" data-pack-plan="fabric" hidden>
+            <div class="packing-plan-visual" aria-hidden="true"><span class="fabric-brace-a"></span><span class="fabric-object"></span><span class="fabric-brace-b"></span></div>
+            <div class="packing-copy">
+              <h3>C0.006 / BRACE THE SIGN, NOT THE STORY</h3>
+              <p><strong>Observed problem:</strong> enamelled architectural hardware with permanent anchor scars. Its authority over a missing exit does not tell handlers which edge can safely carry load.</p>
+              <p><strong>Bench decision:</strong> support the stable body, isolate projecting hardware from impact, and record orientation before movement so a handling change cannot masquerade as an old condition feature.</p>
+              <p class="packing-status">FIT: RIGID BRACING · PROVENANCE: UNCHANGED</p>
+            </div>
+          </article>
+
+          <article class="packing-plan plan-optical" data-pack-plan="optical" hidden>
+            <div class="packing-plan-visual" aria-hidden="true"><span class="optical-object"></span><span class="optical-shape"></span></div>
+            <div class="packing-copy">
+              <h3>C0.010 / THE BOX IS THE HANDLING UNIT</h3>
+              <p><strong>Observed problem:</strong> a closed archival box with a fixed dark shape that does not reproduce. Staff can verify the enclosure and its condition without claiming custody of a literal shadow.</p>
+              <p><strong>Bench decision:</strong> immobilise the enclosure, preserve orientation, document the exterior before and after movement, and leave the impossible optical claim exactly where it belongs: in the record.</p>
+              <p class="packing-status">FIT: ENCLOSURE SUPPORT · PROVENANCE: UNCHANGED</p>
+            </div>
+          </article>
+        </div>
+      </fieldset>
+    </section>
+
     <section class="lost-found" id="shift-handover" aria-labelledby="handover-title">
       <div>
         <p class="kicker">SHIFT HANDOVER / INCIDENT 0</p>
@@ -281,6 +337,22 @@
     <p>No external runtime requests. No visitor persistence. Same-origin assets only.</p>
   </footer>
 
+  <script>
+    (() => {
+      const buttons = [...document.querySelectorAll('[data-pack-choice]')];
+      const plans = [...document.querySelectorAll('[data-pack-plan]')];
+      if (!buttons.length || !plans.length) return;
+
+      const selectPlan = (choice) => {
+        for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.packChoice === choice));
+        for (const plan of plans) plan.hidden = plan.dataset.packPlan !== choice;
+      };
+
+      for (const button of buttons) {
+        button.addEventListener('click', () => selectPlan(button.dataset.packChoice));
+      }
+    })();
+  </script>
   <script src="elsewhere.js" defer></script>
 </body>
 </html>
