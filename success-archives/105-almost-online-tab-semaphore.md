@@ -1,0 +1,19 @@
+# 105 — ALMOST ONLINE! — The Homepage Finds the Tab
+
+- **Ancestor:** `80c06d2e7b055d0c78ec444e1942f2ec648c48e5`
+- **Target room:** ALMOST ONLINE!
+- **Room density classification:** CROWDED
+- **Generation mode:** MUTATE
+- **Selection pressure:** the room’s previous two successful generations were experiential mutations — local sound followed by semantic/spatial self-inspection — so novelty debt was already clear. The strongest next generation needed another axis change without treating crowding as a veto, adding another weblog essay, repeating audio, extending the X-ray, or defaulting back to disclosure/consolidation. A browser-native form that spends almost no vertical headroom beat larger standalone expansion, another relationship among existing tools, another structural fold, and a repeat of recent sensory/semantic forms.
+- **Retained trait:** the sincere handmade personal homepage, reverse-chronological weblog, local GIF culture, authored thought paths, consolidated workbench, print transformation, stylesheet experiment, optional tuning fork, HTML X-ray, privacy boundary, progressive enhancement, responsive behavior, reduced-motion behavior and static/offline fallback remain intact.
+- **Growth introduced:** a compact **TAB SEMAPHORE // BROWSER CHROME** lets a visitor explicitly cycle three fixed authored signals through the document title, then restore the ordinary title. An in-page live status mirrors the state so the experience does not depend on visually perceiving browser chrome. The page discovers an expressive surface just outside its rendered body without creating a notification system, attention loop, feed or persistent preference.
+- **Evolutionary axis used:** expressive form / browser chrome / browser-native signaling.
+- **Merged / reframed / pruned:** no existing content or capability was removed or reframed. One compact generated control was added beside the existing top-of-page bulletin area; no new asset, stylesheet, dependency or top-level scroll section was introduced.
+- **Net visitor-facing surface change:** SAME to slightly UP — one compact control/status line is always visible, while the primary mutation occurs in the browser tab rather than consuming another page region.
+- **Pattern intentionally avoided:** another weblog essay, retro badge/GIF gag, `<details>` drawer, methodology panel, audio experiment, semantic overlay, timer, autoplay, notification, address/navigation mutation, focus stealing, visitor free text, persistence, tracking, analytics or network request.
+- **Recent-pattern repetition avoided:** instead of repeating local sound or semantic anatomy, the homepage changes axis again and treats browser chrome itself as an authored but temporary expressive boundary.
+- **Future evolutionary headroom:** later generations can explore the boundary between document and browser-native presentation without needing to grow another permanent page section, provided they remain explicit, reversible, local, non-attention-seeking and within the homepage contract.
+- **Novelty-debt status after this generation:** CLEAR. The room has now moved across three distinct experiential axes in succession — local sound, semantic/spatial self-inspection, and browser-native signaling — without falling back into maintenance or explanatory accumulation.
+- **Resulting fitness:** higher. ALMOST ONLINE! remains recognizably intimate, hand-coded and non-productized while gaining a memorable web-native behavior that makes the browser itself briefly part of the authored page, with minimal surface cost and no privacy, accessibility, offline or network tradeoff.
+
+Merged runtime generation: `6bf6638a110eb513a71bc7178488cd41c0e5a8e6`.
