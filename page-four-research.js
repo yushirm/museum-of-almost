@@ -233,4 +233,20 @@
   section.append(heading, protocol, grid, patternDesk, sourceLedger, finalRule);
   mountAfter.insertAdjacentElement('afterend', section);
   addNavLink();
+
+  if (!document.getElementById('page-four-examination-style')) {
+    const examinationStyle = document.createElement('link');
+    examinationStyle.id = 'page-four-examination-style';
+    examinationStyle.rel = 'stylesheet';
+    examinationStyle.href = 'page-four-examination.css';
+    document.head.append(examinationStyle);
+  }
+
+  if (!document.getElementById('page-four-examination-script')) {
+    const examinationScript = document.createElement('script');
+    examinationScript.id = 'page-four-examination-script';
+    examinationScript.src = 'page-four-examination.js';
+    examinationScript.defer = true;
+    document.body.append(examinationScript);
+  }
 })();
