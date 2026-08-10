@@ -57,6 +57,8 @@ const APP_SHELL = [
   './page-four-dead-drop.css',
   './page-four-dead-drop.js',
   './commons-now.html',
+  './commons-solar-dial.css',
+  './commons-solar-dial.js',
   './styles.css',
   './sample-hold.css',
   './sounding-well.css',
