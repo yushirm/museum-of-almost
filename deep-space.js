@@ -251,6 +251,62 @@
     concordanceBody.insertBefore(section, firstLedger);
   }
 
+  function addSelectionFunction() {
+    const concordanceBody = document.querySelector('#cosmic-concordance > .instrument-body');
+    const firstLedger = document.getElementById('model-boundary-ledger');
+    if (!concordanceBody || !firstLedger || document.getElementById('selection-function')) return;
+
+    const section = document.createElement('section');
+    section.id = 'selection-function';
+    section.className = 'readout-grid';
+    section.setAttribute('aria-labelledby', 'selection-function-title');
+    section.style.marginTop = 'clamp(1.5rem, 4vw, 3rem)';
+
+    const title = document.createElement('h3');
+    title.id = 'selection-function-title';
+    title.style.margin = '0';
+    title.style.fontFamily = 'ui-serif, Georgia, serif';
+    title.style.fontWeight = '500';
+    title.style.fontSize = 'clamp(1.6rem, 3vw, 2.6rem)';
+    title.textContent = 'Selection function: what was able to enter the sample?';
+
+    const intro = document.createElement('p');
+    intro.className = 'readout-note';
+    intro.style.maxWidth = '78ch';
+    intro.textContent = 'Astronomical catalogues are not transparent windows onto everything that exists. A survey first defines what can be seen at all: where it looked, which wavelengths it admitted, how faint a signal it could recover, and which detections survived its quality cuts. The observed sample is therefore a filtered population, not the universe in miniature.';
+    section.append(title, intro);
+
+    const stages = [
+      ['1 · WINDOW', 'THE INSTRUMENT DECIDES WHAT CAN ARRIVE', 'Bandpass, sky coverage, cadence and angular resolution define an admission window before any source is measured. An object outside that window can exist perfectly well while remaining absent from the catalogue.'],
+      ['2 · THRESHOLD', 'SOME SIGNALS ARE EASIER TO DETECT', 'Faint, diffuse or low-contrast sources can fall below a detection limit. At larger distances a catalogue may therefore retain the intrinsically brighter or cleaner members of a population more readily than the rest.'],
+      ['3 · COMPLETENESS', 'ELIGIBLE DOES NOT MEAN RECOVERED', 'Crowding, masking, noise and quality cuts can make recovery uneven even inside the nominal survey window. Completeness describes how reliably eligible sources make it through that pipeline.'],
+      ['4 · INTERPRETATION', 'MODEL ADMISSION BEFORE GENERALIZING', 'A detected fraction is not automatically a physical abundance, and a missing class is not automatically absent from nature. Population claims have to account for the route by which objects became observable enough to enter the sample.']
+    ];
+
+    for (const [label, heading, text] of stages) {
+      const row = document.createElement('div');
+      row.className = 'readout';
+      const kicker = document.createElement('span');
+      kicker.className = 'metric-label';
+      kicker.textContent = label;
+      const value = document.createElement('strong');
+      value.className = 'readout-value';
+      value.textContent = heading;
+      const note = document.createElement('p');
+      note.className = 'readout-note';
+      note.textContent = text;
+      row.append(kicker, value, note);
+      section.append(row);
+    }
+
+    const boundary = document.createElement('p');
+    boundary.className = 'inventory-note';
+    boundary.textContent = 'SELECTION-FUNCTION BOUNDARY · This gallery does not load survey catalogues, estimate detection probabilities, fit completeness curves or correct real populations. The fixed conceptual examples only mark the distinction between what exists, what could have been detected, and what actually entered an observed sample.';
+    section.append(boundary);
+
+    concordanceBody.insertBefore(section, firstLedger);
+  }
+
   function loadCausalSignalBox(done) {
     if (!document.querySelector('link[data-causal-signal-styles]')) {
       const stylesheet = document.createElement('link');
@@ -275,7 +331,10 @@
     }
 
     loadLocalScript('./parallax-survey-core.js', 'parallax-survey-core', () => {
-      loadLocalScript('./parallax-survey.js', 'parallax-survey-view', addMeasurementChain);
+      loadLocalScript('./parallax-survey.js', 'parallax-survey-view', () => {
+        addMeasurementChain();
+        addSelectionFunction();
+      });
     });
   }
 
