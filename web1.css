@@ -431,6 +431,32 @@ h1 {
   margin-right: 0.5rem;
 }
 
+/*
+ * LINK ECHO // SAME DOOR, DIFFERENT WALL
+ * One repeated local doorway can reveal its siblings without turning clicks into
+ * data. The selectors compare fixed href strings already authored in this page.
+ */
+.page-shell:has(a[href="./"]:hover) a[href="./"],
+.page-shell:has(a[href="./"]:focus-visible) a[href="./"],
+.page-shell:has(a[href="commons-now.html"]:hover) a[href="commons-now.html"],
+.page-shell:has(a[href="commons-now.html"]:focus-visible) a[href="commons-now.html"],
+.page-shell:has(a[href="deep-space.html"]:hover) a[href="deep-space.html"],
+.page-shell:has(a[href="deep-space.html"]:focus-visible) a[href="deep-space.html"],
+.page-shell:has(a[href="page-four.html"]:hover) a[href="page-four.html"],
+.page-shell:has(a[href="page-four.html"]:focus-visible) a[href="page-four.html"] {
+  color: var(--yellow);
+  background: #002266;
+  outline: 2px dotted var(--cyan);
+  outline-offset: 2px;
+  text-decoration-thickness: 2px;
+}
+
+/* The doorway with actual keyboard focus must remain distinct from its echoes. */
+.page-shell a:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 4px;
+}
+
 @keyframes web1-blink {
   0%, 49% { visibility: visible; }
   50%, 100% { visibility: hidden; }
@@ -517,6 +543,24 @@ h1 {
   .manifesto-box,
   .webring {
     border-color: var(--white);
+  }
+
+  .page-shell:has(a[href="./"]:hover) a[href="./"],
+  .page-shell:has(a[href="./"]:focus-visible) a[href="./"],
+  .page-shell:has(a[href="commons-now.html"]:hover) a[href="commons-now.html"],
+  .page-shell:has(a[href="commons-now.html"]:focus-visible) a[href="commons-now.html"],
+  .page-shell:has(a[href="deep-space.html"]:hover) a[href="deep-space.html"],
+  .page-shell:has(a[href="deep-space.html"]:focus-visible) a[href="deep-space.html"],
+  .page-shell:has(a[href="page-four.html"]:hover) a[href="page-four.html"],
+  .page-shell:has(a[href="page-four.html"]:focus-visible) a[href="page-four.html"] {
+    color: var(--white);
+    background: var(--black);
+    outline: 3px solid var(--white);
+  }
+
+  .page-shell a:focus-visible {
+    outline: 4px double var(--yellow);
+    outline-offset: 4px;
   }
 }
 
