@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="cosmic-latency.css" data-cosmic-latency-styles>
   <link rel="stylesheet" href="cosmic-escapement.css" data-celestial-escapement-styles>
   <link rel="stylesheet" href="planetary-heliodon.css" data-planetary-heliodon-styles>
+  <link rel="stylesheet" href="commons-solar-dial.css">
 </head>
 <body data-loading="false" data-source-count="0">
   <a class="skip-link" href="#main">Skip to the world snapshot</a>
@@ -108,6 +109,39 @@
     <section class="world-sentence-panel" aria-labelledby="world-sentence-title">
       <span id="world-sentence-title">RIGHT NOW, IN ONE SENTENCE</span>
       <p id="world-sentence">Reading the commons…</p>
+    </section>
+
+    <section class="solar-dial-section" aria-labelledby="solar-dial-title">
+      <div class="solar-dial-heading section-heading">
+        <p class="eyebrow">THE LONGITUDE CLOCK / ONE MOMENT, THIRTEEN SOLAR HOURS</p>
+        <h2 id="solar-dial-title">The same now does not look like the same time of day.</h2>
+        <p>Borrowed from horology and sundials: the thirteen fixed longitudes are placed on one twenty-four-hour dial using the same simplified solar geometry that COMMONS already uses for day, twilight, and night. The latch stays singular; local solar hour rotates around it.</p>
+      </div>
+
+      <div class="solar-dial-layout">
+        <div class="solar-dial-instrument">
+          <svg class="solar-dial-face" viewBox="0 0 400 400" role="img" aria-labelledby="solar-dial-svg-title solar-dial-svg-desc">
+            <title id="solar-dial-svg-title">Longitude clock for the thirteen fixed Commons points</title>
+            <desc id="solar-dial-svg-desc">A twenty-four-hour dial waiting for the first Commons snapshot.</desc>
+            <circle class="solar-dial-ring" cx="200" cy="200" r="172"></circle>
+            <circle class="solar-dial-inner-ring" cx="200" cy="200" r="124"></circle>
+            <g id="solar-dial-ticks" aria-hidden="true"></g>
+            <g id="solar-dial-points" aria-hidden="true"></g>
+          </svg>
+          <div class="solar-dial-center" aria-hidden="true">
+            <span>ONE LATCH</span>
+            <strong id="solar-dial-latch">—</strong>
+            <small>UTC reference</small>
+          </div>
+        </div>
+
+        <div class="solar-dial-copy">
+          <p id="solar-dial-summary" class="solar-dial-summary" role="status" aria-live="polite">Waiting for the first latched snapshot.</p>
+          <ol id="solar-dial-list" class="solar-dial-list" aria-label="Model solar hour and light state for all thirteen fixed Commons points"></ol>
+        </div>
+      </div>
+
+      <p class="solar-dial-note"><strong>Not civil time.</strong> Each displayed solar hour is a longitude-derived model time rounded to five minutes and tied to this snapshot’s solar geometry. It does not request time-zone boundaries, daylight-saving rules, visitor location, or another public service. Latitude still matters to whether a point is in day, twilight, or night.</p>
     </section>
 
     <section class="windows-section" aria-labelledby="windows-title">
@@ -363,6 +397,7 @@
   <script src="temporal-sounding-core.js" defer></script>
   <script src="temporal-sounding.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="commons-solar-dial.js" defer></script>
   <script src="cosmic-signal.js" defer></script>
 </body>
 </html>
