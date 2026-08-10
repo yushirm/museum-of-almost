@@ -344,6 +344,101 @@
 
   controlDesk.append(controlTitle, controlBoundary, controlButtons, controlOutput);
 
+  function mountSequenceRoom() {
+    if (document.getElementById('sequence-room')) return;
+
+    if (!document.getElementById('page-four-sequence-style')) {
+      const style = document.createElement('style');
+      style.id = 'page-four-sequence-style';
+      style.textContent = `
+        .sequence-room{margin:2rem 0;padding:clamp(1rem,3vw,2rem);border:1px solid rgba(214,79,58,.36);background:#0b0908;color:#e9e4d6;box-shadow:inset 0 0 36px rgba(0,0,0,.45)}.sequence-room header{display:grid;gap:.5rem;padding-bottom:1rem;border-bottom:1px dashed rgba(214,79,58,.32)}.sequence-room header span,.sequence-room .sequence-boundary,.sequence-room .sequence-card small{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;letter-spacing:.08em;text-transform:uppercase}.sequence-room header span{color:#d99a86;font-size:.7rem}.sequence-room h2{margin:0;color:#fff0d7;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.8rem,5vw,3.8rem);font-weight:500;line-height:.95}.sequence-room header p{max-width:72ch;margin:0;color:#bdb6a8;line-height:1.6}.sequence-controls{display:flex;flex-wrap:wrap;gap:.55rem;margin:1rem 0}.sequence-controls button{min-height:48px;padding:.7rem .85rem;border:1px solid rgba(208,167,91,.38);background:#080706;color:#e8d9b4;font:700 .68rem/1.2 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;letter-spacing:.06em;cursor:pointer}.sequence-controls button[aria-pressed="true"]{border-color:#d64f3a;background:#25100d;color:#fff}.sequence-controls button:focus-visible{outline:3px solid #b8ee75;outline-offset:3px}.sequence-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}.sequence-card{min-width:0;padding:1rem;border:1px solid rgba(208,167,91,.24);background:#11100d}.sequence-card small{display:block;margin-bottom:.55rem;color:#d0a75b;font-size:.62rem}.sequence-card strong{display:block;margin-bottom:.55rem;color:#f2e8d2;font-size:.82rem}.sequence-card p{margin:0;color:#c8c0b2;font-size:.76rem;line-height:1.6}.sequence-reading{margin:1rem 0 0;padding:1rem;border-left:3px solid #d64f3a;background:rgba(214,79,58,.055);color:#d7d0c3;line-height:1.6}.sequence-boundary{margin:1rem 0 0;color:#d99a86;font-size:.62rem;line-height:1.55}@media(max-width:760px){.sequence-strip{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){.sequence-room *{transition:none!important;animation:none!important;scroll-behavior:auto!important}}@media(prefers-contrast:more){.sequence-room,.sequence-controls button,.sequence-card{border-color:currentColor}.sequence-room header p,.sequence-card p,.sequence-reading{color:#fff}}@media print{.sequence-room{color:#000;background:#fff;border-color:#555;box-shadow:none}.sequence-controls{display:none}.sequence-card,.sequence-reading{color:#000!important;background:#fff;border-color:#555}.sequence-room *{color:#000!important}}
+      `;
+      document.head.append(style);
+    }
+
+    const fragments = {
+      broadcast: { code: '04 / MISSING BROADCAST', title: 'THE VOICE ARRIVES BEFORE THE MIC', body: 'Tape 04-13 preserves thirteen seconds of fictional dead air and a written claim that the voice precedes the microphone opening.' },
+      witness: { code: '07 / WITNESS C', title: 'EVERY RADIO USED THE SAME VOICE', body: 'A fictional witness says a drill was announced and then every radio used the same voice. The account is explicitly unverified.' },
+      redaction: { code: '08 / REDACTED FRAGMENT', title: 'DO NOT IMPROVE THE LIGHTING', body: 'A fictional fragment mentions coordinated humming, a second corridor and an instruction not to improve the lighting. Its origin and date remain redacted.' }
+    };
+
+    const cuts = [
+      { label: 'ARCHIVE CUT', order: ['broadcast', 'witness', 'redaction'], reading: 'In archive order, three separate oddities stay separate long enough to retain their gaps. The visitor has to do the connecting.' },
+      { label: 'SUSPICION CUT', order: ['redaction', 'witness', 'broadcast'], reading: 'Lead with the ominous fragment and the later cards feel like corroboration—even though no new evidence appeared. Sequence manufactures narrative momentum.' },
+      { label: 'SKEPTICAL CUT', order: ['witness', 'broadcast', 'redaction'], reading: 'Lead with an explicitly unverified witness and the same material reads as a chain of increasingly fragile records rather than a revelation.' }
+    ];
+
+    const room = document.createElement('section');
+    room.id = 'sequence-room';
+    room.className = 'sequence-room';
+    room.tabIndex = -1;
+    room.setAttribute('aria-labelledby', 'sequence-room-title');
+    const head = document.createElement('header');
+    const roomTitle = text('h2', 'SAME FRAGMENTS. DIFFERENT STORY.');
+    roomTitle.id = 'sequence-room-title';
+    head.append(
+      text('span', '12 / CUTTING ROOM / EDITORIAL SEQUENCE TEST'),
+      roomTitle,
+      text('p', 'Three existing fictional records. No new facts. Change only the order and watch how quickly the archive starts implying a plot.')
+    );
+
+    const buttons = document.createElement('div');
+    buttons.className = 'sequence-controls';
+    buttons.setAttribute('role', 'group');
+    buttons.setAttribute('aria-label', 'Editorial sequence');
+    const strip = document.createElement('div');
+    strip.className = 'sequence-strip';
+    const reading = document.createElement('p');
+    reading.className = 'sequence-reading';
+    reading.setAttribute('role', 'status');
+    reading.setAttribute('aria-live', 'polite');
+    const boundary = text('p', 'FICTIONAL EDITING TEST // ORDER CHANGES EMPHASIS, NOT EVIDENCE. THESE RECORDS DO NOT ESTABLISH A COMMON EVENT, SOURCE OR CAUSE.', 'sequence-boundary');
+
+    let activeCut = 0;
+    function renderCut(announceChange = false) {
+      const cut = cuts[activeCut];
+      [...buttons.children].forEach((button, index) => button.setAttribute('aria-pressed', String(index === activeCut)));
+      strip.replaceChildren();
+      cut.order.forEach((key, index) => {
+        const fragment = fragments[key];
+        const card = document.createElement('article');
+        card.className = 'sequence-card';
+        card.append(text('small', `${index + 1} / ${fragment.code}`), text('strong', fragment.title), text('p', fragment.body));
+        strip.append(card);
+      });
+      reading.textContent = cut.reading;
+      if (announceChange) announce(`Cutting Room: ${cut.label.toLowerCase()} selected. Only editorial order changed; the fictional records did not.`);
+    }
+
+    cuts.forEach((cut, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = cut.label;
+      button.setAttribute('aria-pressed', 'false');
+      button.addEventListener('click', () => {
+        activeCut = index;
+        renderCut(true);
+      });
+      buttons.append(button);
+    });
+
+    room.append(head, buttons, strip, reading, boundary);
+    section.insertAdjacentElement('beforebegin', room);
+
+    if (caseNav && !document.getElementById('sequence-room-link')) {
+      const link = document.createElement('a');
+      link.id = 'sequence-room-link';
+      link.href = '#sequence-room';
+      const number = document.createElement('span');
+      number.textContent = '12';
+      link.append(number, document.createTextNode(' Cutting room'));
+      link.addEventListener('click', () => announce('Cutting Room opened. Sequence may change the story without changing a single record.'));
+      caseNav.append(link);
+    }
+
+    renderCut();
+  }
+
   const sourceLedger = document.createElement('a');
   sourceLedger.className = 'instrument-ledger-link';
   sourceLedger.href = 'PAGE_FOUR_HESSDALEN.md';
@@ -353,6 +448,7 @@
 
   section.append(heading, rule, channelGrid, bench, controlDesk, sourceLedger, finalRule);
   footer.insertAdjacentElement('beforebegin', section);
+  mountSequenceRoom();
   addNavLink();
   renderHypothesis();
   renderControl();
