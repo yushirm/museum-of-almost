@@ -4,14 +4,25 @@
   padding: clamp(1rem, 3vw, 2rem);
 }
 
-.redshift-window-controls {
+.redshift-window-control-label {
+  margin: 0 0 0.55rem;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.redshift-window-controls,
+.redshift-band-controls {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
   margin-bottom: 1.25rem;
 }
 
-.redshift-window-controls button {
+.redshift-window-controls button,
+.redshift-band-controls button {
   min-height: 44px;
   border: 1px solid var(--line);
   background: rgba(132, 232, 255, 0.05);
@@ -21,7 +32,8 @@
   cursor: pointer;
 }
 
-.redshift-window-controls button[aria-pressed="true"] {
+.redshift-window-controls button[aria-pressed="true"],
+.redshift-band-controls button[aria-pressed="true"] {
   border-color: var(--accent, #84e8ff);
   background: rgba(132, 232, 255, 0.14);
 }
@@ -146,10 +158,16 @@
   .redshift-line::after { bottom: 0.2rem; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .redshift-visible-window,
+  .redshift-line { transition: none !important; }
+}
+
 @media (prefers-contrast: more) {
   .redshift-window-shell,
   .redshift-spectrum,
   .redshift-window-controls button,
+  .redshift-band-controls button,
   .redshift-window-readout > div { border: 2px solid currentColor; }
 }
 
@@ -161,7 +179,8 @@
     background: #fff;
     border-color: #555;
   }
-  .redshift-window-controls { display: none; }
+  .redshift-window-controls,
+  .redshift-band-controls { display: none; }
   .redshift-visible-window { background: #eee; border-color: #777; }
   .redshift-visible-window span,
   .redshift-axis-label,
