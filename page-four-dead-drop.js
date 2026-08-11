@@ -303,3 +303,129 @@
   addNavLink();
   renderProgress();
 })();
+
+(() => {
+  const maps = document.getElementById('maps');
+  const deadDrop = document.getElementById('dead-drop');
+  const caseNav = document.querySelector('.case-nav');
+  const archiveStatus = document.getElementById('archive-status');
+  if (!maps || !deadDrop || document.getElementById('map-comparison-table')) return;
+
+  const style = document.createElement('style');
+  style.id = 'page-four-map-comparison-style';
+  style.textContent = `
+    .map-comparison{--split:50%;position:relative;margin:2rem 0;padding:clamp(1rem,3vw,2rem);border:1px solid rgba(138,165,174,.35);background:#0c1110;color:#dce8e5;box-shadow:inset 0 0 34px rgba(0,0,0,.42)}
+    .map-comparison>header{display:grid;gap:.55rem;padding-bottom:1rem;border-bottom:1px dashed rgba(138,165,174,.32)}.map-comparison>header span,.map-swipe-label,.map-swipe-readout,.map-comparison-boundary{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;letter-spacing:.08em;text-transform:uppercase}.map-comparison>header span{color:#b8d3dc;font-size:.7rem}.map-comparison h2{margin:0;color:#eef6f3;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.8rem,5vw,3.7rem);font-weight:500;line-height:.96}.map-comparison>header p{max-width:76ch;margin:0;color:#b8c5c4;line-height:1.6}
+    .map-swipe-stage{position:relative;min-height:25rem;margin-top:1rem;overflow:hidden;border:1px solid rgba(184,211,220,.24);background:#c6bea0;color:#25281f;box-shadow:0 14px 28px rgba(0,0,0,.38)}.map-swipe-layer{position:absolute;inset:0}.map-swipe-layer::before{content:"";position:absolute;inset:8% 7%;background:repeating-linear-gradient(8deg,transparent 0 22px,rgba(42,49,39,.12) 23px 24px),repeating-linear-gradient(92deg,transparent 0 34px,rgba(42,49,39,.08) 35px 36px)}.map-swipe-layer::after{content:"";position:absolute;width:46%;height:34%;left:13%;top:20%;border:3px solid currentColor;border-radius:48% 41% 52% 44%;transform:rotate(-7deg);box-shadow:8rem 7rem 0 -6rem currentColor}.map-swipe-a{background:#c6bea0}.map-swipe-b{clip-path:inset(0 0 0 var(--split));background:#aeb8ae}.map-swipe-b::after{left:24%;top:17%;width:43%;height:38%;transform:rotate(4deg);border-radius:42% 55% 44% 50%;box-shadow:7rem 8rem 0 -6rem currentColor}.map-road{position:absolute;left:8%;right:7%;top:59%;height:3px;background:currentColor;transform:rotate(-8deg);transform-origin:left center}.map-road::after{content:"ROUTE 6";position:absolute;right:9%;top:.6rem;font:700 .58rem/1 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}.map-swipe-b .map-road{top:48%;left:18%;right:3%;transform:rotate(6deg)}.map-swipe-b .map-road::after{content:"ROUTE 6B"}.map-landmark{position:absolute;left:62%;top:31%;width:1rem;height:1rem;border:3px solid currentColor;transform:rotate(45deg)}.map-swipe-b .map-landmark{left:58%;top:42%}.map-edition{position:absolute;left:1rem;bottom:1rem;padding:.35rem .5rem;border:1px solid currentColor;background:rgba(246,241,216,.82);font:700 .62rem/1.2 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;letter-spacing:.07em}.map-swipe-b .map-edition{left:auto;right:1rem;background:rgba(228,237,231,.88)}.map-swipe-divider{position:absolute;z-index:3;top:0;bottom:0;left:var(--split);width:3px;background:#d64f3a;transform:translateX(-1.5px);pointer-events:none}.map-swipe-divider::before{content:"↔";position:absolute;top:50%;left:50%;display:grid;place-items:center;width:2.5rem;height:2.5rem;border:2px solid #d64f3a;border-radius:50%;background:#0b0d0a;color:#ffd9cf;transform:translate(-50%,-50%);font-weight:700}
+    .map-swipe-controls{display:grid;grid-template-columns:minmax(10rem,.35fr) minmax(0,.65fr);gap:1rem;align-items:center;margin-top:1rem;padding:1rem;border:1px solid rgba(184,211,220,.18);background:#0a0e0d}.map-swipe-label{color:#c5e0e8;font-size:.68rem}.map-swipe-readout{display:block;margin-top:.35rem;color:#e5c784;font-size:.62rem;line-height:1.5}.map-swipe-controls input[type="range"]{width:100%;min-height:44px;accent-color:#d64f3a}.map-swipe-controls input[type="range"]:focus-visible{outline:3px solid #b8d3dc;outline-offset:4px}.map-comparison-note{max-width:76ch;margin:1rem 0 0;color:#c5d0ce;font-size:.76rem;line-height:1.65}.map-comparison-note strong{color:#f1f5f3}.map-comparison-boundary{margin:1rem 0 0;padding:.75rem;border-left:3px solid #d64f3a;color:#d99a86;font-size:.62rem;line-height:1.55}
+    @media(max-width:700px){.map-swipe-stage{min-height:19rem}.map-swipe-controls{grid-template-columns:1fr}.map-swipe-divider::before{width:2.1rem;height:2.1rem}}@media(prefers-reduced-motion:reduce){.map-comparison *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}@media(prefers-contrast:more){.map-comparison,.map-swipe-stage,.map-swipe-controls{border:2px solid currentColor}.map-comparison>header p,.map-comparison-note{color:#fff}.map-swipe-divider{width:5px}}@media print{.map-comparison{--split:50%;color:#000;background:#fff;box-shadow:none;border-color:#555}.map-comparison *{color:#000!important;border-color:#555!important}.map-swipe-controls input{display:none}.map-swipe-stage{background:#fff}.map-swipe-a{background:#eee}.map-swipe-b{background:#ddd}}
+  `;
+  document.head.append(style);
+
+  const section = document.createElement('section');
+  section.id = 'map-comparison-table';
+  section.className = 'map-comparison';
+  section.setAttribute('aria-labelledby', 'map-comparison-title');
+
+  const heading = document.createElement('header');
+  const eyebrow = document.createElement('span');
+  eyebrow.textContent = '02-X / MAP TABLE / EDITION SWIPE';
+  const title = document.createElement('h2');
+  title.id = 'map-comparison-title';
+  title.textContent = 'THE ROAD MOVED. OR THE EDITION DID.';
+  const intro = document.createElement('p');
+  intro.textContent = 'File 02 says two surviving copies disagree. Slide the divider across two authored fictional editions and inspect exactly what changes before deciding that “the map moved” is the only story available.';
+  heading.append(eyebrow, title, intro);
+
+  const stage = document.createElement('div');
+  stage.className = 'map-swipe-stage';
+  stage.setAttribute('role', 'img');
+  stage.setAttribute('aria-label', 'Two fictional map editions overlaid. Edition B is revealed to the right of the movable comparison divider. Coastline, route and landmark positions differ.');
+
+  const editionA = document.createElement('div');
+  editionA.className = 'map-swipe-layer map-swipe-a';
+  editionA.setAttribute('aria-hidden', 'true');
+  const roadA = document.createElement('span');
+  roadA.className = 'map-road';
+  const landmarkA = document.createElement('span');
+  landmarkA.className = 'map-landmark';
+  const labelA = document.createElement('span');
+  labelA.className = 'map-edition';
+  labelA.textContent = 'EDITION A / ENDPOINT COPY';
+  editionA.append(roadA, landmarkA, labelA);
+
+  const editionB = document.createElement('div');
+  editionB.className = 'map-swipe-layer map-swipe-b';
+  editionB.setAttribute('aria-hidden', 'true');
+  const roadB = document.createElement('span');
+  roadB.className = 'map-road';
+  const landmarkB = document.createElement('span');
+  landmarkB.className = 'map-landmark';
+  const labelB = document.createElement('span');
+  labelB.className = 'map-edition';
+  labelB.textContent = 'EDITION B / ENDPOINT COPY';
+  editionB.append(roadB, landmarkB, labelB);
+
+  const divider = document.createElement('span');
+  divider.className = 'map-swipe-divider';
+  divider.setAttribute('aria-hidden', 'true');
+  stage.append(editionA, editionB, divider);
+
+  const controls = document.createElement('div');
+  controls.className = 'map-swipe-controls';
+  const controlCopy = document.createElement('div');
+  const controlLabel = document.createElement('label');
+  controlLabel.className = 'map-swipe-label';
+  controlLabel.htmlFor = 'map-edition-swipe';
+  controlLabel.textContent = 'COMPARE EDITIONS';
+  const readout = document.createElement('output');
+  readout.className = 'map-swipe-readout';
+  readout.htmlFor = 'map-edition-swipe';
+  readout.textContent = '50% A / 50% B';
+  controlCopy.append(controlLabel, readout);
+
+  const slider = document.createElement('input');
+  slider.id = 'map-edition-swipe';
+  slider.type = 'range';
+  slider.min = '5';
+  slider.max = '95';
+  slider.value = '50';
+  slider.step = '1';
+  slider.setAttribute('aria-describedby', 'map-comparison-note');
+  slider.addEventListener('input', () => {
+    const split = Number(slider.value);
+    section.style.setProperty('--split', `${split}%`);
+    readout.textContent = `${split}% A / ${100 - split}% B`;
+  });
+  controls.append(controlCopy, slider);
+
+  const note = document.createElement('p');
+  note.id = 'map-comparison-note';
+  note.className = 'map-comparison-note';
+  const strong = document.createElement('strong');
+  strong.textContent = 'What the comparison earns:';
+  note.append(strong, document.createTextNode(' the coastline, route and landmark differ between these two endpoint copies. It does not tell us whether the cause was an ordinary revision, a redraw, a copying error, a missing intermediate edition, or anything stranger.'));
+
+  const boundary = document.createElement('p');
+  boundary.className = 'map-comparison-boundary';
+  boundary.textContent = 'FICTIONAL CARTOGRAPHIC COMPARISON // TWO DISCREPANT ENDPOINTS DO NOT REVEAL THE MISSING REVISION HISTORY. DIFFERENCE IS OBSERVED; CAUSE REMAINS OPEN.';
+
+  section.append(heading, stage, controls, note, boundary);
+  deadDrop.insertAdjacentElement('beforebegin', section);
+
+  if (caseNav && !document.getElementById('map-comparison-link')) {
+    const link = document.createElement('a');
+    link.id = 'map-comparison-link';
+    link.href = '#map-comparison-table';
+    const number = document.createElement('span');
+    number.textContent = '02X';
+    link.append(number, document.createTextNode(' Map comparison'));
+    caseNav.append(link);
+  }
+
+  if (archiveStatus) {
+    slider.addEventListener('change', () => {
+      archiveStatus.textContent = 'Map comparison adjusted. The editions differ; the missing revision history still does not tell us why.';
+    });
+  }
+})();

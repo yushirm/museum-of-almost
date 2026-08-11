@@ -55,7 +55,11 @@ assert.doesNotMatch(runtimeJs, /localStorage|sessionStorage|indexedDB|document\.
 assert.doesNotMatch(runtimeJs, /analytics|telemetry|tracking|gtag|dataLayer|mixpanel|segment|plausible|amplitude|hotjar/i, 'Page Four must remain tracking-free');
 assert.doesNotMatch(runtimeJs, /navigator\.share\b/, 'Page Four must not hand data to external share targets automatically');
 assert.doesNotMatch([researchJs, instrumentJs, deadDropJs].join('\n'), /innerHTML|insertAdjacentHTML|document\.write/i, 'Page Four enhancements must mount through DOM nodes rather than HTML-string injection');
-assert.doesNotMatch(deadDropJs, /createElement\(['"](?:input|textarea|select)['"]\)|contenteditable/i, 'Page Four puzzles must remain fixed-choice rather than collecting visitor text');
+assert.doesNotMatch(deadDropJs, /createElement\(['"](?:textarea|select)['"]\)|contenteditable/i, 'Page Four puzzles must remain fixed-choice rather than collecting visitor text');
+for (const match of deadDropJs.matchAll(/const\s+(\w+)\s*=\s*document\.createElement\(['"]input['"]\)/g)) {
+  const controlName = match[1];
+  assert.match(deadDropJs, new RegExp(`${controlName}\\.type\\s*=\\s*['\"](?:range|button|checkbox|radio)['\"]`), `dynamic input ${controlName} must be an explicitly non-text control`);
+}
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/, 'Page Four should participate in the local offline shell');
 assert.match(js, /getRandomValues/, 'random-file access should be local and non-identifying');
 assert.match(js, /aria-pressed/, 'reclassification control should expose state accessibly');

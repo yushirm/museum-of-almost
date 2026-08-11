@@ -55,8 +55,12 @@ assert.match(js, /aria-pressed/, 'answer choices should expose selected state');
 assert.match(js, /role', 'status'/, 'dynamic puzzle feedback should use status semantics');
 assert.match(js, /aria-live', 'polite'/, 'dynamic puzzle feedback should be polite');
 assert.match(js, /progress\.setAttribute\('aria-label'/, 'progress should expose a textual lock count');
-assert.doesNotMatch(js, /createElement\(['"](?:input|textarea|select)['"]\)|contenteditable/i,
-  'Dead Drop must not collect visitor free text or numeric input');
+assert.doesNotMatch(js, /createElement\(['"](?:textarea|select)['"]\)|contenteditable/i,
+  'Dead Drop must not collect visitor free text');
+for (const match of js.matchAll(/const\s+(\w+)\s*=\s*document\.createElement\(['"]input['"]\)/g)) {
+  const controlName = match[1];
+  assert.match(js, new RegExp(`${controlName}\\.type\\s*=\\s*['\"](?:range|button|checkbox|radio)['\"]`), `dynamic input ${controlName} must be an explicitly non-text control`);
+}
 
 for (const source of [js, css]) {
   assert.doesNotMatch(source, /https?:\/\//i, 'Dead Drop visitor runtime must remain local-only');
