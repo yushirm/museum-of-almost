@@ -24,12 +24,39 @@
   const mysteryKnown = document.querySelector('#mystery-known');
   const mysteryUnknown = document.querySelector('#mystery-unknown');
 
+  const COSMIC_AGE_YEARS = 13.8e9;
+  const LOOKBACK_WINDOW_YEARS = 3e6;
+
   function selectButton(buttons, activeButton) {
     for (const button of buttons) {
       const active = button === activeButton;
       button.dataset.active = String(active);
       button.setAttribute('aria-pressed', String(active));
     }
+  }
+
+  function renderLookbackHandoff(item) {
+    const marker = document.querySelector('#strata-lookback-marker');
+    const reference = document.querySelector('#strata-lookback-reference');
+    const time = document.querySelector('#strata-lookback-time');
+    const share = document.querySelector('#strata-lookback-share');
+    if (!marker || !reference || !time || !share || !item) return;
+
+    const seconds = core.lightTimeSeconds(item.distanceKm);
+    if (!Number.isFinite(seconds)) return;
+
+    const years = seconds / core.JULIAN_YEAR_SECONDS;
+    const windowFraction = Math.min(1, Math.max(0, years / LOOKBACK_WINDOW_YEARS));
+    const ageSharePercent = (years / COSMIC_AGE_YEARS) * 100;
+    let ageShareLabel;
+    if (ageSharePercent < 0.000001) ageShareLabel = '<0.000001%';
+    else if (ageSharePercent < 0.01) ageShareLabel = `${ageSharePercent.toFixed(6)}%`;
+    else ageShareLabel = `${ageSharePercent.toFixed(3)}%`;
+
+    marker.style.left = `${windowFraction * 100}%`;
+    reference.textContent = item.label;
+    time.textContent = core.formatDuration(seconds);
+    share.textContent = ageShareLabel;
   }
 
   function renderScale(id) {
@@ -41,6 +68,7 @@
     scaleNote.textContent = item.note;
     const index = core.SCALE_STOPS.indexOf(item);
     scaleBeam.style.setProperty('--beam-progress', `${20 + index * 18}%`);
+    renderLookbackHandoff(item);
   }
 
   function renderBlackHole(id) {
@@ -144,6 +172,74 @@
     intro.textContent = 'Geologists read time through depth. This core sample borrows that grammar for cosmic history: no controls, no animation, no claim that the intervals are to scale. Each band is a rounded landmark in age after the hot Big Bang.';
     heading.append(eyebrow, title, intro);
 
+    const handoff = document.createElement('section');
+    handoff.className = 'instrument-body';
+    handoff.setAttribute('aria-labelledby', 'strata-lookback-title');
+    handoff.style.marginBottom = 'clamp(1rem, 3vw, 1.8rem)';
+    handoff.style.padding = 'clamp(1rem, 3vw, 1.5rem)';
+    handoff.style.border = '1px solid var(--line)';
+    handoff.style.background = 'rgba(7, 5, 17, 0.78)';
+
+    const handoffTitle = document.createElement('h3');
+    handoffTitle.id = 'strata-lookback-title';
+    handoffTitle.style.marginTop = '0';
+    handoffTitle.textContent = 'Light-clock handoff · magnified surface';
+    const handoffIntro = document.createElement('p');
+    handoffIntro.className = 'readout-note';
+    handoffIntro.textContent = 'Instrument 01’s selected one-way light time is carried into this core sample and plotted backward from NOW only to compare magnitude. The track magnifies the last 3 million years; it is not the vertical scale of the strata below, and not every reference stop is a source distance or emission epoch.';
+
+    const handoffTrack = document.createElement('div');
+    handoffTrack.setAttribute('aria-hidden', 'true');
+    handoffTrack.style.position = 'relative';
+    handoffTrack.style.height = '3rem';
+    handoffTrack.style.margin = '1rem 0 0.5rem';
+    handoffTrack.style.borderTop = '1px solid var(--line)';
+    handoffTrack.style.borderBottom = '1px solid var(--line)';
+    handoffTrack.style.background = 'linear-gradient(90deg, rgba(132,232,255,0.16), rgba(111,59,209,0.12))';
+
+    const nowLabel = document.createElement('span');
+    nowLabel.textContent = 'NOW';
+    nowLabel.style.position = 'absolute';
+    nowLabel.style.left = '0.35rem';
+    nowLabel.style.top = '0.35rem';
+    nowLabel.style.fontSize = '0.68rem';
+    nowLabel.style.letterSpacing = '0.08em';
+    const oldLabel = document.createElement('span');
+    oldLabel.textContent = '3 MILLION YEARS AGO';
+    oldLabel.style.position = 'absolute';
+    oldLabel.style.right = '0.35rem';
+    oldLabel.style.bottom = '0.35rem';
+    oldLabel.style.fontSize = '0.68rem';
+    oldLabel.style.letterSpacing = '0.08em';
+    const marker = document.createElement('span');
+    marker.id = 'strata-lookback-marker';
+    marker.style.position = 'absolute';
+    marker.style.top = '0';
+    marker.style.bottom = '0';
+    marker.style.left = '0';
+    marker.style.width = '0';
+    marker.style.borderLeft = '3px solid currentColor';
+    marker.style.transform = 'translateX(-1px)';
+    handoffTrack.append(nowLabel, oldLabel, marker);
+
+    const handoffReadout = document.createElement('div');
+    handoffReadout.className = 'readout-grid';
+    handoffReadout.setAttribute('aria-live', 'polite');
+    const refReadout = document.createElement('div');
+    refReadout.className = 'readout';
+    refReadout.innerHTML = '<span class="metric-label">Light Clock reference</span><strong id="strata-lookback-reference" class="readout-value">Sun</strong>';
+    const timeReadout = document.createElement('div');
+    timeReadout.className = 'readout';
+    timeReadout.innerHTML = '<span class="metric-label">One-way light-time interval</span><strong id="strata-lookback-time" class="readout-value">8.3 minutes</strong>';
+    const shareReadout = document.createElement('div');
+    shareReadout.className = 'readout';
+    shareReadout.innerHTML = '<span class="metric-label">Share of 13.8-billion-year reference age</span><strong id="strata-lookback-share" class="readout-value">&lt;0.000001%</strong>';
+    const handoffBoundary = document.createElement('p');
+    handoffBoundary.className = 'inventory-note';
+    handoffBoundary.textContent = 'MAGNIFICATION BOUNDARY · Position is linear only inside this 0–3-million-year inset. Moon, Sun and Proxima intervals sit effectively on the present edge at this scale. The exact Light Clock duration is authoritative; this handoff compares elapsed-time scale, not historical dating of every reference label.';
+    handoffReadout.append(refReadout, timeReadout, shareReadout, handoffBoundary);
+    handoff.append(handoffTitle, handoffIntro, handoffTrack, handoffReadout);
+
     const coreSample = document.createElement('ol');
     coreSample.setAttribute('aria-label', 'Cosmic history from the present downward toward recombination');
     coreSample.style.listStyle = 'none';
@@ -189,9 +285,9 @@
 
     const boundary = document.createElement('p');
     boundary.className = 'inventory-note';
-    boundary.textContent = 'STRATIGRAPHIC BOUNDARY · Vertical spacing is editorial, not proportional to elapsed time. Ages are rounded reference landmarks; the first-star interval and reionization remain active areas of measurement. Native page scrolling is the only interaction.';
+    boundary.textContent = 'STRATIGRAPHIC BOUNDARY · Vertical spacing is editorial, not proportional to elapsed time. Ages are rounded reference landmarks; the first-star interval and reionization remain active areas of measurement. Native page scrolling and the fixed Light Clock selection are the only interactions.';
 
-    section.append(heading, coreSample, boundary);
+    section.append(heading, handoff, coreSample, boundary);
     closingSection.insertAdjacentElement('beforebegin', section);
   }
 
