@@ -504,6 +504,59 @@ h1 {
   text-align: center;
 }
 
+/*
+ * SELECTION INK // THE PAGE HAS A MAP UNDER THE HIGHLIGHTER
+ * Native browser text selection becomes a tiny structural legend. The selected
+ * text changes ink by authored region, but selection is never observed by script,
+ * remembered, counted, personalized, or sent anywhere.
+ */
+.page-shell ::selection {
+  color: var(--black);
+  background: var(--magenta);
+}
+
+.homepage-header ::selection,
+.status-box ::selection {
+  color: var(--black);
+  background: var(--yellow);
+}
+
+.posts ::selection {
+  color: var(--black);
+  background: var(--cyan);
+}
+
+.sidebar ::selection {
+  color: var(--black);
+  background: var(--green);
+}
+
+#homepage-workbench ::selection,
+.webring ::selection {
+  color: var(--black);
+  background: #ff88ff;
+}
+
+.manifesto-box ::selection,
+.homepage-footer ::selection {
+  color: var(--black);
+  background: var(--silver);
+}
+
+.section-title::after {
+  content: "SELECTION INK // SELECT A SENTENCE AND THE REGION LEAVES A DIFFERENT HIGHLIGHT";
+  display: block;
+  margin-top: 0.4rem;
+  padding-top: 0.35rem;
+  border-top: 1px dotted var(--cyan);
+  color: var(--cyan);
+  font-size: 0.62rem;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  text-shadow: none;
+}
+
 @keyframes web1-blink {
   0%, 49% { visibility: visible; }
   50%, 100% { visibility: hidden; }
@@ -631,6 +684,28 @@ h1 {
     background: var(--white);
     border-color: var(--white);
   }
+
+  .page-shell ::selection {
+    color: var(--black);
+    background: var(--white);
+  }
+
+  .section-title::after {
+    color: var(--white);
+    border-color: var(--white);
+  }
+}
+
+@media (forced-colors: active) {
+  .page-shell ::selection {
+    color: HighlightText;
+    background: Highlight;
+  }
+
+  .section-title::after {
+    color: CanvasText;
+    border-color: CanvasText;
+  }
 }
 
 @media print {
@@ -657,7 +732,8 @@ h1 {
     box-shadow: none;
   }
 
-  .posts .post:target::before {
+  .posts .post:target::before,
+  .section-title::after {
     display: none;
   }
 
