@@ -24,6 +24,75 @@
   line-height: 1.45;
 }
 
+/*
+ * Selected-light exposure.
+ * The already-selected fixed Commons window lends its current model light state
+ * to established representations elsewhere in the room. This is presentation
+ * only: the authoritative light reading remains the existing written station
+ * value, and no new state, request, history, or inference is introduced.
+ */
+@supports selector(body:has(*)) {
+  body:has(.station-dot[data-selected="true"][data-light="day"]) .station-detail,
+  body:has(.station-dot[data-selected="true"][data-light="day"]) .solar-dial-section,
+  body:has(.station-dot[data-selected="true"][data-light="day"]) .phase-space-section {
+    background-image: linear-gradient(135deg, rgba(244, 215, 124, 0.20), rgba(255, 255, 255, 0) 58%);
+    border-top-style: solid;
+  }
+
+  body:has(.station-dot[data-selected="true"][data-light="twilight"]) .station-detail,
+  body:has(.station-dot[data-selected="true"][data-light="twilight"]) .solar-dial-section,
+  body:has(.station-dot[data-selected="true"][data-light="twilight"]) .phase-space-section {
+    background-image: repeating-linear-gradient(135deg, rgba(166, 109, 85, 0.10) 0 10px, rgba(255, 255, 255, 0) 10px 22px);
+    border-top-style: dashed;
+  }
+
+  body:has(.station-dot[data-selected="true"][data-light="night"]) .station-detail,
+  body:has(.station-dot[data-selected="true"][data-light="night"]) .solar-dial-section,
+  body:has(.station-dot[data-selected="true"][data-light="night"]) .phase-space-section {
+    background-image: radial-gradient(circle at 2px 2px, rgba(82, 103, 116, 0.16) 1.2px, transparent 1.3px);
+    background-size: 18px 18px;
+    border-top-style: dotted;
+  }
+
+  body:has(.station-dot[data-selected="true"][data-light="day"]) .station-detail,
+  body:has(.station-dot[data-selected="true"][data-light="twilight"]) .station-detail,
+  body:has(.station-dot[data-selected="true"][data-light="night"]) .station-detail {
+    border-top-width: 5px;
+  }
+
+  body:has(.station-dot[data-selected="true"][data-light="day"]) .solar-dial-section,
+  body:has(.station-dot[data-selected="true"][data-light="twilight"]) .solar-dial-section,
+  body:has(.station-dot[data-selected="true"][data-light="night"]) .solar-dial-section,
+  body:has(.station-dot[data-selected="true"][data-light="day"]) .phase-space-section,
+  body:has(.station-dot[data-selected="true"][data-light="twilight"]) .phase-space-section,
+  body:has(.station-dot[data-selected="true"][data-light="night"]) .phase-space-section {
+    background-blend-mode: multiply;
+  }
+}
+
+@media (prefers-contrast: more) {
+  @supports selector(body:has(*)) {
+    body:has(.station-dot[data-selected="true"][data-light="day"]) .station-detail,
+    body:has(.station-dot[data-selected="true"][data-light="twilight"]) .station-detail,
+    body:has(.station-dot[data-selected="true"][data-light="night"]) .station-detail {
+      border-top-color: currentColor;
+    }
+
+    body:has(.station-dot[data-selected="true"]) .solar-dial-section,
+    body:has(.station-dot[data-selected="true"]) .phase-space-section {
+      background-image: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .station-detail,
+  .solar-dial-section,
+  .phase-space-section {
+    transition: none !important;
+  }
+}
+
 @media (max-width: 620px) {
   .world-map { min-height: 0; }
   .map-label { font-size: 0.52rem; }
@@ -31,4 +100,12 @@
 
 @media print {
   .world-map { aspect-ratio: 2 / 1; min-height: 0; }
+
+  @supports selector(body:has(*)) {
+    body:has(.station-dot[data-selected="true"]) .station-detail,
+    body:has(.station-dot[data-selected="true"]) .solar-dial-section,
+    body:has(.station-dot[data-selected="true"]) .phase-space-section {
+      background-image: none;
+    }
+  }
 }
