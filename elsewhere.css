@@ -648,3 +648,66 @@ body:has([data-ipm-choice="zone-a"][aria-pressed="true"]) #transfer-desk .transf
     background: transparent;
   }
 }
+
+/* Compactus pull-out: an opened accession becomes a wide inspection tray instead of remaining a shelf cell. */
+@media (min-width: 701px) {
+  .shelf-index .artifact[open] {
+    grid-column: 1 / -1;
+    background:
+      repeating-linear-gradient(90deg, rgba(229,168,38,0.035) 0 28px, transparent 28px 56px),
+      var(--concrete-2);
+  }
+
+  .shelf-index .artifact[open] summary {
+    min-height: auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .shelf-index .artifact[open] summary span,
+  .shelf-index .artifact[open] summary strong {
+    grid-column: 1;
+  }
+
+  .shelf-index .artifact[open] summary::after {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+
+  .shelf-index .artifact[open] .artifact-body {
+    grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
+    grid-template-areas:
+      "object metadata"
+      "object note";
+    gap: 1rem 1.5rem;
+    align-items: start;
+    padding-top: 1rem;
+  }
+
+  .shelf-index .artifact[open] .object {
+    grid-area: object;
+    min-height: 260px;
+    height: 100%;
+  }
+
+  .shelf-index .artifact[open] dl { grid-area: metadata; }
+  .shelf-index .artifact[open] .field-note { grid-area: note; }
+}
+
+@media (prefers-contrast: more) and (min-width: 701px) {
+  .shelf-index .artifact[open] summary { border-bottom-color: currentColor; }
+}
+
+@media print {
+  .shelf-index .artifact[open] { grid-column: auto; background: #fff; }
+  .shelf-index .artifact[open] .artifact-body {
+    grid-template-columns: 1fr;
+    grid-template-areas: none;
+  }
+  .shelf-index .artifact[open] .object,
+  .shelf-index .artifact[open] dl,
+  .shelf-index .artifact[open] .field-note { grid-area: auto; }
+}
