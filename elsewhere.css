@@ -711,3 +711,61 @@ body:has([data-ipm-choice="zone-a"][aria-pressed="true"]) #transfer-desk .transf
   .shelf-index .artifact[open] dl,
   .shelf-index .artifact[open] .field-note { grid-area: auto; }
 }
+
+/* Packing route echo: the selected crate trial points back to its source accession and assigned storage zone. */
+body:has([data-pack-choice="paper"][aria-pressed="true"]) #artifact-c0-002 summary,
+body:has([data-pack-choice="fabric"][aria-pressed="true"]) #artifact-c0-006 summary,
+body:has([data-pack-choice="optical"][aria-pressed="true"]) #artifact-c0-010 summary {
+  border-left: 5px solid #d6c48b;
+  background: rgba(214,196,139,0.08);
+}
+
+body:has([data-pack-choice="paper"][aria-pressed="true"]) #artifact-c0-002 summary strong::after,
+body:has([data-pack-choice="fabric"][aria-pressed="true"]) #artifact-c0-006 summary strong::after,
+body:has([data-pack-choice="optical"][aria-pressed="true"]) #artifact-c0-010 summary strong::after {
+  content: " · PACKING TRIAL";
+  display: inline;
+  color: #d6c48b;
+  font: 800 0.62rem/1.35 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body:has([data-pack-choice="paper"][aria-pressed="true"]) .environment-zone[data-storage-zone="A"],
+body:has([data-pack-choice="fabric"][aria-pressed="true"]) .environment-zone[data-storage-zone="B"],
+body:has([data-pack-choice="optical"][aria-pressed="true"]) .environment-zone[data-storage-zone="C"] {
+  outline: 3px dashed #d6c48b;
+  outline-offset: 4px;
+}
+
+body:has([data-pack-choice="paper"][aria-pressed="true"]) .environment-zone[data-storage-zone="A"] header::after,
+body:has([data-pack-choice="fabric"][aria-pressed="true"]) .environment-zone[data-storage-zone="B"] header::after,
+body:has([data-pack-choice="optical"][aria-pressed="true"]) .environment-zone[data-storage-zone="C"] header::after {
+  content: "PACKING TRIAL · ASSIGNED STORAGE ZONE";
+  display: block;
+  margin-top: 0.55rem;
+  color: #d6c48b;
+  font: 800 0.62rem/1.35 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (prefers-contrast: more) {
+  body:has([data-pack-choice][aria-pressed="true"]) .environment-zone {
+    outline-color: currentColor;
+    outline-width: 4px;
+  }
+  body:has([data-pack-choice][aria-pressed="true"]) .artifact summary {
+    border-left-color: currentColor;
+  }
+}
+
+@media print {
+  body:has([data-pack-choice][aria-pressed="true"]) .environment-zone { outline: 0; }
+  body:has([data-pack-choice][aria-pressed="true"]) .environment-zone header::after,
+  body:has([data-pack-choice][aria-pressed="true"]) .artifact summary strong::after { content: none; }
+  body:has([data-pack-choice][aria-pressed="true"]) .artifact summary {
+    border-left: 0;
+    background: transparent;
+  }
+}
