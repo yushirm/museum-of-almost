@@ -472,3 +472,60 @@
     display: none;
   }
 }
+
+/* Linked-view selection: the selected fixed window answers on the longitude clock. */
+body:has(.station-dot[data-station="01"][data-selected="true"]) .solar-dial-marker:nth-child(1) circle,
+body:has(.station-dot[data-station="02"][data-selected="true"]) .solar-dial-marker:nth-child(2) circle,
+body:has(.station-dot[data-station="03"][data-selected="true"]) .solar-dial-marker:nth-child(3) circle,
+body:has(.station-dot[data-station="04"][data-selected="true"]) .solar-dial-marker:nth-child(4) circle,
+body:has(.station-dot[data-station="05"][data-selected="true"]) .solar-dial-marker:nth-child(5) circle,
+body:has(.station-dot[data-station="06"][data-selected="true"]) .solar-dial-marker:nth-child(6) circle,
+body:has(.station-dot[data-station="07"][data-selected="true"]) .solar-dial-marker:nth-child(7) circle,
+body:has(.station-dot[data-station="08"][data-selected="true"]) .solar-dial-marker:nth-child(8) circle,
+body:has(.station-dot[data-station="09"][data-selected="true"]) .solar-dial-marker:nth-child(9) circle,
+body:has(.station-dot[data-station="10"][data-selected="true"]) .solar-dial-marker:nth-child(10) circle,
+body:has(.station-dot[data-station="11"][data-selected="true"]) .solar-dial-marker:nth-child(11) circle,
+body:has(.station-dot[data-station="12"][data-selected="true"]) .solar-dial-marker:nth-child(12) circle,
+body:has(.station-dot[data-station="13"][data-selected="true"]) .solar-dial-marker:nth-child(13) circle {
+  stroke-width: 4;
+}
+
+body:has(.station-dot[data-station="01"][data-selected="true"]) .solar-dial-list li:nth-child(1),
+body:has(.station-dot[data-station="02"][data-selected="true"]) .solar-dial-list li:nth-child(2),
+body:has(.station-dot[data-station="03"][data-selected="true"]) .solar-dial-list li:nth-child(3),
+body:has(.station-dot[data-station="04"][data-selected="true"]) .solar-dial-list li:nth-child(4),
+body:has(.station-dot[data-station="05"][data-selected="true"]) .solar-dial-list li:nth-child(5),
+body:has(.station-dot[data-station="06"][data-selected="true"]) .solar-dial-list li:nth-child(6),
+body:has(.station-dot[data-station="07"][data-selected="true"]) .solar-dial-list li:nth-child(7),
+body:has(.station-dot[data-station="08"][data-selected="true"]) .solar-dial-list li:nth-child(8),
+body:has(.station-dot[data-station="09"][data-selected="true"]) .solar-dial-list li:nth-child(9),
+body:has(.station-dot[data-station="10"][data-selected="true"]) .solar-dial-list li:nth-child(10),
+body:has(.station-dot[data-station="11"][data-selected="true"]) .solar-dial-list li:nth-child(11),
+body:has(.station-dot[data-station="12"][data-selected="true"]) .solar-dial-list li:nth-child(12),
+body:has(.station-dot[data-station="13"][data-selected="true"]) .solar-dial-list li:nth-child(13) {
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: inset 0 0 0 3px #1c2225;
+}
+
+@media (prefers-contrast: more) {
+  body:has(.station-dot[data-selected="true"]) .solar-dial-list li {
+    box-shadow: none;
+  }
+
+  body:has(.station-dot[data-station="01"][data-selected="true"]) .solar-dial-list li:nth-child(1),
+  body:has(.station-dot[data-station="02"][data-selected="true"]) .solar-dial-list li:nth-child(2),
+  body:has(.station-dot[data-station="03"][data-selected="true"]) .solar-dial-list li:nth-child(3),
+  body:has(.station-dot[data-station="04"][data-selected="true"]) .solar-dial-list li:nth-child(4),
+  body:has(.station-dot[data-station="05"][data-selected="true"]) .solar-dial-list li:nth-child(5),
+  body:has(.station-dot[data-station="06"][data-selected="true"]) .solar-dial-list li:nth-child(6),
+  body:has(.station-dot[data-station="07"][data-selected="true"]) .solar-dial-list li:nth-child(7),
+  body:has(.station-dot[data-station="08"][data-selected="true"]) .solar-dial-list li:nth-child(8),
+  body:has(.station-dot[data-station="09"][data-selected="true"]) .solar-dial-list li:nth-child(9),
+  body:has(.station-dot[data-station="10"][data-selected="true"]) .solar-dial-list li:nth-child(10),
+  body:has(.station-dot[data-station="11"][data-selected="true"]) .solar-dial-list li:nth-child(11),
+  body:has(.station-dot[data-station="12"][data-selected="true"]) .solar-dial-list li:nth-child(12),
+  body:has(.station-dot[data-station="13"][data-selected="true"]) .solar-dial-list li:nth-child(13) {
+    outline: 4px solid currentColor;
+    outline-offset: -4px;
+  }
+}
