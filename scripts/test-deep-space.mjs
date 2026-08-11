@@ -51,13 +51,26 @@ for (const pattern of [
   /FIRST-LIGHT WINDOW/,
   /RECOMBINATION · 380,000 YEARS/,
   /Vertical spacing is editorial, not proportional to elapsed time\./,
-  /Native page scrolling is the only interaction\./,
+  /fixed Light Clock selection are the only interactions\./,
   /addCosmicStrata\(\);/
 ]) assert.match(viewSource, pattern, `Deep Space cosmic stratigraphy missing ${pattern}`);
+
+for (const pattern of [
+  /function renderLookbackHandoff\(item\)/,
+  /renderLookbackHandoff\(item\);/,
+  /Light-clock handoff · magnified surface/,
+  /last 3 million years/,
+  /not every reference stop is a source distance or emission epoch/,
+  /One-way light-time interval/,
+  /Share of 13\.8-billion-year reference age/,
+  /MAGNIFICATION BOUNDARY/,
+  /compares elapsed-time scale, not historical dating/
+]) assert.match(viewSource, pattern, `Deep Space light-time handoff missing ${pattern}`);
 
 const strataLayerCount = (viewSource.match(/label: '(?:THE SURFACE · NOW|SOLAR STRATUM|STARBIRTH MAXIMUM|REIONIZATION STRATUM|FIRST-LIGHT WINDOW|RECOMBINATION · 380,000 YEARS)'/g) || []).length;
 assert.equal(strataLayerCount, 6, 'cosmic stratigraphy should retain exactly six rounded reference layers');
 assert.doesNotMatch(viewSource, /IntersectionObserver|scrollY|scrollTop|wheel|touchmove/, 'cosmic stratigraphy must use native document flow rather than scroll surveillance');
+assert.doesNotMatch(viewSource, /addEventListener\(['"](?:scroll|wheel|touchmove)/, 'light-time handoff must reuse fixed Light Clock controls rather than add scroll or gesture surveillance');
 
 for (const id of [
   'scale-name', 'scale-distance', 'scale-light-time', 'scale-note', 'scale-beam',
@@ -92,4 +105,4 @@ assert.ok(Math.abs(core.lightTimeSeconds(core.AU_KM) - 499.0047838) < 0.001, '1 
 assert.ok(Math.abs(core.schwarzschildRadiusKm(1) - 2.9533) < 0.01, 'one solar mass Schwarzschild radius should be about 2.95 km');
 assert.ok(Math.abs(core.inventoryTotal() - 100) < 1e-9, 'rounded cosmic inventory should total 100%');
 
-console.log('Deep Space / Almost local science, anomaly conservation prune, cosmic stratigraphy, accessibility, privacy, calculations, and no-network contract verified.');
+console.log('Deep Space / Almost local science, anomaly conservation prune, cosmic stratigraphy, light-time handoff, accessibility, privacy, calculations, and no-network contract verified.');
