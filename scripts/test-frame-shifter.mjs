@@ -83,7 +83,7 @@ assert.match(css, /frame-causal-compass-map/);
 assert.match(viewSource, /style\.setProperty\('--event-b-top'/);
 assert.match(viewSource, /CAUSAL COMPASS · INVARIANT CLASS/);
 assert.match(viewSource, /Changing frame moves the coordinates, not the causal region\./);
-assert.match(viewSource, /data\.causalRegion === kind/);
+assert.match(viewSource, /dataset\.causalRegion === kind/);
 assert.match(viewSource, /setAttribute\('aria-current', 'true'\)/);
 assert.match(viewSource, /categorical map, not a scaled spacetime diagram/i);
 for (const label of ['SPACELIKE', 'LIGHTLIKE', 'TIMELIKE']) assert.match(viewSource, new RegExp(label));
