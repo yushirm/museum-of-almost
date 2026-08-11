@@ -18,10 +18,30 @@
     }).format(value);
   }
 
+  function ensurePhaseStyles() {
+    if (document.getElementById('unequal-minute-phase-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'unequal-minute-phase-styles';
+    style.textContent = `
+      .unequal-minute-phase { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 0.9rem; }
+      .unequal-minute-phase-label { margin: 0 0 0.55rem; color: var(--muted); font-size: 0.7rem; font-weight: 760; letter-spacing: 0.09em; text-transform: uppercase; }
+      .unequal-minute-dial { position: relative; width: 5rem; aspect-ratio: 1; margin-inline: auto; border: 1px solid rgba(132,232,255,0.45); border-radius: 50%; background: repeating-conic-gradient(from -1deg, rgba(132,232,255,0.22) 0deg 2deg, transparent 2deg 30deg), radial-gradient(circle, rgba(209,104,255,0.08), rgba(5,3,13,0.84) 68%); }
+      .unequal-minute-dial::before { content: '60'; position: absolute; inset: 0.25rem 0 auto; color: var(--muted); font: 700 0.58rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; text-align: center; }
+      .unequal-minute-dial::after { content: ''; position: absolute; left: 50%; top: 50%; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: var(--star); transform: translate(-50%, -50%); }
+      .unequal-minute-hand { position: absolute; left: calc(50% - 1px); bottom: 50%; width: 2px; height: 39%; transform-origin: 50% 100%; background: var(--cyan); }
+      .unequal-minute-phase-note { margin: 0.55rem 0 0; color: var(--muted); font-size: 0.74rem; line-height: 1.5; text-align: center; }
+      @media (prefers-contrast: more) { .unequal-minute-dial { border-color: currentColor; background: transparent; } .unequal-minute-hand { width: 3px; background: currentColor; } }
+      @media (forced-colors: active) { .unequal-minute-dial { border-color: CanvasText; background: Canvas; } .unequal-minute-hand, .unequal-minute-dial::after { background: CanvasText; } }
+      @media print { .unequal-minute-phase { break-inside: avoid; } }
+    `;
+    document.head.append(style);
+  }
+
   function mount() {
     if (document.getElementById('unequal-minute-title')) return;
     const closing = document.querySelector('.cosmos-section[aria-labelledby="closing-title"]');
     if (!closing || !closing.parentNode) return;
+    ensurePhaseStyles();
 
     const section = make('section', 'cosmos-section unequal-minute-section');
     section.setAttribute('aria-labelledby', 'unequal-minute-title');
@@ -79,6 +99,7 @@
     const stationGrid = make('div', 'unequal-minute-stations');
     stationGrid.setAttribute('aria-label', 'Four fixed hovering clock stations');
     const stationNodes = new Map();
+    const phaseHands = new Map();
 
     for (const station of core.STATIONS) {
       const initial = core.reading(station.id, 0);
@@ -96,6 +117,17 @@
 
       const trackNote = make('p', 'unequal-minute-track-note', `${formatNumber(initial.lapseFactor * 100, 3)}% of each coordinate-time command accumulates as proper time on this hovering clock.`);
 
+      const phase = make('div', 'unequal-minute-phase');
+      const phaseLabel = make('p', 'unequal-minute-phase-label', 'PROPER-TIME PHASE · 60 s DIAL');
+      const dial = make('div', 'unequal-minute-dial');
+      dial.setAttribute('aria-hidden', 'true');
+      const hand = make('span', 'unequal-minute-hand');
+      hand.style.transform = 'rotate(0deg)';
+      dial.append(hand);
+      const phaseNote = make('p', 'unequal-minute-phase-note', 'Each full turn is 60 s of this clock’s own accumulated proper time. The exact ledger below remains authoritative.');
+      phase.append(phaseLabel, dial, phaseNote);
+      phaseHands.set(station.id, hand);
+
       const metrics = make('dl', 'unequal-minute-metrics');
       const lapseTerm = make('dt', '', 'Lapse factor');
       const lapseValue = make('dd', '', `${station.exactLapse} ≈ ${formatNumber(initial.lapseFactor, 6)}`);
@@ -106,7 +138,7 @@
       totalValue.dataset.unequalMinuteTotal = station.id;
       metrics.append(lapseTerm, lapseValue, stepTerm, stepValueLocal, totalTerm, totalValue);
 
-      card.append(cardHead, track, trackNote, metrics, make('p', 'unequal-minute-station-note', station.note));
+      card.append(cardHead, track, trackNote, phase, metrics, make('p', 'unequal-minute-station-note', station.note));
       stationGrid.append(card);
       stationNodes.set(station.id, totalValue);
     }
@@ -175,6 +207,10 @@
         const text = `${formatNumber(reading.properElapsedSeconds, 6)} s`;
         stationNodes.get(reading.id).textContent = text;
         rowTotals.get(reading.id).textContent = text;
+        const phaseSeconds = ((reading.properElapsedSeconds % 60) + 60) % 60;
+        const angle = (phaseSeconds / 60) * 360;
+        const hand = phaseHands.get(reading.id);
+        if (hand) hand.style.transform = `rotate(${angle}deg)`;
       }
 
       if (snap.stepCount === 0) {
