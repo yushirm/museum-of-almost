@@ -68,21 +68,56 @@
 }
 
 .parallax-sky-pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.45rem;
+  display: flex;
+  overflow-x: auto;
+  gap: 0;
+  border: 1px solid rgba(219, 226, 255, 0.14);
+  background: rgba(3, 4, 13, 0.72);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  overscroll-behavior-inline: contain;
+  cursor: ew-resize;
 }
 
 .parallax-sky {
   position: relative;
+  flex: 0 0 100%;
+  min-width: 100%;
   min-height: 116px;
   overflow: hidden;
-  border: 1px solid rgba(219, 226, 255, 0.14);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  border: 0;
   background:
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     rgba(3, 4, 13, 0.72);
   background-size: 20px 20px;
+}
+
+.parallax-sky + .parallax-sky {
+  border-left: 1px solid rgba(219, 226, 255, 0.14);
+}
+
+.parallax-sky::after {
+  position: absolute;
+  right: 0.45rem;
+  bottom: 0.4rem;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid rgba(219, 226, 255, 0.18);
+  background: rgba(3, 4, 13, 0.78);
+  color: var(--parallax-muted);
+  font-size: 0.58rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+}
+
+.parallax-sky-left::after {
+  content: 'ORBIT POSITION A · SWIPE →';
+}
+
+.parallax-sky-right::after {
+  content: '← ORBIT POSITION B';
 }
 
 .parallax-background-star,
@@ -232,8 +267,14 @@
   .parallax-survey-premise,
   .parallax-survey-ledger,
   .parallax-survey-card,
+  .parallax-sky-pair,
   .parallax-sky {
     border-color: currentColor;
+  }
+
+  .parallax-sky::after {
+    border-color: currentColor;
+    color: inherit;
   }
 
   .parallax-survey-caveat,
@@ -249,8 +290,20 @@
     break-inside: avoid;
   }
 
+  .parallax-sky-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: visible;
+    cursor: default;
+  }
+
   .parallax-sky {
+    min-width: 0;
     border: 1px solid #777;
     background: transparent;
+  }
+
+  .parallax-sky::after {
+    content: none;
   }
 }
