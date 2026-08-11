@@ -261,6 +261,87 @@
   font-weight: 500;
 }
 
+.frame-causal-compass {
+  border: 1px solid var(--line);
+  background: rgba(6, 4, 14, 0.38);
+}
+
+.frame-causal-compass-head {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.frame-causal-compass-head h3 {
+  margin: 0;
+  font-family: ui-serif, Georgia, serif;
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+.frame-causal-compass-head > p:last-child {
+  margin: 0.65rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.frame-causal-compass-map {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.frame-causal-compass-map li {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  align-items: start;
+  padding: 0.9rem;
+  border-right: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.frame-causal-compass-map li:last-child {
+  border-right: 0;
+}
+
+.frame-causal-compass-map li[data-active="true"] {
+  color: var(--ink);
+  background: rgba(132,232,255,0.08);
+  box-shadow: inset 0 -3px 0 var(--cyan);
+}
+
+.frame-causal-compass-marker {
+  opacity: 0.25;
+  color: var(--cyan);
+  line-height: 1;
+}
+
+.frame-causal-compass-map li[data-active="true"] .frame-causal-compass-marker {
+  opacity: 1;
+}
+
+.frame-causal-compass-map strong,
+.frame-causal-compass-map small {
+  display: block;
+}
+
+.frame-causal-compass-map strong {
+  color: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+}
+
+.frame-causal-compass-map small {
+  margin-top: 0.35rem;
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
 .frame-order {
   margin: 0;
   padding: 1rem;
@@ -300,6 +381,10 @@
   .frame-metric:nth-child(2n),
   .frame-metric:nth-last-child(-n + 2) { border-right: 0; border-bottom: 1px solid var(--line); }
   .frame-metric:last-child { border-bottom: 0; }
+  .frame-causal-compass-map { grid-template-columns: 1fr; }
+  .frame-causal-compass-map li,
+  .frame-causal-compass-map li:last-child { border-right: 0; border-bottom: 1px solid var(--line); }
+  .frame-causal-compass-map li:last-child { border-bottom: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -310,8 +395,10 @@
   .frame-shifter,
   .frame-stage,
   .frame-event,
-  .frame-metrics { background-color: #080511; }
+  .frame-metrics,
+  .frame-causal-compass { background-color: #080511; }
   .frame-same-time-line { border-color: currentColor; }
+  .frame-causal-compass-map li[data-active="true"] { outline: 2px solid currentColor; outline-offset: -3px; }
 }
 
 @media print {
@@ -320,9 +407,11 @@
   .frame-stage,
   .frame-event,
   .frame-metrics,
+  .frame-causal-compass,
   .frame-order { background: transparent; color: #111; border-color: #777; box-shadow: none; }
   .frame-stage { min-height: 300px; break-inside: avoid; }
   .frame-event { transition: none; }
+  .frame-causal-compass-map li[data-active="true"] { box-shadow: inset 0 -3px 0 #111; }
   .frame-stage::before,
   .frame-stage::after,
   .frame-lane-label,
@@ -330,5 +419,6 @@
   .frame-scenario-copy p,
   .frame-causal-note,
   .frame-integrity-note,
+  .frame-causal-compass-head > p:last-child,
   .frame-metric span { color: #333; }
 }

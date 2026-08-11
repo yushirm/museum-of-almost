@@ -78,7 +78,15 @@ assert.match(css, /prefers-reduced-motion/);
 assert.match(css, /prefers-contrast/);
 assert.match(css, /@media print/);
 assert.match(css, /--event-b-top/);
+assert.match(css, /frame-causal-compass/);
+assert.match(css, /frame-causal-compass-map/);
 assert.match(viewSource, /style\.setProperty\('--event-b-top'/);
+assert.match(viewSource, /CAUSAL COMPASS · INVARIANT CLASS/);
+assert.match(viewSource, /Changing frame moves the coordinates, not the causal region\./);
+assert.match(viewSource, /dataset\.causalRegion === kind/);
+assert.match(viewSource, /setAttribute\('aria-current', 'true'\)/);
+assert.match(viewSource, /categorical map, not a scaled spacetime diagram/i);
+for (const label of ['SPACELIKE', 'LIGHTLIKE', 'TIMELIKE']) assert.match(viewSource, new RegExp(label));
 assert.match(record, /Concept A/);
 assert.match(record, /Concept B/);
 assert.match(record, /Concept C/);
@@ -92,4 +100,4 @@ assert.doesNotMatch([coreSource, viewSource].join('\n'), /localStorage|sessionSt
 assert.doesNotMatch([coreSource, viewSource].join('\n'), /setInterval|setTimeout|requestAnimationFrame/i);
 assert.doesNotMatch(runtime, /\b(gtag|dataLayer|mixpanel|segment|plausible|amplitude|hotjar)\b|google-analytics|googletagmanager|doubleclick/i);
 
-console.log('Deep Space Frame Shifter relativity, invariance, causal-order, accessibility, privacy, and no-network contract verified.');
+console.log('Deep Space Frame Shifter relativity, invariance, causal-compass, accessibility, privacy, and no-network contract verified.');
