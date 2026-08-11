@@ -264,6 +264,21 @@ h1 {
   border-bottom: 2px solid var(--white);
 }
 
+/*
+ * WEBLOG FOLIO TABS // THE TITLE STAYS UNTIL THE THOUGHT ENDS
+ * On roomier viewports, each post header behaves like an index-card divider:
+ * it stays at the top only while its own article is passing underneath it.
+ * This is pure layout, not scroll measurement or remembered reading state.
+ */
+@media (min-width: 621px) {
+  .posts .post > header {
+    position: sticky;
+    z-index: 4;
+    top: 0.35rem;
+    box-shadow: 0 3px 0 var(--navy);
+  }
+}
+
 .post time {
   display: block;
   margin-bottom: 0.15rem;
@@ -504,6 +519,11 @@ h1 {
     animation: none !important;
   }
 
+  .posts .post > header {
+    position: static;
+    box-shadow: none;
+  }
+
   body {
     background-image: none;
   }
@@ -575,6 +595,11 @@ h1 {
     border: 0;
     color: #000;
     background: #fff;
+  }
+
+  .posts .post > header {
+    position: static;
+    box-shadow: none;
   }
 
   .comet,
