@@ -30,9 +30,18 @@
       .unequal-minute-dial::after { content: ''; position: absolute; left: 50%; top: 50%; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: var(--star); transform: translate(-50%, -50%); }
       .unequal-minute-hand { position: absolute; left: calc(50% - 1px); bottom: 50%; width: 2px; height: 39%; transform-origin: 50% 100%; background: var(--cyan); }
       .unequal-minute-phase-note { margin: 0.55rem 0 0; color: var(--muted); font-size: 0.74rem; line-height: 1.5; text-align: center; }
-      @media (prefers-contrast: more) { .unequal-minute-dial { border-color: currentColor; background: transparent; } .unequal-minute-hand { width: 3px; background: currentColor; } }
-      @media (forced-colors: active) { .unequal-minute-dial { border-color: CanvasText; background: Canvas; } .unequal-minute-hand, .unequal-minute-dial::after { background: CanvasText; } }
-      @media print { .unequal-minute-phase { break-inside: avoid; } }
+      .unequal-minute-rate-geometry { margin-top: clamp(1.2rem, 3vw, 2rem); padding: clamp(1rem, 3vw, 1.5rem); border: 1px solid var(--line); background: rgba(7,5,17,0.72); }
+      .unequal-minute-rate-geometry h3 { margin-top: 0; }
+      .unequal-minute-rate-map { position: relative; min-height: 15rem; margin-top: 1rem; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); background: linear-gradient(180deg, rgba(132,232,255,0.07), transparent 55%), repeating-linear-gradient(180deg, transparent 0 24%, rgba(255,255,255,0.05) 24% 25%); }
+      .unequal-minute-rate-map::before { content: 'clock rate → 100% at infinity'; position: absolute; left: 0.65rem; top: 0.5rem; color: var(--muted); font: 700 0.62rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 0.06em; text-transform: uppercase; }
+      .unequal-minute-rate-map::after { content: 'radius →'; position: absolute; right: 0.55rem; bottom: 0.45rem; color: var(--muted); font: 700 0.62rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 0.06em; text-transform: uppercase; }
+      .unequal-minute-rate-point { position: absolute; width: 1rem; height: 1rem; border: 2px solid var(--cyan); border-radius: 50%; background: var(--bg, #070511); transform: translate(-50%, 50%); }
+      .unequal-minute-rate-point::after { content: attr(data-label); position: absolute; left: 0.8rem; top: -0.15rem; width: max-content; max-width: 14ch; color: var(--text); font: 700 0.65rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; line-height: 1.25; }
+      .unequal-minute-rate-geometry-note { margin-bottom: 0; color: var(--muted); font-size: 0.78rem; line-height: 1.55; }
+      @media (max-width: 620px) { .unequal-minute-rate-point::after { width: 9ch; white-space: normal; } }
+      @media (prefers-contrast: more) { .unequal-minute-dial { border-color: currentColor; background: transparent; } .unequal-minute-hand { width: 3px; background: currentColor; } .unequal-minute-rate-point { border-color: currentColor; background: Canvas; } }
+      @media (forced-colors: active) { .unequal-minute-dial { border-color: CanvasText; background: Canvas; } .unequal-minute-hand, .unequal-minute-dial::after { background: CanvasText; } .unequal-minute-rate-map { background: Canvas; } .unequal-minute-rate-point { border-color: CanvasText; background: Canvas; } }
+      @media print { .unequal-minute-phase, .unequal-minute-rate-geometry { break-inside: avoid; } }
     `;
     document.head.append(style);
   }
@@ -143,6 +152,30 @@
       stationNodes.set(station.id, totalValue);
     }
 
+    const rateGeometry = make('section', 'unequal-minute-rate-geometry');
+    rateGeometry.setAttribute('aria-labelledby', 'unequal-minute-rate-geometry-title');
+    const rateTitle = make('h3', '', 'Rate geometry · four stations on one field');
+    rateTitle.id = 'unequal-minute-rate-geometry-title';
+    const rateIntro = make('p', '', 'The station cards list four separate answers. This field puts them on one coordinate system: horizontal position is Schwarzschild radius ratio, vertical position is the stationary clock-rate factor √(1 − rₛ/r). Farther out, the hovering clocks approach the asymptotic rate without reaching it at any finite radius.');
+    const rateMap = make('div', 'unequal-minute-rate-map');
+    rateMap.setAttribute('role', 'img');
+    rateMap.setAttribute('aria-label', 'Schematic plot of the four offered Schwarzschild radius ratios against their stationary clock-rate factors. Clock rate rises from about 30 percent at 1.1 Schwarzschild radii to about 89 percent at 5 Schwarzschild radii.');
+    const minRadius = Math.min(...core.STATIONS.map((station) => station.radiusRatio));
+    const maxRadius = Math.max(...core.STATIONS.map((station) => station.radiusRatio));
+    for (const station of core.STATIONS) {
+      const reading = core.reading(station.id, 0);
+      const radiusPosition = ((station.radiusRatio - minRadius) / (maxRadius - minRadius)) * 84 + 8;
+      const ratePosition = reading.lapseFactor * 82 + 8;
+      const point = make('span', 'unequal-minute-rate-point');
+      point.style.left = `${radiusPosition}%`;
+      point.style.bottom = `${ratePosition}%`;
+      point.dataset.label = `${station.radiusText} · ${formatNumber(reading.lapseFactor * 100, 1)}%`;
+      point.setAttribute('aria-hidden', 'true');
+      rateMap.append(point);
+    }
+    const rateNote = make('p', 'unequal-minute-rate-geometry-note', 'SCHEMATIC FIELD · The axes are normalized to the four offered examples, not a complete plot from horizon to infinity. The relation is monotonic for these stationary exterior worldlines, but the horizontal spacing is editorially fitted to the offered radius range and should not be read as a physical distance map. Exact formula and numerical readings remain authoritative.');
+    rateGeometry.append(rateTitle, rateIntro, rateMap, rateNote);
+
     const ledger = make('section', 'unequal-minute-ledger');
     ledger.setAttribute('aria-labelledby', 'unequal-minute-ledger-title');
     const ledgerTitle = make('h3', '', 'Exact clock ledger');
@@ -191,7 +224,7 @@
     live.setAttribute('aria-atomic', 'true');
 
     ledger.append(ledgerTitle, tableWrap, boundary, live);
-    shell.append(top, stationGrid, ledger);
+    shell.append(top, stationGrid, rateGeometry, ledger);
     section.append(heading, shell);
     closing.parentNode.insertBefore(section, closing);
 
