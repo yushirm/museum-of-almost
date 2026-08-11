@@ -186,7 +186,7 @@
     handoffTitle.textContent = 'Light-clock handoff · magnified surface';
     const handoffIntro = document.createElement('p');
     handoffIntro.className = 'readout-note';
-    handoffIntro.textContent = 'Instrument 01 is carried into this core sample. The track below magnifies only the last 3 million years so nearby cosmic lookback times become visible; it is not the vertical scale of the strata below.';
+    handoffIntro.textContent = 'Instrument 01’s selected one-way light time is carried into this core sample and plotted backward from NOW only to compare magnitude. The track magnifies the last 3 million years; it is not the vertical scale of the strata below, and not every reference stop is a source distance or emission epoch.';
 
     const handoffTrack = document.createElement('div');
     handoffTrack.setAttribute('aria-hidden', 'true');
@@ -230,13 +230,13 @@
     refReadout.innerHTML = '<span class="metric-label">Light Clock reference</span><strong id="strata-lookback-reference" class="readout-value">Sun</strong>';
     const timeReadout = document.createElement('div');
     timeReadout.className = 'readout';
-    timeReadout.innerHTML = '<span class="metric-label">Lookback from received light</span><strong id="strata-lookback-time" class="readout-value">8.3 minutes</strong>';
+    timeReadout.innerHTML = '<span class="metric-label">One-way light-time interval</span><strong id="strata-lookback-time" class="readout-value">8.3 minutes</strong>';
     const shareReadout = document.createElement('div');
     shareReadout.className = 'readout';
     shareReadout.innerHTML = '<span class="metric-label">Share of 13.8-billion-year reference age</span><strong id="strata-lookback-share" class="readout-value">&lt;0.000001%</strong>';
     const handoffBoundary = document.createElement('p');
     handoffBoundary.className = 'inventory-note';
-    handoffBoundary.textContent = 'MAGNIFICATION BOUNDARY · Position is linear only inside this 0–3-million-year inset. Moonlight, sunlight and even Proxima light sit effectively on the present edge at this scale. The exact Light Clock duration above is authoritative.';
+    handoffBoundary.textContent = 'MAGNIFICATION BOUNDARY · Position is linear only inside this 0–3-million-year inset. Moon, Sun and Proxima intervals sit effectively on the present edge at this scale. The exact Light Clock duration is authoritative; this handoff compares elapsed-time scale, not historical dating of every reference label.';
     handoffReadout.append(refReadout, timeReadout, shareReadout, handoffBoundary);
     handoff.append(handoffTitle, handoffIntro, handoffTrack, handoffReadout);
 
