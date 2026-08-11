@@ -32,6 +32,76 @@
     }
   }
 
+  function buildCausalCompass() {
+    const readout = document.querySelector('.frame-readout');
+    const metrics = document.querySelector('.frame-metrics');
+    if (!readout || !metrics || document.getElementById('frame-causal-compass')) return;
+
+    const shell = document.createElement('section');
+    shell.id = 'frame-causal-compass';
+    shell.className = 'frame-causal-compass';
+    shell.setAttribute('aria-labelledby', 'frame-causal-compass-title');
+
+    const heading = document.createElement('div');
+    heading.className = 'frame-causal-compass-head';
+
+    const kicker = document.createElement('p');
+    kicker.className = 'frame-control-label';
+    kicker.textContent = 'CAUSAL COMPASS · INVARIANT CLASS';
+
+    const title = document.createElement('h3');
+    title.id = 'frame-causal-compass-title';
+    title.textContent = 'Changing frame moves the coordinates, not the causal region.';
+
+    const note = document.createElement('p');
+    note.textContent = 'This is a categorical map, not a scaled spacetime diagram. The invariant interval decides which region the selected event pair occupies.';
+
+    heading.append(kicker, title, note);
+
+    const map = document.createElement('ol');
+    map.className = 'frame-causal-compass-map';
+    map.setAttribute('aria-label', 'Three invariant causal classes');
+
+    const classes = [
+      ['spacelike', 'SPACELIKE', 'No light-speed-or-slower route'],
+      ['lightlike', 'LIGHTLIKE', 'Light-speed route'],
+      ['timelike', 'TIMELIKE', 'Slower-than-light route possible']
+    ];
+
+    for (const [id, label, description] of classes) {
+      const item = document.createElement('li');
+      item.dataset.causalRegion = id;
+
+      const marker = document.createElement('span');
+      marker.className = 'frame-causal-compass-marker';
+      marker.setAttribute('aria-hidden', 'true');
+      marker.textContent = '●';
+
+      const copy = document.createElement('span');
+      const strong = document.createElement('strong');
+      strong.textContent = label;
+      const small = document.createElement('small');
+      small.textContent = description;
+      copy.append(strong, small);
+
+      item.append(marker, copy);
+      map.append(item);
+    }
+
+    shell.append(heading, map);
+    metrics.insertAdjacentElement('afterend', shell);
+  }
+
+  function renderCausalCompass(kind) {
+    const items = [...document.querySelectorAll('[data-causal-region]')];
+    for (const item of items) {
+      const active = item.dataset.causalRegion === kind;
+      item.dataset.active = String(active);
+      if (active) item.setAttribute('aria-current', 'true');
+      else item.removeAttribute('aria-current');
+    }
+  }
+
   function render() {
     const state = core.frameState(scenarioId, beta);
     if (!state) return;
@@ -50,6 +120,7 @@
 
     stage.dataset.causalClass = state.causalClass;
     stage.style.setProperty('--event-b-top', `${50 + state.visualOffsetPercent}%`);
+    renderCausalCompass(state.causalClass);
   }
 
   for (const button of scenarioButtons) {
@@ -70,5 +141,6 @@
     });
   }
 
+  buildCausalCompass();
   render();
 })();
