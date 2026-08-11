@@ -693,3 +693,70 @@ body.is-reclassified .classification-stamp { color: #f28e76; border-color: #f28e
   #broadcasts:has(details[open]) .timecode { color: #000; background: #fff; outline: 0; }
   #broadcasts:has(details[open]) .timecode::before { content: ""; }
 }
+
+/* 07-X / SOURCE LANES — three statements, three separate evidentiary routes. */
+#witnesses { --source-a: #d0a75b; --source-b: #9ab9c4; --source-c: #b8ee75; }
+#witnesses .witness-list blockquote:nth-child(1) { border-left: 4px solid var(--source-a); }
+#witnesses .witness-list blockquote:nth-child(2) { border-left: 4px dashed var(--source-b); }
+#witnesses .witness-list blockquote:nth-child(3) { border-left: 4px dotted var(--source-c); }
+#witnesses .witness-list blockquote:nth-child(1) .portrait { outline: 2px solid var(--source-a); outline-offset: -2px; }
+#witnesses .witness-list blockquote:nth-child(2) .portrait { outline: 2px dashed var(--source-b); outline-offset: -2px; }
+#witnesses .witness-list blockquote:nth-child(3) .portrait { outline: 2px dotted var(--source-c); outline-offset: -2px; }
+
+.case-file { position: relative; }
+.archive-main:has(#witnesses:target) #cryptids,
+.archive-main:has(#witnesses:focus) #cryptids { box-shadow: inset 0 0 0 3px var(--source-a, #d0a75b); }
+.archive-main:has(#witnesses:target) #diagrams,
+.archive-main:has(#witnesses:focus) #diagrams { box-shadow: inset 0 0 0 3px #9ab9c4; }
+.archive-main:has(#witnesses:target) #broadcasts,
+.archive-main:has(#witnesses:focus) #broadcasts { box-shadow: inset 0 0 0 3px #b8ee75; }
+
+.archive-main:has(#witnesses:target) #cryptids::after,
+.archive-main:has(#witnesses:focus) #cryptids::after,
+.archive-main:has(#witnesses:target) #diagrams::after,
+.archive-main:has(#witnesses:focus) #diagrams::after,
+.archive-main:has(#witnesses:target) #broadcasts::after,
+.archive-main:has(#witnesses:focus) #broadcasts::after {
+  position: absolute;
+  top: .55rem;
+  right: .55rem;
+  z-index: 3;
+  min-width: 1.55rem;
+  padding: .18rem .3rem;
+  border: 1px solid currentColor;
+  color: #10130d;
+  background: #d9dfbd;
+  font-size: .6rem;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  letter-spacing: .08em;
+}
+.archive-main:has(#witnesses:target) #cryptids::after,
+.archive-main:has(#witnesses:focus) #cryptids::after { content: "A"; }
+.archive-main:has(#witnesses:target) #diagrams::after,
+.archive-main:has(#witnesses:focus) #diagrams::after { content: "B"; }
+.archive-main:has(#witnesses:target) #broadcasts::after,
+.archive-main:has(#witnesses:focus) #broadcasts::after { content: "C"; }
+
+@media (prefers-contrast: more) {
+  #witnesses .witness-list blockquote { border-left-color: currentColor; }
+  #witnesses .witness-list .portrait { outline-color: currentColor; }
+  .archive-main:has(#witnesses:target) #cryptids,
+  .archive-main:has(#witnesses:focus) #cryptids,
+  .archive-main:has(#witnesses:target) #diagrams,
+  .archive-main:has(#witnesses:focus) #diagrams,
+  .archive-main:has(#witnesses:target) #broadcasts,
+  .archive-main:has(#witnesses:focus) #broadcasts { outline: 3px solid currentColor; outline-offset: -3px; }
+}
+
+@media print {
+  #witnesses .witness-list blockquote { border-left: 1px solid #000; }
+  #witnesses .witness-list .portrait { outline: 1px solid #000; }
+  .archive-main:has(#witnesses:target) #cryptids::after,
+  .archive-main:has(#witnesses:focus) #cryptids::after,
+  .archive-main:has(#witnesses:target) #diagrams::after,
+  .archive-main:has(#witnesses:focus) #diagrams::after,
+  .archive-main:has(#witnesses:target) #broadcasts::after,
+  .archive-main:has(#witnesses:focus) #broadcasts::after { display: none; }
+}
