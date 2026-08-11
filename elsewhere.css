@@ -573,3 +573,51 @@ body:has(.artifact[open]) #transfer-desk .transfer-route {
   #transfer-desk .transfer-grid { padding: 0; background: transparent; }
   #transfer-desk .transfer-hold { background: transparent; }
 }
+
+/* Storage echo: opening one accession reveals its co-storage neighbourhood without adding another panel. */
+.shelf-index:has(.artifact[open]) .artifact {
+  opacity: 0.55;
+}
+
+.shelf-index:has(:is(#artifact-c0-002,#artifact-c0-003,#artifact-c0-004,#artifact-c0-005,#artifact-c0-007,#artifact-c0-011)[open]) :is(#artifact-c0-002,#artifact-c0-003,#artifact-c0-004,#artifact-c0-005,#artifact-c0-007,#artifact-c0-011),
+.shelf-index:has(:is(#artifact-c0-001,#artifact-c0-006,#artifact-c0-012)[open]) :is(#artifact-c0-001,#artifact-c0-006,#artifact-c0-012),
+.shelf-index:has(:is(#artifact-c0-008,#artifact-c0-009,#artifact-c0-010)[open]) :is(#artifact-c0-008,#artifact-c0-009,#artifact-c0-010) {
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+  box-shadow: inset 0 0 0 2px rgba(229,168,38,0.7);
+}
+
+.shelf-index:has(:is(#artifact-c0-002,#artifact-c0-003,#artifact-c0-004,#artifact-c0-005,#artifact-c0-007,#artifact-c0-011)[open]) :is(#artifact-c0-002,#artifact-c0-003,#artifact-c0-004,#artifact-c0-005,#artifact-c0-007,#artifact-c0-011) summary span::after {
+  content: " · ZONE A NEIGHBOUR";
+  color: var(--safety);
+}
+
+.shelf-index:has(:is(#artifact-c0-001,#artifact-c0-006,#artifact-c0-012)[open]) :is(#artifact-c0-001,#artifact-c0-006,#artifact-c0-012) summary span::after {
+  content: " · ZONE B NEIGHBOUR";
+  color: var(--safety);
+}
+
+.shelf-index:has(:is(#artifact-c0-008,#artifact-c0-009,#artifact-c0-010)[open]) :is(#artifact-c0-008,#artifact-c0-009,#artifact-c0-010) summary span::after {
+  content: " · ZONE C NEIGHBOUR";
+  color: var(--safety);
+}
+
+.shelf-index .artifact[open] {
+  opacity: 1;
+  box-shadow: inset 0 0 0 3px var(--safety);
+}
+
+@media (prefers-contrast: more) {
+  .shelf-index:has(.artifact[open]) .artifact { opacity: 0.72; }
+  .shelf-index .artifact[open] { opacity: 1; }
+}
+
+@media print {
+  .shelf-index:has(.artifact[open]) .artifact,
+  .shelf-index:has(.artifact[open]) .artifact[open] {
+    opacity: 1;
+    box-shadow: none;
+  }
+  .shelf-index .artifact summary span::after { content: none !important; }
+}
