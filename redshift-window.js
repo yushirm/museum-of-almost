@@ -204,14 +204,19 @@
   const closingSection = document.querySelector('[aria-labelledby="closing-title"]');
   if (!closingSection || document.getElementById('resolution-bench')) return;
 
-  const wavelengthNm = 550;
   const pairSeparationArcsec = 0.10;
   const apertures = [
     { id: 'small', label: '0.10 m', diameterM: 0.10 },
     { id: 'medium', label: '1.00 m', diameterM: 1.00 },
     { id: 'large', label: '4.00 m', diameterM: 4.00 }
   ];
-  let selected = apertures[1];
+  const wavelengths = [
+    { id: '380', label: '380 nm', wavelengthNm: 380 },
+    { id: '550', label: '550 nm', wavelengthNm: 550 },
+    { id: '800', label: '800 nm', wavelengthNm: 800 }
+  ];
+  let selectedAperture = apertures[1];
+  let selectedWavelength = wavelengths[1];
 
   function make(tag, className, text) {
     const node = document.createElement(tag);
@@ -220,7 +225,7 @@
     return node;
   }
 
-  function rayleighArcsec(diameterM) {
+  function rayleighArcsec(diameterM, wavelengthNm) {
     const radians = (1.22 * wavelengthNm * 1e-9) / diameterM;
     return radians * 206265;
   }
@@ -233,13 +238,29 @@
   const eyebrow = make('p', 'eyebrow', 'INSTRUMENT 16 · THE RESOLUTION BENCH');
   const title = make('h2', '', 'Two stars can exist where one blur arrives.');
   title.id = 'resolution-bench-title';
-  const intro = make('p', '', 'Keep one idealized pair of equal-brightness point sources fixed at 0.10 arcsecond separation. Change only the diameter of a perfect circular aperture and watch the diffraction limit decide whether this toy observer can separate them.');
+  const intro = make('p', '', 'Keep one idealized pair of equal-brightness point sources fixed at 0.10 arcsecond separation. Change the diameter of a perfect circular aperture, then change the observing wavelength. The same aperture can separate the pair at one wavelength and blur it at another because the diffraction limit depends on both λ and D.');
   heading.append(eyebrow, title, intro);
 
   const shell = make('div', 'instrument');
-  const controls = make('div', 'instrument-controls');
-  controls.setAttribute('role', 'group');
-  controls.setAttribute('aria-label', 'Choose an ideal circular aperture diameter');
+  const controlBank = make('div');
+  controlBank.style.display = 'grid';
+  controlBank.style.gap = '0.85rem';
+  controlBank.style.padding = 'clamp(1rem, 3vw, 1.5rem)';
+  controlBank.style.borderBottom = '1px solid var(--line)';
+
+  const apertureLabel = make('p', 'metric-label', 'Change aperture diameter');
+  apertureLabel.style.margin = '0';
+  const apertureControls = make('div', 'instrument-controls');
+  apertureControls.setAttribute('role', 'group');
+  apertureControls.setAttribute('aria-label', 'Choose an ideal circular aperture diameter');
+
+  const wavelengthLabel = make('p', 'metric-label', 'Change observing wavelength');
+  wavelengthLabel.style.margin = '0.35rem 0 0';
+  const wavelengthControls = make('div', 'instrument-controls');
+  wavelengthControls.setAttribute('role', 'group');
+  wavelengthControls.setAttribute('aria-label', 'Choose an observing wavelength for the diffraction calculation');
+
+  controlBank.append(apertureLabel, apertureControls, wavelengthLabel, wavelengthControls);
 
   const body = make('div', 'instrument-body');
   body.style.display = 'grid';
@@ -290,7 +311,8 @@
 
   readout.append(
     metric('Aperture diameter', '1.00 m', 'resolution-aperture'),
-    metric('Rayleigh limit at 550 nm', '0.138 arcsec', 'resolution-limit'),
+    metric('Observing wavelength', '550 nm', 'resolution-wavelength'),
+    metric('Rayleigh limit', '0.138 arcsec', 'resolution-limit'),
     metric('Fixed source separation', '0.100 arcsec', 'resolution-separation'),
     metric('Idealized result', 'NOT RESOLVED', 'resolution-result')
   );
@@ -298,15 +320,18 @@
   note.id = 'resolution-note';
   readout.append(note);
 
-  const boundary = make('p', 'inventory-note', 'DIFFRACTION BOUNDARY · This bench uses the Rayleigh approximation θ ≈ 1.22 λ / D for an ideal circular aperture, monochromatic light at 550 nm, and equal-brightness point sources. It does not model atmosphere, detector sampling, optical aberrations, source contrast, signal-to-noise, deconvolution, interferometry, or a real telescope. “Not resolved” means this idealized aperture cannot separate the pair by this criterion; it does not mean only one source exists.');
+  const boundary = make('p', 'inventory-note', 'DIFFRACTION BOUNDARY · This bench uses the Rayleigh approximation θ ≈ 1.22 λ / D for an ideal circular aperture and equal-brightness point sources. Its three fixed wavelengths are illustrative monochromatic cases, not telescope filters or colour images. It does not model atmosphere, detector sampling, optical aberrations, source contrast, signal-to-noise, deconvolution, interferometry, or a real telescope. “Not resolved” means this idealized aperture-wavelength pair cannot separate the sources by this criterion; it does not mean only one source exists.');
 
   function render() {
-    const limit = rayleighArcsec(selected.diameterM);
+    const limit = rayleighArcsec(selectedAperture.diameterM, selectedWavelength.wavelengthNm);
     const resolved = pairSeparationArcsec >= limit;
     const visualDiameter = Math.max(18, Math.min(150, (limit / pairSeparationArcsec) * 42));
 
-    controls.querySelectorAll('button').forEach((button) => {
-      button.setAttribute('aria-pressed', String(button.dataset.apertureId === selected.id));
+    apertureControls.querySelectorAll('button').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.apertureId === selectedAperture.id));
+    });
+    wavelengthControls.querySelectorAll('button').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.wavelengthId === selectedWavelength.id));
     });
 
     [starA, starB].forEach((star) => {
@@ -314,29 +339,42 @@
       star.style.height = `${visualDiameter}px`;
     });
 
-    document.getElementById('resolution-aperture').textContent = selected.label;
+    document.getElementById('resolution-aperture').textContent = selectedAperture.label;
+    document.getElementById('resolution-wavelength').textContent = `${selectedWavelength.wavelengthNm} nm`;
     document.getElementById('resolution-limit').textContent = `${limit.toFixed(3)} arcsec`;
     document.getElementById('resolution-separation').textContent = `${pairSeparationArcsec.toFixed(3)} arcsec`;
     document.getElementById('resolution-result').textContent = resolved ? 'RESOLVED BY THIS CRITERION' : 'NOT RESOLVED BY THIS CRITERION';
     note.textContent = resolved
-      ? `The pair separation is larger than the ${limit.toFixed(3)} arcsec Rayleigh limit. The schematic point-spread patterns separate, but real observing performance can still be worse.`
-      : `The pair separation is smaller than the ${limit.toFixed(3)} arcsec Rayleigh limit. Two sources remain in the scene even though this idealized aperture does not separate them.`;
+      ? `At ${selectedWavelength.wavelengthNm} nm, the pair separation is larger than the ${limit.toFixed(3)} arcsec Rayleigh limit for this ${selectedAperture.label} aperture. The schematic point-spread patterns separate, but real observing performance can still be worse.`
+      : `At ${selectedWavelength.wavelengthNm} nm, the pair separation is smaller than the ${limit.toFixed(3)} arcsec Rayleigh limit for this ${selectedAperture.label} aperture. The same two sources remain in the scene even though this aperture-wavelength pair does not separate them.`;
   }
 
   apertures.forEach((aperture) => {
     const button = make('button', '', aperture.label);
     button.type = 'button';
     button.dataset.apertureId = aperture.id;
-    button.setAttribute('aria-pressed', String(aperture.id === selected.id));
+    button.setAttribute('aria-pressed', String(aperture.id === selectedAperture.id));
     button.addEventListener('click', () => {
-      selected = aperture;
+      selectedAperture = aperture;
       render();
     });
-    controls.append(button);
+    apertureControls.append(button);
+  });
+
+  wavelengths.forEach((wavelength) => {
+    const button = make('button', '', wavelength.label);
+    button.type = 'button';
+    button.dataset.wavelengthId = wavelength.id;
+    button.setAttribute('aria-pressed', String(wavelength.id === selectedWavelength.id));
+    button.addEventListener('click', () => {
+      selectedWavelength = wavelength;
+      render();
+    });
+    wavelengthControls.append(button);
   });
 
   body.append(field, readout, boundary);
-  shell.append(controls, body);
+  shell.append(controlBank, body);
   section.append(heading, shell);
   closingSection.insertAdjacentElement('beforebegin', section);
   render();
