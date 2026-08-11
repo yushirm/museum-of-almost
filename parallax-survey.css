@@ -68,21 +68,44 @@
 }
 
 .parallax-sky-pair {
+  position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.45rem;
+  border: 1px solid rgba(219, 226, 255, 0.14);
+  background: rgba(3, 4, 13, 0.72);
+  isolation: isolate;
+}
+
+.parallax-sky-pair::after {
+  content: 'REGISTERED PLATES · FIXED STARS COINCIDE';
+  position: absolute;
+  right: 0.45rem;
+  bottom: 0.4rem;
+  z-index: 3;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid rgba(219, 226, 255, 0.18);
+  background: rgba(3, 4, 13, 0.82);
+  color: var(--parallax-muted);
+  font-size: 0.56rem;
+  font-weight: 760;
+  letter-spacing: 0.07em;
+  pointer-events: none;
 }
 
 .parallax-sky {
   position: relative;
+  grid-area: 1 / 1;
   min-height: 116px;
   overflow: hidden;
-  border: 1px solid rgba(219, 226, 255, 0.14);
+  border: 0;
   background:
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     rgba(3, 4, 13, 0.72);
   background-size: 20px 20px;
+}
+
+.parallax-sky-right {
+  background: transparent;
 }
 
 .parallax-background-star,
@@ -100,6 +123,10 @@
   background: rgba(220, 228, 255, 0.7);
 }
 
+.parallax-sky-right .parallax-background-star {
+  opacity: 0.2;
+}
+
 .parallax-background-star.star-a { left: 18%; top: 26%; }
 .parallax-background-star.star-b { left: 73%; top: 18%; }
 .parallax-background-star.star-c { left: 62%; top: 68%; }
@@ -112,6 +139,16 @@
   left: calc(50% - 5px);
   background: #fff;
   box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08), 0 0 18px rgba(255, 255, 255, 0.35);
+}
+
+.parallax-sky-left .parallax-target-star {
+  outline: 1px solid rgba(220, 228, 255, 0.72);
+  outline-offset: 3px;
+}
+
+.parallax-sky-right .parallax-target-star {
+  outline: 1px dashed rgba(220, 228, 255, 0.72);
+  outline-offset: 5px;
 }
 
 .parallax-sky-left.parallax-shift-wide .parallax-target-star { transform: translateX(-18px); }
@@ -232,15 +269,23 @@
   .parallax-survey-premise,
   .parallax-survey-ledger,
   .parallax-survey-card,
-  .parallax-sky {
+  .parallax-sky-pair,
+  .parallax-sky,
+  .parallax-sky-pair::after {
     border-color: currentColor;
   }
 
+  .parallax-sky-pair::after,
   .parallax-survey-caveat,
   .parallax-survey-note,
   .parallax-survey-metrics dt,
   .parallax-survey-table caption {
     color: inherit;
+  }
+
+  .parallax-sky-left .parallax-target-star,
+  .parallax-sky-right .parallax-target-star {
+    outline-color: currentColor;
   }
 }
 
@@ -249,8 +294,16 @@
     break-inside: avoid;
   }
 
-  .parallax-sky {
+  .parallax-sky-pair {
     border: 1px solid #777;
     background: transparent;
+  }
+
+  .parallax-sky {
+    background: transparent;
+  }
+
+  .parallax-sky-pair::after {
+    content: none;
   }
 }
