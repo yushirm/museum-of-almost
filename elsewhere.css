@@ -612,3 +612,39 @@ body:has(.artifact[open]) #transfer-desk .transfer-route {
   .shelf-index:has(.artifact[open]) .artifact[open] { box-shadow: none; outline: 0; }
   .shelf-index .artifact summary span::after { content: none !important; }
 }
+
+/* IPM route interlock: a Zone A monitor trace changes the existing movement workflow, not the accession story. */
+body:has([data-ipm-choice="zone-a"][aria-pressed="true"]) #transfer-desk::before {
+  content: "MOVEMENT RAIL · ZONE A INSPECTION BEFORE MOVEMENT";
+  color: #f4df9d;
+  background: repeating-linear-gradient(135deg, rgba(229,168,38,0.12) 0 10px, rgba(147,75,47,0.08) 10px 20px);
+}
+
+body:has([data-ipm-choice="zone-a"][aria-pressed="true"]) #transfer-desk .transfer-grid > div:nth-child(2) {
+  outline: 3px double var(--safety);
+  outline-offset: -3px;
+  background: rgba(229,168,38,0.12);
+}
+
+body:has([data-ipm-choice="zone-a"][aria-pressed="true"]) #transfer-desk .transfer-grid > div:nth-child(2)::after {
+  content: "02 · storage · inspect";
+  color: #f4df9d;
+}
+
+body:has([data-ipm-choice="zone-a"][aria-pressed="true"]) #transfer-desk .transfer-grid > div:nth-child(2)::before {
+  background: var(--safety);
+  box-shadow: 0 0 0 2px #f4df9d;
+}
+
+@media (prefers-contrast: more) {
+  body:has([data-ipm-choice="zone-a"][aria-pressed="true"]) #transfer-desk .transfer-grid > div:nth-child(2) {
+    outline-width: 4px;
+  }
+}
+
+@media print {
+  body:has([data-ipm-choice="zone-a"][aria-pressed="true"]) #transfer-desk .transfer-grid > div:nth-child(2) {
+    outline: 0;
+    background: transparent;
+  }
+}
