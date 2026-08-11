@@ -211,9 +211,9 @@
     { id: 'large', label: '4.00 m', diameterM: 4.00 }
   ];
   const wavelengths = [
-    { id: 'blue', label: 'Blue · 400 nm', wavelengthNm: 400 },
-    { id: 'green', label: 'Green · 550 nm', wavelengthNm: 550 },
-    { id: 'near-ir', label: 'Near-IR · 800 nm', wavelengthNm: 800 }
+    { id: '380', label: '380 nm', wavelengthNm: 380 },
+    { id: '550', label: '550 nm', wavelengthNm: 550 },
+    { id: '800', label: '800 nm', wavelengthNm: 800 }
   ];
   let selectedAperture = apertures[1];
   let selectedWavelength = wavelengths[1];
@@ -238,7 +238,7 @@
   const eyebrow = make('p', 'eyebrow', 'INSTRUMENT 16 · THE RESOLUTION BENCH');
   const title = make('h2', '', 'Two stars can exist where one blur arrives.');
   title.id = 'resolution-bench-title';
-  const intro = make('p', '', 'Keep one idealized pair of equal-brightness point sources fixed at 0.10 arcsecond separation. Change the diameter of a perfect circular aperture, then change the observing wavelength. The same mirror can separate the pair at one wavelength and blur it at another because the diffraction limit depends on both λ and D.');
+  const intro = make('p', '', 'Keep one idealized pair of equal-brightness point sources fixed at 0.10 arcsecond separation. Change the diameter of a perfect circular aperture, then change the observing wavelength. The same aperture can separate the pair at one wavelength and blur it at another because the diffraction limit depends on both λ and D.');
   heading.append(eyebrow, title, intro);
 
   const shell = make('div', 'instrument');
