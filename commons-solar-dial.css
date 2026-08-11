@@ -322,6 +322,34 @@
 .phase-space-point[data-selected="true"] {
   box-shadow: 0 0 0 4px rgba(28, 34, 37, 0.22);
   border-width: 3px;
+  z-index: 3;
+}
+
+.phase-space-point[data-available="true"][data-selected="true"]::before,
+.phase-space-point[data-available="true"][data-selected="true"]::after,
+.phase-space-point[data-available="true"]:focus-visible::before,
+.phase-space-point[data-available="true"]:focus-visible::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-color: currentColor;
+  opacity: 0.42;
+}
+
+.phase-space-point[data-available="true"][data-selected="true"]::before,
+.phase-space-point[data-available="true"]:focus-visible::before {
+  top: 50%;
+  left: -100vw;
+  width: 200vw;
+  border-top: 1px dashed currentColor;
+}
+
+.phase-space-point[data-available="true"][data-selected="true"]::after,
+.phase-space-point[data-available="true"]:focus-visible::after {
+  left: 50%;
+  top: -100vh;
+  height: 200vh;
+  border-left: 1px dashed currentColor;
 }
 
 .phase-space-point:focus-visible,
@@ -422,6 +450,14 @@
   .phase-space-point {
     stroke-width: 3;
     border-width: 3px;
+  }
+
+  .phase-space-point[data-available="true"][data-selected="true"]::before,
+  .phase-space-point[data-available="true"][data-selected="true"]::after,
+  .phase-space-point[data-available="true"]:focus-visible::before,
+  .phase-space-point[data-available="true"]:focus-visible::after {
+    opacity: 0.8;
+    border-width: 2px;
   }
 }
 
