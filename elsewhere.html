@@ -11,9 +11,10 @@
   <style>
     .packing-bench{margin:2.2rem 0;padding:clamp(1rem,3vw,1.6rem);border:1px solid rgba(214,196,139,.34);background:linear-gradient(135deg,rgba(214,196,139,.06),rgba(7,10,8,.76));box-shadow:inset 0 0 0 1px rgba(0,0,0,.24)}
     .packing-bench-header{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(16rem,.85fr);gap:1.2rem;align-items:end;margin-bottom:1.25rem}.packing-bench h2{margin:.15rem 0 .45rem}.packing-intro{margin:0;max-width:70ch;color:#c7cbbf;line-height:1.65}.packing-rule{margin:0;padding:.8rem;border-left:3px solid #d6c48b;background:rgba(0,0,0,.22);font-size:.78rem;line-height:1.55}.packing-selector{margin:0;padding:0;border:0}.packing-selector legend{margin-bottom:.7rem;font-size:.72rem;font-weight:700;letter-spacing:.12em}.packing-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem}.packing-options button{min-height:48px;padding:.65rem .55rem;border:1px solid rgba(214,196,139,.32);background:#11140f;color:#dfe2d7;font:inherit;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-align:center;cursor:pointer}.packing-options button:focus-visible{outline:3px solid #f4df9d;outline-offset:3px}.packing-options button[aria-pressed="true"]{background:#d6c48b;color:#191b15;border-color:#f4df9d}.packing-case{position:relative;min-height:18rem;margin-top:1rem;padding:1rem;border:2px solid #786f4e;background:repeating-linear-gradient(90deg,#171812 0,#171812 18px,#1c1e17 18px,#1c1e17 36px);overflow:hidden}.packing-case::before,.packing-case::after{content:"";position:absolute;inset:.9rem;border:1px dashed rgba(225,213,168,.36);pointer-events:none}.packing-case::after{inset:50% 1.4rem auto;border-top:1px solid rgba(225,213,168,.22);border-right:0;border-bottom:0;border-left:0}.packing-plan{position:relative;z-index:1;display:grid;grid-template-columns:minmax(9rem,.75fr) minmax(0,1.25fr);gap:1rem;min-height:15.7rem;align-items:center}.packing-plan[hidden]{display:none}.packing-plan-visual{position:relative;min-height:12rem;border:1px solid rgba(232,220,177,.3);background:rgba(7,8,6,.6)}.packing-plan-visual span{position:absolute;display:block}.paper-object{inset:34% 19%;border:2px solid #d9c997;background:#e7dbb5;transform:rotate(-2deg)}.paper-pad-a{inset:17% 12% auto;height:14%;border:1px solid #9a916f}.paper-pad-b{inset:auto 12% 17%;height:14%;border:1px solid #9a916f}.fabric-object{inset:23% 28%;border:5px double #c8b76c;background:#393a2d}.fabric-brace-a{left:17%;top:12%;bottom:12%;width:8%;background:#777158}.fabric-brace-b{right:17%;top:12%;bottom:12%;width:8%;background:#777158}.optical-object{inset:25% 24%;border:2px solid #91988b;background:#0b0c0a;box-shadow:inset 0 0 0 10px #252922}.optical-shape{left:39%;top:34%;width:22%;height:34%;background:#020302;border-radius:48% 52% 44% 56%}.packing-copy h3{margin:0 0 .65rem;color:#e9d894;font-size:clamp(1rem,2vw,1.25rem)}.packing-copy p{margin:.5rem 0;color:#cbd0c3;font-size:.82rem;line-height:1.6}.packing-copy strong{color:#f0e6bf}.packing-copy .packing-status{margin-top:1rem;padding-top:.7rem;border-top:1px dashed rgba(214,196,139,.32);color:#d6c48b;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
+    .acclimation-bay{margin:2.2rem 0;padding:clamp(1rem,3vw,1.6rem);border:1px solid rgba(164,194,201,.38);background:linear-gradient(135deg,rgba(122,170,181,.08),rgba(7,10,8,.78))}.acclimation-heading{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(16rem,.85fr);gap:1.2rem;align-items:end}.acclimation-bay h2{margin:.15rem 0 .45rem}.acclimation-intro{margin:0;max-width:70ch;color:#c7cbbf;line-height:1.65}.acclimation-rule{margin:0;padding:.8rem;border-left:3px solid #a4c2c9;background:rgba(0,0,0,.22);font-size:.78rem;line-height:1.55}.acclimation-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem;margin:1.1rem 0}.acclimation-controls button{min-height:48px;padding:.65rem;border:1px solid rgba(164,194,201,.4);background:#11140f;color:#dfe2d7;font:inherit;font-size:.7rem;font-weight:700;letter-spacing:.06em;cursor:pointer}.acclimation-controls button:focus-visible{outline:3px solid #d6eef3;outline-offset:3px}.acclimation-controls button[aria-pressed="true"]{background:#a4c2c9;color:#111714;border-color:#d6eef3}.acclimation-stage{display:grid;grid-template-columns:minmax(12rem,.8fr) minmax(0,1.2fr);gap:1rem;align-items:stretch;padding:1rem;border:1px dashed rgba(164,194,201,.42);background:rgba(0,0,0,.22)}.acclimation-crate{position:relative;min-height:14rem;border:2px solid #71898d;background:repeating-linear-gradient(90deg,#131817 0,#131817 22px,#18201f 22px,#18201f 44px);overflow:hidden}.acclimation-crate::before{content:"SEALED OUTER CRATE";position:absolute;top:.7rem;left:.7rem;padding:.2rem .35rem;border:1px solid currentColor;background:#11140f;font-size:.62rem;font-weight:800;letter-spacing:.07em}.acclimation-shell{position:absolute;inset:22% 15%;border:2px dashed #b9d2d7;display:grid;place-items:center;text-align:center;padding:1rem;font-size:.72rem;font-weight:800;letter-spacing:.07em}.acclimation-shell::before,.acclimation-shell::after{content:"";position:absolute;inset:12%;border:1px solid rgba(214,238,243,.4)}.acclimation-shell::after{inset:27%;border-style:dotted}.acclimation-copy{padding:.2rem .15rem}.acclimation-copy h3{margin:0 0 .6rem;color:#d6eef3;font-size:clamp(1rem,2vw,1.25rem)}.acclimation-copy p{margin:.55rem 0;color:#cbd0c3;font-size:.82rem;line-height:1.6}.acclimation-copy strong{color:#edf8fa}.acclimation-status{margin-top:1rem!important;padding-top:.7rem;border-top:1px dashed rgba(164,194,201,.38);color:#a4c2c9!important;font-size:.7rem!important;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.acclimation-stage[data-state="cold-dry"] .acclimation-shell{box-shadow:inset 0 0 0 7px rgba(164,194,201,.08)}.acclimation-stage[data-state="warm-humid"] .acclimation-shell{outline:4px double rgba(214,238,243,.34);outline-offset:5px}.acclimation-stage[data-state="matched"] .acclimation-shell{border-style:solid}.acclimation-note{margin:.85rem 0 0;color:#aebbb8;font-size:.72rem;line-height:1.55}.acclimation-note strong{color:#d6eef3}
     .ipm-sweep{margin:2.2rem 0;padding:clamp(1rem,3vw,1.6rem);border:1px solid rgba(180,199,150,.38);background:linear-gradient(135deg,rgba(140,171,111,.08),rgba(7,10,8,.78))}.ipm-heading{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(16rem,.85fr);gap:1.2rem;align-items:end}.ipm-sweep h2{margin:.15rem 0 .45rem}.ipm-intro{margin:0;max-width:70ch;color:#c7cbbf;line-height:1.65}.ipm-rule{margin:0;padding:.8rem;border-left:3px solid #a8bd82;background:rgba(0,0,0,.22);font-size:.78rem;line-height:1.55}.ipm-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem;margin:1.1rem 0}.ipm-controls button{min-height:48px;padding:.65rem;border:1px solid rgba(180,199,150,.38);background:#11140f;color:#dfe2d7;font:inherit;font-size:.7rem;font-weight:700;letter-spacing:.06em;cursor:pointer}.ipm-controls button:focus-visible{outline:3px solid #d7e7b9;outline-offset:3px}.ipm-controls button[aria-pressed="true"]{background:#a8bd82;color:#151912;border-color:#d7e7b9}.ipm-plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem;padding:.8rem;border:1px dashed rgba(180,199,150,.38);background:rgba(0,0,0,.2)}.ipm-monitor{min-height:8.5rem;padding:.8rem;border:1px solid rgba(180,199,150,.28);background:#11140f;display:flex;flex-direction:column;justify-content:space-between}.ipm-monitor strong{font-size:.75rem;letter-spacing:.06em}.ipm-monitor span{font-size:.68rem;line-height:1.45;color:#bdc7b1}.ipm-monitor b{align-self:flex-start;margin-top:.75rem;padding:.25rem .4rem;border:1px solid currentColor;font-size:.65rem;letter-spacing:.08em}.ipm-monitor[data-level="watch"]{background:rgba(168,189,130,.12)}.ipm-monitor[data-level="trace"]{outline:2px solid #d7e7b9;outline-offset:-3px;background:rgba(168,189,130,.2)}.ipm-status{margin:.9rem 0 0;padding-top:.8rem;border-top:1px dashed rgba(180,199,150,.35);font-size:.78rem;line-height:1.6;color:#d7e7b9}
-    @media(max-width:720px){.packing-bench-header,.packing-plan,.ipm-heading{grid-template-columns:1fr}.packing-options,.ipm-controls,.ipm-plan{grid-template-columns:1fr}.packing-case{min-height:25rem}.packing-plan{min-height:22.5rem}.packing-plan-visual{min-height:10rem}.ipm-monitor{min-height:6.5rem}}
-    @media(prefers-contrast:more){.packing-bench,.packing-case,.packing-options button,.packing-plan-visual,.ipm-sweep,.ipm-controls button,.ipm-plan,.ipm-monitor{border-color:currentColor}.packing-rule,.ipm-rule{border-left-color:currentColor}}
+    @media(max-width:720px){.packing-bench-header,.packing-plan,.acclimation-heading,.acclimation-stage,.ipm-heading{grid-template-columns:1fr}.packing-options,.acclimation-controls,.ipm-controls,.ipm-plan{grid-template-columns:1fr}.packing-case{min-height:25rem}.packing-plan{min-height:22.5rem}.packing-plan-visual{min-height:10rem}.acclimation-crate{min-height:12rem}.ipm-monitor{min-height:6.5rem}}
+    @media(prefers-contrast:more){.packing-bench,.packing-case,.packing-options button,.packing-plan-visual,.acclimation-bay,.acclimation-controls button,.acclimation-stage,.acclimation-crate,.ipm-sweep,.ipm-controls button,.ipm-plan,.ipm-monitor{border-color:currentColor}.packing-rule,.acclimation-rule,.ipm-rule{border-left-color:currentColor}}
   </style>
 </head>
 <body>
@@ -297,6 +298,34 @@
       </fieldset>
     </section>
 
+    <section class="acclimation-bay" aria-labelledby="acclimation-title">
+      <div class="acclimation-heading">
+        <div>
+          <p class="kicker">RECEIVING BAY / ACCLIMATIZATION 0</p>
+          <h2 id="acclimation-title">The crate arrives before the object does.</h2>
+          <p class="acclimation-intro">A sealed enclosure can buffer an object while the receiving room and the crate approach one another. Choose a fixed arrival condition; the bay changes the handling decision, not the museum's fictional history.</p>
+        </div>
+        <p class="acclimation-rule"><strong>BUFFER RULE 0:</strong> Do not use the calendar as a conservation instrument. Acclimatization depends on the actual object, enclosure and measured conditions. These are authored training scenarios, not live readings or universal waiting times.</p>
+      </div>
+
+      <div class="acclimation-controls" role="group" aria-label="Choose a fixed fictional crate arrival condition">
+        <button type="button" data-acclimation-choice="cold-dry" aria-pressed="true">COLD / DRY ARRIVAL</button>
+        <button type="button" data-acclimation-choice="warm-humid" aria-pressed="false">WARM / HUMID ARRIVAL</button>
+        <button type="button" data-acclimation-choice="matched" aria-pressed="false">NEAR-MATCHED ARRIVAL</button>
+      </div>
+
+      <div class="acclimation-stage" data-state="cold-dry">
+        <div class="acclimation-crate" aria-hidden="true"><div class="acclimation-shell">BUFFER LAYERS<br>OBJECT REMAINS SEALED</div></div>
+        <div class="acclimation-copy" aria-live="polite">
+          <h3 data-acclimation-title>COLD / DRY → HOLD THE SEAL</h3>
+          <p data-acclimation-observation><strong>Arrival condition:</strong> the closed fictional crate is meaningfully colder and drier than the receiving room.</p>
+          <p data-acclimation-action><strong>Bay decision:</strong> keep the enclosure closed, inspect the exterior, and let measured conditions—not impatience—decide when staged opening becomes appropriate. A sealed crate can reduce the speed of change; it is not magic climate control.</p>
+          <p class="acclimation-status" data-acclimation-status>STATE: BUFFERING · TIMER: NONE · PROVENANCE: UNCHANGED</p>
+        </div>
+      </div>
+      <p class="acclimation-note"><strong>WHAT THIS DOES NOT CLAIM:</strong> no temperature, relative-humidity, dew-point or equilibration value is being measured here. The bay demonstrates a decision relationship only; real conservation thresholds depend on materials, packaging and monitored conditions.</p>
+    </section>
+
     <section class="ipm-sweep" aria-labelledby="ipm-title">
       <div class="ipm-heading">
         <div>
@@ -381,6 +410,51 @@
       for (const button of buttons) {
         button.addEventListener('click', () => selectPlan(button.dataset.packChoice));
       }
+    })();
+
+    (() => {
+      const buttons = [...document.querySelectorAll('[data-acclimation-choice]')];
+      const stage = document.querySelector('.acclimation-stage');
+      const title = document.querySelector('[data-acclimation-title]');
+      const observation = document.querySelector('[data-acclimation-observation]');
+      const action = document.querySelector('[data-acclimation-action]');
+      const status = document.querySelector('[data-acclimation-status]');
+      if (!buttons.length || !stage || !title || !observation || !action || !status) return;
+
+      const scenarios = Object.freeze({
+        'cold-dry': {
+          title: 'COLD / DRY → HOLD THE SEAL',
+          observation: '<strong>Arrival condition:</strong> the closed fictional crate is meaningfully colder and drier than the receiving room.',
+          action: '<strong>Bay decision:</strong> keep the enclosure closed, inspect the exterior, and let measured conditions—not impatience—decide when staged opening becomes appropriate. A sealed crate can reduce the speed of change; it is not magic climate control.',
+          status: 'STATE: BUFFERING · TIMER: NONE · PROVENANCE: UNCHANGED'
+        },
+        'warm-humid': {
+          title: 'WARM / HUMID → HOLD THE SEAL',
+          observation: '<strong>Arrival condition:</strong> the closed fictional crate is meaningfully warmer and more humid than the receiving room.',
+          action: '<strong>Bay decision:</strong> keep the enclosure closed and monitor the transition before exposing the object to a rapid environmental change. Do not invent a fixed waiting period: packaging, material and measured conditions determine the safe handoff.',
+          status: 'STATE: BUFFERING · TIMER: NONE · PROVENANCE: UNCHANGED'
+        },
+        matched: {
+          title: 'NEAR-MATCHED → VERIFY, THEN HAND OFF',
+          observation: '<strong>Arrival condition:</strong> the fixed scenario says crate and receiving-room conditions are already close, without assigning pretend precision.',
+          action: '<strong>Bay decision:</strong> verify the enclosure and documented condition before staged opening. “Near-matched” removes one obvious reason for a prolonged buffer; it does not remove inspection, material-specific judgement or the need for actual measurements.',
+          status: 'STATE: VERIFYING · TIMER: NONE · PROVENANCE: UNCHANGED'
+        }
+      });
+
+      const render = (choice) => {
+        const scenario = scenarios[choice];
+        if (!scenario) return;
+        for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.acclimationChoice === choice));
+        stage.dataset.state = choice;
+        title.textContent = scenario.title;
+        observation.innerHTML = scenario.observation;
+        action.innerHTML = scenario.action;
+        status.textContent = scenario.status;
+      };
+
+      for (const button of buttons) button.addEventListener('click', () => render(button.dataset.acclimationChoice));
+      render('cold-dry');
     })();
 
     (() => {
