@@ -864,6 +864,85 @@
     }
   }
 
+  function addGuestbookStampPad() {
+    const guestbook = document.querySelector('.guestbook-box');
+    if (!guestbook || document.getElementById('guestbook-stamp-pad')) return;
+
+    const pad = document.createElement('div');
+    pad.id = 'guestbook-stamp-pad';
+    pad.setAttribute('aria-labelledby', 'guestbook-stamp-pad-title');
+
+    const title = document.createElement('p');
+    title.id = 'guestbook-stamp-pad-title';
+    title.append(strong('LOCAL RUBBER STAMP PAD'));
+
+    const intro = document.createElement('p');
+    intro.className = 'smallprint';
+    intro.textContent = 'The guestbook is still closed to writing, but I found a loophole that does not collect words: three phrases I wrote in advance. Pick one and this copy of the page can wear it until reload.';
+
+    const controls = document.createElement('div');
+    controls.setAttribute('aria-label', 'Fixed local guestbook stamps');
+    controls.style.display = 'grid';
+    controls.style.gap = '0.35rem';
+
+    const result = document.createElement('p');
+    result.className = 'guestbook-local-stamp';
+    result.setAttribute('role', 'status');
+    result.setAttribute('aria-live', 'polite');
+    result.textContent = 'STAMP AREA: blank. Nothing has been signed.';
+    result.style.border = '3px double currentColor';
+    result.style.padding = '0.55rem';
+    result.style.fontWeight = '700';
+    result.style.letterSpacing = '0.04em';
+
+    const phrases = [
+      'COOL SITE!!!',
+      'HELLO FROM EARTH',
+      'KEEP THE ALIEN'
+    ];
+
+    const buttons = phrases.map((phrase) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('aria-pressed', 'false');
+      button.textContent = `[ ${phrase} ]`;
+      button.style.minHeight = '44px';
+      button.style.padding = '0.45rem 0.55rem';
+      button.style.font = 'inherit';
+      button.style.cursor = 'pointer';
+      button.addEventListener('click', () => {
+        buttons.forEach((candidate) => candidate.setAttribute('aria-pressed', String(candidate === button)));
+        result.textContent = `LOCAL STAMP: “${phrase}” // visible only until this page is reloaded.`;
+      });
+      controls.append(button);
+      return button;
+    });
+
+    const policy = document.createElement('p');
+    policy.className = 'smallprint';
+    policy.textContent = 'STAMP PAD POLICY: this is not a signature, submission, vote or visitor record. Pressing a stamp changes only the DOM in this loaded copy of ALMOST ONLINE!. No text is accepted, no identity is requested, nothing is counted or stored, and no request is sent. Reloading erases the stamp because the homepage never kept it.';
+
+    pad.append(title, intro, controls, result, policy);
+    guestbook.append(pad);
+
+    const updates = document.querySelector('.updates');
+    if (updates && !document.getElementById('guestbook-stamp-update')) {
+      const item = document.createElement('li');
+      item.id = 'guestbook-stamp-update';
+      const date = document.createElement('strong');
+      date.textContent = '11 AUG:';
+      item.append(date, document.createTextNode(' OPENED LOCAL STAMP PAD. NOTHING WAS SIGNED OR SAVED.'));
+      updates.prepend(item);
+    }
+
+    const statusRows = document.querySelectorAll('.status-table tr');
+    statusRows.forEach((row) => {
+      const label = row.querySelector('th');
+      const value = row.querySelector('td');
+      if (label && value && label.textContent.trim() === 'LAST UPDATED') value.textContent = '11 AUG 2026';
+    });
+  }
+
   function foldSiteUpdates() {
     const updates = document.querySelector('.updates');
     if (!updates || document.getElementById('older-site-updates')) return;
@@ -912,6 +991,7 @@
   addHomepageTuningFork();
   addHtmlXray();
   addTabSemaphore();
+  addGuestbookStampPad();
   foldSiteUpdates();
 
   if ('serviceWorker' in navigator) {
