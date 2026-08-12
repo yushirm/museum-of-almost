@@ -1,0 +1,18 @@
+# Museum Epoch — The Foyer Notices Fresh Work
+
+- **Trigger:** owner-authorized Museum-wide retrospective after enough successful room evolution existed to back-test the active scheduler through the current generation history.
+- **Scope:** whole-Museum evolutionary fitness and the public entrance, rather than another mutation inside a single room.
+- **Observed pressure:** the rooms had accumulated substantial visitor-facing and behavioral depth, but the entrance remained effectively static. A visitor could encounter a much richer Museum without any public signal that one part of the building had recently changed. The strongest recent room mutations increasingly taught their ideas through behavior, while the weaker historical pattern was accumulation of ledgers, notes and instruments whose novelty was clearer in Git history than in a cold visit.
+- **Retained trait:** four public galleries plus the unlisted facilities space; dependency-free static architecture; same-origin/local assets; offline-first behavior; no accounts, analytics, tracking, visitor free text, personalization, visitor history or third-party runtime dependency.
+- **Museum-wide growth introduced:** the entrance gains a small **BUILDING CONDITION** seam and room-specific work marks. One static `data-recent-room` value identifies the latest visitor-facing room mutation in diegetic language. Future successful room generations can move that public signal as part of their archive follow-up. No visitor state is read or stored.
+- **Life mechanism:** public building state / visible aftermath. The Museum can now show that work happened somewhere without pretending to remember who visited or when.
+- **Emotional register:** anticipation / curiosity / quiet evidence of ongoing work.
+- **First-minute detectability:** HIGH — the entrance itself now contains a concise clue that one part of the building was recently disturbed.
+- **Return-tomorrow delta:** MEDIUM — when later generations move the condition signal, a returning visitor can notice a different room marked as recently worked on, but the Museum does not compare visits or personalize the message.
+- **Form family:** foyer condition report / facilities residue / cross-room evolutionary signal.
+- **Complexity delta:** LOW — static HTML and CSS only; no script, storage, network call, timer, event listener or new asset.
+- **Phenotype half-life finding:** the entrance had become an old stable phenotype while room complexity increased around it. It was retained and deepened rather than redesigned because its core navigation remained strong; the missing relationship was temporal/evolutionary context.
+- **Global repetition finding:** recent room evolution had improved novelty distance but still leaned heavily toward calibrated instruments, benches, handoffs and representational mechanisms. Future selection should score Museum-wide form repetition and emotional range, not only room-local novelty.
+- **Evolution policy established:** future hourly runs are evolutionary opportunities, not obligations to add code. Museum-wide epochs should recur after roughly ten successful room mutations and review whole-Museum life, emotional ecology, complexity, old phenotypes and first-visit/return-visit legibility before more accumulation.
+- **Privacy boundary:** the entrance remains script-free and makes no runtime request. The condition signal is the same public authored state for every visitor. It creates no profile, identifier, history, cookie or local-storage record.
+- **Resulting fitness:** higher. The Museum's face can now acknowledge that its rooms are evolving, while future scheduler epochs gain a concrete reset marker for reviewing whether that evolution still feels alive rather than merely larger.
