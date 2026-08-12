@@ -1,0 +1,21 @@
+# 145 — ALMOST ONLINE! — The Homepage Draws the Body It Is Wearing
+
+- **Ancestor:** `687b66fd5c06534612c01623df911feb9b4f4a5a`
+- **Target room:** ALMOST ONLINE!
+- **Room density:** CROWDED
+- **Generation mode:** MUTATE
+- **Selection pressure:** The handmade homepage already carries a long reverse weblog, sidebar boxes, a consolidated workbench/download cabinet, webring, manifesto/footer, local GIF media, optional local WebAudio, fragment arrivals, sticky folio headers, link echoes, regional selection ink, ephemeral guestbook stamps, and the recent reading spotlight. The last two successful generations were UP then SAME, so novelty debt was clear. Four materially different candidates were compared: **EXPANSION**, a standalone viewport/layout lab; **RELATIONAL DEEPENING**, a compact live relationship between PAGE STATUS and the existing responsive breakpoints; **STRUCTURAL HEADROOM**, further folding sidebar/workbench material; and **WILD CROSSOVER**, importing an architectural plan/elevation metaphor into the existing PAGE STATUS box. The crossover won because it makes the page's responsive body visible without another top-level widget, another reading/highlighting mechanic, or visitor state.
+- **Retained trait:** sincere handmade homepage voice; authored discovery rather than feed logic; no algorithm, login, tracking, visitor free text, third-party runtime assets, network request, viewport-measurement script, persisted state, personalization, or social-product behavior.
+- **Growth introduced:** PAGE STATUS now ends with a compact CSS-only body schematic. Above 620px it shows the weblog and sidebar side by side; at 620px and below it redraws as a stacked weblog with the sidebar two-up; at 430px and below it redraws again with the sidebar single-column. The schematic is driven only by the same authored media-query thresholds that already control the real layout.
+- **Evolutionary axis used:** responsive spatial representation / architectural blueprint crossover / CSS media-state expression / expressive form.
+- **Merged / reframed / pruned:** no weblog post, tool, script, asset, navigation path, control, warning, or top-level region was added or removed. `web1.css` alone gained the responsive schematic plus higher-contrast, forced-colors, and print handling. The prior no-newline file ending was normalized by the edit.
+- **Net visitor-facing surface change:** UP slightly — one compact 44px schematic strip is added inside the existing PAGE STATUS box; no new standalone section or meaningful scroll burden is introduced.
+- **Pattern intentionally avoided:** another `<details>` drawer, badge pile, retro gag, link-topology trick, fragment-addressing variation, text-selection variation, reading-highlight variation, persisted reading state, methodology note, viewport telemetry, or JavaScript resize observer.
+- **Recent-pattern repetition avoided:** yes — after ephemeral authored participation and exhibition-light reading attention, this generation changes axis to responsive architecture and layout-state representation.
+- **Future evolutionary headroom:** responsive behavior can now be treated as an expressive authored material rather than hidden implementation detail. Future generations can deepen relationships between page structure and browser capabilities without turning the homepage into a diagnostic dashboard.
+- **Novelty-debt status after this generation:** CLEAR — the room entered clear because its prior pair was UP then SAME, and this run adds a fresh visible crossover with a slight earned surface increase.
+- **Resulting fitness:** higher. The homepage's old promise of “resolution: whatever you have” now answers visually: the same page can show which body plan it is inhabiting while remaining entirely local, static, and unaware of who is looking.
+
+Merged runtime generation: `33f813e00695e9921b0836f5b1db03d444115f1e` via PR #266.
+Required runtime check: `Check museum` run `687`, conclusion `success`, exact feature head `edcf82feb5156ec34a4b8bd885a5b5a3723405a7`.
+Canonical runtime verification: `Check museum` run `688`, conclusion `success`; Pages build and deployment run `255`, conclusion `success`, both on runtime main `33f813e00695e9921b0836f5b1db03d444115f1e`.
