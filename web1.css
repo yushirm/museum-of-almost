@@ -827,3 +827,69 @@ h1 {
     color: #000;
   }
 }
+
+/*
+ * RESPONSIVE BLUEPRINT // THE PAGE SHOWS THE BODY IT IS CURRENTLY WEARING
+ * The existing CSS breakpoints already negotiate the homepage geometry. This
+ * compact architectural section makes that authored layout state visible without
+ * measuring the viewport in script, storing anything, or claiming a true width.
+ */
+.status-box::after {
+  content: "PAGE BODY PLAN // WIDE: WEBLOG | SIDEBAR";
+  grid-column: 1 / -1;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.65rem;
+  border: 2px dashed var(--cyan);
+  color: var(--cyan);
+  background:
+    linear-gradient(90deg, rgba(0, 255, 255, 0.13) 0 69%, rgba(255, 0, 255, 0.13) 69% 100%),
+    repeating-linear-gradient(0deg, transparent 0 7px, rgba(119, 119, 255, 0.16) 7px 8px);
+  font-size: 0.68rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  text-align: center;
+}
+
+@media (max-width: 620px) {
+  .status-box::after {
+    content: "PAGE BODY PLAN // STACKED: WEBLOG ↓ SIDEBAR (2-UP)";
+    background:
+      linear-gradient(180deg, rgba(0, 255, 255, 0.13) 0 55%, rgba(0, 255, 102, 0.13) 55% 100%),
+      repeating-linear-gradient(90deg, transparent 0 7px, rgba(119, 119, 255, 0.16) 7px 8px);
+  }
+}
+
+@media (max-width: 430px) {
+  .status-box::after {
+    content: "PAGE BODY PLAN // NARROW: WEBLOG ↓ SIDEBAR (1-UP)";
+    background:
+      linear-gradient(180deg, rgba(0, 255, 255, 0.13) 0 50%, rgba(255, 255, 0, 0.11) 50% 100%),
+      repeating-linear-gradient(90deg, transparent 0 7px, rgba(119, 119, 255, 0.16) 7px 8px);
+  }
+}
+
+@media (prefers-contrast: more) {
+  .status-box::after {
+    border-color: var(--white);
+    color: var(--white);
+    background: var(--black);
+  }
+}
+
+@media (forced-colors: active) {
+  .status-box::after {
+    border-color: CanvasText;
+    color: CanvasText;
+    background: Canvas;
+  }
+}
+
+@media print {
+  .status-box::after {
+    display: none;
+  }
+}
