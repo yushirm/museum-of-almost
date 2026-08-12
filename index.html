@@ -10,8 +10,46 @@
   <link rel="stylesheet" href="landing.css">
   <link rel="stylesheet" href="page-four-teaser.css">
   <link rel="stylesheet" href="elsewhere-teaser.css">
+  <style>
+    .museum-condition {
+      display: grid;
+      grid-template-columns: minmax(10rem, 0.35fr) minmax(0, 0.65fr);
+      gap: 0.6rem 3rem;
+      margin: -1rem 0 clamp(2rem, 4vw, 3rem);
+      padding: 0.9rem 0;
+      border-block: 1px solid var(--line);
+      color: var(--muted);
+    }
+    .museum-condition-label {
+      color: var(--ink);
+      font-size: 0.66rem;
+      font-weight: 780;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+    .museum-condition-note {
+      display: none;
+      margin: 0;
+      line-height: 1.45;
+    }
+    body[data-recent-room="commons"] [data-room-note="commons"],
+    body[data-recent-room="deep-space"] [data-room-note="deep-space"],
+    body[data-recent-room="almost-online"] [data-room-note="almost-online"],
+    body[data-recent-room="page-four"] [data-room-note="page-four"],
+    body[data-recent-room="elsewhere"] [data-room-note="elsewhere"],
+    body[data-recent-room="museum"] [data-room-note="museum"] { display: block; }
+    @media (max-width: 820px) {
+      .museum-condition { grid-template-columns: 1fr; gap: 0.35rem; }
+    }
+    @media (prefers-contrast: more) {
+      .museum-condition { border-block-color: currentColor; }
+    }
+    @media print {
+      .museum-condition { display: none; }
+    }
+  </style>
 </head>
-<body>
+<body data-recent-room="almost-online">
   <a class="skip-link" href="#galleries">Skip to the galleries</a>
 
   <header class="museum-header">
@@ -28,6 +66,16 @@
       <h1 id="entrance-title">Choose what to stand beside.</h1>
       <p>One gallery holds a single shared moment on Earth. Another leaves the planet behind for light, gravity and unfinished physics. The third disappears into the hand-coded personal web. The fourth was not on the floor plan.</p>
     </section>
+
+    <aside class="museum-condition" aria-label="Building condition">
+      <span class="museum-condition-label">BUILDING CONDITION</span>
+      <p class="museum-condition-note" data-room-note="commons">COMMONS / NOW was recently relatched. The brass still has fresh fingerprints.</p>
+      <p class="museum-condition-note" data-room-note="deep-space">DEEP SPACE / ALMOST is still settling after a recent calibration.</p>
+      <p class="museum-condition-note" data-room-note="almost-online">ALMOST ONLINE! has newer handwriting than the rest of the building.</p>
+      <p class="museum-condition-note" data-room-note="page-four">PAGE FOUR contains a file that is not sitting where the dust says it should.</p>
+      <p class="museum-condition-note" data-room-note="elsewhere">Facilities left a clipboard beyond the service door after the last shift.</p>
+      <p class="museum-condition-note" data-room-note="museum">The floor plan itself has fresh pencil on it.</p>
+    </aside>
 
     <nav class="gallery-grid" aria-label="Museum galleries">
       <a class="gallery-card gallery-commons" href="commons-now.html">
