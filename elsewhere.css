@@ -769,3 +769,96 @@ body:has([data-pack-choice="optical"][aria-pressed="true"]) .environment-zone[da
     background: transparent;
   }
 }
+
+/* Back-of-house workbench: three existing service stations share one desktop work surface. */
+@media (min-width: 1120px) {
+  main {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 0.8rem;
+    align-items: start;
+  }
+
+  main > section {
+    grid-column: 1 / -1;
+  }
+
+  main > .packing-bench,
+  main > .acclimation-bay,
+  main > .ipm-sweep {
+    position: relative;
+    grid-row: auto;
+    min-width: 0;
+    height: 100%;
+    margin-block: 2.2rem;
+    padding: 1rem;
+  }
+
+  main > .packing-bench { grid-column: 1; }
+  main > .acclimation-bay { grid-column: 2; }
+  main > .ipm-sweep { grid-column: 3; }
+
+  main > .packing-bench::before,
+  main > .acclimation-bay::before,
+  main > .ipm-sweep::before {
+    content: "BACK-OF-HOUSE WORKBENCH";
+    display: block;
+    margin: -1rem -1rem 1rem;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px dashed currentColor;
+    color: var(--muted);
+    background: rgba(0,0,0,0.2);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+  }
+
+  main > .packing-bench .packing-bench-header,
+  main > .acclimation-bay .acclimation-heading,
+  main > .ipm-sweep .ipm-heading,
+  main > .packing-bench .packing-plan,
+  main > .acclimation-bay .acclimation-stage {
+    grid-template-columns: 1fr;
+  }
+
+  main > .packing-bench .packing-options,
+  main > .acclimation-bay .acclimation-controls,
+  main > .ipm-sweep .ipm-controls,
+  main > .ipm-sweep .ipm-plan {
+    grid-template-columns: 1fr;
+  }
+
+  main > .packing-bench .packing-case {
+    min-height: 32rem;
+  }
+
+  main > .packing-bench .packing-plan {
+    min-height: 29rem;
+    align-content: start;
+  }
+
+  main > .packing-bench .packing-plan-visual,
+  main > .acclimation-bay .acclimation-crate {
+    min-height: 10rem;
+  }
+
+  main > .ipm-sweep .ipm-monitor {
+    min-height: 5.6rem;
+  }
+}
+
+@media (prefers-contrast: more) and (min-width: 1120px) {
+  main > .packing-bench::before,
+  main > .acclimation-bay::before,
+  main > .ipm-sweep::before {
+    border-bottom-color: currentColor;
+  }
+}
+
+@media print {
+  main > .packing-bench::before,
+  main > .acclimation-bay::before,
+  main > .ipm-sweep::before {
+    display: none;
+  }
+}
