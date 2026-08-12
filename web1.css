@@ -557,6 +557,35 @@ h1 {
   text-shadow: none;
 }
 
+/*
+ * READING SPOTLIGHT // ONE THOUGHT GETS THE EXHIBITION LIGHT
+ * The reverse weblog is intentionally dense. Pointer hover or keyboard focus
+ * inside one article lets that article hold the light while neighboring entries
+ * recede. This is a local CSS relationship: no scroll measurement, reading
+ * history, persistence, personalization, or script observes what is being read.
+ */
+@media (hover: hover) and (pointer: fine) {
+  .posts:has(.post:hover) > .post:not(:hover) {
+    opacity: 0.46;
+    filter: saturate(0.55);
+  }
+
+  .posts:has(.post:hover) > .post:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 2px var(--navy), 0 0 0 4px var(--cyan);
+  }
+}
+
+.posts:has(.post:focus-within) > .post:not(:focus-within) {
+  opacity: 0.46;
+  filter: saturate(0.55);
+}
+
+.posts:has(.post:focus-within) > .post:focus-within {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 2px var(--navy), 0 0 0 4px var(--yellow);
+}
+
 @keyframes web1-blink {
   0%, 49% { visibility: visible; }
   50%, 100% { visibility: hidden; }
@@ -694,6 +723,20 @@ h1 {
     color: var(--white);
     border-color: var(--white);
   }
+
+  .posts:has(.post:hover) > .post:not(:hover),
+  .posts:has(.post:focus-within) > .post:not(:focus-within) {
+    opacity: 1;
+    filter: none;
+  }
+
+  .posts:has(.post:hover) > .post:hover,
+  .posts:has(.post:focus-within) > .post:focus-within {
+    border-color: var(--white);
+    outline: 4px double var(--yellow);
+    outline-offset: 3px;
+    box-shadow: none;
+  }
 }
 
 @media (forced-colors: active) {
@@ -705,6 +748,20 @@ h1 {
   .section-title::after {
     color: CanvasText;
     border-color: CanvasText;
+  }
+
+  .posts:has(.post:hover) > .post:not(:hover),
+  .posts:has(.post:focus-within) > .post:not(:focus-within) {
+    opacity: 1;
+    filter: none;
+  }
+
+  .posts:has(.post:hover) > .post:hover,
+  .posts:has(.post:focus-within) > .post:focus-within {
+    border-color: Highlight;
+    outline: 2px solid Highlight;
+    outline-offset: 3px;
+    box-shadow: none;
   }
 }
 
@@ -756,6 +813,12 @@ h1 {
     color: #000;
     background: #fff;
     border: 1px solid #000;
+  }
+
+  .posts > .post {
+    opacity: 1 !important;
+    filter: none !important;
+    box-shadow: none !important;
   }
 
   a,
