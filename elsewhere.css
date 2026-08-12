@@ -862,3 +862,70 @@ body:has([data-pack-choice="optical"][aria-pressed="true"]) .environment-zone[da
     display: none;
   }
 }
+
+/* Care scales: the workbench reads left-to-right from object, to enclosure, to building. */
+@media (min-width: 1120px) {
+  main > .packing-bench::before { content: "CARE SCALE 01 · MATERIAL / OBJECT"; }
+  main > .acclimation-bay::before { content: "CARE SCALE 02 · ENCLOSURE / TRANSITION"; }
+  main > .ipm-sweep::before { content: "CARE SCALE 03 · BUILDING / MONITORING"; }
+
+  main > .packing-bench {
+    outline: 1px solid rgba(214,196,139,0.58);
+    outline-offset: -0.45rem;
+  }
+
+  main > .acclimation-bay {
+    outline: 2px dashed rgba(164,194,201,0.52);
+    outline-offset: -0.2rem;
+  }
+
+  main > .ipm-sweep {
+    outline: 3px double rgba(180,199,150,0.48);
+    outline-offset: 0.25rem;
+  }
+
+  main > .packing-bench::after,
+  main > .acclimation-bay::after {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    top: 1.55rem;
+    right: -0.82rem;
+    width: 0.82rem;
+    border-top: 2px solid var(--safety);
+    pointer-events: none;
+  }
+
+  main > .packing-bench::after {
+    box-shadow: 0.24rem -0.18rem 0 -0.08rem var(--safety);
+  }
+
+  main > .acclimation-bay::after {
+    border-top-style: dashed;
+  }
+}
+
+@media (prefers-contrast: more) and (min-width: 1120px) {
+  main > .packing-bench,
+  main > .acclimation-bay,
+  main > .ipm-sweep {
+    outline-color: currentColor;
+  }
+  main > .packing-bench::after,
+  main > .acclimation-bay::after {
+    border-top-color: currentColor;
+    box-shadow: none;
+  }
+}
+
+@media print {
+  main > .packing-bench,
+  main > .acclimation-bay,
+  main > .ipm-sweep {
+    outline: 0;
+  }
+  main > .packing-bench::after,
+  main > .acclimation-bay::after {
+    display: none;
+  }
+}
