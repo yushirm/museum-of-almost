@@ -387,3 +387,49 @@
     color: #000 !important;
   }
 }
+
+/* PAGE FOUR generation: the Methods Desk can now weaken the Evidence Board it critiques. */
+@supports selector(body:has(#archive-methods-desk[open])) {
+  body:has(#archive-methods-desk[open]) #evidence .string-a,
+  body:has(#archive-methods-desk[open]) #evidence .string-c,
+  body:has(#archive-methods-desk[open]) #evidence .string-d {
+    background: linear-gradient(90deg, #8e3024 0 42%, transparent 42% 57%, #8e3024 57% 100%);
+    box-shadow: none;
+    opacity: 0.68;
+  }
+
+  body:has(#archive-methods-desk[open]) #evidence .board::after {
+    content: "METHOD DESK OPEN · 3 LINKS WITHHELD";
+    position: absolute;
+    z-index: 4;
+    right: 0.65rem;
+    bottom: 0.65rem;
+    max-width: calc(100% - 1.3rem);
+    padding: 0.42rem 0.55rem;
+    border: 1px solid rgba(184, 238, 117, 0.72);
+    background: rgba(7, 10, 6, 0.9);
+    color: #dce8c8;
+    font: 700 0.58rem/1.3 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+}
+
+@media (prefers-contrast: more) {
+  body:has(#archive-methods-desk[open]) #evidence .string-a,
+  body:has(#archive-methods-desk[open]) #evidence .string-c,
+  body:has(#archive-methods-desk[open]) #evidence .string-d {
+    background: linear-gradient(90deg, currentColor 0 42%, transparent 42% 57%, currentColor 57% 100%);
+    opacity: 1;
+  }
+
+  body:has(#archive-methods-desk[open]) #evidence .board::after {
+    border: 2px solid currentColor;
+  }
+}
+
+@media print {
+  body:has(#archive-methods-desk[open]) #evidence .board::after {
+    display: none;
+  }
+}
