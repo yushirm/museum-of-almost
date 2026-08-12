@@ -20,24 +20,17 @@
       border-block: 1px solid var(--line);
       color: var(--muted);
     }
-    .museum-condition-label,
-    .recent-work-mark {
+    .museum-condition-label {
+      color: var(--ink);
       font-size: 0.66rem;
       font-weight: 780;
       letter-spacing: 0.13em;
       text-transform: uppercase;
     }
-    .museum-condition-label { color: var(--ink); }
-    .museum-condition-note { display: none; margin: 0; line-height: 1.45; }
-    .recent-work-mark {
+    .museum-condition-note {
       display: none;
-      z-index: 3;
-      width: fit-content;
-      align-items: center;
-      min-height: 28px;
-      padding: 0.3rem 0.5rem;
-      border: 1px solid currentColor;
-      line-height: 1.2;
+      margin: 0;
+      line-height: 1.45;
     }
     body[data-recent-room="commons"] [data-room-note="commons"],
     body[data-recent-room="deep-space"] [data-room-note="deep-space"],
@@ -45,40 +38,14 @@
     body[data-recent-room="page-four"] [data-room-note="page-four"],
     body[data-recent-room="elsewhere"] [data-room-note="elsewhere"],
     body[data-recent-room="museum"] [data-room-note="museum"] { display: block; }
-    body[data-recent-room="commons"] [data-museum-room="commons"] .recent-work-mark,
-    body[data-recent-room="deep-space"] [data-museum-room="deep-space"] .recent-work-mark,
-    body[data-recent-room="almost-online"] [data-museum-room="almost-online"] .recent-work-mark,
-    body[data-recent-room="page-four"] [data-museum-room="page-four"] .recent-work-mark,
-    body[data-recent-room="elsewhere"] [data-museum-room="elsewhere"] .recent-work-mark { display: inline-flex; }
-    .gallery-card .recent-work-mark {
-      position: absolute;
-      top: clamp(3.3rem, 5vw, 4.6rem);
-      right: clamp(1.25rem, 2.4vw, 2.25rem);
-      max-width: 48%;
-      text-align: right;
-      pointer-events: none;
-    }
-    .maintenance-seam .recent-work-mark {
-      position: static;
-      margin: 0;
-    }
     @media (max-width: 820px) {
       .museum-condition { grid-template-columns: 1fr; gap: 0.35rem; }
-      .gallery-card .recent-work-mark {
-        top: 4.2rem;
-        right: 1.25rem;
-      }
     }
     @media (prefers-contrast: more) {
       .museum-condition { border-block-color: currentColor; }
-      .recent-work-mark { border-width: 2px; }
-    }
-    @media (forced-colors: active) {
-      .recent-work-mark { forced-color-adjust: auto; }
     }
     @media print {
-      .museum-condition,
-      .recent-work-mark { display: none !important; }
+      .museum-condition { display: none; }
     }
   </style>
 </head>
@@ -102,18 +69,17 @@
 
     <aside class="museum-condition" aria-label="Building condition">
       <span class="museum-condition-label">BUILDING CONDITION</span>
-      <p class="museum-condition-note" data-room-note="commons">One latch has fresh fingerprints on the brass.</p>
-      <p class="museum-condition-note" data-room-note="deep-space">One instrument is still settling after calibration.</p>
-      <p class="museum-condition-note" data-room-note="almost-online">One page has newer handwriting than the rest.</p>
-      <p class="museum-condition-note" data-room-note="page-four">One file is not sitting where the dust says it should.</p>
-      <p class="museum-condition-note" data-room-note="elsewhere">Facilities left one clipboard out after the last shift.</p>
+      <p class="museum-condition-note" data-room-note="commons">COMMONS / NOW was recently relatched. The brass still has fresh fingerprints.</p>
+      <p class="museum-condition-note" data-room-note="deep-space">DEEP SPACE / ALMOST is still settling after a recent calibration.</p>
+      <p class="museum-condition-note" data-room-note="almost-online">ALMOST ONLINE! has newer handwriting than the rest of the building.</p>
+      <p class="museum-condition-note" data-room-note="page-four">PAGE FOUR contains a file that is not sitting where the dust says it should.</p>
+      <p class="museum-condition-note" data-room-note="elsewhere">Facilities left a clipboard beyond the service door after the last shift.</p>
       <p class="museum-condition-note" data-room-note="museum">The floor plan itself has fresh pencil on it.</p>
     </aside>
 
     <nav class="gallery-grid" aria-label="Museum galleries">
-      <a class="gallery-card gallery-commons" href="commons-now.html" data-museum-room="commons">
+      <a class="gallery-card gallery-commons" href="commons-now.html">
         <span class="gallery-number">GALLERY 01 · LIVE PUBLIC INSTRUMENT</span>
-        <span class="recent-work-mark">RECENTLY RELATCHED</span>
         <div class="gallery-visual commons-visual" aria-hidden="true">
           <span class="earth-disc"></span>
           <span class="earth-line earth-line-a"></span>
@@ -128,9 +94,8 @@
         <strong class="enter-label">ENTER THE PRESENT <span aria-hidden="true">→</span></strong>
       </a>
 
-      <a class="gallery-card gallery-space" href="deep-space.html" data-museum-room="deep-space">
+      <a class="gallery-card gallery-space" href="deep-space.html">
         <span class="gallery-number">GALLERY 02 · LOCAL COSMIC INSTRUMENT</span>
-        <span class="recent-work-mark">RECENT CALIBRATION</span>
         <div class="gallery-visual space-visual" aria-hidden="true">
           <span class="space-orbit space-orbit-a"></span>
           <span class="space-orbit space-orbit-b"></span>
@@ -147,9 +112,8 @@
         <strong class="enter-label">ENTER DEEP SPACE <span aria-hidden="true">→</span></strong>
       </a>
 
-      <a class="gallery-card gallery-web" href="almost-online.html" data-museum-room="almost-online">
+      <a class="gallery-card gallery-web" href="almost-online.html">
         <span class="gallery-number">GALLERY 03 · PERSONAL HOMEPAGE</span>
-        <span class="recent-work-mark">FRESHLY EDITED</span>
         <div class="gallery-visual web-visual" aria-hidden="true">
           <div class="web-window">
             <span class="web-titlebar">almost_online.htm</span>
@@ -170,9 +134,8 @@
         <strong class="enter-label">ENTER THE WEB <span aria-hidden="true">→</span></strong>
       </a>
 
-      <a class="gallery-card gallery-four" href="page-four.html" data-museum-room="page-four">
+      <a class="gallery-card gallery-four" href="page-four.html">
         <span class="gallery-number">GALLERY 04 · UNFILED / UNVERIFIED</span>
-        <span class="recent-work-mark">FILE RECENTLY DISTURBED</span>
         <div class="gallery-visual four-visual" aria-hidden="true">
           <div class="four-window">
             <div class="four-board">
@@ -196,9 +159,8 @@
       </a>
     </nav>
 
-    <aside class="maintenance-seam" aria-label="Facilities access" data-museum-room="elsewhere">
+    <aside class="maintenance-seam" aria-label="Facilities access">
       <span class="maintenance-code">FACILITIES NOTICE 05 / FLOOR PLAN DISAGREEMENT</span>
-      <span class="recent-work-mark">RECENT SHIFT WORK</span>
       <p>The wall behind the public galleries is deeper than the drawing says. A service door has been left unlocked for inspection.</p>
       <a href="elsewhere.html">OPEN SERVICE DOOR <span aria-hidden="true">↓</span></a>
     </aside>
