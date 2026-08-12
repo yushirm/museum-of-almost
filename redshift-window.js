@@ -159,6 +159,7 @@
     const observedSummary = lines
       .map((line) => `${line.label} ${observedNm(line.restNm, selectedRedshift).toFixed(1)} nm`)
       .join(' · ');
+    const halphaObservedNm = observedNm(656.3, selectedRedshift);
 
     document.getElementById('redshift-window-z').textContent = `z = ${selectedRedshift.toFixed(1)}`;
     document.getElementById('redshift-window-band').textContent = `${selectedWindow.label} · ${selectedWindow.minNm}–${selectedWindow.maxNm} nm`;
@@ -169,6 +170,12 @@
       ? 'At z = 0 the markers sit at their rounded rest wavelengths. The fingerprint is defined by the pattern of lines, not by one colour.'
       : `At z = ${selectedRedshift.toFixed(1)}, every marker is multiplied by the same factor of ${(1 + selectedRedshift).toFixed(1)}. Their spacing stretches in wavelength while their identity as this reference pattern is preserved.`;
     windowNote.textContent = `${selectedWindow.note} At this redshift it admits ${admitted.length} of the 3 reference lines shown.`;
+
+    document.documentElement.dataset.deepSpaceHalphaNm = halphaObservedNm.toFixed(1);
+    document.documentElement.dataset.deepSpaceRedshift = selectedRedshift.toFixed(1);
+    document.dispatchEvent(new CustomEvent('museum:deep-space-redshift', {
+      detail: { redshift: selectedRedshift, halphaObservedNm }
+    }));
   }
 
   shifts.forEach((redshift) => {
@@ -217,6 +224,11 @@
   ];
   let selectedAperture = apertures[1];
   let selectedWavelength = wavelengths[1];
+  let trackingHalpha = false;
+  let currentRedshift = Number(document.documentElement.dataset.deepSpaceRedshift || 0);
+  let currentHalphaNm = Number(document.documentElement.dataset.deepSpaceHalphaNm || 656.3);
+  if (!Number.isFinite(currentRedshift)) currentRedshift = 0;
+  if (!Number.isFinite(currentHalphaNm)) currentHalphaNm = 656.3;
 
   function make(tag, className, text) {
     const node = document.createElement(tag);
@@ -230,6 +242,10 @@
     return radians * 206265;
   }
 
+  function formatWavelength(wavelengthNm) {
+    return Number.isInteger(wavelengthNm) ? `${wavelengthNm} nm` : `${wavelengthNm.toFixed(1)} nm`;
+  }
+
   const section = make('section', 'cosmos-section');
   section.id = 'resolution-bench';
   section.setAttribute('aria-labelledby', 'resolution-bench-title');
@@ -238,7 +254,7 @@
   const eyebrow = make('p', 'eyebrow', 'INSTRUMENT 16 · THE RESOLUTION BENCH');
   const title = make('h2', '', 'Two stars can exist where one blur arrives.');
   title.id = 'resolution-bench-title';
-  const intro = make('p', '', 'Keep one idealized pair of equal-brightness point sources fixed at 0.10 arcsecond separation. Change the diameter of a perfect circular aperture, then change the observing wavelength. The same aperture can separate the pair at one wavelength and blur it at another because the diffraction limit depends on both λ and D.');
+  const intro = make('p', '', 'Keep one idealized pair of equal-brightness point sources fixed at 0.10 arcsecond separation. Change the diameter of a perfect circular aperture, choose a fixed wavelength, or hand the observed Hα wavelength down from Instrument 15. The same aperture can separate the pair at one wavelength and blur it at another because the diffraction limit depends on both λ and D.');
   heading.append(eyebrow, title, intro);
 
   const shell = make('div', 'instrument');
@@ -254,11 +270,11 @@
   apertureControls.setAttribute('role', 'group');
   apertureControls.setAttribute('aria-label', 'Choose an ideal circular aperture diameter');
 
-  const wavelengthLabel = make('p', 'metric-label', 'Change observing wavelength');
+  const wavelengthLabel = make('p', 'metric-label', 'Choose or inherit observing wavelength');
   wavelengthLabel.style.margin = '0.35rem 0 0';
   const wavelengthControls = make('div', 'instrument-controls');
   wavelengthControls.setAttribute('role', 'group');
-  wavelengthControls.setAttribute('aria-label', 'Choose an observing wavelength for the diffraction calculation');
+  wavelengthControls.setAttribute('aria-label', 'Choose a fixed observing wavelength or inherit observed H alpha from Instrument 15');
 
   controlBank.append(apertureLabel, apertureControls, wavelengthLabel, wavelengthControls);
 
@@ -312,6 +328,7 @@
   readout.append(
     metric('Aperture diameter', '1.00 m', 'resolution-aperture'),
     metric('Observing wavelength', '550 nm', 'resolution-wavelength'),
+    metric('Wavelength source', 'Fixed bench choice', 'resolution-source'),
     metric('Rayleigh limit', '0.138 arcsec', 'resolution-limit'),
     metric('Fixed source separation', '0.100 arcsec', 'resolution-separation'),
     metric('Idealized result', 'NOT RESOLVED', 'resolution-result')
@@ -320,19 +337,30 @@
   note.id = 'resolution-note';
   readout.append(note);
 
-  const boundary = make('p', 'inventory-note', 'DIFFRACTION BOUNDARY · This bench uses the Rayleigh approximation θ ≈ 1.22 λ / D for an ideal circular aperture and equal-brightness point sources. Its three fixed wavelengths are illustrative monochromatic cases, not telescope filters or colour images. It does not model atmosphere, detector sampling, optical aberrations, source contrast, signal-to-noise, deconvolution, interferometry, or a real telescope. “Not resolved” means this idealized aperture-wavelength pair cannot separate the sources by this criterion; it does not mean only one source exists.');
+  const boundary = make('p', 'inventory-note', 'DIFFRACTION + HANDOFF BOUNDARY · This bench uses the Rayleigh approximation θ ≈ 1.22 λ / D for an ideal circular aperture and equal-brightness point sources. Its three fixed wavelengths are illustrative monochromatic cases; the optional Hα handoff uses only Instrument 15’s rounded rest wavelength and selected illustrative redshift through λobserved = λrest × (1 + z). Neither path is a telescope filter, atmosphere, detector, optical train or real observing proposal. The bench does not model sampling, aberrations, source contrast, signal-to-noise, deconvolution or interferometry. “Not resolved” means this idealized aperture-wavelength pair cannot separate the sources by this criterion; it does not mean only one source exists.');
+
+  const handoffButton = make('button', '', 'Track Hα from Instrument 15');
+  handoffButton.type = 'button';
+  handoffButton.dataset.halphaHandoff = 'true';
+  handoffButton.setAttribute('aria-pressed', 'false');
+  handoffButton.addEventListener('click', () => {
+    trackingHalpha = true;
+    render();
+  });
 
   function render() {
-    const limit = rayleighArcsec(selectedAperture.diameterM, selectedWavelength.wavelengthNm);
+    const observingWavelengthNm = trackingHalpha ? currentHalphaNm : selectedWavelength.wavelengthNm;
+    const limit = rayleighArcsec(selectedAperture.diameterM, observingWavelengthNm);
     const resolved = pairSeparationArcsec >= limit;
     const visualDiameter = Math.max(18, Math.min(150, (limit / pairSeparationArcsec) * 42));
 
     apertureControls.querySelectorAll('button').forEach((button) => {
       button.setAttribute('aria-pressed', String(button.dataset.apertureId === selectedAperture.id));
     });
-    wavelengthControls.querySelectorAll('button').forEach((button) => {
-      button.setAttribute('aria-pressed', String(button.dataset.wavelengthId === selectedWavelength.id));
+    wavelengthControls.querySelectorAll('button[data-wavelength-id]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(!trackingHalpha && button.dataset.wavelengthId === selectedWavelength.id));
     });
+    handoffButton.setAttribute('aria-pressed', String(trackingHalpha));
 
     [starA, starB].forEach((star) => {
       star.style.width = `${visualDiameter}px`;
@@ -340,13 +368,20 @@
     });
 
     document.getElementById('resolution-aperture').textContent = selectedAperture.label;
-    document.getElementById('resolution-wavelength').textContent = `${selectedWavelength.wavelengthNm} nm`;
+    document.getElementById('resolution-wavelength').textContent = formatWavelength(observingWavelengthNm);
+    document.getElementById('resolution-source').textContent = trackingHalpha
+      ? `Instrument 15 · Hα at z = ${currentRedshift.toFixed(1)}`
+      : 'Fixed bench choice';
     document.getElementById('resolution-limit').textContent = `${limit.toFixed(3)} arcsec`;
     document.getElementById('resolution-separation').textContent = `${pairSeparationArcsec.toFixed(3)} arcsec`;
     document.getElementById('resolution-result').textContent = resolved ? 'RESOLVED BY THIS CRITERION' : 'NOT RESOLVED BY THIS CRITERION';
+
+    const provenance = trackingHalpha
+      ? ` The wavelength is inherited from Instrument 15: rounded Hα rest 656.3 nm × (1 + ${currentRedshift.toFixed(1)}) = ${currentHalphaNm.toFixed(1)} nm.`
+      : '';
     note.textContent = resolved
-      ? `At ${selectedWavelength.wavelengthNm} nm, the pair separation is larger than the ${limit.toFixed(3)} arcsec Rayleigh limit for this ${selectedAperture.label} aperture. The schematic point-spread patterns separate, but real observing performance can still be worse.`
-      : `At ${selectedWavelength.wavelengthNm} nm, the pair separation is smaller than the ${limit.toFixed(3)} arcsec Rayleigh limit for this ${selectedAperture.label} aperture. The same two sources remain in the scene even though this aperture-wavelength pair does not separate them.`;
+      ? `At ${formatWavelength(observingWavelengthNm)}, the pair separation is larger than the ${limit.toFixed(3)} arcsec Rayleigh limit for this ${selectedAperture.label} aperture. The schematic point-spread patterns separate, but real observing performance can still be worse.${provenance}`
+      : `At ${formatWavelength(observingWavelengthNm)}, the pair separation is smaller than the ${limit.toFixed(3)} arcsec Rayleigh limit for this ${selectedAperture.label} aperture. The same two sources remain in the scene even though this aperture-wavelength pair does not separate them.${provenance}`;
   }
 
   apertures.forEach((aperture) => {
@@ -368,9 +403,20 @@
     button.setAttribute('aria-pressed', String(wavelength.id === selectedWavelength.id));
     button.addEventListener('click', () => {
       selectedWavelength = wavelength;
+      trackingHalpha = false;
       render();
     });
     wavelengthControls.append(button);
+  });
+  wavelengthControls.append(handoffButton);
+
+  document.addEventListener('museum:deep-space-redshift', (event) => {
+    const nextRedshift = Number(event.detail && event.detail.redshift);
+    const nextHalphaNm = Number(event.detail && event.detail.halphaObservedNm);
+    if (!Number.isFinite(nextRedshift) || !Number.isFinite(nextHalphaNm)) return;
+    currentRedshift = nextRedshift;
+    currentHalphaNm = nextHalphaNm;
+    if (trackingHalpha) render();
   });
 
   body.append(field, readout, boundary);
