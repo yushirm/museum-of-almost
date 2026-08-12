@@ -408,3 +408,171 @@
     return String(value).replace(/[^a-zA-Z0-9_-]/g, '');
   }
 })(typeof globalThis !== 'undefined' ? globalThis : this);
+
+(function attachCommonsWeatherLoom(root) {
+  'use strict';
+
+  const document = root.document;
+  const core = root.MuseumCommonsCore;
+  if (!document || !core || !Array.isArray(core.STATIONS)) return;
+
+  const anchor = document.querySelector('.difference-section');
+  if (!anchor) return;
+
+  const SNAPSHOT_EVENT = 'museum:commons-snapshot';
+  const section = document.createElement('section');
+  section.className = 'weather-loom-section';
+  section.setAttribute('aria-labelledby', 'weather-loom-title');
+
+  const heading = document.createElement('div');
+  heading.className = 'section-heading weather-loom-heading';
+  const eyebrow = document.createElement('p');
+  eyebrow.className = 'eyebrow';
+  eyebrow.textContent = 'WEATHER LOOM / ONE LATCH, THIRTEEN THREADS';
+  const title = document.createElement('h2');
+  title.id = 'weather-loom-title';
+  title.textContent = 'Weave one held moment without filling the gaps.';
+  const intro = document.createElement('p');
+  intro.textContent = 'Borrowed from textile notation: each vertical thread is one fixed Commons station, ordered west to east. Temperature, wind and precipitation are woven as relative marks within this thirteen-point latch; light keeps its categorical day, twilight or night state. Nothing is drawn between stations, and the cloth is not a weather surface.';
+  heading.append(eyebrow, title, intro);
+
+  const frame = document.createElement('div');
+  frame.className = 'weather-loom-frame';
+  frame.setAttribute('role', 'group');
+  frame.setAttribute('aria-label', 'Weather loom for thirteen fixed Commons stations');
+
+  const bandLabels = document.createElement('div');
+  bandLabels.className = 'weather-loom-band-labels';
+  bandLabels.setAttribute('aria-hidden', 'true');
+  for (const label of ['TEMP', 'WIND', 'RAIN', 'LIGHT']) {
+    const span = document.createElement('span');
+    span.textContent = label;
+    bandLabels.append(span);
+  }
+
+  const threads = document.createElement('div');
+  threads.className = 'weather-loom-threads';
+  frame.append(bandLabels, threads);
+
+  const readout = document.createElement('p');
+  readout.className = 'weather-loom-readout';
+  readout.setAttribute('aria-live', 'polite');
+  readout.textContent = 'Waiting for the current thirteen-point weather latch.';
+
+  const note = document.createElement('p');
+  note.className = 'weather-loom-note';
+  const strong = document.createElement('strong');
+  strong.textContent = 'The weave is comparative, not calibrated cloth. ';
+  note.append(strong, document.createTextNode('Quantitative fill is normalized only to the finite minimum and maximum present in this one thirteen-point snapshot. Exact values remain in the station readouts above. Missing values remain visibly unwoven; no interpolation, trend, forecast or historical comparison is added.'));
+
+  section.append(heading, frame, readout, note);
+  anchor.before(section);
+
+  render(root.MuseumCommonsSnapshot || null);
+  document.addEventListener(SNAPSHOT_EVENT, (event) => {
+    render(event.detail?.snapshot || root.MuseumCommonsSnapshot || null);
+  });
+
+  function render(snapshot) {
+    const date = snapshot?.receivedAt ? new Date(snapshot.receivedAt) : null;
+    const validDate = date && Number.isFinite(date.getTime());
+    const weather = Array.isArray(snapshot?.weather?.points) ? snapshot.weather.points : [];
+    const byId = new Map(weather.map((point) => [point.id, point]));
+    const ordered = [...core.STATIONS].sort((a, b) => Number(a.lon) - Number(b.lon));
+    const readings = ordered.map((station) => readingFor(station, byId.get(station.id), validDate ? date : null));
+    const ranges = {
+      temperature: finiteRange(readings.map((reading) => reading.temperature)),
+      wind: finiteRange(readings.map((reading) => reading.wind)),
+      precipitation: finiteRange(readings.map((reading) => reading.precipitation))
+    };
+
+    threads.replaceChildren();
+    for (const reading of readings) threads.append(buildThread(reading, ranges));
+
+    const complete = readings.filter((reading) => Number.isFinite(reading.temperature) && Number.isFinite(reading.wind) && Number.isFinite(reading.precipitation)).length;
+    const latch = validDate ? formatUtc(date) : 'no valid latch time';
+    readout.textContent = `${complete}/13 threads have temperature, wind and precipitation together at ${latch}. Select a thread to select the same fixed world window above.`;
+    frame.setAttribute('aria-label', `Weather loom for thirteen fixed Commons stations; ${complete} have all three quantitative weather values at this latch.`);
+  }
+
+  function readingFor(station, weather, date) {
+    const available = Boolean(weather?.available);
+    return {
+      station,
+      temperature: available && Number.isFinite(weather.temperature) ? weather.temperature : Number.NaN,
+      wind: available && Number.isFinite(weather.wind) ? weather.wind : Number.NaN,
+      precipitation: available && Number.isFinite(weather.precipitation) ? weather.precipitation : Number.NaN,
+      light: date ? core.sunState(date, station.lat, station.lon) : 'unknown'
+    };
+  }
+
+  function buildThread(reading, ranges) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'weather-loom-thread';
+    button.dataset.station = reading.station.id;
+    button.setAttribute('aria-label', threadLabel(reading));
+
+    const id = document.createElement('strong');
+    id.textContent = reading.station.id;
+
+    const temp = band('temperature', reading.temperature, ranges.temperature);
+    const wind = band('wind', reading.wind, ranges.wind);
+    const rain = band('precipitation', reading.precipitation, ranges.precipitation);
+    const light = document.createElement('span');
+    light.className = 'weather-loom-band weather-loom-light';
+    light.dataset.light = reading.light;
+    light.dataset.available = String(reading.light !== 'unknown');
+    light.setAttribute('aria-hidden', 'true');
+
+    button.append(id, temp, wind, rain, light);
+    button.addEventListener('click', () => selectExistingStation(reading.station.id));
+    return button;
+  }
+
+  function band(kind, value, range) {
+    const span = document.createElement('span');
+    span.className = `weather-loom-band weather-loom-${kind}`;
+    const available = Number.isFinite(value) && range.available;
+    span.dataset.available = String(available);
+    span.setAttribute('aria-hidden', 'true');
+    span.style.setProperty('--loom-level', `${available ? relativeLevel(value, range) : 0}%`);
+    return span;
+  }
+
+  function finiteRange(values) {
+    const finite = values.filter(Number.isFinite);
+    if (!finite.length) return { available: false, min: 0, max: 0 };
+    return { available: true, min: Math.min(...finite), max: Math.max(...finite) };
+  }
+
+  function relativeLevel(value, range) {
+    if (!range.available || !Number.isFinite(value)) return 0;
+    if (range.max === range.min) return 100;
+    return Math.max(8, Math.min(100, ((value - range.min) / (range.max - range.min)) * 92 + 8));
+  }
+
+  function threadLabel(reading) {
+    return `Point ${reading.station.id}; temperature ${formatValue(reading.temperature, '°C')}; wind ${formatValue(reading.wind, ' km/h')}; precipitation ${formatValue(reading.precipitation, ' mm')}; light ${reading.light}. Quantitative weave marks are relative only to this thirteen-point snapshot.`;
+  }
+
+  function formatValue(value, unit) {
+    return Number.isFinite(value) ? `${value.toFixed(1)}${unit}` : 'unavailable';
+  }
+
+  function formatUtc(date) {
+    return new Intl.DateTimeFormat('en', {
+      timeZone: 'UTC',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }).format(date) + ' UTC';
+  }
+
+  function selectExistingStation(id) {
+    const escaped = root.CSS?.escape ? root.CSS.escape(String(id)) : String(id).replace(/[^a-zA-Z0-9_-]/g, '');
+    const mapButton = document.querySelector(`.station-dot[data-station="${escaped}"]`);
+    if (mapButton && typeof mapButton.click === 'function') mapButton.click();
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this);
