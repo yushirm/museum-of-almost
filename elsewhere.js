@@ -6,6 +6,7 @@
   const status = document.querySelector('#misfile-status');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let cursor = -1;
+  let freightLiftOut = false;
 
   const handlingRoutes = Object.freeze({
     'artifact-c0-001': { zone: 'ZONE B · BUILDING FABRIC', zoneId: 'B', action: 'Support the key without testing it against unverified locks.', hold: 'No matching lock exists in the building survey.' },
@@ -84,9 +85,11 @@
     if (accessionNode) accessionNode.textContent = accession;
     if (titleNode) titleNode.textContent = title;
     if (zoneNode) zoneNode.textContent = route.zone;
-    if (actionNode) actionNode.textContent = route.action;
+    if (actionNode) actionNode.textContent = freightLiftOut ? `HOLD IN PLACE — freight lift unavailable. ${route.action}` : route.action;
     if (holdNode) holdNode.textContent = route.hold;
-    if (routeNode) routeNode.textContent = `CATALOGUE 0 → ZONE ${route.zoneId} → CONTRADICTION HOLD`;
+    if (routeNode) routeNode.textContent = freightLiftOut
+      ? `CATALOGUE 0 · ${accessionCode} · MOVEMENT PAUSED · FREIGHT LIFT OUT OF SERVICE`
+      : `CATALOGUE 0 → ZONE ${route.zoneId} → CONTRADICTION HOLD`;
     if (traceNode) {
       traceNode.removeAttribute('hidden');
       traceNode.setAttribute('aria-label', `Trace ${accessionCode} storage route to Zone ${route.zoneId}`);
@@ -393,12 +396,95 @@
     }
   };
 
+  const installFreightLiftConsequence = () => {
+    const lift = document.querySelector('.freight-lift');
+    const corridor = document.querySelector('.corridor');
+    const handover = document.querySelector('#shift-handover .lost-copy');
+    if (!lift || !corridor || !handover || document.querySelector('#lift-service-state')) return;
+
+    const style = document.createElement('style');
+    style.dataset.elsewhereLiftConsequence = 'true';
+    style.textContent = `
+      .lift-service-state{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center;margin:1rem 0 0;padding:.8rem 1rem;border:1px dashed currentColor;background:rgba(0,0,0,.16)}
+      .lift-service-copy{margin:0;font-size:.78rem;line-height:1.5}.lift-service-copy strong{display:block;margin-bottom:.18rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase}
+      .lift-service-toggle{min-height:44px;padding:.55rem .75rem;border:1px solid currentColor;background:transparent;color:inherit;font:800 .68rem/1.25 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+      .lift-service-toggle:hover,.lift-service-toggle:focus-visible{background:currentColor;color:#1d201a}
+      .freight-lift.is-out-of-service{opacity:.58;outline:3px double currentColor;outline-offset:4px;text-decoration:line-through}.freight-lift.is-out-of-service span{transform:none!important}
+      .lift-consequence{display:none;margin:.75rem 0 0;padding:.75rem 1rem;border-left:4px solid currentColor;background:rgba(229,168,38,.09);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;line-height:1.5}
+      .lift-consequence.is-active{display:block}
+      #transfer-desk[data-lift-state="out"]{box-shadow:inset 0 0 0 3px rgba(229,168,38,.18)}
+      @media(max-width:620px){.lift-service-state{grid-template-columns:1fr}.lift-service-toggle{justify-self:start}}
+      @media(prefers-contrast:more){.lift-service-state,.lift-service-toggle{border-width:2px}.freight-lift.is-out-of-service{outline-width:4px}}
+      @media(prefers-reduced-motion:reduce){.freight-lift.is-out-of-service span{transform:none!important}}
+      @media print{.lift-service-toggle{display:none}.lift-consequence{border-left-width:2px}}
+    `;
+    document.head.append(style);
+
+    const panel = document.createElement('aside');
+    panel.className = 'lift-service-state';
+    panel.id = 'lift-service-state';
+    panel.setAttribute('aria-label', 'Freight lift service state');
+    panel.innerHTML = `
+      <p class="lift-service-copy" role="status" aria-live="polite"><strong data-lift-service-label>LIFT 0 · AVAILABLE</strong><span data-lift-service-copy>The ordinary handling route is open. Catalogue contradictions remain unaffected.</span></p>
+      <button class="lift-service-toggle" type="button" aria-pressed="false">TAKE LIFT OUT OF SERVICE</button>
+    `;
+    corridor.append(panel);
+
+    const consequence = document.createElement('p');
+    consequence.className = 'lift-consequence';
+    consequence.textContent = 'ACTIVE FACILITIES CONSEQUENCE · FREIGHT LIFT UNAVAILABLE · ACCESSION MOVEMENT HOLDS IN PLACE · PROVENANCE UNCHANGED';
+    handover.prepend(consequence);
+
+    const toggle = panel.querySelector('.lift-service-toggle');
+    const label = panel.querySelector('[data-lift-service-label]');
+    const copy = panel.querySelector('[data-lift-service-copy]');
+    const liftCaption = lift.querySelector('small');
+    const originalCaption = liftCaption?.textContent || 'NO FLOOR RECORDED';
+
+    const sync = () => {
+      lift.classList.toggle('is-out-of-service', freightLiftOut);
+      lift.setAttribute('aria-disabled', String(freightLiftOut));
+      consequence.classList.toggle('is-active', freightLiftOut);
+      const desk = document.querySelector('#transfer-desk');
+      if (desk) desk.dataset.liftState = freightLiftOut ? 'out' : 'available';
+      if (label) label.textContent = freightLiftOut ? 'LIFT 0 · OUT OF SERVICE' : 'LIFT 0 · AVAILABLE';
+      if (copy) copy.textContent = freightLiftOut
+        ? 'Movement work pauses at the building boundary. Objects stay where they are safely supported.'
+        : 'The ordinary handling route is open. Catalogue contradictions remain unaffected.';
+      if (toggle) {
+        toggle.setAttribute('aria-pressed', String(freightLiftOut));
+        toggle.textContent = freightLiftOut ? 'CLEAR OUT-OF-SERVICE TAG' : 'TAKE LIFT OUT OF SERVICE';
+      }
+      if (liftCaption) liftCaption.textContent = freightLiftOut ? 'OUT OF SERVICE · STABILISE IN PLACE' : originalCaption;
+      const openRecordNow = records.find((record) => record.open);
+      if (openRecordNow) updateTransferDesk(openRecordNow);
+      else if (desk) {
+        const routeNode = desk.querySelector('[data-transfer-route]');
+        const actionNode = desk.querySelector('[data-transfer-action]');
+        if (routeNode) routeNode.textContent = freightLiftOut ? 'CATALOGUE 0 · ALL MOVEMENT PAUSED · FREIGHT LIFT OUT OF SERVICE' : 'CATALOGUE 0 → ROUTE PENDING';
+        if (actionNode) actionNode.textContent = freightLiftOut ? 'Hold accessions in their current safe locations until the ordinary service route returns.' : 'No handling order issued.';
+      }
+    };
+
+    lift.addEventListener('click', (event) => {
+      if (!freightLiftOut) return;
+      event.preventDefault();
+      panel.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+    });
+    toggle.addEventListener('click', () => {
+      freightLiftOut = !freightLiftOut;
+      sync();
+    });
+    sync();
+  };
+
   if (button) {
     button.addEventListener('click', () => openRecord(cursor + 1));
   }
 
   installEnvironmentBoard();
   installTransferDesk();
+  installFreightLiftConsequence();
 
   if (reducedMotion) {
     document.documentElement.dataset.reducedMotion = 'true';
