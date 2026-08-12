@@ -560,30 +560,37 @@ h1 {
 /*
  * READING SPOTLIGHT // ONE THOUGHT GETS THE EXHIBITION LIGHT
  * The reverse weblog is intentionally dense. Pointer hover or keyboard focus
- * inside one article lets that article hold the light while neighboring entries
- * recede. This is a local CSS relationship: no scroll measurement, reading
- * history, persistence, personalization, or script observes what is being read.
+ * inside one article lets that article hold the light using border and header
+ * treatment only. Prose contrast never changes, and no script observes reading.
  */
 @media (hover: hover) and (pointer: fine) {
   .posts:has(.post:hover) > .post:not(:hover) {
-    opacity: 0.46;
-    filter: saturate(0.55);
+    border-color: #6666aa;
+    border-style: dotted;
   }
 
   .posts:has(.post:hover) > .post:hover {
     border-color: var(--cyan);
     box-shadow: 0 0 0 2px var(--navy), 0 0 0 4px var(--cyan);
   }
+
+  .posts:has(.post:hover) > .post:hover > header {
+    background: var(--cyan);
+  }
 }
 
 .posts:has(.post:focus-within) > .post:not(:focus-within) {
-  opacity: 0.46;
-  filter: saturate(0.55);
+  border-color: #6666aa;
+  border-style: dotted;
 }
 
 .posts:has(.post:focus-within) > .post:focus-within {
   border-color: var(--yellow);
   box-shadow: 0 0 0 2px var(--navy), 0 0 0 4px var(--yellow);
+}
+
+.posts:has(.post:focus-within) > .post:focus-within > header {
+  background: var(--yellow);
 }
 
 @keyframes web1-blink {
@@ -726,8 +733,8 @@ h1 {
 
   .posts:has(.post:hover) > .post:not(:hover),
   .posts:has(.post:focus-within) > .post:not(:focus-within) {
-    opacity: 1;
-    filter: none;
+    border-color: var(--white);
+    border-style: solid;
   }
 
   .posts:has(.post:hover) > .post:hover,
@@ -752,8 +759,8 @@ h1 {
 
   .posts:has(.post:hover) > .post:not(:hover),
   .posts:has(.post:focus-within) > .post:not(:focus-within) {
-    opacity: 1;
-    filter: none;
+    border-color: CanvasText;
+    border-style: solid;
   }
 
   .posts:has(.post:hover) > .post:hover,
@@ -813,12 +820,6 @@ h1 {
     color: #000;
     background: #fff;
     border: 1px solid #000;
-  }
-
-  .posts > .post {
-    opacity: 1 !important;
-    filter: none !important;
-    box-shadow: none !important;
   }
 
   a,
