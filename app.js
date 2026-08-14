@@ -675,7 +675,7 @@
 
     if (section.ranges.temperature.available) {
       appendSvgText(ui.sectionGuides, left, top - 10, `${section.ranges.temperature.max.toFixed(1)}°C`, 'section-axis-label', 'start');
-      appendSvgText(ui.sectionGuides, left, bottom + 18, `${section.ranges.temperature.minTemp?.toFixed?.(1) || section.ranges.temperature.min.toFixed(1)}°C`, 'section-axis-label', 'start');
+      appendSvgText(ui.sectionGuides, left, bottom + 18, `${section.ranges.temperature.min.toFixed(1)}°C`, 'section-axis-label', 'start');
     } else {
       appendSvgText(ui.sectionGuides, left, top - 10, 'LIVE TEMPERATURE UNAVAILABLE', 'section-axis-label', 'start');
     }
