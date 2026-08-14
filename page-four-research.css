@@ -433,3 +433,104 @@
     display: none;
   }
 }
+
+/* PAGE FOUR generation: the old Copy Room is now one continuous reproduction run. */
+.copy-room .copy-chain {
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid rgba(208, 167, 91, 0.28);
+  background:
+    linear-gradient(90deg, rgba(208, 167, 91, 0.035), transparent 18% 82%, rgba(208, 167, 91, 0.035)),
+    #0b0a08;
+}
+
+.copy-room .copy-card {
+  position: relative;
+  border: 0;
+  border-right: 1px dashed rgba(208, 167, 91, 0.32);
+  background: transparent;
+  box-shadow: none;
+}
+
+.copy-room .copy-card:last-child {
+  border-right: 0;
+}
+
+.copy-room .copy-card::after {
+  content: "COPY →";
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -1.8rem;
+  width: 3.6rem;
+  padding: 0.16rem 0;
+  border-block: 1px solid rgba(208, 167, 91, 0.38);
+  background: #0b0a08;
+  color: #d0a75b;
+  font: 700 0.5rem/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: 0.05em;
+  text-align: center;
+  transform: translateY(-50%);
+}
+
+.copy-room .copy-card:last-child::after {
+  content: "STOP";
+  right: 0.35rem;
+  width: auto;
+  padding-inline: 0.3rem;
+  border: 1px solid rgba(214, 79, 58, 0.45);
+  color: #d99a86;
+}
+
+.copy-room .copy-sheet {
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.3), inset -8px 0 14px rgba(40, 37, 29, 0.08);
+}
+
+@media (max-width: 900px) {
+  .copy-room .copy-chain {
+    grid-template-columns: 1fr;
+  }
+
+  .copy-room .copy-card {
+    border-right: 0;
+    border-bottom: 1px dashed rgba(208, 167, 91, 0.32);
+  }
+
+  .copy-room .copy-card:last-child {
+    border-bottom: 0;
+  }
+
+  .copy-room .copy-card::after {
+    top: auto;
+    right: 0.7rem;
+    bottom: -0.65rem;
+    width: auto;
+    padding: 0.18rem 0.35rem;
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .copy-room .copy-chain,
+  .copy-room .copy-card,
+  .copy-room .copy-card::after {
+    border-color: currentColor;
+  }
+}
+
+@media print {
+  .copy-room .copy-chain {
+    gap: 0.5rem;
+    overflow: visible;
+    border: 0;
+    background: #fff;
+  }
+
+  .copy-room .copy-card {
+    border: 1px solid #555;
+  }
+
+  .copy-room .copy-card::after {
+    display: none;
+  }
+}
