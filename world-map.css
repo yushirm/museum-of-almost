@@ -17,6 +17,19 @@
 
 .world-map-grid { z-index: 1; }
 
+.event-footprint {
+  position: absolute;
+  z-index: 2;
+  left: var(--x);
+  top: var(--y);
+  width: 7px;
+  height: 7px;
+  border: 1px solid currentColor;
+  transform: translate(-50%, -50%) rotate(45deg);
+  opacity: 0.52;
+  pointer-events: none;
+}
+
 .map-source-note {
   margin: 0.7rem 0 0;
   color: var(--muted);
@@ -71,6 +84,11 @@
 }
 
 @media (prefers-contrast: more) {
+  .event-footprint {
+    border-width: 2px;
+    opacity: 1;
+  }
+
   @supports selector(body:has(*)) {
     body:has(.station-dot[data-selected="true"][data-light="day"]) .station-detail,
     body:has(.station-dot[data-selected="true"][data-light="twilight"]) .station-detail,
@@ -96,10 +114,12 @@
 @media (max-width: 620px) {
   .world-map { min-height: 0; }
   .map-label { font-size: 0.52rem; }
+  .event-footprint { width: 6px; height: 6px; }
 }
 
 @media print {
   .world-map { aspect-ratio: 2 / 1; min-height: 0; }
+  .event-footprint { opacity: 0.7; }
 
   @supports selector(body:has(*)) {
     body:has(.station-dot[data-selected="true"]) .station-detail,

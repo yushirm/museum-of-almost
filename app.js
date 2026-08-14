@@ -40,6 +40,7 @@
     weatherRain: document.querySelector('#weather-rain'),
     daylightCount: document.querySelector('#daylight-count'),
     stationPoints: document.querySelector('#station-points'),
+    mapSourceNote: document.querySelector('.map-source-note'),
     stationList: document.querySelector('#station-list'),
     stationName: document.querySelector('#station-name'),
     stationCoordinates: document.querySelector('#station-coordinates'),
@@ -70,6 +71,7 @@
     fieldSheetTime: document.querySelector('#field-sheet-time'),
     fieldSheetButton: document.querySelector('#field-sheet-button')
   };
+  const mapSourceNoteBase = ui.mapSourceNote?.textContent.trim() || '';
 
   let requestController = null;
   let snapshot = emptySnapshot();
@@ -147,8 +149,8 @@
         ? core.normalizeWeather(weatherResult.value)
         : core.normalizeWeather(null),
       events: eventResult.status === 'fulfilled'
-        ? core.normalizeEvents(eventResult.value)
-        : { available: false, count: null, capped: false, categories: [] },
+        ? { ...core.normalizeEvents(eventResult.value), points: normalizeEventPoints(eventResult.value) }
+        : { available: false, count: null, capped: false, categories: [], points: [] },
       feeds: {
         earthquakes: quakeResult.status === 'fulfilled',
         solar: solarResult.status === 'fulfilled',
@@ -200,10 +202,36 @@
       solar: { available: false, speed: null, state: 'unavailable' },
       scales: { available: false, value: null },
       weather: core.normalizeWeather(null),
-      events: { available: false, count: null, capped: false, categories: [] },
+      events: { available: false, count: null, capped: false, categories: [], points: [] },
       feeds: { earthquakes: false, solar: false, scales: false, weather: false, events: false },
       receivedAt: null
     };
+  }
+
+  function normalizeEventPoints(payload) {
+    const events = Array.isArray(payload?.events) ? payload.events : [];
+    const points = [];
+
+    for (const event of events) {
+      const geometries = Array.isArray(event?.geometry) ? event.geometry : [];
+      let latestPoint = null;
+      for (let index = geometries.length - 1; index >= 0; index -= 1) {
+        const geometry = geometries[index];
+        if (geometry?.type !== 'Point' || !Array.isArray(geometry.coordinates)) continue;
+        const lon = Number(geometry.coordinates[0]);
+        const lat = Number(geometry.coordinates[1]);
+        if (!Number.isFinite(lon) || !Number.isFinite(lat) || lat < -90 || lat > 90) continue;
+        const normalizedLon = ((lon + 180) % 360 + 360) % 360 - 180;
+        latestPoint = { lat, lon: normalizedLon };
+        break;
+      }
+      if (!latestPoint) continue;
+      const position = core.stationPosition(latestPoint);
+      points.push({ ...latestPoint, ...position });
+      if (points.length >= 120) break;
+    }
+
+    return points;
   }
 
   function renderSampleAcquire() {
@@ -390,6 +418,32 @@
       button.addEventListener('click', () => selectStation(station.id));
       ui.stationPoints.append(button);
     }
+
+    renderEventFootprints();
+  }
+
+  function renderEventFootprints() {
+    const points = Array.isArray(snapshot.events?.points) ? snapshot.events.points : [];
+    for (const point of points) {
+      const mark = document.createElement('span');
+      mark.className = 'event-footprint';
+      mark.style.setProperty('--x', `${point.x}%`);
+      mark.style.setProperty('--y', `${point.y}%`);
+      mark.setAttribute('aria-hidden', 'true');
+      ui.stationPoints.append(mark);
+    }
+
+    if (!ui.mapSourceNote) return;
+    if (!snapshot.events.available) {
+      ui.mapSourceNote.textContent = mapSourceNoteBase;
+      return;
+    }
+
+    const north = points.filter((point) => point.lat >= 0).length;
+    const south = points.length - north;
+    const plotted = points.length;
+    const capNote = plotted >= 120 ? ' Display capped at 120 marks.' : '';
+    ui.mapSourceNote.textContent = `${mapSourceNoteBase} NASA EONET: ${plotted} open events in this snapshot have latest reported Point geometry (${north} north / ${south} south of the equator); hollow diamonds show those points. The headline event count includes all open EONET events, including non-point geometry.${capNote}`;
   }
 
   function renderStationList(pointsById, lightStates) {
