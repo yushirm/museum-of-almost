@@ -38,18 +38,44 @@
     body[data-recent-room="page-four"] [data-room-note="page-four"],
     body[data-recent-room="elsewhere"] [data-room-note="elsewhere"],
     body[data-recent-room="museum"] [data-room-note="museum"] { display: block; }
+
+    body[data-recent-room="commons"] .gallery-commons,
+    body[data-recent-room="deep-space"] .gallery-space,
+    body[data-recent-room="almost-online"] .gallery-web,
+    body[data-recent-room="page-four"] .gallery-four,
+    body[data-recent-room="elsewhere"] .maintenance-seam {
+      z-index: 1;
+      outline: 1px dashed currentColor;
+      outline-offset: 6px;
+    }
+    body[data-recent-room="museum"] .gallery-grid {
+      outline: 1px dashed var(--muted);
+      outline-offset: 7px;
+    }
+
     @media (max-width: 820px) {
       .museum-condition { grid-template-columns: 1fr; gap: 0.35rem; }
     }
     @media (prefers-contrast: more) {
       .museum-condition { border-block-color: currentColor; }
+      body[data-recent-room="museum"] .gallery-grid,
+      body[data-recent-room="commons"] .gallery-commons,
+      body[data-recent-room="deep-space"] .gallery-space,
+      body[data-recent-room="almost-online"] .gallery-web,
+      body[data-recent-room="page-four"] .gallery-four,
+      body[data-recent-room="elsewhere"] .maintenance-seam {
+        outline-width: 2px;
+      }
     }
     @media print {
       .museum-condition { display: none; }
+      .gallery-grid,
+      .gallery-card,
+      .maintenance-seam { outline: none !important; }
     }
   </style>
 </head>
-<body data-recent-room="commons">
+<body data-recent-room="museum">
   <a class="skip-link" href="#galleries">Skip to the galleries</a>
 
   <header class="museum-header">
@@ -67,14 +93,14 @@
       <p>One gallery holds a single shared moment on Earth. Another leaves the planet behind for light, gravity and unfinished physics. The third disappears into the hand-coded personal web. The fourth was not on the floor plan.</p>
     </section>
 
-    <aside class="museum-condition" aria-label="Building condition">
-      <span class="museum-condition-label">BUILDING CONDITION</span>
-      <p class="museum-condition-note" data-room-note="commons">COMMONS / NOW was recently relatched. The brass still has fresh fingerprints.</p>
-      <p class="museum-condition-note" data-room-note="deep-space">DEEP SPACE / ALMOST is still settling after a recent calibration.</p>
-      <p class="museum-condition-note" data-room-note="almost-online">ALMOST ONLINE! has newer handwriting than the rest of the building.</p>
-      <p class="museum-condition-note" data-room-note="page-four">PAGE FOUR contains a file that is not sitting where the dust says it should.</p>
-      <p class="museum-condition-note" data-room-note="elsewhere">Facilities left a clipboard beyond the service door after the last shift.</p>
-      <p class="museum-condition-note" data-room-note="museum">The floor plan itself has fresh pencil on it.</p>
+    <aside class="museum-condition" aria-label="Floor plan afterimage">
+      <span class="museum-condition-label">FLOOR PLAN AFTERIMAGE</span>
+      <p class="museum-condition-note" data-room-note="commons">COMMONS / NOW is sitting just outside the dust line where the plan says it belongs.</p>
+      <p class="museum-condition-note" data-room-note="deep-space">DEEP SPACE / ALMOST no longer quite fits the rectangle pencilled around it.</p>
+      <p class="museum-condition-note" data-room-note="almost-online">ALMOST ONLINE! has shifted far enough to expose the old outline underneath.</p>
+      <p class="museum-condition-note" data-room-note="page-four">PAGE FOUR is not aligned with the mark left by PAGE FOUR.</p>
+      <p class="museum-condition-note" data-room-note="elsewhere">The service door is standing just proud of its old frame.</p>
+      <p class="museum-condition-note" data-room-note="museum">The floor plan and the building are no longer perfectly registered.</p>
     </aside>
 
     <nav class="gallery-grid" aria-label="Museum galleries">
