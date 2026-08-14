@@ -52,30 +52,6 @@
       </div>
     </section>
 
-    <section class="sample-hold-section" aria-labelledby="sample-hold-title">
-      <div class="sample-hold-copy">
-        <p class="eyebrow">THE SAMPLE-AND-HOLD BUS</p>
-        <h2 id="sample-hold-title">One now, latched.</h2>
-        <p>Borrowed from analog electronics: acquire changing signals, then hold one stable sample for everything downstream. COMMONS / NOW keeps the previous visible snapshot in place while all five current feeds settle, then commits the new world in one pass.</p>
-      </div>
-      <div id="sample-hold-panel" class="sample-hold-panel" data-phase="hold">
-        <div class="sample-hold-state">
-          <span>BUS STATE</span>
-          <strong id="sample-phase">HOLD</strong>
-          <small id="sample-cycle">No sample latched yet.</small>
-        </div>
-        <ol class="sample-feed-list" aria-label="Five feeds in the current sample-and-hold cycle">
-          <li data-sample-feed="earthquakes" data-state="waiting"><span>01 · USGS</span><strong>EARTH</strong><small>awaiting first sample</small></li>
-          <li data-sample-feed="solar" data-state="waiting"><span>02 · NOAA</span><strong>FLOW</strong><small>awaiting first sample</small></li>
-          <li data-sample-feed="scales" data-state="waiting"><span>03 · NOAA</span><strong>SCALES</strong><small>awaiting first sample</small></li>
-          <li data-sample-feed="weather" data-state="waiting"><span>04 · OPEN-METEO</span><strong>WEATHER</strong><small>awaiting first sample</small></li>
-          <li data-sample-feed="events" data-state="waiting"><span>05 · NASA</span><strong>EVENTS</strong><small>awaiting first sample</small></li>
-        </ol>
-        <p id="sample-status" class="sample-hold-status" role="status" aria-live="polite">Five public channels will settle before the first visible snapshot is committed.</p>
-      </div>
-      <p class="sample-hold-note">This is a current-state latch, not a history. Refreshing replaces the held sample; the application does not keep the previous one.</p>
-    </section>
-
     <section class="headline-grid" aria-label="Current world headline metrics">
       <article class="headline-card headline-earth">
         <span>EARTHQUAKES · PAST HOUR</span>
@@ -109,6 +85,30 @@
     <section class="world-sentence-panel" aria-labelledby="world-sentence-title">
       <span id="world-sentence-title">RIGHT NOW, IN ONE SENTENCE</span>
       <p id="world-sentence">Reading the commons…</p>
+    </section>
+
+    <section class="sample-hold-section" aria-labelledby="sample-hold-title">
+      <div class="sample-hold-copy">
+        <p class="eyebrow">THE SAMPLE-AND-HOLD BUS</p>
+        <h2 id="sample-hold-title">One now, latched.</h2>
+        <p>Borrowed from analog electronics: acquire changing signals, then hold one stable sample for everything downstream. COMMONS / NOW keeps the previous visible snapshot in place while all five current feeds settle, then commits the new world in one pass.</p>
+      </div>
+      <div id="sample-hold-panel" class="sample-hold-panel" data-phase="hold">
+        <div class="sample-hold-state">
+          <span>BUS STATE</span>
+          <strong id="sample-phase">HOLD</strong>
+          <small id="sample-cycle">No sample latched yet.</small>
+        </div>
+        <ol class="sample-feed-list" aria-label="Five feeds in the current sample-and-hold cycle">
+          <li data-sample-feed="earthquakes" data-state="waiting"><span>01 · USGS</span><strong>EARTH</strong><small>awaiting first sample</small></li>
+          <li data-sample-feed="solar" data-state="waiting"><span>02 · NOAA</span><strong>FLOW</strong><small>awaiting first sample</small></li>
+          <li data-sample-feed="scales" data-state="waiting"><span>03 · NOAA</span><strong>SCALES</strong><small>awaiting first sample</small></li>
+          <li data-sample-feed="weather" data-state="waiting"><span>04 · OPEN-METEO</span><strong>WEATHER</strong><small>awaiting first sample</small></li>
+          <li data-sample-feed="events" data-state="waiting"><span>05 · NASA</span><strong>EVENTS</strong><small>awaiting first sample</small></li>
+        </ol>
+        <p id="sample-status" class="sample-hold-status" role="status" aria-live="polite">Five public channels will settle before the first visible snapshot is committed.</p>
+      </div>
+      <p class="sample-hold-note">This is a current-state latch, not a history. Refreshing replaces the held sample; the application does not keep the previous one.</p>
     </section>
 
     <section class="solar-dial-section" aria-labelledby="solar-dial-title">
