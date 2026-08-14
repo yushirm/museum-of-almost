@@ -326,3 +326,74 @@
     display: none !important;
   }
 }
+
+/* The held Weather Loom loosens while the next five-feed sample is acquiring, then settles only when the latch commits. */
+.weather-loom-band {
+  transform-origin: 50% 100%;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+body[data-loading="true"] .weather-loom-frame {
+  border-style: dashed;
+}
+
+body[data-loading="true"] .weather-loom-thread:nth-child(odd) .weather-loom-band {
+  transform: translateY(0.26rem) scaleY(0.9);
+  opacity: 0.62;
+}
+
+body[data-loading="true"] .weather-loom-thread:nth-child(even) .weather-loom-band {
+  transform: translateY(-0.14rem) scaleY(0.9);
+  opacity: 0.62;
+}
+
+body[data-loading="false"] .weather-loom-band {
+  animation: commons-loom-latch 420ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+@keyframes commons-loom-latch {
+  0% {
+    transform: scaleY(0.9);
+    opacity: 0.62;
+  }
+  70% {
+    transform: scaleY(1.035);
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .weather-loom-band {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  body[data-loading="true"] .weather-loom-thread .weather-loom-band {
+    transform: none;
+    opacity: 0.78;
+  }
+}
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  body[data-loading="true"] .weather-loom-frame {
+    outline: 2px dashed currentColor;
+    outline-offset: 3px;
+  }
+
+  body[data-loading="true"] .weather-loom-thread .weather-loom-band {
+    opacity: 1;
+  }
+}
+
+@media print {
+  .weather-loom-band {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
