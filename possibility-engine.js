@@ -14,9 +14,16 @@
   const possibilityList = document.querySelector('#success-possibilities');
   const applyButton = document.querySelector('#success-apply');
   const resetButton = document.querySelector('#success-reset');
+  const archiveHeading = document.querySelector('.success-archive-heading');
+  const archiveGrid = document.querySelector('.success-archive-grid');
 
   if (!caseButtons.length || !caseTitle || !caseQuestion || !caseMap || !progress ||
-      !evidenceTitle || !evidenceBody || !possibilityList || !applyButton || !resetButton) return;
+      !evidenceTitle || !evidenceBody || !possibilityList || !applyButton || !resetButton ||
+      !archiveHeading || !archiveGrid) return;
+
+  const archiveEyebrow = archiveHeading.querySelector('.eyebrow');
+  const archiveTitle = archiveHeading.querySelector('h3');
+  const archiveIntro = archiveHeading.querySelector(':scope > p');
 
   let activeCaseId = caseButtons.find((button) => button.dataset.active === 'true')?.dataset.successCaseId
     || core.SUCCESS_CASES[0]?.id;
@@ -54,6 +61,41 @@
     return card;
   }
 
+  function archiveRecord(snapshot) {
+    const record = document.createElement('article');
+    record.className = 'success-record';
+
+    const hinge = document.createElement('p');
+    hinge.className = 'archive-hinge';
+    hinge.textContent = snapshot.archive.hinge;
+
+    const title = document.createElement('h4');
+    title.textContent = snapshot.label;
+
+    const result = document.createElement('p');
+    result.textContent = snapshot.archive.result;
+
+    const source = document.createElement('span');
+    source.className = 'archive-source';
+    source.textContent = `Historical source record · ${snapshot.archive.source}`;
+
+    record.append(hinge, title, result, source);
+    return record;
+  }
+
+  function renderArchive(snapshot, complete) {
+    archiveHeading.hidden = !complete;
+    archiveGrid.hidden = !complete;
+    if (!complete) return;
+
+    if (archiveEyebrow) archiveEyebrow.textContent = 'SUCCESS ARCHIVE · EVIDENCE RUN COMPLETE';
+    if (archiveTitle) archiveTitle.textContent = 'Archive reached.';
+    if (archiveIntro) {
+      archiveIntro.textContent = 'The record appears only after this fixed evidence sequence reaches its end. It files what changed without pretending the surviving explanation closes the wider question.';
+    }
+    archiveGrid.replaceChildren(archiveRecord(snapshot));
+  }
+
   function render() {
     const snapshot = core.possibilitySnapshot(activeCaseId, evidenceCount);
     if (!snapshot) return;
@@ -78,6 +120,7 @@
     applyButton.disabled = complete;
     applyButton.textContent = complete ? 'Archive reached' : 'Apply next evidence';
     resetButton.disabled = snapshot.evidenceCount === 0;
+    renderArchive(snapshot, complete);
   }
 
   for (const button of caseButtons) {
