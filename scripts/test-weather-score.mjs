@@ -44,6 +44,8 @@ assert.match(viewSource, /Listen to this weave/);
 assert.match(viewSource, /Earth is not singing/);
 assert.match(viewSource, /missing temperature is a silent rest|missing temperatures remain silent rests/i);
 assert.match(viewSource, /\.weather-loom-section/);
+assert.match(viewSource, /orderScoreToWeave/);
+assert.match(viewSource, /weather-loom-thread\[data-station\]/);
 assert.match(viewSource, /data-sounding/);
 assert.doesNotMatch(viewSource, /weather-score-section/);
 assert.doesNotMatch(viewSource, /weather-score-list/);
