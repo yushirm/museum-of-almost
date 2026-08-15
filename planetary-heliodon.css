@@ -54,6 +54,31 @@
   stroke-width: 2;
 }
 
+.event-footprint[data-solar-state="day"] {
+  border-color: var(--gold);
+  border-width: 2px;
+  border-style: solid;
+  opacity: 0.96;
+}
+
+.event-footprint[data-solar-state="twilight"] {
+  border-color: var(--red);
+  border-width: 2px;
+  border-style: dashed;
+  opacity: 0.96;
+}
+
+.event-footprint[data-solar-state="night"] {
+  border-color: var(--night);
+  border-width: 3px;
+  border-style: double;
+  opacity: 0.96;
+}
+
+.event-footprint[data-solar-state="unknown"] {
+  border-style: dotted;
+}
+
 .planetary-heliodon-readout {
   display: grid;
   grid-template-columns: minmax(14rem, 1.2fr) minmax(18rem, 1fr);
@@ -176,6 +201,25 @@
   .heliodon-hatch-line { opacity: 0.5; stroke-width: 6; }
   .heliodon-terminator { stroke-width: 4; }
   .planetary-heliodon-readout dl { border-width: 2px; }
+  .event-footprint[data-solar-state] {
+    border-color: currentColor;
+    opacity: 1;
+  }
+  .event-footprint[data-solar-state="day"] { border-style: solid; }
+  .event-footprint[data-solar-state="twilight"] { border-style: dashed; }
+  .event-footprint[data-solar-state="night"] { border-style: double; }
+  .event-footprint[data-solar-state="unknown"] { border-style: dotted; }
+}
+
+@media (forced-colors: active) {
+  .event-footprint[data-solar-state] {
+    border-color: CanvasText;
+    opacity: 1;
+  }
+  .event-footprint[data-solar-state="day"] { border-style: solid; }
+  .event-footprint[data-solar-state="twilight"] { border-style: dashed; }
+  .event-footprint[data-solar-state="night"] { border-style: double; }
+  .event-footprint[data-solar-state="unknown"] { border-style: dotted; }
 }
 
 @media print {
@@ -187,6 +231,7 @@
     padding: 0.28rem 0.5rem;
     font-size: 0.5rem;
   }
+  .event-footprint[data-solar-state] { opacity: 0.9; }
 }
 
 .world-map .map-label { z-index: 4; }

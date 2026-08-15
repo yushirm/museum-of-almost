@@ -60,6 +60,32 @@
     return panel;
   }
 
+  function classifyEventFootprints(document, capturedMs) {
+    const marks = [...document.querySelectorAll('.event-footprint')];
+    const points = Array.isArray(root.MuseumCommonsSnapshot?.events?.points)
+      ? root.MuseumCommonsSnapshot.events.points
+      : [];
+    const counts = { day: 0, twilight: 0, night: 0, unknown: 0 };
+
+    marks.forEach((mark, index) => {
+      const point = points[index];
+      const state = point && Number.isFinite(capturedMs)
+        ? commons.sunState(capturedMs, point.lat, point.lon)
+        : 'unknown';
+      mark.dataset.solarState = state;
+      if (state === 'day' || state === 'twilight' || state === 'night') counts[state] += 1;
+      else counts.unknown += 1;
+    });
+
+    return { ...counts, plotted: marks.length };
+  }
+
+  function buildEventLightSentence(counts) {
+    if (!counts.plotted) return '';
+    const unknown = counts.unknown ? `; ${counts.unknown} could not be classified` : '';
+    return ` Of ${counts.plotted} plotted open-event locations, ${counts.day} fall in model daylight, ${counts.twilight} in civil twilight, and ${counts.night} in model night at this latch${unknown}. Solid, dashed, and double diamond outlines mark those three states. This derives current solar geometry at each latest reported Point location; it does not claim the event itself was observed at the latch time.`;
+  }
+
   function mount(document, host) {
     if (!document?.querySelector) return;
     installStylesheet(document);
@@ -96,11 +122,13 @@
         if (night) night.setAttribute('d', '');
         if (sunPoint) sunPoint.removeAttribute('transform');
         if (nightPoint) nightPoint.removeAttribute('transform');
+        classifyEventFootprints(document, null);
         if (status) status.textContent = 'Waiting for a captured Museum snapshot before deriving solar geometry.';
         return;
       }
       const plate = core.plate(capturedMs);
       if (!plate) {
+        classifyEventFootprints(document, null);
         if (status) status.textContent = 'Solar geometry unavailable for this snapshot instant.';
         return;
       }
@@ -112,9 +140,10 @@
 
       const sunText = coordinatePair(plate.geometry.subsolar);
       const nightText = coordinatePair(plate.geometry.antisolar);
+      const eventLight = classifyEventFootprints(document, capturedMs);
       if (subsolar) subsolar.textContent = sunText;
       if (antisolar) antisolar.textContent = nightText;
-      if (status) status.textContent = `Frozen at ${formatUtc(capturedMs)}. Hatched cells face away from the Sun; the line is the derived day/night terminator.`;
+      if (status) status.textContent = `Frozen at ${formatUtc(capturedMs)}. Hatched cells face away from the Sun; the line is the derived day/night terminator.${buildEventLightSentence(eventLight)}`;
 
       if (fieldStrip) {
         const time = fieldStrip.querySelector('[data-heliodon-field-time]');
@@ -131,6 +160,7 @@
     } else {
       document.querySelector('#refresh-button')?.addEventListener('click', render);
     }
+    document.addEventListener('museum:commons-snapshot', render);
     render();
   }
 
