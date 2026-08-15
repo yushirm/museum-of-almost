@@ -88,6 +88,7 @@
     archiveGrid.hidden = !complete;
     if (!complete) return;
 
+    archiveGrid.dataset.earnedArchive = 'true';
     if (archiveEyebrow) archiveEyebrow.textContent = 'SUCCESS ARCHIVE · EVIDENCE RUN COMPLETE';
     if (archiveTitle) archiveTitle.textContent = 'Archive reached.';
     if (archiveIntro) {
