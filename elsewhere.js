@@ -8,6 +8,7 @@
   let liftServiceScar = false;
   let currentRecord = null;
   let returnCartRecord = null;
+  let reshelvedRecord = null;
 
   const handlingRoutes = Object.freeze({
     'artifact-c0-001': { zone: 'ZONE B · BUILDING FABRIC', zoneId: 'B', action: 'Support the key without testing it against unverified locks.', hold: 'No matching lock exists in the building survey.' },
@@ -102,6 +103,13 @@
     catalogueRule.after(desk);
   };
 
+  const markReshelved = (record) => {
+    if (!record) return;
+    if (reshelvedRecord && reshelvedRecord !== record) reshelvedRecord.removeAttribute('data-reshelved');
+    reshelvedRecord = record;
+    reshelvedRecord.setAttribute('data-reshelved', 'true');
+  };
+
   const installReturnCart = () => {
     if (!controls || !records.length) return;
     controls.replaceChildren();
@@ -112,29 +120,36 @@
     const style = document.createElement('style');
     style.dataset.elsewhereReturnCart = 'true';
     style.textContent = `
-      .return-cart-status{display:grid;gap:.35rem;padding:.85rem 1rem;border:1px dashed currentColor;background:rgba(229,168,38,.07);font-size:.75rem;line-height:1.45}.return-cart-status strong{color:#e5a826;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}.artifact[data-return-cart="true"]{outline:2px dashed #e5a826;outline-offset:-4px;background:rgba(229,168,38,.09)}.artifact[data-return-cart="true"] summary::before{content:'RETURN CART · AWAITING RESHELF';display:block;margin-bottom:.2rem;color:#e5a826;font-size:.58rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.artifact[data-return-cart="true"] summary::after{content:'↳ OPEN FROM CART'}
-      @media(prefers-contrast:more){.return-cart-status,.artifact[data-return-cart="true"]{border-width:2px;outline-width:3px}}@media print{.return-cart-status{display:none}.artifact[data-return-cart="true"]{outline:0;background:var(--concrete-2)}.artifact[data-return-cart="true"] summary::before{display:none}}
+      .return-cart-status{display:grid;gap:.35rem;padding:.85rem 1rem;border:1px dashed currentColor;background:rgba(229,168,38,.07);font-size:.75rem;line-height:1.45}.return-cart-status strong{color:#e5a826;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}.artifact[data-return-cart="true"]{outline:2px dashed #e5a826;outline-offset:-4px;background:rgba(229,168,38,.09)}.artifact[data-return-cart="true"] summary::before{content:'RETURN CART · AWAITING RESHELF';display:block;margin-bottom:.2rem;color:#e5a826;font-size:.58rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.artifact[data-return-cart="true"] summary::after{content:'↳ OPEN FROM CART'}.artifact[data-reshelved="true"]{box-shadow:inset 4px 0 0 #93a77c}.artifact[data-reshelved="true"] summary::before{content:'RESHELVED · RETURN COMPLETE';display:block;margin-bottom:.2rem;color:#b8c9a2;font-size:.58rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+      @media(prefers-contrast:more){.return-cart-status,.artifact[data-return-cart="true"]{border-width:2px;outline-width:3px}.artifact[data-reshelved="true"]{box-shadow:inset 6px 0 0 currentColor}}@media print{.return-cart-status{display:none}.artifact[data-return-cart="true"]{outline:0;background:var(--concrete-2)}.artifact[data-return-cart="true"] summary::before,.artifact[data-reshelved="true"] summary::before{display:none}.artifact[data-reshelved="true"]{box-shadow:none}}
     `;
     document.head.append(style);
 
     for (const record of records) {
       record.addEventListener('toggle', () => {
         if (!record.open) return;
+        const openedFromCart = record === returnCartRecord;
+        if (record === reshelvedRecord) {
+          record.removeAttribute('data-reshelved');
+          reshelvedRecord = null;
+        }
         if (currentRecord && currentRecord !== record) {
-          if (returnCartRecord) returnCartRecord.removeAttribute('data-return-cart');
+          if (returnCartRecord) {
+            returnCartRecord.removeAttribute('data-return-cart');
+            if (!openedFromCart) markReshelved(returnCartRecord);
+          }
           returnCartRecord = currentRecord;
           returnCartRecord.setAttribute('data-return-cart', 'true');
-        }
-        if (record === returnCartRecord) {
-          record.removeAttribute('data-return-cart');
-          returnCartRecord = null;
         }
         currentRecord = record;
         updateTransferDesk(record);
         const cartCode = returnCartRecord ? accessionCode(returnCartRecord) : null;
-        controls.innerHTML = cartCode
-          ? `<strong>RETURN CART · ${cartCode}</strong><span>The previously handled accession is waiting for reshelving while ${accessionCode(record)} is on the movement desk.</span>`
-          : `<strong>RETURN CART · EMPTY</strong><span>${accessionCode(record)} is the first accession handled this visit.</span>`;
+        const reshelvedCode = reshelvedRecord ? accessionCode(reshelvedRecord) : null;
+        controls.innerHTML = cartCode && reshelvedCode
+          ? `<strong>RETURN CART · ${cartCode}</strong><span>${reshelvedCode} returned to shelf; ${cartCode} now waits while ${accessionCode(record)} is on the movement desk.</span>`
+          : cartCode
+            ? `<strong>RETURN CART · ${cartCode}</strong><span>The previously handled accession is waiting for reshelving while ${accessionCode(record)} is on the movement desk.</span>`
+            : `<strong>RETURN CART · EMPTY</strong><span>${accessionCode(record)} is the first accession handled this visit.</span>`;
       });
     }
   };

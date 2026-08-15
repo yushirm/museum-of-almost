@@ -54,7 +54,14 @@ assert.match(js, /RETURN CART · EMPTY/, 'enhanced catalogue should begin with a
 assert.match(js, /RETURN CART · AWAITING RESHELF/, 'a previously handled accession should receive a visible return-cart state');
 assert.match(js, /returnCartRecord\s*=\s*currentRecord/, 'opening another accession should move the previous accession onto the single-slot cart');
 assert.match(js, /returnCartRecord\.removeAttribute\('data-return-cart'\)/, 'the cart marker must migrate rather than accumulate across records');
-assert.match(js, /record\.setAttribute\('data-return-cart', 'true'\)|returnCartRecord\.setAttribute\('data-return-cart', 'true'\)/, 'return cart consequence should be attached to an existing accession record');
+assert.match(js, /returnCartRecord\.setAttribute\('data-return-cart', 'true'\)/, 'return cart consequence should be attached to an existing accession record');
+assert.match(js, /let reshelvedRecord = null/, 'return-cart lifecycle should track exactly one latest reshelved accession in memory');
+assert.match(js, /RESHELVED · RETURN COMPLETE/, 'a displaced cart occupant should leave visible reshelving aftermath');
+assert.match(js, /markReshelved\(returnCartRecord\)/, 'displacing the cart should close the handling loop by reshelving its occupant');
+assert.match(js, /if \(!openedFromCart\) markReshelved\(returnCartRecord\)/, 'opening the cart occupant directly must not falsely count as reshelving it');
+assert.match(js, /reshelvedRecord\.removeAttribute\('data-reshelved'\)/, 'reshelving aftermath must migrate rather than accumulate into visit history');
+assert.match(js, /record === reshelvedRecord/, 'handling a reshelved accession again should clear its completed-return mark');
+assert.match(js, /returned to shelf; \$\{cartCode\} now waits/, 'return-cart status should narrate the completed reshelving handoff without a ledger');
 assert.match(js, /record\.addEventListener\('toggle'/, 'native accession disclosure should drive handling consequence');
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
 assert.match(js, /prefers-reduced-motion: reduce/);
@@ -122,4 +129,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart, accession-linked handling, storage-route tracing, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart, bounded reshelving aftermath, accession-linked handling, storage-route tracing, accessible routes, and offline shell coverage.');
