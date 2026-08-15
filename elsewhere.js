@@ -7,6 +7,7 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let cursor = -1;
   let freightLiftOut = false;
+  let liftServiceScar = false;
 
   const handlingRoutes = Object.freeze({
     'artifact-c0-001': { zone: 'ZONE B · BUILDING FABRIC', zoneId: 'B', action: 'Support the key without testing it against unverified locks.', hold: 'No matching lock exists in the building survey.' },
@@ -233,13 +234,15 @@
       .lift-service-toggle{min-height:44px;padding:.55rem .75rem;border:1px solid currentColor;background:transparent;color:inherit;font:800 .68rem/1.25 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
       .lift-service-toggle:hover,.lift-service-toggle:focus-visible{background:currentColor;color:#1d201a}
       .freight-lift.is-out-of-service{opacity:.58;outline:3px double currentColor;outline-offset:4px;text-decoration:line-through}.freight-lift.is-out-of-service span{transform:none!important}
+      .corridor.has-lift-service-scar .freight-lift:not(.is-out-of-service)::after{content:'SERVICE INTERRUPTION · CLEARED';position:absolute;right:-.8rem;bottom:-1.1rem;padding:.3rem .45rem;border:1px solid currentColor;color:#171912;background:#e9e3d0;font:800 .58rem/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.06em;text-decoration:line-through;text-transform:uppercase;transform:rotate(-4deg);box-shadow:3px 4px 0 rgba(0,0,0,.2)}
+      .corridor.has-lift-service-scar .corridor-note::after{content:' · cleared service tag remains for this visit';color:#e5a826}
       .lift-consequence{display:none;margin:.75rem 0 0;padding:.75rem 1rem;border-left:4px solid currentColor;background:rgba(229,168,38,.09);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;line-height:1.5}
       .lift-consequence.is-active{display:block}
       #transfer-desk[data-lift-state="out"]{box-shadow:inset 0 0 0 3px rgba(229,168,38,.18)}
-      @media(max-width:620px){.lift-service-state{grid-template-columns:1fr}.lift-service-toggle{justify-self:start}}
-      @media(prefers-contrast:more){.lift-service-state,.lift-service-toggle{border-width:2px}.freight-lift.is-out-of-service{outline-width:4px}}
-      @media(prefers-reduced-motion:reduce){.freight-lift.is-out-of-service span{transform:none!important}}
-      @media print{.lift-service-toggle{display:none}.lift-consequence{border-left-width:2px}}
+      @media(max-width:620px){.lift-service-state{grid-template-columns:1fr}.lift-service-toggle{justify-self:start}.corridor.has-lift-service-scar .freight-lift:not(.is-out-of-service)::after{right:.25rem;bottom:-1.25rem}}
+      @media(prefers-contrast:more){.lift-service-state,.lift-service-toggle{border-width:2px}.freight-lift.is-out-of-service{outline-width:4px}.corridor.has-lift-service-scar .freight-lift:not(.is-out-of-service)::after{border-width:2px}}
+      @media(prefers-reduced-motion:reduce){.freight-lift.is-out-of-service span{transform:none!important}.corridor.has-lift-service-scar .freight-lift:not(.is-out-of-service)::after{transform:none}}
+      @media print{.lift-service-toggle{display:none}.lift-consequence{border-left-width:2px}.corridor.has-lift-service-scar .freight-lift::after,.corridor.has-lift-service-scar .corridor-note::after{display:none}}
     `;
     document.head.append(style);
 
@@ -267,13 +270,18 @@
     const sync = () => {
       lift.classList.toggle('is-out-of-service', freightLiftOut);
       lift.setAttribute('aria-disabled', String(freightLiftOut));
+      corridor.classList.toggle('has-lift-service-scar', liftServiceScar);
       consequence.classList.toggle('is-active', freightLiftOut);
       const desk = document.querySelector('#transfer-desk');
       if (desk) desk.dataset.liftState = freightLiftOut ? 'out' : 'available';
-      if (label) label.textContent = freightLiftOut ? 'LIFT 0 · OUT OF SERVICE' : 'LIFT 0 · AVAILABLE';
+      if (label) label.textContent = freightLiftOut
+        ? 'LIFT 0 · OUT OF SERVICE'
+        : liftServiceScar ? 'LIFT 0 · AVAILABLE · SERVICE TAG CLEARED' : 'LIFT 0 · AVAILABLE';
       if (copy) copy.textContent = freightLiftOut
         ? 'Movement work pauses at the building boundary. Objects stay where they are safely supported.'
-        : 'The ordinary handling route is open. Catalogue contradictions remain unaffected.';
+        : liftServiceScar
+          ? 'The ordinary handling route is open again. A crossed-out service tag remains on the lift for this visit; catalogue contradictions remain unaffected.'
+          : 'The ordinary handling route is open. Catalogue contradictions remain unaffected.';
       if (toggle) {
         toggle.setAttribute('aria-pressed', String(freightLiftOut));
         toggle.textContent = freightLiftOut ? 'CLEAR OUT-OF-SERVICE TAG' : 'TAKE LIFT OUT OF SERVICE';
@@ -295,7 +303,9 @@
       panel.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
     });
     toggle.addEventListener('click', () => {
+      const wasOut = freightLiftOut;
       freightLiftOut = !freightLiftOut;
+      if (wasOut && !freightLiftOut) liftServiceScar = true;
       sync();
     });
     sync();
