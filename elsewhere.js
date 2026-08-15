@@ -220,11 +220,54 @@
     sync();
   };
 
+  const installRoomZeroRegistration = () => {
+    const roomZero = document.querySelector('#artifact-c0-012');
+    const corridor = document.querySelector('.corridor');
+    const lift = document.querySelector('.freight-lift');
+    const liftCaption = lift?.querySelector('small');
+    const corridorNote = corridor?.querySelector('.corridor-note');
+    if (!roomZero || !corridor || !lift || !liftCaption || !corridorNote || document.querySelector('style[data-elsewhere-room-zero]')) return;
+
+    const originalCaption = liftCaption.textContent;
+    const originalNote = corridorNote.textContent;
+    const style = document.createElement('style');
+    style.dataset.elsewhereRoomZero = 'true';
+    style.textContent = `
+      .corridor.has-room-zero-registration .freight-lift:not(.is-out-of-service){box-shadow:0 0 0 3px rgba(229,168,38,.24),7px 7px 0 rgba(0,0,0,.2)}
+      .corridor.has-room-zero-registration .freight-lift::before{content:'ROOM 0? · PROVISIONAL';position:absolute;left:-1rem;top:-1.15rem;padding:.28rem .42rem;border:1px solid currentColor;background:#e9e3d0;color:#171912;font:800 .56rem/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.07em;text-transform:uppercase;transform:rotate(-3deg);box-shadow:3px 4px 0 rgba(0,0,0,.18)}
+      #artifact-c0-012[open] .plaque-object{outline:3px double #e5a826;outline-offset:5px;box-shadow:7px 7px 0 rgba(229,168,38,.12)}
+      @media(max-width:620px){.corridor.has-room-zero-registration .freight-lift::before{left:.2rem;top:-1.35rem}}
+      @media(prefers-contrast:more){.corridor.has-room-zero-registration .freight-lift::before,#artifact-c0-012[open] .plaque-object{border-width:2px;outline-width:4px}}
+      @media(prefers-reduced-motion:reduce){.corridor.has-room-zero-registration .freight-lift::before{transform:none}}
+      @media print{.corridor.has-room-zero-registration .freight-lift::before{display:none}.corridor.has-room-zero-registration .freight-lift:not(.is-out-of-service),#artifact-c0-012[open] .plaque-object{box-shadow:none;outline:0}}
+    `;
+    document.head.append(style);
+    corridorNote.setAttribute('role', 'status');
+    corridorNote.setAttribute('aria-live', 'polite');
+
+    const sync = () => {
+      const registered = roomZero.open;
+      corridor.classList.toggle('has-room-zero-registration', registered);
+      if (registered) {
+        if (!freightLiftOut) liftCaption.textContent = 'ROOM 0? · PROVISIONAL / UNRECORDED';
+        corridorNote.textContent = 'C0.012 is open. The lift has started calling its unrecorded destination “Room 0”. Close the accession and the building forgets.';
+      } else {
+        if (!freightLiftOut) liftCaption.textContent = originalCaption;
+        corridorNote.textContent = originalNote;
+      }
+    };
+
+    roomZero.addEventListener('toggle', sync);
+    document.querySelector('.lift-service-toggle')?.addEventListener('click', () => queueMicrotask(sync));
+    sync();
+  };
+
   installEnvironmentBoard();
   installIpmStandingOrder();
   installTransferDesk();
   installReturnCart();
   installFreightLiftConsequence();
+  installRoomZeroRegistration();
 
   if (reducedMotion) document.documentElement.dataset.reducedMotion = 'true';
   if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}), { once: true });
