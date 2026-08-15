@@ -40,14 +40,23 @@ assert.deepEqual(scoreCore.summarize(score), {
 
 const viewSource = await fs.readFile(new URL('../weather-score.js', import.meta.url), 'utf8');
 assert.match(viewSource, /AudioContext/);
-assert.match(viewSource, /Play this latch/);
-assert.match(viewSource, /No claim that Earth is singing/);
-assert.match(viewSource, /missing temperature becomes a rest|missing temperatures remain silent rests/i);
+assert.match(viewSource, /Listen to this weave/);
+assert.match(viewSource, /Earth is not singing/);
+assert.match(viewSource, /missing temperature is a silent rest|missing temperatures remain silent rests/i);
+assert.match(viewSource, /\.weather-loom-section/);
+assert.match(viewSource, /data-sounding/);
+assert.doesNotMatch(viewSource, /weather-score-section/);
+assert.doesNotMatch(viewSource, /weather-score-list/);
 assert.doesNotMatch(viewSource, /fetch\s*\(/);
 assert.doesNotMatch(viewSource, /localStorage|sessionStorage|indexedDB|geolocation/i);
+
+const styleSource = await fs.readFile(new URL('../weather-score.css', import.meta.url), 'utf8');
+assert.match(styleSource, /weather-score-loom/);
+assert.match(styleSource, /weather-loom-thread\[data-sounding="true"\]/);
+assert.doesNotMatch(styleSource, /weather-score-section/);
 
 const loaderSource = await fs.readFile(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
 assert.match(loaderSource, /weather-score-core\.js/);
 assert.match(loaderSource, /weather-score\.js/);
 
-console.log('Weather Score tests passed.');
+console.log('Weather Score integration tests passed.');
