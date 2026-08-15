@@ -5,8 +5,9 @@
   if (!core) return;
 
   const SNAPSHOT_EVENT = 'museum:commons-snapshot';
-  const anchor = document.querySelector('.windows-section');
-  if (!anchor || document.querySelector('#weather-score')) return;
+  const loom = document.querySelector('.weather-loom-section');
+  const loomReadout = loom?.querySelector('.weather-loom-readout');
+  if (!loom || !loomReadout || document.querySelector('#weather-score-play')) return;
 
   const stylesheet = document.createElement('link');
   stylesheet.rel = 'stylesheet';
@@ -14,45 +15,32 @@
   stylesheet.dataset.weatherScoreStyles = 'true';
   document.head.append(stylesheet);
 
-  const section = document.createElement('section');
-  section.id = 'weather-score';
-  section.className = 'weather-score-section';
-  section.setAttribute('aria-labelledby', 'weather-score-title');
-  section.innerHTML = `
-    <div class="weather-score-shell">
-      <div class="weather-score-copy">
-        <p class="eyebrow">THE WEATHER SCORE · OPTIONAL LOCAL AUDIO</p>
-        <h2 id="weather-score-title">Thirteen temperatures. Thirteen notes. No claim that Earth is singing.</h2>
-        <p>The fixed weather windows already form a discrete sample. This score borrows one device from musical notation: a sequence can make differences perceptible in another sense. Each current temperature becomes one locally generated sine tone; a missing temperature becomes a rest.</p>
-        <p class="weather-score-contract"><strong>Encoding contract:</strong> −100°C maps to 140 Hz and +70°C maps to 700 Hz, linearly and consistently across latches. The thirteen positions play in fixed Museum point order at equal beat spacing. Beat spacing is not geographic distance, pitch is not climate meaning, and the audio is not environmental sound.</p>
-      </div>
-      <div class="weather-score-console">
-        <div class="weather-score-controls">
-          <button id="weather-score-play" type="button" disabled>Play this latch</button>
-          <p id="weather-score-status" class="weather-score-status" role="status" aria-live="polite">Waiting for the thirteen fixed weather points.</p>
-        </div>
-        <ol id="weather-score-list" class="weather-score-list" aria-label="Textual score for thirteen fixed temperature readings"></ol>
-        <p class="weather-score-legend">The textual temperatures are authoritative. Audio is supplemental, starts only after a button press, uses the browser's local Web Audio engine, and makes no network request.</p>
-      </div>
-    </div>`;
-  anchor.insertAdjacentElement('afterend', section);
+  const controls = document.createElement('div');
+  controls.className = 'weather-score-loom';
+  controls.innerHTML = `
+    <div class="weather-score-loom-action">
+      <button id="weather-score-play" type="button" disabled>Listen to this weave</button>
+      <p id="weather-score-status" class="weather-score-status" role="status" aria-live="polite">Waiting for the thirteen fixed temperatures.</p>
+    </div>
+    <p class="weather-score-contract"><strong>Optional local audio.</strong> Temperature maps linearly from −100°C = 140 Hz to +70°C = 700 Hz in the same west-to-east thread order shown above; missing temperature is a silent rest. The weave is being encoded, not recorded: Earth is not singing, and no environmental sound or network audio is used.</p>`;
+  loomReadout.insertAdjacentElement('afterend', controls);
 
   const ui = {
-    list: section.querySelector('#weather-score-list'),
-    status: section.querySelector('#weather-score-status'),
-    button: section.querySelector('#weather-score-play')
+    status: controls.querySelector('#weather-score-status'),
+    button: controls.querySelector('#weather-score-play')
   };
 
   let score = [];
   let audioContext = null;
   let activeNodes = [];
+  let highlightTimers = [];
   let playbackToken = 0;
 
   ui.button.addEventListener('click', () => {
     if (ui.button.disabled) return;
     playScore().catch(() => {
       stopPlayback();
-      ui.status.textContent = 'Audio playback is unavailable in this browser. The textual score remains complete below.';
+      ui.status.textContent = 'Audio playback is unavailable in this browser. The visual weave and exact station readings remain complete.';
       ui.button.disabled = true;
       ui.button.textContent = 'Audio unavailable';
     });
@@ -66,43 +54,37 @@
   render(globalThis.MuseumCommonsSnapshot);
 
   function render(snapshot) {
-    score = core.buildScore(snapshot);
+    score = orderScoreToWeave(core.buildScore(snapshot));
     const summary = core.summarize(score);
-    ui.list.replaceChildren();
-
-    for (const entry of score) {
-      const item = document.createElement('li');
-      item.className = 'weather-score-note';
-      item.dataset.rest = entry.rest ? 'true' : 'false';
-
-      const point = document.createElement('strong');
-      point.textContent = `POINT ${entry.id}`;
-
-      const reading = document.createElement('span');
-      reading.textContent = entry.rest
-        ? 'REST · temperature unavailable'
-        : `${entry.temperature.toFixed(1)}°C · ${entry.frequency.toFixed(1)} Hz`;
-
-      item.append(point, reading);
-      ui.list.append(item);
-    }
-
     const hasAudio = 'AudioContext' in globalThis || 'webkitAudioContext' in globalThis;
     const playable = summary.measured > 0 && hasAudio;
+
     ui.button.disabled = !playable;
-    ui.button.textContent = hasAudio ? 'Play this latch' : 'Audio unavailable';
+    ui.button.textContent = hasAudio ? 'Listen to this weave' : 'Audio unavailable';
 
     if (!summary.total) {
-      ui.status.textContent = 'Waiting for the thirteen fixed weather points.';
+      ui.status.textContent = 'Waiting for the thirteen fixed temperatures.';
       return;
     }
 
     if (!summary.measured) {
-      ui.status.textContent = `${summary.total} fixed points are present, but none has a current temperature. Every position is a rest.`;
+      ui.status.textContent = `${summary.total} fixed threads are present, but none has a current temperature. The whole score is rest.`;
       return;
     }
 
-    ui.status.textContent = `${summary.measured}/${summary.total} fixed points have temperature readings; ${summary.rests} ${summary.rests === 1 ? 'rest' : 'rests'}. The audio is a deterministic encoding of this latch, not environmental sound.`;
+    ui.status.textContent = `${summary.measured}/${summary.total} threads can sound; ${summary.rests} ${summary.rests === 1 ? 'thread is a silent rest' : 'threads are silent rests'}. Playback follows the same west-to-east weave shown above.`;
+  }
+
+  function orderScoreToWeave(entries) {
+    const order = [...loom.querySelectorAll('.weather-loom-thread[data-station]')]
+      .map((thread) => String(thread.dataset.station || ''));
+    if (!order.length) return entries;
+    const rank = new Map(order.map((id, index) => [id, index]));
+    return [...entries].sort((a, b) => {
+      const aRank = rank.has(String(a.id)) ? rank.get(String(a.id)) : Number.MAX_SAFE_INTEGER;
+      const bRank = rank.has(String(b.id)) ? rank.get(String(b.id)) : Number.MAX_SAFE_INTEGER;
+      return aRank - bRank;
+    });
   }
 
   async function playScore() {
@@ -121,11 +103,14 @@
     const audible = score.filter((entry) => !entry.rest).length;
 
     score.forEach((entry, index) => {
+      const noteStart = start + index * step;
+      const noteDuration = Math.min(step * 0.72, 0.14);
+      scheduleThreadBeat(entry, index, token, noteDuration);
+
       if (entry.rest || !Number.isFinite(entry.frequency)) return;
       const oscillator = audioContext.createOscillator();
       const gain = audioContext.createGain();
-      const noteStart = start + index * step;
-      const noteEnd = noteStart + Math.min(step * 0.72, 0.14);
+      const noteEnd = noteStart + noteDuration;
 
       oscillator.type = 'sine';
       oscillator.frequency.setValueAtTime(entry.frequency, noteStart);
@@ -141,22 +126,55 @@
     });
 
     ui.button.disabled = true;
-    ui.button.textContent = 'Playing latch…';
-    ui.status.textContent = `Playing ${audible} measured temperatures in fixed point order; missing temperatures remain silent rests.`;
+    ui.button.textContent = 'Listening…';
+    ui.status.textContent = `Reading the weave west to east: ${audible} sounding temperatures; missing temperatures remain silent rests.`;
 
     const duration = Math.max(score.length * core.POINT_DURATION_MS + 120, 120);
-    window.setTimeout(() => {
+    highlightTimers.push(window.setTimeout(() => {
       if (token !== playbackToken) return;
+      clearThreadBeats();
       activeNodes = [];
       ui.button.disabled = audible === 0;
-      ui.button.textContent = 'Play this latch';
+      ui.button.textContent = 'Listen to this weave';
       const summary = core.summarize(score);
-      ui.status.textContent = `Playback complete: ${summary.measured} measured temperatures and ${summary.rests} ${summary.rests === 1 ? 'rest' : 'rests'}.`;
-    }, duration);
+      ui.status.textContent = `Weave playback complete: ${summary.measured} sounding threads and ${summary.rests} ${summary.rests === 1 ? 'silent rest' : 'silent rests'}.`;
+    }, duration));
+  }
+
+  function scheduleThreadBeat(entry, index, token, noteDuration) {
+    const delay = 40 + index * core.POINT_DURATION_MS;
+    const visibleDuration = Math.max(70, noteDuration * 1000);
+    highlightTimers.push(window.setTimeout(() => {
+      if (token !== playbackToken) return;
+      clearThreadBeats();
+      const thread = loom.querySelector(`.weather-loom-thread[data-station="${safeStationId(entry.id)}"]`);
+      if (!thread) return;
+      thread.dataset.sounding = 'true';
+      thread.dataset.scoreRest = String(entry.rest);
+      highlightTimers.push(window.setTimeout(() => {
+        if (token !== playbackToken) return;
+        thread.removeAttribute('data-sounding');
+        thread.removeAttribute('data-score-rest');
+      }, visibleDuration));
+    }, delay));
+  }
+
+  function safeStationId(value) {
+    return String(value).replace(/[^a-zA-Z0-9_-]/g, '');
+  }
+
+  function clearThreadBeats() {
+    loom.querySelectorAll('.weather-loom-thread[data-sounding]').forEach((thread) => {
+      thread.removeAttribute('data-sounding');
+      thread.removeAttribute('data-score-rest');
+    });
   }
 
   function stopPlayback() {
     playbackToken += 1;
+    for (const timer of highlightTimers) window.clearTimeout(timer);
+    highlightTimers = [];
+    clearThreadBeats();
     for (const node of activeNodes) {
       try {
         if (typeof node.stop === 'function') node.stop();
