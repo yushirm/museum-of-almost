@@ -83,7 +83,7 @@
   function buildEventLightSentence(counts) {
     if (!counts.plotted) return '';
     const unknown = counts.unknown ? `; ${counts.unknown} could not be classified` : '';
-    return ` Of ${counts.plotted} plotted open-event points, ${counts.day} fall in model daylight, ${counts.twilight} in civil twilight, and ${counts.night} in model night at this latch${unknown}.`;
+    return ` Of ${counts.plotted} plotted open-event locations, ${counts.day} fall in model daylight, ${counts.twilight} in civil twilight, and ${counts.night} in model night at this latch${unknown}. Solid, dashed, and double diamond outlines mark those three states. This derives current solar geometry at each latest reported Point location; it does not claim the event itself was observed at the latch time.`;
   }
 
   function mount(document, host) {
