@@ -80,19 +80,14 @@ assert.match(js, /Trace \$\{accessionCode\} storage route to Zone \$\{route\.zon
 assert.match(js, /min-height:44px/, 'route trace must provide a touch-sized target');
 assert.match(js, /\.transfer-trace:hover,\.transfer-trace:focus-visible/, 'route trace needs visible keyboard focus treatment');
 
-assert.match(js, /COLLECTIONS RECONCILIATION \/ CYCLE COUNT/);
-assert.match(js, /Inventory control asks a narrower question than provenance research/);
-assert.match(js, /Inventory rule 0:<\/strong> Located is not authenticated\./);
-assert.match(js, /const cycleCountSteps = Object\.freeze\(\[/, 'cycle count should use fixed local reconciliation steps');
-assert.equal((js.match(/expected: '\d+ accessions'/g) || []).length, 4, 'cycle count should cover three zones plus the final store total');
-assert.match(js, /expected: '12 accessions',[\s\S]*?located: '12 accessions'/, 'final reconciliation should account for the established twelve-accession collection');
-assert.match(js, /data-cycle-status role="status" aria-live="polite"/, 'cycle count needs a polite live status');
-assert.match(js, /data-cycle-next>COUNT NEXT ZONE<\/button>/, 'cycle count should use a fixed-choice button rather than visitor text');
-assert.match(js, /cycleButton\.addEventListener\('click'/, 'cycle count must remain an explicit visitor action');
-assert.match(js, /cycleCursor >= cycleCountSteps\.length/, 'cycle count should deterministically wrap without persistence');
-assert.match(js, /Physical custody and impossible provenance are different questions\./);
-assert.match(js, /Twelve objects present does not make twelve impossible provenances true\./);
-assert.doesNotMatch(js, /Math\.random|crypto\.getRandomValues/, 'inventory reconciliation must be fixed rather than randomized');
+for (const retired of [
+  /COLLECTIONS RECONCILIATION \/ CYCLE COUNT/,
+  /cycleCountSteps/,
+  /data-cycle-next/,
+  /cycleButton/,
+  /EMERGENCY SALVAGE \/ FIRST RESPONSE CARD/,
+  /BUILDING SERVICES \/ DEPENDENCY MAP/
+]) assert.doesNotMatch(js, retired, `retired hidden operations appendix should not remain: ${retired}`);
 
 for (const pattern of [
   /min-height:\s*44px/,
@@ -121,4 +116,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, accession-linked handling, storage-route tracing, cycle-count reconciliation, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, accession-linked handling, storage-route tracing, accessible routes, and offline shell coverage.');
