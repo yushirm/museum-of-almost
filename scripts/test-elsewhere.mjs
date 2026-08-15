@@ -120,7 +120,7 @@ assert.match(index, /href="elsewhere-teaser\.css"/);
 assert.match(index, /FACILITIES NOTICE 05 \/ FLOOR PLAN DISAGREEMENT/);
 assert.match(index, /href="elsewhere\.html"/);
 assert.match(index, /OPEN SERVICE DOOR/);
-assert.match(index, /<body data-recent-room="elsewhere">/, 'foyer afterimage should identify the latest visitor-facing room');
+assert.match(index, /<body data-recent-room="(?:commons|deep-space|almost-online|page-four|elsewhere|museum)">/, 'foyer condition should use one canonical public recent-room key');
 assert.doesNotMatch(index, /gallery-card[^>]+href="elsewhere\.html"/i, 'fifth space should not become an ordinary gallery card');
 
 for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', './elsewhere-teaser.css', './ELSEWHERE_CATALOGUE_ZERO.md']) {
