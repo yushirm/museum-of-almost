@@ -1,0 +1,29 @@
+# 159 — ALMOST ONLINE! — The Changelog Leaves the Wall
+
+- **Ancestor:** `df768e12d5d15e41413365aff5912b6e34902902`
+- **Target room:** ALMOST ONLINE!
+- **Room density:** CROWDED
+- **Generation mode:** PRUNE
+- **Selection pressure:** ALMOST ONLINE! already carries a long reverse weblog, PAGE STATUS, fixed local participation, a consolidated workbench, Web Ring, browser-native expressive behaviors, optional local WebAudio and several mature GIF/media phenotypes. Five materially different candidates were compared. **EXPANSION:** another browser-native expressive toy — rejected because it would add permanent furniture. **RELATIONAL DEEPENING:** make the guestbook, PAGE STATUS or weblog alter one another — rejected because its strongest versions duplicated established cross-surface consequence grammar. **STRUCTURAL HEADROOM / REPLACEMENT:** retire the SITE UPDATES sidebar box — selected because it had become a second narration of history already embodied by the weblog and had remained on explicit evolutionary probation. **WILD CROSSOVER:** treat the sidebar as an archaeological strata display — rejected because generation 076 had already evolved that family. **ESCAPE:** another temporal/comedic media incident — rejected because generation 158 had just used an animated failure/repair micro-event.
+- **Phenotype half-life reviewed:** SITE UPDATES began as useful old-Web construction history and was consolidated into update strata at generation 076, but later scripts continued appending more historical notices while the weblog itself remained the primary authored record of the page becoming itself. The phenotype stayed discoverable but increasingly duplicated the room's history rather than adding a distinct relationship or emotion, so it lost tenure.
+- **Retained trait:** sincere handmade homepage voice; reverse weblog and all authored posts; COOL STUFF, MY WEB AWARD and GUESTBOOK sidebar material; local stamp pad; workbench; Web Ring; PAGE STATUS responsive blueprint; construction micro-event; link echoes; fragment landings; selection ink; reading spotlight; optional local WebAudio; all privacy, reduced-motion, high-contrast, forced-colors, print, service-worker and offline boundaries.
+- **Growth introduced:** deliberate absence. The rendered sidebar no longer presents SITE UPDATES as a parallel changelog. History is allowed to live in the weblog and the page's accumulated behaviors instead of being narrated a second time in a growing maintenance list.
+- **Evolutionary axis:** duplicate historical narration → disappearance / structural breathing room / editorial confidence.
+- **Merged / reframed / pruned / replaced material:** `web1.css` gained one bounded rule hiding only the `.side-box` whose direct child is `.updates`. Existing inert update-list markup and guarded enhancement code remain untouched for compatibility; no script, state, request or service-worker behavior changed. `index.html` already carried `data-recent-room="almost-online"`, so no no-op foyer edit was manufactured.
+- **Net visitor-facing surface change:** DOWN — one entire late sidebar box disappears without removing weblog content or another interactive phenotype.
+- **Pattern intentionally avoided:** another post, sidebar box, diagnostic toy, disclosure, `<details>` archive, animation loop, relationship diagram, persisted state or explanation of the prune.
+- **Recent-pattern repetition avoided:** yes — unlike generation 158's in-place animated replacement, this generation evolves through subtraction and hierarchy. Unlike generation 076's folding of older updates, it stops presenting the duplicate changelog family altogether.
+- **Future headroom:** the sidebar now has more visual breathing room, and future evolution can deepen the remaining distinctive sidebar phenotypes instead of competing with an ever-growing historical list. The surviving weblog becomes more clearly the page's canonical lived history.
+- **Novelty-debt status:** CLEAR — generation 145 was slight-UP, generation 158 was SAME experiential replacement, and this DOWN-surface prune changes axis materially rather than extending a rolling SAME/DOWN explanatory sequence.
+- **Emotional register:** quiet / relief / confidence; the homepage stops explaining every scar and trusts the visitor to encounter what remains.
+- **Life mechanism:** disappearance / natural selection. An old phenotype that once documented growth is allowed to die because the organism now embodies the history it used to describe.
+- **First-minute detectability:** MEDIUM — desktop visitors reaching the sidebar see a simpler column immediately; mobile visitors encounter less late-page sidebar burden, but the change is intentionally quieter than a new spectacle.
+- **Return-tomorrow delta:** LOW — no simulated continuity or visitor memory is introduced; the gain is a cleaner organism whose future changes have more room to register.
+- **Form family:** structural pruning / duplicate-narration retirement / disappearance.
+- **Complexity delta:** LOW — twelve CSS lines, no new DOM, control, state, request, dependency, storage or runtime asset.
+- **Resulting fitness:** higher. ALMOST ONLINE! keeps its handmade density but sheds a redundant historical narrator, strengthening hierarchy and making the page feel less like it is documenting its evolution while it is happening.
+
+Merged runtime generation: `17bb054b67ef5d09ef02f929d5b1d03035da0fbe` via PR #297.
+Required runtime check: `Check museum` run #754, conclusion `success`, exact feature head `0db83e58a2dc56e61c23598e5db41b71dca37a02`.
+Canonical post-merge check: `Check museum` run #755, conclusion `success`, exact runtime merge `17bb054b67ef5d09ef02f929d5b1d03035da0fbe`.
+Pages deployment: run #286, conclusion `success`, exact runtime merge `17bb054b67ef5d09ef02f929d5b1d03035da0fbe`.
