@@ -64,7 +64,7 @@
     const style = document.createElement('style');
     style.dataset.elsewhereEnvironment = 'true';
     style.textContent = `
-      .environment-board{margin:clamp(3rem,8vw,7rem) auto;padding:clamp(1.25rem,4vw,2.5rem);max-width:1180px;border:1px solid currentColor;background:rgba(239,235,218,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.02),0 0 0 6px rgba(0,0,0,.14)}
+      .environment-board{margin:clamp(3rem,8vw,7rem) auto;padding:clamp(1.25rem,4vw,2.5rem);max-width:1180px;border:1px solid currentColor;background:rgba(239,235,218,.04);box-shadow:0 0 0 6px rgba(0,0,0,.14)}
       .environment-heading{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(16rem,.6fr);gap:1.5rem;align-items:end;margin-bottom:1.5rem}.environment-heading h2{margin:.2rem 0 .65rem;font-size:clamp(2rem,5vw,4.8rem);line-height:.93;letter-spacing:-.045em}.environment-heading p{max-width:64ch}
       .environment-status{border:1px dashed currentColor;padding:1rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-transform:uppercase;font-size:.82rem;line-height:1.5}.environment-status strong{display:block;font-size:1.25rem;margin-top:.3rem}
       .environment-zones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.environment-zone{position:relative;display:flex;flex-direction:column;min-height:100%;border:1px solid currentColor;background:rgba(0,0,0,.14)}
