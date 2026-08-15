@@ -48,18 +48,23 @@ for (const forbidden of [
 ]) assert.doesNotMatch(js, forbidden, `elsewhere.js violates local-only boundary: ${forbidden}`);
 
 assert.match(js, /document\.querySelectorAll\('\[data-artifact\]'\)/);
-assert.match(js, /button\.addEventListener\('click'/);
-assert.match(js, /record\.open = true/);
+assert.doesNotMatch(js, /querySelector\('#misfile-button'\)|openRecord\(|closeAll\(|let cursor\s*=/, 'retired misfile cycler should not remain in enhanced runtime');
+assert.match(js, /controls\.replaceChildren\(\)/, 'catalogue control slot should be replaced in place rather than gaining another permanent surface');
+assert.match(js, /RETURN CART · EMPTY/, 'enhanced catalogue should begin with an empty return cart');
+assert.match(js, /RETURN CART · AWAITING RESHELF/, 'a previously handled accession should receive a visible return-cart state');
+assert.match(js, /returnCartRecord\s*=\s*currentRecord/, 'opening another accession should move the previous accession onto the single-slot cart');
+assert.match(js, /returnCartRecord\.removeAttribute\('data-return-cart'\)/, 'the cart marker must migrate rather than accumulate across records');
+assert.match(js, /record\.setAttribute\('data-return-cart', 'true'\)|returnCartRecord\.setAttribute\('data-return-cart', 'true'\)/, 'return cart consequence should be attached to an existing accession record');
+assert.match(js, /record\.addEventListener\('toggle'/, 'native accession disclosure should drive handling consequence');
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
 assert.match(js, /prefers-reduced-motion: reduce/);
-assert.match(js, /behavior: reducedMotion \? 'auto' : 'smooth'/, 'programmatic scrolling must respect reduced motion');
+assert.match(js, /behavior: reducedMotion \? 'auto' : 'smooth'/, 'programmatic lift-state scrolling must respect reduced motion');
 
 assert.match(js, /COLLECTIONS TRANSFER \/ HANDLING DESK/);
 assert.match(js, /Every object gets a route\. No route resolves the object\./);
 assert.match(js, /MOVEMENT COPY · LOCAL ONLY/);
 assert.match(js, /Contradiction hold/);
-assert.match(js, /record\.addEventListener\('toggle'/, 'manual disclosure should update the transfer docket');
-assert.match(js, /updateTransferDesk\(record\)/, 'misfile cycling should update the transfer docket');
+assert.match(js, /updateTransferDesk\(record\)/, 'direct accession handling should update the transfer docket');
 const handlingIds = [...js.matchAll(/'artifact-c0-(\d{3})': \{/g)].map((match) => match[1]);
 assert.deepEqual(handlingIds, artifactIds, 'every fixed accession should have exactly one handling route');
 assert.equal((js.match(/'artifact-c0-\d{3}': \{ zone: 'ZONE A · PAPER \/ FILM'/g) || []).length, 6);
@@ -72,11 +77,11 @@ assert.match(js, /catalogueRule\.after\(desk\)/, 'transfer desk should deepen th
 for (const zone of ['A', 'B', 'C']) {
   assert.match(js, new RegExp(`data-storage-zone=\\"${zone}\\"`), `environment board should expose Zone ${zone} as a route destination`);
 }
-assert.match(js, /markActiveRoute\(route, accessionCode\)/, 'transfer updates should mark the matching conservation zone');
+assert.match(js, /markActiveRoute\(route, code\)/, 'transfer updates should mark the matching conservation zone');
 assert.match(js, /zone\.classList\.toggle\('is-active-route', active\)/, 'only the selected storage zone should receive the active movement state');
 assert.match(js, /CATALOGUE 0 → ZONE \$\{route\.zoneId\} → CONTRADICTION HOLD/, 'the handling desk should expose a compact route trace');
 assert.match(js, /href="#environment-board"/, 'the movement docket should route visitors to the existing environment board');
-assert.match(js, /Trace \$\{accessionCode\} storage route to Zone \$\{route\.zoneId\}/, 'route trace should keep an accession-specific accessible name');
+assert.match(js, /Trace \$\{code\} storage route to Zone \$\{route\.zoneId\}/, 'route trace should keep an accession-specific accessible name');
 assert.match(js, /min-height:44px/, 'route trace must provide a touch-sized target');
 assert.match(js, /\.transfer-trace:hover,\.transfer-trace:focus-visible/, 'route trace needs visible keyboard focus treatment');
 
@@ -108,6 +113,7 @@ assert.match(index, /href="elsewhere-teaser\.css"/);
 assert.match(index, /FACILITIES NOTICE 05 \/ FLOOR PLAN DISAGREEMENT/);
 assert.match(index, /href="elsewhere\.html"/);
 assert.match(index, /OPEN SERVICE DOOR/);
+assert.match(index, /<body data-recent-room="elsewhere">/, 'foyer afterimage should identify the latest visitor-facing room');
 assert.doesNotMatch(index, /gallery-card[^>]+href="elsewhere\.html"/i, 'fifth space should not become an ordinary gallery card');
 
 for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', './elsewhere-teaser.css', './ELSEWHERE_CATALOGUE_ZERO.md']) {
@@ -116,4 +122,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, accession-linked handling, storage-route tracing, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart, accession-linked handling, storage-route tracing, accessible routes, and offline shell coverage.');
