@@ -98,6 +98,9 @@
 .success-archive-heading h3 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.8rem); line-height: 0.95; }
 .success-archive-heading p { max-width: 56ch; margin: 0; color: var(--muted); line-height: 1.6; }
 .success-archive-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.success-archive-heading[hidden],
+.success-archive-grid[hidden] { display: none; }
+.success-archive-grid[data-earned-archive="true"] { grid-template-columns: minmax(0, 1fr); }
 .success-record { min-height: 320px; display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--line); background: rgba(12, 8, 29, 0.66); }
 .success-record h4 { margin: 0.8rem 0 0; font-size: clamp(1.8rem, 3vw, 2.7rem); line-height: 1; }
 .success-record > p:not(.archive-hinge) { margin: auto 0 1rem; color: var(--muted); line-height: 1.6; }
