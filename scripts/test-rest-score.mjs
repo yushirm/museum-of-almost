@@ -114,14 +114,10 @@ assert.equal(core.filterMeasures(score, 'not-applicable').length, 1);
 assert.equal(core.filterMeasures(score, 'sounded').length, 3);
 assert.equal(core.filterMeasures(score, 'nonsense').length, 19, 'unknown filter must fail open to the full score');
 
-assert.match(view, /museum:commons-snapshot/);
-assert.match(view, /activeFilter = 'all';[\s\S]+render\(\);/, 'every real latch should clear the solo filter');
-assert.match(view, /THE REST SCORE \/ NOTHING IS NOT MISSING/);
-assert.match(view, /Zero is data\. Missing is ignorance\./);
-assert.match(view, /numeric zero does not automatically mean silence/i);
-assert.match(view, /data-rest-score-styles/);
-assert.match(view, /aria-pressed/);
-assert.match(view, /aria-live/);
+assert.match(view, /Generation 162 retires the Rest Score from the visitor journey/);
+assert.match(view, /later Commons modules mount normally/);
+assert.doesNotMatch(view, /THE REST SCORE \/ NOTHING IS NOT MISSING/);
+assert.doesNotMatch(view, /data-rest-score-styles|aria-pressed|aria-live/);
 assert.doesNotMatch(view, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
 assert.doesNotMatch(view, /setInterval|setTimeout|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
 assert.doesNotMatch(view, /analytics|telemetry|https?:\/\//i);
@@ -155,9 +151,9 @@ for (const pattern of [
 ]) assert.match(record, pattern);
 
 assert.match(loader, /reverse-ledger\.js[\s\S]+rest-score-core\.js[\s\S]+rest-score\.js/,
-  'Rest Score should extend the current Commons module chain after Reverse Ledger');
+  'retired Rest Score loader slots should remain so the local module chain continues after a successful no-op load');
 for (const asset of ['./rest-score-core.js', './rest-score.js', './rest-score.css', './REST_SCORE.md']) {
-  assert.ok(worker.includes(`'${asset}'`), `offline shell should cache ${asset}`);
+  assert.ok(worker.includes(`'${asset}'`), `offline shell should retain historical Rest Score assets until a dedicated cache-version cleanup`);
 }
 
 for (const pattern of [
@@ -167,6 +163,6 @@ for (const pattern of [
   /#60 — Add the Rest Score/,
   /run: `160`/,
   /conclusion: `success`/
-]) assert.match(archive, pattern, `Success Archive should preserve Rest Score evidence: ${pattern}`);
+]) assert.match(archive, pattern, `Success Archive should preserve historical Rest Score evidence: ${pattern}`);
 
-console.log('Rest Score field-specific zero semantics, missing-vs-not-applicable behavior, five-feed coverage, filtering, privacy, accessibility, success archive evidence, and offline shell verified.');
+console.log('Rest Score core semantics remain verified while generation 162 retires the visitor-facing dashboard and preserves the loader/offline chain.');
