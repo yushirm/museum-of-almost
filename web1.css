@@ -893,3 +893,15 @@ h1 {
     display: none;
   }
 }
+
+/*
+ * GENERATION 159 // THE CHANGELOG LEAVES THE WALL
+ * The reverse weblog already embodies the page's history. The sidebar update
+ * strata had become a second narration of the same growth, so the whole box is
+ * retired from the rendered page. Existing enhancement code may still append
+ * inert historical notes to that hidden list; no visitor-facing control or state
+ * depends on it, and this keeps the prune bounded to presentation.
+ */
+.side-box:has(> .updates) {
+  display: none;
+}
