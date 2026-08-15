@@ -70,7 +70,7 @@
       .environment-zones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.environment-zone{position:relative;display:flex;flex-direction:column;min-height:100%;border:1px solid currentColor;background:rgba(0,0,0,.14)}
       .environment-zone.is-active-route{outline:3px double currentColor;outline-offset:4px;background:rgba(229,168,38,.08)}.environment-zone.is-active-route::after{content:'CURRENT MOVEMENT · ' attr(data-current-accession);position:absolute;top:.55rem;right:.55rem;padding:.2rem .35rem;border:1px solid currentColor;background:#1d201a;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.58rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
       .environment-zone header{padding:1rem;border-bottom:1px solid currentColor}.environment-zone header span{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.8}.environment-zone h3{margin:.25rem 0 0;font-size:1.25rem}.environment-zone dl{margin:0;padding:1rem;display:grid;gap:.85rem}.environment-zone dl div{display:grid;grid-template-columns:7.5rem 1fr;gap:.75rem;align-items:start}.environment-zone dt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;opacity:.72}.environment-zone dd{margin:0}
-      .environment-conflict{margin:auto 1rem 1rem;padding-top:1rem;border-top:1px dashed currentColor;font-size:.92rem}.environment-conflict strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}.environment-order{margin:1rem 0 0;padding:1rem;border-left:4px solid currentColor;background:rgba(0,0,0,.18)}
+      .environment-conflict{margin:auto 1rem 1rem;padding-top:1rem;border-top:1px dashed currentColor;font-size:.92rem}.environment-conflict strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}.environment-order{margin:1rem 0 0;padding:1rem;border-left:4px solid currentColor;background:rgba(0,0,0,.18)}.environment-ipm-order{display:block;margin-top:.55rem;padding-top:.55rem;border-top:1px dashed currentColor;font-size:.82rem;line-height:1.55}
       .transfer-desk{margin:1.5rem 0 2rem;border:1px solid currentColor;background:rgba(0,0,0,.12)}.transfer-desk header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:end;padding:1rem;border-bottom:1px solid currentColor}.transfer-desk header p{margin:0;max-width:58ch}.transfer-stamp{padding:.35rem .55rem;border:1px solid currentColor;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
       .transfer-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.9fr) minmax(0,1.3fr);margin:0}.transfer-grid>div{min-width:0;padding:1rem}.transfer-grid>div+div{border-left:1px solid currentColor}.transfer-grid dt{margin:0 0 .45rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;opacity:.72}.transfer-grid dd{margin:0;line-height:1.45}.transfer-grid strong{display:block;margin-bottom:.2rem}
       .transfer-route-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.75rem 1rem;border-top:1px dashed currentColor}.transfer-route{margin:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.transfer-trace{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.45rem .7rem;border:1px solid currentColor;color:inherit;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-decoration:none;text-transform:uppercase}.transfer-trace:hover,.transfer-trace:focus-visible{background:currentColor;color:#1d201a}.transfer-hold{padding:1rem;border-top:1px dashed currentColor;background:rgba(229,168,38,.07)}
@@ -90,6 +90,17 @@
         <article class="environment-zone" data-storage-zone="C"><header><span>ZONE C · OPTICAL / UNASSIGNED</span><h3>Measure without demanding that the object cooperate.</h3></header><dl><div><dt>Target</dt><dd>Stable illumination, repeatable imaging, sealed storage.</dd></div><div><dt>Assigned</dt><dd>C0.008 object label · C0.009 postcard · C0.010 boxed shadow.</dd></div><div><dt>Routine action</dt><dd>Photograph, compare, quarantine unexplained change.</dd></div></dl><p class="environment-conflict"><strong>Exception C0</strong>C0.010 is catalogued as a fixed shadow that refuses reproduction. The normal conservation record depends on repeatable images; this fictional object makes “document the condition” the condition that cannot be met.</p></article>
       </div><p class="environment-order"><strong>Standing order 0:</strong> Do not optimise the collection into normality. Stabilise the material where possible; preserve the contradiction only as a clearly fictional catalogue fact.</p>`;
     catalogue.before(section);
+  };
+
+  const installIpmStandingOrder = () => {
+    const sweep = document.querySelector('.ipm-sweep');
+    const order = document.querySelector('.environment-order');
+    if (!sweep || !order) return;
+    const note = document.createElement('span');
+    note.className = 'environment-ipm-order';
+    note.innerHTML = '<strong>IPM standing duty:</strong> inspect thresholds, service edges and storage perimeters as ordinary building clues. A finding may change where staff look next; it never changes an accession’s provenance or authenticates a contradiction.';
+    order.append(note);
+    sweep.remove();
   };
 
   const installTransferDesk = () => {
@@ -210,6 +221,7 @@
   };
 
   installEnvironmentBoard();
+  installIpmStandingOrder();
   installTransferDesk();
   installReturnCart();
   installFreightLiftConsequence();
