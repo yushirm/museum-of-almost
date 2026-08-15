@@ -46,9 +46,18 @@ assert.doesNotMatch([coreSource, viewSource].join('\n'), /setInterval|setTimeout
 assert.doesNotMatch(runtime, /\b(gtag|dataLayer|mixpanel|segment|plausible|amplitude|hotjar)\b|google-analytics|googletagmanager|facebook\.com\/tr|doubleclick/i);
 assert.match(viewSource, /replaceChildren/);
 assert.match(viewSource, /textContent/);
+assert.match(viewSource, /function renderArchive\(/);
+assert.match(viewSource, /archiveHeading\.hidden = !complete/);
+assert.match(viewSource, /archiveGrid\.hidden = !complete/);
+assert.match(viewSource, /snapshot\.archive\.hinge/);
+assert.match(viewSource, /snapshot\.archive\.result/);
+assert.match(viewSource, /snapshot\.archive\.source/);
+assert.match(viewSource, /Evidence run complete/i);
 
 assert.match(css, /min-height:\s*44px/);
 assert.match(css, /max-width:\s*620px/);
+assert.match(css, /success-archive-heading\[hidden\]/);
+assert.match(css, /success-archive-grid\[data-earned-archive="true"\]/);
 assert.match(css, /prefers-reduced-motion/);
 assert.match(css, /prefers-contrast/);
 assert.match(css, /@media print/);
@@ -65,15 +74,20 @@ const solar = core.possibilitySnapshot('solar-neutrinos', 2);
 assert.equal(solar.possibilities.find(({ id }) => id === 'solar-model').status, 'retired');
 assert.equal(solar.possibilities.find(({ id }) => id === 'fixed-identity').status, 'retired');
 assert.equal(solar.possibilities.find(({ id }) => id === 'oscillation').status, 'survived');
+assert.equal(solar.archive.hinge, 'DEFICIT → TRANSFORMATION');
+assert.match(solar.archive.result, /neutrinos can change flavour/);
+assert.match(solar.archive.source, /Physics 2015/);
 
 const expansion = core.possibilitySnapshot('accelerating-universe', 2);
 assert.equal(expansion.possibilities.find(({ id }) => id === 'slowing').status, 'retired');
 assert.equal(expansion.possibilities.find(({ id }) => id === 'accelerating').status, 'survived');
+assert.equal(expansion.archive.hinge, 'EXPECTED SLOWING → ACCELERATION');
 
 const waves = core.possibilitySnapshot('gravitational-waves', 2);
 assert.equal(waves.possibilities.find(({ id }) => id === 'noise').status, 'retired');
 assert.equal(waves.possibilities.find(({ id }) => id === 'wave').status, 'survived');
 assert.equal(waves.possibilities.find(({ id }) => id === 'binary-black-hole').status, 'survived');
+assert.equal(waves.archive.hinge, 'PREDICTION → DETECTION');
 assert.equal(JSON.stringify(core.SUCCESS_CASES), before, 'render snapshots must not mutate fixed archive cases');
 
 for (const status of ['open', 'pressured', 'retired', 'survived']) assert.ok(core.statusLabel(status));
@@ -89,4 +103,4 @@ for (const pattern of [
   /No new runtime request or remote asset/
 ]) assert.match(record, pattern);
 
-console.log('Deep Space Possibility Engine, Success Archives, scientific-state semantics, accessibility, privacy, and local-only contract verified.');
+console.log('Deep Space Possibility Engine, earned Success Archive consequence, scientific-state semantics, accessibility, privacy, and local-only contract verified.');
