@@ -22,7 +22,7 @@
       <button id="weather-score-play" type="button" disabled>Listen to this weave</button>
       <p id="weather-score-status" class="weather-score-status" role="status" aria-live="polite">Waiting for the thirteen fixed temperatures.</p>
     </div>
-    <p class="weather-score-contract"><strong>Optional local audio.</strong> Temperature maps linearly from −100°C = 140 Hz to +70°C = 700 Hz in fixed west-to-east thread order; missing temperature is a silent rest. The weave is being encoded, not recorded: Earth is not singing, and no environmental sound or network audio is used.</p>`;
+    <p class="weather-score-contract"><strong>Optional local audio.</strong> Temperature maps linearly from −100°C = 140 Hz to +70°C = 700 Hz in the same west-to-east thread order shown above; missing temperature is a silent rest. The weave is being encoded, not recorded: Earth is not singing, and no environmental sound or network audio is used.</p>`;
   loomReadout.insertAdjacentElement('afterend', controls);
 
   const ui = {
@@ -54,7 +54,7 @@
   render(globalThis.MuseumCommonsSnapshot);
 
   function render(snapshot) {
-    score = core.buildScore(snapshot);
+    score = orderScoreToWeave(core.buildScore(snapshot));
     const summary = core.summarize(score);
     const hasAudio = 'AudioContext' in globalThis || 'webkitAudioContext' in globalThis;
     const playable = summary.measured > 0 && hasAudio;
@@ -73,6 +73,18 @@
     }
 
     ui.status.textContent = `${summary.measured}/${summary.total} threads can sound; ${summary.rests} ${summary.rests === 1 ? 'thread is a silent rest' : 'threads are silent rests'}. Playback follows the same west-to-east weave shown above.`;
+  }
+
+  function orderScoreToWeave(entries) {
+    const order = [...loom.querySelectorAll('.weather-loom-thread[data-station]')]
+      .map((thread) => String(thread.dataset.station || ''));
+    if (!order.length) return entries;
+    const rank = new Map(order.map((id, index) => [id, index]));
+    return [...entries].sort((a, b) => {
+      const aRank = rank.has(String(a.id)) ? rank.get(String(a.id)) : Number.MAX_SAFE_INTEGER;
+      const bRank = rank.has(String(b.id)) ? rank.get(String(b.id)) : Number.MAX_SAFE_INTEGER;
+      return aRank - bRank;
+    });
   }
 
   async function playScore() {
