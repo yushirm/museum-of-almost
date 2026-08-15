@@ -23,37 +23,6 @@
     'artifact-c0-012': { zone: 'ZONE B · BUILDING FABRIC', zoneId: 'B', action: 'Support as architectural signage; do not mount it on an invented room.', hold: 'The plaque names Room 0, which is absent from the building survey.' }
   });
 
-  const cycleCountSteps = Object.freeze([
-    {
-      zone: 'ZONE A · PAPER / FILM',
-      expected: '6 accessions',
-      located: '6 accessions',
-      reconciliation: 'Location and accession identifiers agree for C0.002, C0.003, C0.004, C0.005, C0.007 and C0.011.',
-      boundary: 'The count confirms custody. It does not validate the unbuilt railway, missing geography, future-facing film label, queue chronology or absent Model 0.'
-    },
-    {
-      zone: 'ZONE B · BUILDING FABRIC',
-      expected: '3 accessions',
-      located: '3 accessions',
-      reconciliation: 'C0.001, C0.006 and C0.012 are physically accounted for in their assigned building-fabric zone.',
-      boundary: 'A shelf check cannot prove that Room 0 existed, that the exit was temporary, or that the key ever belonged to a real lock.'
-    },
-    {
-      zone: 'ZONE C · OPTICAL / UNASSIGNED',
-      expected: '3 accessions',
-      located: '3 accessions',
-      reconciliation: 'C0.008, C0.009 and the sealed container catalogued as C0.010 are present at the recorded location.',
-      boundary: 'Presence of the box is not independent verification of the boxed shadow, the island, or the calendar object described by their records.'
-    },
-    {
-      zone: 'CYCLE COUNT COMPLETE',
-      expected: '12 accessions',
-      located: '12 accessions',
-      reconciliation: 'No location discrepancy found in this fixed fictional count. The store can account for every accession it claims to hold.',
-      boundary: 'Inventory reconciliation proves custody and location only. Twelve objects present does not make twelve impossible provenances true.'
-    }
-  ]);
-
   const closeAll = () => {
     for (const record of records) record.open = false;
   };
@@ -137,43 +106,6 @@
       .environment-conflict strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
       .environment-order{margin:1rem 0 0;padding:1rem;border-left:4px solid currentColor;background:rgba(0,0,0,.18)}
       .environment-order strong{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-transform:uppercase}
-      .salvage-drawer,.dependency-drawer,.cycle-drawer{margin:1rem 0 0;border:1px dashed currentColor;background:rgba(0,0,0,.1)}
-      .salvage-drawer summary,.dependency-drawer summary,.cycle-drawer summary{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:48px;padding:.75rem 1rem;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.75rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
-      .salvage-drawer summary::after{content:'OPEN CARD +';white-space:nowrap;font-size:.68rem}
-      .dependency-drawer summary::after{content:'TRACE DEPENDENCIES +';white-space:nowrap;font-size:.68rem}
-      .cycle-drawer summary::after{content:'OPEN REGISTER +';white-space:nowrap;font-size:.68rem}
-      .salvage-drawer[open] summary,.dependency-drawer[open] summary,.cycle-drawer[open] summary{border-bottom:1px dashed currentColor}
-      .salvage-drawer[open] summary::after{content:'CLOSE CARD −'}
-      .dependency-drawer[open] summary::after{content:'CLOSE MAP −'}
-      .cycle-drawer[open] summary::after{content:'CLOSE REGISTER −'}
-      .salvage-intro,.dependency-intro,.cycle-intro{margin:0;padding:1rem 1rem .25rem;max-width:74ch}
-      .salvage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin:1rem}
-      .salvage-case{padding:1rem;border:1px solid currentColor;background:rgba(0,0,0,.12)}
-      .salvage-case:nth-child(even){border-left:0}
-      .salvage-case:nth-child(n+3){border-top:0}
-      .salvage-case h3{margin:0 0 .65rem;font-size:1rem}
-      .salvage-case p{margin:.4rem 0;font-size:.9rem;line-height:1.5}
-      .salvage-case strong{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase}
-      .salvage-rule,.dependency-rule,.cycle-rule{margin:0 1rem 1rem;padding:1rem;border-left:4px solid currentColor;background:rgba(229,168,38,.07)}
-      .salvage-rule strong,.dependency-rule strong,.cycle-rule strong{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-transform:uppercase}
-      .dependency-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin:1rem;background:currentColor;border:1px solid currentColor}
-      .dependency-service{padding:1rem;background:#1d201a}
-      .dependency-service h3{margin:0 0 .7rem;font-size:1rem}
-      .dependency-service dl{margin:0;display:grid;gap:.65rem}
-      .dependency-service dl div{display:grid;grid-template-columns:7.5rem 1fr;gap:.75rem}
-      .dependency-service dt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;opacity:.72}
-      .dependency-service dd{margin:0;font-size:.9rem;line-height:1.45}
-      .cycle-console{margin:1rem;border:1px solid currentColor;background:rgba(0,0,0,.14)}
-      .cycle-console header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem;border-bottom:1px solid currentColor}
-      .cycle-console button{min-height:44px;padding:.55rem .8rem;border:1px solid currentColor;background:transparent;color:inherit;font:800 .72rem/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
-      .cycle-console button:hover,.cycle-console button:focus-visible{background:currentColor;color:#1d201a}
-      .cycle-console dl{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-      .cycle-console dl div{padding:1rem}
-      .cycle-console dl div:nth-child(even){border-left:1px solid currentColor}
-      .cycle-console dl div:nth-child(n+3){border-top:1px solid currentColor}
-      .cycle-console dt{margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;opacity:.72}
-      .cycle-console dd{margin:0;line-height:1.5}
-      .cycle-status{margin:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
       .transfer-desk{margin:1.5rem 0 2rem;border:1px solid currentColor;background:rgba(0,0,0,.12)}
       .transfer-desk header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:end;padding:1rem;border-bottom:1px solid currentColor}
       .transfer-desk header p{margin:0;max-width:58ch}
@@ -191,11 +123,11 @@
       .transfer-hold{padding:1rem;border-top:1px dashed currentColor;background:rgba(229,168,38,.07)}
       .transfer-hold strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
       @media (max-width:800px){.environment-heading,.environment-zones{grid-template-columns:1fr}.environment-zone dl div{grid-template-columns:6.5rem 1fr}.transfer-grid{grid-template-columns:1fr}.transfer-grid>div+div{border-left:0;border-top:1px solid currentColor}}
-      @media (max-width:620px){.salvage-grid,.dependency-grid,.cycle-console dl{grid-template-columns:1fr}.salvage-case:nth-child(even),.salvage-case:nth-child(n+3){border-left:1px solid currentColor}.salvage-case+.salvage-case{border-top:0}.cycle-console dl div:nth-child(even){border-left:0}.cycle-console dl div+div{border-top:1px solid currentColor}.transfer-route-row{align-items:stretch;flex-direction:column}.transfer-trace{align-self:flex-start}}
-      @media (max-width:520px){.transfer-desk header{grid-template-columns:1fr}.transfer-stamp{justify-self:start}.salvage-drawer summary,.dependency-drawer summary,.cycle-drawer summary,.cycle-console header{align-items:flex-start;flex-direction:column}.dependency-service dl div{grid-template-columns:1fr;gap:.15rem}}
+      @media (max-width:620px){.transfer-route-row{align-items:stretch;flex-direction:column}.transfer-trace{align-self:flex-start}}
+      @media (max-width:520px){.transfer-desk header{grid-template-columns:1fr}.transfer-stamp{justify-self:start}}
       @media (max-width:420px){.environment-board{padding:1rem}.environment-zone dl div{grid-template-columns:1fr;gap:.15rem}.environment-zone.is-active-route::after{position:static;display:block;margin:.65rem .65rem 0;width:max-content;max-width:calc(100% - 1.3rem)}}
-      @media (prefers-contrast:more){.environment-board,.environment-zone,.environment-zone header,.salvage-drawer,.dependency-drawer,.cycle-drawer,.salvage-case,.dependency-grid,.cycle-console,.cycle-console header,.cycle-console button,.cycle-console dl div,.transfer-desk,.transfer-desk header,.transfer-grid>div+div,.transfer-trace{border-width:2px}.environment-status{border-width:2px}.environment-zone.is-active-route{outline-width:4px}}
-      @media print{.environment-board{box-shadow:none}.environment-zone,.salvage-drawer,.dependency-drawer,.cycle-drawer,.salvage-case,.dependency-service,.cycle-console,.transfer-desk{break-inside:avoid}.salvage-drawer:not([open])>*:not(summary),.dependency-drawer:not([open])>*:not(summary),.cycle-drawer:not([open])>*:not(summary){display:block}.environment-zone.is-active-route{outline:0}.environment-zone.is-active-route::after,.transfer-trace,.cycle-console button{display:none}}
+      @media (prefers-contrast:more){.environment-board,.environment-zone,.environment-zone header,.transfer-desk,.transfer-desk header,.transfer-grid>div+div,.transfer-trace{border-width:2px}.environment-status{border-width:2px}.environment-zone.is-active-route{outline-width:4px}}
+      @media print{.environment-board{box-shadow:none}.environment-zone,.transfer-desk{break-inside:avoid}.environment-zone.is-active-route{outline:0}.environment-zone.is-active-route::after,.transfer-trace{display:none}}
     `;
     document.head.append(style);
 
@@ -245,119 +177,10 @@
           <p class="environment-conflict"><strong>Exception C0</strong>C0.010 is catalogued as a fixed shadow that refuses reproduction. The normal conservation record depends on repeatable images; this fictional object makes “document the condition” the condition that cannot be met.</p>
         </article>
       </div>
-      <details class="salvage-drawer">
-        <summary>EMERGENCY SALVAGE / FIRST RESPONSE CARD · PRIORITY IS ABOUT MATERIAL RISK, NOT PROVENANCE</summary>
-        <p class="salvage-intro">Museum emergency plans normally decide what can be safely moved, stabilised or left in place after water, fire suppression, power loss or structural damage. Catalogue 0 uses the same plain logic. An impossible history does not make an object physically invulnerable.</p>
-        <div class="salvage-grid">
-          <article class="salvage-case">
-            <h3>01 · WATER INGRESS / ZONE A</h3>
-            <p><strong>First action</strong> Move wet paper and film to a dry staging surface; interleave and separate before surfaces bond.</p>
-            <p><strong>Priority tension</strong> C0.005 is treated as a metal canister with a paper label. “Tomorrow” is not an emergency instruction.</p>
-          </article>
-          <article class="salvage-case">
-            <h3>02 · OBSTRUCTED EGRESS / ZONE B</h3>
-            <p><strong>First action</strong> Life safety outranks collection context. Clear the route before documenting the accession in place.</p>
-            <p><strong>Priority tension</strong> C0.006 may lose the very placement that made the temporary exit meaningful. The loss is recorded; the sign does not get to block an exit.</p>
-          </article>
-          <article class="salvage-case">
-            <h3>03 · LIGHT / POWER FAILURE / ZONE C</h3>
-            <p><strong>First action</strong> Keep boxes closed, suspend imaging and restore stable conditions before attempting comparison photography.</p>
-            <p><strong>Priority tension</strong> C0.010 cannot be verified by emergency torchlight. The response plan accepts an undocumented interval rather than inventing a condition report.</p>
-          </article>
-          <article class="salvage-case">
-            <h3>04 · FREIGHT LIFT UNAVAILABLE / ALL ZONES</h3>
-            <p><strong>First action</strong> Stabilise in place. Do not improvise public-stair transport for objects whose safe handling route depends on service access.</p>
-            <p><strong>Priority tension</strong> The building may temporarily know less about where an object can go than the catalogue knows about where it came from.</p>
-          </article>
-        </div>
-        <p class="salvage-rule"><strong>Emergency rule 0:</strong> Save people first, then stabilise material reality. Impossible provenance never outranks an ordinary fire door, a dry surface, or a safe lifting route.</p>
-      </details>
-      <details class="dependency-drawer">
-        <summary>BUILDING SERVICES / DEPENDENCY MAP · ONE ORDINARY FAILURE CAN REACH SEVERAL IMPOSSIBLE OBJECTS</summary>
-        <p class="dependency-intro">Reliability engineering asks which functions depend on the same supporting service before that service fails. Catalogue 0 applies the same question to the building. These are not predictions or live alarms: they are a fictional maintenance map showing where ordinary infrastructure couples otherwise unrelated accessions.</p>
-        <div class="dependency-grid" aria-label="Fictional building-service dependencies across Catalogue 0">
-          <article class="dependency-service">
-            <h3>01 · HVAC / HUMIDITY CONTROL</h3>
-            <dl>
-              <div><dt>Supports</dt><dd>Zone A paper and film; stable sealed storage in Zone C.</dd></div>
-              <div><dt>Couples</dt><dd>C0.002–005, C0.007, C0.008–011 can share one mundane environmental failure despite unrelated provenance.</dd></div>
-              <div><dt>Work order</dt><dd>Freeze non-essential movement; stabilise the room before interpreting any apparent object change.</dd></div>
-            </dl>
-          </article>
-          <article class="dependency-service">
-            <h3>02 · CONTROLLED LIGHT / IMAGING POWER</h3>
-            <dl>
-              <div><dt>Supports</dt><dd>Zone C comparison photography and condition documentation.</dd></div>
-              <div><dt>Couples</dt><dd>C0.008 label, C0.009 postcard and C0.010 boxed shadow all become less documentable at once.</dd></div>
-              <div><dt>Work order</dt><dd>Record the documentation gap. Do not convert missing images into evidence of object behaviour.</dd></div>
-            </dl>
-          </article>
-          <article class="dependency-service">
-            <h3>03 · DRAINAGE / WATER ISOLATION</h3>
-            <dl>
-              <div><dt>Supports</dt><dd>Dry storage across Zone A and lower-level circulation.</dd></div>
-              <div><dt>Couples</dt><dd>A leak can threaten six paper/film accessions while also closing the route needed to move them safely.</dd></div>
-              <div><dt>Work order</dt><dd>Stop the water, isolate electrics where required, then salvage by material vulnerability rather than catalogue drama.</dd></div>
-            </dl>
-          </article>
-          <article class="dependency-service">
-            <h3>04 · FREIGHT LIFT / SERVICE CORRIDOR</h3>
-            <dl>
-              <div><dt>Supports</dt><dd>All accession movement between Catalogue 0, conservation zones and the rest of the museum.</dd></div>
-              <div><dt>Couples</dt><dd>Every route can become unavailable without changing a single object's assigned storage destination.</dd></div>
-              <div><dt>Work order</dt><dd>Stabilise in place and reopen the route. A transport failure is not a provenance event.</dd></div>
-            </dl>
-          </article>
-        </div>
-        <p class="dependency-rule"><strong>Dependency rule 0:</strong> Shared failure does not imply shared origin. When several accessions change status together, inspect the building before inventing a relationship among the objects.</p>
-      </details>
-      <details class="cycle-drawer">
-        <summary>COLLECTIONS RECONCILIATION / CYCLE COUNT · FIND THE OBJECT WITHOUT PROVING THE STORY</summary>
-        <p class="cycle-intro">Inventory control asks a narrower question than provenance research: is the accession physically where the register says it is? Catalogue 0 can answer that ordinary custody question without treating an impossible history as verified fact.</p>
-        <div class="cycle-console">
-          <header>
-            <p class="cycle-status" data-cycle-status role="status" aria-live="polite">Cycle count not started. Three storage zones await reconciliation.</p>
-            <button type="button" data-cycle-next>COUNT NEXT ZONE</button>
-          </header>
-          <dl>
-            <div><dt>Count position</dt><dd data-cycle-zone>NOT STARTED</dd></div>
-            <div><dt>Expected / located</dt><dd><span data-cycle-expected>—</span> / <span data-cycle-located>—</span></dd></div>
-            <div><dt>Reconciliation</dt><dd data-cycle-reconciliation>Run the fixed local count to compare the three established storage zones with their existing accession assignments.</dd></div>
-            <div><dt>Audit boundary</dt><dd data-cycle-boundary>Physical custody and impossible provenance are different questions.</dd></div>
-          </dl>
-        </div>
-        <p class="cycle-rule"><strong>Inventory rule 0:</strong> Located is not authenticated. A cycle count can prove where the museum put something; it cannot prove the world once made the thing described on its label.</p>
-      </details>
       <p class="environment-order"><strong>Standing order 0:</strong> Do not optimise the collection into normality. Stabilise the material where possible; preserve the contradiction only as a clearly fictional catalogue fact.</p>
     `;
 
     catalogue.before(section);
-
-    const cycleButton = section.querySelector('[data-cycle-next]');
-    if (cycleButton) {
-      let cycleCursor = -1;
-      const cycleStatus = section.querySelector('[data-cycle-status]');
-      const zoneNode = section.querySelector('[data-cycle-zone]');
-      const expectedNode = section.querySelector('[data-cycle-expected]');
-      const locatedNode = section.querySelector('[data-cycle-located]');
-      const reconciliationNode = section.querySelector('[data-cycle-reconciliation]');
-      const boundaryNode = section.querySelector('[data-cycle-boundary]');
-
-      cycleButton.addEventListener('click', () => {
-        cycleCursor += 1;
-        if (cycleCursor >= cycleCountSteps.length) cycleCursor = 0;
-        const step = cycleCountSteps[cycleCursor];
-        if (zoneNode) zoneNode.textContent = step.zone;
-        if (expectedNode) expectedNode.textContent = step.expected;
-        if (locatedNode) locatedNode.textContent = step.located;
-        if (reconciliationNode) reconciliationNode.textContent = step.reconciliation;
-        if (boundaryNode) boundaryNode.textContent = step.boundary;
-        if (cycleStatus) cycleStatus.textContent = cycleCursor === cycleCountSteps.length - 1
-          ? 'Cycle count complete: twelve of twelve accessions located; provenance remains unaudited.'
-          : `Cycle count ${cycleCursor + 1} of 3: ${step.zone}.`;
-        cycleButton.textContent = cycleCursor === cycleCountSteps.length - 1 ? 'RESTART CYCLE COUNT' : 'COUNT NEXT ZONE';
-      });
-    }
   };
 
   const installTransferDesk = () => {
