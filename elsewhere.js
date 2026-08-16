@@ -361,3 +361,19 @@
   for (const button of buttons) button.addEventListener('click', () => queueMicrotask(sync));
   sync();
 })();
+
+(() => {
+  const records = [...document.querySelectorAll('[data-artifact]')];
+  if (!records.length || document.documentElement.dataset.cartRetractInstalled === 'true') return;
+  document.documentElement.dataset.cartRetractInstalled = 'true';
+
+  for (const record of records) {
+    record.addEventListener('toggle', () => {
+      if (!record.open) return;
+      queueMicrotask(() => {
+        const cartRecord = document.querySelector('.artifact[data-return-cart="true"]');
+        if (cartRecord && cartRecord !== record && cartRecord.open) cartRecord.open = false;
+      });
+    });
+  }
+})();
