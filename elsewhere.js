@@ -70,7 +70,7 @@
       .environment-zones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.environment-zone{position:relative;display:flex;flex-direction:column;min-height:100%;border:1px solid currentColor;background:rgba(0,0,0,.14)}
       .environment-zone.is-active-route{outline:3px double currentColor;outline-offset:4px;background:rgba(229,168,38,.08)}.environment-zone.is-active-route::after{content:'CURRENT MOVEMENT · ' attr(data-current-accession);position:absolute;top:.55rem;right:.55rem;padding:.2rem .35rem;border:1px solid currentColor;background:#1d201a;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.58rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
       .environment-zone header{padding:1rem;border-bottom:1px solid currentColor}.environment-zone header span{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.8}.environment-zone h3{margin:.25rem 0 0;font-size:1.25rem}.environment-zone dl{margin:0;padding:1rem;display:grid;gap:.85rem}.environment-zone dl div{display:grid;grid-template-columns:7.5rem 1fr;gap:.75rem;align-items:start}.environment-zone dt{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;opacity:.72}.environment-zone dd{margin:0}
-      .environment-conflict{margin:auto 1rem 1rem;padding-top:1rem;border-top:1px dashed currentColor;font-size:.92rem}.environment-conflict strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}.environment-order{margin:1rem 0 0;padding:1rem;border-left:4px solid currentColor;background:rgba(0,0,0,.18)}.environment-ipm-order{display:block;margin-top:.55rem;padding-top:.55rem;border-top:1px dashed currentColor;font-size:.82rem;line-height:1.55}
+      .environment-conflict{margin:auto 1rem 1rem;padding-top:1rem;border-top:1px dashed currentColor;font-size:.92rem}.environment-conflict strong{display:block;margin-bottom:.35rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}.environment-zone .environment-conflict{margin-top:auto}.environment-order{margin:1rem 0 0;padding:1rem;border-left:4px solid currentColor;background:rgba(0,0,0,.18)}.environment-ipm-order{display:block;margin-top:.55rem;padding-top:.55rem;border-top:1px dashed currentColor;font-size:.82rem;line-height:1.55}
       .transfer-desk{margin:1.5rem 0 2rem;border:1px solid currentColor;background:rgba(0,0,0,.12)}.transfer-desk header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:end;padding:1rem;border-bottom:1px solid currentColor}.transfer-desk header p{margin:0;max-width:58ch}.transfer-stamp{padding:.35rem .55rem;border:1px solid currentColor;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
       .transfer-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.9fr) minmax(0,1.3fr);margin:0}.transfer-grid>div{min-width:0;padding:1rem}.transfer-grid>div+div{border-left:1px solid currentColor}.transfer-grid dt{margin:0 0 .45rem;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;opacity:.72}.transfer-grid dd{margin:0;line-height:1.45}.transfer-grid strong{display:block;margin-bottom:.2rem}
       .transfer-route-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.75rem 1rem;border-top:1px dashed currentColor}.transfer-route{margin:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.transfer-trace{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.45rem .7rem;border:1px solid currentColor;color:inherit;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-decoration:none;text-transform:uppercase}.transfer-trace:hover,.transfer-trace:focus-visible{background:currentColor;color:#1d201a}.transfer-hold{padding:1rem;border-top:1px dashed currentColor;background:rgba(229,168,38,.07)}
@@ -307,4 +307,57 @@
 
   if (reducedMotion) document.documentElement.dataset.reducedMotion = 'true';
   if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}), { once: true });
+})();
+
+(() => {
+  const stage = document.querySelector('.acclimation-stage');
+  const handover = document.querySelector('#shift-handover .lost-copy');
+  const buttons = [...document.querySelectorAll('[data-acclimation-choice]')];
+  const staticCall = [...(handover?.querySelectorAll(':scope > p') || [])].find((paragraph) => !paragraph.classList.contains('lift-consequence'));
+  if (!stage || !handover || !buttons.length || !staticCall || document.querySelector('[data-receiving-handover]')) return;
+
+  const style = document.createElement('style');
+  style.dataset.elsewhereReceivingHandover = 'true';
+  style.textContent = `
+    .receiving-handover{position:relative;margin:.1rem 0 .9rem;padding:.85rem 1rem .85rem 1.15rem;border:1px dashed currentColor;border-left:4px solid #a4c2c9;background:rgba(164,194,201,.08);line-height:1.55}.receiving-handover strong{display:block;margin-bottom:.25rem;color:#d6eef3;font:800 .7rem/1.35 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.07em;text-transform:uppercase}.receiving-handover span{display:block}.receiving-handover[data-state="matched"]{border-left-style:double;border-left-width:6px;background:rgba(147,167,124,.08)}.receiving-handover[data-state="matched"] strong{color:#b8c9a2}
+    @media(prefers-contrast:more){.receiving-handover{border-width:2px;border-left-width:6px;background:transparent}.receiving-handover[data-state="matched"]{border-left-width:8px}.receiving-handover strong{color:currentColor}}
+    @media(forced-colors:active){.receiving-handover{forced-color-adjust:auto;border-color:CanvasText;background:Canvas;color:CanvasText}.receiving-handover strong{color:CanvasText}}
+    @media print{.receiving-handover{border:1px solid currentColor;background:transparent}.receiving-handover strong{color:inherit}}
+  `;
+  document.head.append(style);
+
+  const note = document.createElement('p');
+  note.className = 'receiving-handover';
+  note.dataset.receivingHandover = 'true';
+  note.setAttribute('role', 'status');
+  note.setAttribute('aria-live', 'polite');
+  const label = document.createElement('strong');
+  const copy = document.createElement('span');
+  note.append(label, copy);
+  staticCall.replaceWith(note);
+
+  const states = Object.freeze({
+    'cold-dry': {
+      label: 'RECEIVING HOLD · CARRY TO NEXT SHIFT',
+      copy: 'Cold / dry arrival remains sealed. The next shift inherits a condition check, not a countdown: inspect the enclosure and use measured conditions before staged opening.'
+    },
+    'warm-humid': {
+      label: 'RECEIVING HOLD · CARRY TO NEXT SHIFT',
+      copy: 'Warm / humid arrival remains sealed. The next shift inherits the buffer decision and exterior inspection; no invented waiting time or provenance change is authorised.'
+    },
+    matched: {
+      label: 'RECEIVING HANDOFF · VERIFY BEFORE OPENING',
+      copy: 'Near-matched arrival can move from buffering to verification. The next shift still checks enclosure and documented condition before staged opening.'
+    }
+  });
+
+  const sync = () => {
+    const state = states[stage.dataset.state] || states['cold-dry'];
+    note.dataset.state = stage.dataset.state || 'cold-dry';
+    label.textContent = state.label;
+    copy.textContent = state.copy;
+  };
+
+  for (const button of buttons) button.addEventListener('click', () => queueMicrotask(sync));
+  sync();
 })();
