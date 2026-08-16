@@ -44,6 +44,9 @@
 
   let scenarioId = 'distant-flashes';
   let beta = 0;
+  let orderTrace = null;
+  let orderTraceLine = null;
+  let orderTraceLabel = null;
 
   function selectButton(buttons, activeButton) {
     for (const button of buttons) {
@@ -51,6 +54,79 @@
       button.dataset.active = String(active);
       button.setAttribute('aria-pressed', String(active));
     }
+  }
+
+  function buildOrderTrace() {
+    if (orderTrace || document.getElementById('frame-order-trace')) return;
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.id = 'frame-order-trace';
+    svg.classList.add('frame-order-trace');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    svg.setAttribute('aria-hidden', 'true');
+    Object.assign(svg.style, {
+      position: 'absolute',
+      inset: '0',
+      width: '100%',
+      height: '100%',
+      zIndex: '1',
+      pointerEvents: 'none',
+      overflow: 'visible',
+      color: 'currentColor'
+    });
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', '25');
+    line.setAttribute('y1', '50');
+    line.setAttribute('x2', '75');
+    line.setAttribute('y2', '50');
+    line.setAttribute('stroke', 'currentColor');
+    line.setAttribute('stroke-width', '0.45');
+    line.setAttribute('stroke-dasharray', '2 2');
+    line.setAttribute('vector-effect', 'non-scaling-stroke');
+    line.setAttribute('opacity', '0.6');
+
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', '50');
+    label.setAttribute('y', '46');
+    label.setAttribute('text-anchor', 'middle');
+    label.setAttribute('fill', 'currentColor');
+    label.setAttribute('font-size', '3.1');
+    label.setAttribute('font-family', 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace');
+    label.setAttribute('font-weight', '700');
+    label.setAttribute('letter-spacing', '0.35');
+    label.setAttribute('opacity', '0.82');
+    label.textContent = 'COORDINATE ORDER · A ⇄ B';
+
+    svg.append(line, label);
+    stage.append(svg);
+    orderTrace = svg;
+    orderTraceLine = line;
+    orderTraceLabel = label;
+  }
+
+  function renderOrderTrace(state) {
+    if (!orderTrace || !orderTraceLine || !orderTraceLabel || !state) return;
+
+    const eventBY = 50 + state.visualOffsetPercent;
+    const midpointY = 50 + state.visualOffsetPercent / 2;
+    orderTraceLine.setAttribute('y2', String(eventBY));
+    orderTraceLabel.setAttribute('y', String(Math.max(8, Math.min(92, midpointY - 3))));
+
+    let orderState = 'simultaneous';
+    let orderLabel = 'A ⇄ B';
+    if (state.transformed.deltaT > core.EPSILON) {
+      orderState = 'a-before-b';
+      orderLabel = 'A → B';
+    } else if (state.transformed.deltaT < -core.EPSILON) {
+      orderState = 'b-before-a';
+      orderLabel = 'B → A';
+    }
+
+    orderTrace.dataset.orderState = orderState;
+    orderTrace.dataset.causalClass = state.causalClass;
+    orderTraceLabel.textContent = `COORDINATE ORDER · ${orderLabel}`;
   }
 
   function buildCausalCompass() {
@@ -149,6 +225,7 @@
     stage.style.setProperty('--event-b-top', `${50 + state.visualOffsetPercent}%`);
     renderCausalField(state.causalClass);
     renderCausalCompass(state.causalClass);
+    renderOrderTrace(state);
   }
 
   for (const button of scenarioButtons) {
@@ -176,6 +253,7 @@
     renderCausalField(stage.dataset.causalClass || 'spacelike');
   });
 
+  buildOrderTrace();
   buildCausalCompass();
   render();
 })();
