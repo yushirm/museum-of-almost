@@ -38,6 +38,34 @@
 }
 
 /*
+ * Selected-point coordinate reticle.
+ * The established selected world window now projects its latitude and
+ * longitude across the existing map. The lines are presentation only: they
+ * derive from the already-positioned fixed point, add no geography or state,
+ * and disappear with the selection itself.
+ */
+.station-dot[data-selected="true"]::before,
+.station-dot[data-selected="true"]::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.48;
+}
+
+.station-dot[data-selected="true"]::before {
+  width: 200vw;
+  height: 0;
+  border-top: 1px dashed var(--blue);
+}
+
+.station-dot[data-selected="true"]::after {
+  width: 0;
+  height: 200vh;
+  border-left: 1px dashed var(--blue);
+}
+
+/*
  * Selected-light exposure.
  * The already-selected fixed Commons window lends its current model light state
  * to established representations elsewhere in the room. This is presentation
@@ -89,6 +117,13 @@
     opacity: 1;
   }
 
+  .station-dot[data-selected="true"]::before,
+  .station-dot[data-selected="true"]::after {
+    border-color: currentColor;
+    border-width: 2px;
+    opacity: 0.8;
+  }
+
   @supports selector(body:has(*)) {
     body:has(.station-dot[data-selected="true"][data-light="day"]) .station-detail,
     body:has(.station-dot[data-selected="true"][data-light="twilight"]) .station-detail,
@@ -115,11 +150,19 @@
   .world-map { min-height: 0; }
   .map-label { font-size: 0.52rem; }
   .event-footprint { width: 6px; height: 6px; }
+  .station-dot[data-selected="true"]::before { width: 220vw; }
+  .station-dot[data-selected="true"]::after { height: 220vh; }
 }
 
 @media print {
   .world-map { aspect-ratio: 2 / 1; min-height: 0; }
   .event-footprint { opacity: 0.7; }
+
+  .station-dot[data-selected="true"]::before,
+  .station-dot[data-selected="true"]::after {
+    border-color: currentColor;
+    opacity: 0.6;
+  }
 
   @supports selector(body:has(*)) {
     body:has(.station-dot[data-selected="true"]) .station-detail,
