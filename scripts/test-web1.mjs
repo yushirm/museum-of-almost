@@ -266,6 +266,27 @@ assert.match(css, /prefers-contrast/);
 assert.match(css, /@media print/);
 assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i);
 
+assert.match(
+  css,
+  /\.page-shell:has\(#guestbook-stamp-pad button\[aria-pressed="true"\]\) \.counter-box \.counter\s*\{[\s\S]*?text-decoration-line:\s*line-through/,
+  'choosing an existing local guestbook stamp should visibly invalidate the decorative counter as attendance'
+);
+assert.match(
+  css,
+  /\.guestbook-box:has\(#guestbook-stamp-pad button\[aria-pressed="true"\]\) \.guestbook-local-stamp::after\s*\{[\s\S]*?COUNTER CHECK: 000003 DID NOT MOVE\. THIS STAMP IS NOT A VISITOR RECORD\./,
+  'the local stamp should leave an immediate nearby non-counting consequence'
+);
+assert.match(
+  css,
+  /@media \(forced-colors: active\)[\s\S]*?guestbook-stamp-pad button\[aria-pressed="true"\][\s\S]*?CanvasText/,
+  'counter refusal should remain explicit in forced-colors mode'
+);
+assert.match(
+  css,
+  /@media print[\s\S]*?guestbook-stamp-pad button\[aria-pressed="true"\][\s\S]*?display:\s*none/,
+  'ephemeral counter-refusal aftermath should not masquerade as durable print state'
+);
+
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
 assert.match(js, /PAGE FOUR REFUSES TO STAY SECRET\./, 'Almost Online should visibly leak the new gallery');
 assert.match(js, /DEEP SPACE NOW REPORTS THE SAME ANOMALY\./, 'Almost Online should amplify the Deep Space sighting');
@@ -274,6 +295,11 @@ assert.match(js, /href = 'page-four\.html'/, 'the rumor relay should point only 
 assert.match(js, /OPEN THE UNFILED ARCHIVE/, 'the homepage bulletin should expose a direct Page Four action');
 assert.match(js, /THE PAGE THAT WASN'T THERE/, 'the COOL STUFF list should pick up the suspicious fourth neighbor');
 assert.match(js, /page-four-update/, 'the local site-update list should acknowledge the rumor');
+assert.match(
+  js,
+  /buttons\.forEach\(\(candidate\) => candidate\.setAttribute\('aria-pressed', String\(candidate === button\)\)\)/,
+  'the counter-refusal relationship should consume the existing local stamp selection state rather than inventing a second state store'
+);
 assert.doesNotMatch(js, /\bhistory\b|getComputedStyle|:visited/i,
   'homepage script must not inspect browser history or visited-link state');
 assert.doesNotMatch(js, /\binnerWidth\b|\bouterWidth\b|\bscreen\.(?:width|height)\b|\bmatchMedia\s*\(/i,
@@ -305,4 +331,4 @@ assert.match(notes, /No third-party runtime scripts, fonts, images, embeds, APIs
 assert.match(notes, /Do not publish personal information about real people/i);
 assert.match(notes, /Future posts should be added directly to the HTML in reverse chronological order/i);
 
-console.log('Almost Online! Web 1.0 gallery, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
+console.log('Almost Online! Web 1.0 gallery, fixed decorative counter refusal, local guestbook relationship, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
