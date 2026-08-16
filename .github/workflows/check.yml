@@ -2,9 +2,7 @@ name: Check museum
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -28,84 +26,52 @@ jobs:
         with:
           node-version: 22
       - name: Check JavaScript syntax
-        run: node --check data-core.js && node --check offcut-drawer-core.js && node --check offcut-drawer.js && node --check border-office-core.js && node --check border-office.js && node --check load-bearing-sample-core.js && node --check load-bearing-sample.js && node --check gauge-bench-core.js && node --check gauge-bench.js && node --check shuffle-table-core.js && node --check shuffle-table.js && node --check quorum-gate-core.js && node --check quorum-gate.js && node --check shutter-cabinet-core.js && node --check shutter-cabinet.js && node --check temporal-sounding-core.js && node --check temporal-sounding.js && node --check faultline-core.js && node --check faultline.js && node --check witness-seal-core.js && node --check witness-seal.js && node --check isolation-board-core.js && node --check isolation-board.js && node --check exposure-plate-core.js && node --check exposure-plate.js && node --check reverse-ledger-core.js && node --check reverse-ledger.js && node --check rest-score-core.js && node --check rest-score.js && node --check weather-score-core.js && node --check weather-score.js && node --check solar-boundary-core.js && node --check solar-boundary.js && node --check synoptic-alphabet-core.js && node --check synoptic-alphabet.js && node --check app.js && node --check cosmic-signal.js && node --check cosmic-signal-core.js && node --check cosmic-signal-view.js && node --check cosmic-latency-core.js && node --check cosmic-latency.js && node --check cosmic-escapement-core.js && node --check cosmic-escapement.js && node --check planetary-heliodon-core.js && node --check planetary-heliodon.js && node --check deep-space-core.js && node --check deep-space.js && node --check possibility-engine-core.js && node --check possibility-engine.js && node --check frame-shifter-core.js && node --check frame-shifter.js && node --check causal-signal-core.js && node --check causal-signal.js && node --check gravitational-copy-core.js && node --check gravitational-copy.js && node --check redshift-ruler-core.js && node --check redshift-ruler.js && node --check origin-machine-core.js && node --check origin-machine.js && node --check same-answer-core.js && node --check same-answer-machine.js && node --check unequal-minute-core.js && node --check unequal-minute.js && node --check parallax-survey-core.js && node --check parallax-survey.js && node --check web1.js && node --check page-four.js && node --check page-four-research.js && node --check page-four-instrument-room.js && node --check page-four-dead-drop.js && node --check elsewhere.js && node --check service-worker.js && node --check scripts/test-data-core.mjs && node --check scripts/test-offcut-drawer.mjs && node --check scripts/test-border-office.mjs && node --check scripts/test-load-bearing-sample.mjs && node --check scripts/test-gauge-bench.mjs && node --check scripts/test-shuffle-table.mjs && node --check scripts/test-quorum-gate.mjs && node --check scripts/test-shutter-cabinet.mjs && node --check scripts/test-weather-score.mjs && node --check scripts/test-synoptic-alphabet.mjs && node --check scripts/test-temporal-sounding.mjs && node --check scripts/test-faultline-core.mjs && node --check scripts/test-witness-seal.mjs && node --check scripts/test-isolation-board.mjs && node --check scripts/test-exposure-plate.mjs && node --check scripts/test-reverse-ledger.mjs && node --check scripts/test-rest-score.mjs && node --check scripts/test-cosmic-signal.mjs && node --check scripts/test-cosmic-latency.mjs && node --check scripts/test-cosmic-escapement.mjs && node --check scripts/test-planetary-heliodon.mjs && node --check scripts/test-deep-space.mjs && node --check scripts/test-possibility-engine.mjs && node --check scripts/test-frame-shifter.mjs && node --check scripts/test-causal-signal.mjs && node --check scripts/test-gravitational-copy.mjs && node --check scripts/test-redshift-ruler.mjs && node --check scripts/test-origin-machine.mjs && node --check scripts/test-same-answer-machine.mjs && node --check scripts/test-unequal-minute.mjs && node --check scripts/test-parallax-survey.mjs && node --check scripts/test-web1.mjs && node --check scripts/test-page-four.mjs && node --check scripts/test-page-four-instrument-room.mjs && node --check scripts/test-page-four-dead-drop.mjs && node --check scripts/test-elsewhere.mjs && node --check scripts/test-404.mjs && node --check scripts/test-museum-docs.mjs && node --check scripts/test-service-worker.mjs && node --check scripts/check.mjs
-      - name: Test public data reduction
-        run: node scripts/test-data-core.mjs
-      - name: Test Offcut Drawer precision trace
-        run: node scripts/test-offcut-drawer.mjs
-      - name: Test Border Office classification boundaries
-        run: node scripts/test-border-office.mjs
-      - name: Test Load-Bearing Sample aggregate sensitivity
-        run: node scripts/test-load-bearing-sample.mjs
-      - name: Test Gauge Bench comparison interlock
-        run: node scripts/test-gauge-bench.mjs
-      - name: Test Shuffle Table permutation invariance
-        run: node scripts/test-shuffle-table.mjs
-      - name: Test Quorum Gate denominator contracts
-        run: node scripts/test-quorum-gate.mjs
-      - name: Test Shutter Cabinet temporal support
-        run: node scripts/test-shutter-cabinet.mjs
-      - name: Test Weather Score encoding
-        run: node scripts/test-weather-score.mjs
-      - name: Test Synoptic Alphabet encoding
-        run: node scripts/test-synoptic-alphabet.mjs
-      - name: Test temporal sounding
-        run: node scripts/test-temporal-sounding.mjs
-      - name: Test Faultline Core semantics
-        run: node scripts/test-faultline-core.mjs
-      - name: Test Witness Seal integrity
-        run: node scripts/test-witness-seal.mjs
-      - name: Test Isolation Board failure simulation
-        run: node scripts/test-isolation-board.mjs
-      - name: Test Exposure Plate evidence geometry
-        run: node scripts/test-exposure-plate.mjs
-      - name: Test Reverse Ledger claim ancestry
-        run: node scripts/test-reverse-ledger.mjs
-      - name: Test Rest Score absence semantics
-        run: node scripts/test-rest-score.mjs
-      - name: Test cosmic signal reduction
-        run: node scripts/test-cosmic-signal.mjs
-      - name: Test cosmic latency reduction
-        run: node scripts/test-cosmic-latency.mjs
-      - name: Test celestial escapement reduction
-        run: node scripts/test-cosmic-escapement.mjs
-      - name: Test planetary heliodon geometry
-        run: node scripts/test-planetary-heliodon.mjs
-      - name: Test Deep Space gallery
-        run: node scripts/test-deep-space.mjs
-      - name: Test Deep Space possibility engine
-        run: node scripts/test-possibility-engine.mjs
-      - name: Test Deep Space frame shifter
-        run: node scripts/test-frame-shifter.mjs
-      - name: Test Deep Space causal signal box
-        run: node scripts/test-causal-signal.mjs
-      - name: Test Deep Space gravitational copy room
-        run: node scripts/test-gravitational-copy.mjs
-      - name: Test Deep Space redshift ruler
-        run: node scripts/test-redshift-ruler.mjs
-      - name: Test Deep Space origin machine
-        run: node scripts/test-origin-machine.mjs
-      - name: Test Deep Space same answer machine
-        run: node scripts/test-same-answer-machine.mjs
-      - name: Test Deep Space unequal minute
-        run: node scripts/test-unequal-minute.mjs
-      - name: Test Deep Space parallax survey
-        run: node scripts/test-parallax-survey.mjs
-      - name: Test Almost Online gallery
-        run: node scripts/test-web1.mjs
-      - name: Test Page Four fictional archive
-        run: node scripts/test-page-four.mjs
-      - name: Test Page Four Hessdalen instrument room
-        run: node scripts/test-page-four-instrument-room.mjs
-      - name: Test Page Four Dead Drop puzzle trail
-        run: node scripts/test-page-four-dead-drop.mjs
-      - name: Test Elsewhere Catalogue 0 fifth space
-        run: node scripts/test-elsewhere.mjs
-      - name: Test Unbuilt Room 404 recovery
-        run: node scripts/test-404.mjs
-      - name: Test Museum durable documentation
-        run: node scripts/test-museum-docs.mjs
-      - name: Test service worker lifecycle and boundary
-        run: node scripts/test-service-worker.mjs
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' file; do
+            node --check "$file"
+          done < <(find . -type f \( -name '*.js' -o -name '*.mjs' \) -not -path './.git/*' -print0 | sort -z)
+      - name: Run test suite
+        run: |
+          node scripts/test-data-core.mjs
+          node scripts/test-offcut-drawer.mjs
+          node scripts/test-border-office.mjs
+          node scripts/test-load-bearing-sample.mjs
+          node scripts/test-gauge-bench.mjs
+          node scripts/test-shuffle-table.mjs
+          node scripts/test-quorum-gate.mjs
+          node scripts/test-shutter-cabinet.mjs
+          node scripts/test-weather-score.mjs
+          node scripts/test-synoptic-alphabet.mjs
+          node scripts/test-temporal-sounding.mjs
+          node scripts/test-faultline-core.mjs
+          node scripts/test-witness-seal.mjs
+          node scripts/test-isolation-board.mjs
+          node scripts/test-exposure-plate.mjs
+          node scripts/test-reverse-ledger.mjs
+          node scripts/test-rest-score.mjs
+          node scripts/test-cosmic-signal.mjs
+          node scripts/test-cosmic-latency.mjs
+          node scripts/test-cosmic-escapement.mjs
+          node scripts/test-planetary-heliodon.mjs
+          node scripts/test-deep-space.mjs
+          node scripts/test-possibility-engine.mjs
+          node scripts/test-frame-shifter.mjs
+          node scripts/test-causal-signal.mjs
+          node scripts/test-gravitational-copy.mjs
+          node scripts/test-redshift-ruler.mjs
+          node scripts/test-origin-machine.mjs
+          node scripts/test-same-answer-machine.mjs
+          node scripts/test-unequal-minute.mjs
+          node scripts/test-parallax-survey.mjs
+          node scripts/test-web1.mjs
+          node scripts/test-page-four.mjs
+          node scripts/test-page-four-instrument-room.mjs
+          node scripts/test-page-four-dead-drop.mjs
+          node scripts/test-elsewhere.mjs
+          node scripts/test-404.mjs
+          node scripts/test-museum-docs.mjs
+          node scripts/test-service-worker.mjs
       - name: Check privacy and application contract
         run: node scripts/check.mjs
