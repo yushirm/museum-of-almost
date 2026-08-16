@@ -35,6 +35,7 @@ assert.equal(aligned.aligned, true);
 assert.equal(aligned.ringRadius, 1);
 assert.equal(aligned.images.length, 0);
 assert.equal(aligned.sourceId, core.SOURCE_ID);
+assert.ok(Math.abs(aligned.rootProduct + 1) < 1e-12, 'aligned one-dimensional roots should retain the -1 product before circular symmetry is rendered as a ring');
 
 for (const id of ['near-axis', 'off-axis']) {
   const snap = core.snapshot(id);
@@ -46,6 +47,7 @@ for (const id of ['near-axis', 'off-axis']) {
   assert.equal(snap.images[1].parity, 'negative');
   assert.ok(Math.abs(snap.images[0].residual) < 1e-12, `${id} positive root should satisfy lens equation`);
   assert.ok(Math.abs(snap.images[1].residual) < 1e-12, `${id} negative root should satisfy lens equation`);
+  assert.ok(Math.abs(snap.rootProduct + 1) < 1e-12, `${id} roots should keep the normalized reciprocal product x+ × x− = -1`);
   assert.ok(snap.images[0].position > 1, `${id} positive image should lie outside Einstein radius`);
   assert.ok(snap.images[1].position < 0 && Math.abs(snap.images[1].position) < 1, `${id} negative image should lie inside Einstein radius on opposite side`);
 }
@@ -59,6 +61,7 @@ const off = core.snapshot('off-axis');
 assert.equal(off.images[0].position, 2);
 assert.equal(off.images[1].position, -0.5);
 assert.equal(off.separation, 2.5);
+assert.equal(off.rootProduct, -1);
 
 const frozenBefore = JSON.stringify(core.CASES);
 core.snapshot('near-axis');
@@ -71,6 +74,8 @@ for (const pattern of [
   /APPARENT IMAGE/,
   /SOURCE IDENTITY/,
   /EINSTEIN RING/,
+  /RECIPROCAL LOCK · x\+ × x− = −1/,
+  /1D root product x\+ × x−/,
   /Normalized point-lens equation/,
   /aria-live/,
   /aria-pressed/
@@ -79,6 +84,7 @@ for (const pattern of [
 assert.match(viewSource, /document\.createElement/);
 assert.match(viewSource, /textContent/);
 assert.match(viewSource, /replaceChildren/);
+assert.match(viewSource, /snap\.rootProduct\.toFixed\(3\)/);
 assert.doesNotMatch(viewSource, /innerHTML|insertAdjacentHTML|outerHTML/);
 assert.doesNotMatch([coreSource, viewSource].join('\n'), /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
 assert.doesNotMatch([coreSource, viewSource].join('\n'), /localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation|history\.(?:pushState|replaceState)/i);
@@ -88,8 +94,10 @@ assert.doesNotMatch(runtime, /\b(?:gtag|dataLayer|mixpanel|plausible|amplitude|h
 
 assert.match(css, /min-height:\s*44px/);
 assert.match(css, /:focus-visible/);
+assert.match(css, /\.copy-invariant-badge/);
 assert.match(css, /prefers-reduced-motion/);
 assert.match(css, /prefers-contrast/);
+assert.match(css, /forced-colors/);
 assert.match(css, /max-width:\s*620px/);
 assert.match(css, /@media print/);
 assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i);
@@ -108,9 +116,11 @@ for (const pattern of [
   /Concept B was discarded/,
   /Concepts A and C were merged/,
   /y = x - 1\/x/,
+  /x\+ × x− = -1/,
+  /reciprocal lock/,
   /NASA Science/,
   /NASA\/IPAC Extragalactic Database/,
   /documentation references only/
 ]) assert.match(doc, pattern);
 
-console.log('Gravitational Copy Room lens equation, shared-source identity, accessibility, privacy, progressive mount, and documentation contract verified.');
+console.log('Gravitational Copy Room lens equation, reciprocal root invariant, shared-source identity, accessibility, privacy, progressive mount, and documentation contract verified.');

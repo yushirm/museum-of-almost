@@ -64,7 +64,10 @@
     ring.setAttribute('aria-hidden', 'true');
     const imageLayer = make('div', 'copy-image-layer');
     imageLayer.id = 'copy-image-layer';
-    stage.append(axis, ring, lens, imageLayer);
+    const invariantBadge = make('div', 'copy-invariant-badge');
+    invariantBadge.id = 'copy-invariant-badge';
+    invariantBadge.setAttribute('aria-hidden', 'true');
+    stage.append(axis, ring, lens, imageLayer, invariantBadge);
 
     const identity = make('div', 'copy-identity-spine');
     identity.append(
@@ -95,6 +98,7 @@
       ['copy-image-a', 'Image A position x+'],
       ['copy-image-b', 'Image B position x−'],
       ['copy-separation', 'Image separation'],
+      ['copy-root-product', '1D root product x+ × x−'],
       ['copy-model-state', 'Apparent image state']
     ];
     for (const [id, label] of metricDefinitions) {
@@ -107,7 +111,7 @@
     }
 
     const equation = make('p', 'copy-equation', 'Normalized point-lens equation: y = x − 1/x');
-    const integrity = make('p', 'copy-integrity', 'Repeated image cards are not repeated source records. This toy model describes apparent image positions only; it does not infer lens mass, source distance, brightness, or a real sky configuration.');
+    const integrity = make('p', 'copy-integrity', 'Repeated image cards are not repeated source records. The reciprocal root product is an invariant of this normalized ideal equation, not an extra observation. This toy model describes apparent image positions only; it does not infer lens mass, source distance, brightness, or a real sky configuration.');
     readout.append(readoutHead, caseTitle, caseNote, metrics, equation, integrity);
 
     layout.append(stagePanel, readout);
@@ -119,6 +123,7 @@
     const imageAValue = readout.querySelector('#copy-image-a');
     const imageBValue = readout.querySelector('#copy-image-b');
     const separationValue = readout.querySelector('#copy-separation');
+    const rootProductValue = readout.querySelector('#copy-root-product');
     const sourceOffsetValue = readout.querySelector('#copy-source-offset');
     const modelStateValue = readout.querySelector('#copy-model-state');
 
@@ -150,6 +155,9 @@
       caseTitle.textContent = snap.label;
       caseNote.textContent = snap.note;
       sourceOffsetValue.textContent = `${snap.sourceOffset.toFixed(3)} θE`;
+      rootProductValue.textContent = snap.aligned
+        ? `${snap.rootProduct.toFixed(3)} · 1D roots become ring by symmetry`
+        : `${snap.rootProduct.toFixed(3)} · reciprocal lock`;
       imageLayer.replaceChildren();
       stage.dataset.aligned = String(snap.aligned);
 
@@ -158,6 +166,8 @@
         imageBValue.textContent = 'continuous ring';
         separationValue.textContent = 'not two discrete images';
         modelStateValue.textContent = 'EINSTEIN RING · radius 1.000 θE';
+        invariantBadge.dataset.state = 'ring';
+        invariantBadge.textContent = 'ALIGNMENT LIMIT · 1D ROOTS ±1 → RING';
         ring.dataset.visible = 'true';
         const ringLabel = make('p', 'copy-ring-label', `ONE SOURCE ${snap.sourceId} → CONTINUOUS RING IMAGE`);
         imageLayer.append(ringLabel);
@@ -165,6 +175,8 @@
       }
 
       ring.dataset.visible = 'false';
+      invariantBadge.dataset.state = 'reciprocal';
+      invariantBadge.textContent = 'RECIPROCAL LOCK · x+ × x− = −1';
       imageLayer.append(...snap.images.map(imageCard));
       imageAValue.textContent = `${formatSigned(snap.images[0].position)} θE · ${snap.images[0].parity} parity`;
       imageBValue.textContent = `${formatSigned(snap.images[1].position)} θE · ${snap.images[1].parity} parity`;
