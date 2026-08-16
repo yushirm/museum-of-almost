@@ -4,6 +4,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const cosmic = require('../cosmic-signal-core.js');
+const loaderModule = require('../cosmic-signal.js');
+const neighborRelation = loaderModule.commonsNeighborRelation;
 const coreSource = fs.readFileSync(new URL('../cosmic-signal-core.js', import.meta.url), 'utf8');
 const viewSource = fs.readFileSync(new URL('../cosmic-signal-view.js', import.meta.url), 'utf8');
 const loaderSource = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
@@ -95,6 +97,32 @@ assert.equal(
   'Cosmic measurements are unavailable in this snapshot.'
 );
 
+assert.ok(neighborRelation, 'Commons nearest-neighbour relation helpers should be exported for deterministic tests');
+assert.equal(neighborRelation.nearestInPlane([
+  { id: '01', x: 0, y: 0 },
+  { id: '02', x: 1, y: 1 },
+  { id: '03', x: 10, y: 10 }
+], '01')?.id, '02', 'nearest measurement-space neighbour should use normalized displayed geometry');
+assert.equal(neighborRelation.nearestInPlane([
+  { id: '01', x: 0, y: 0 },
+  { id: '02', x: Number.NaN, y: 1 }
+], '01'), null, 'measurement neighbour should remain unavailable when fewer than two points can be placed');
+assert.deepEqual(neighborRelation.nearestOnEarth([
+  { id: '01', lat: 0, lon: 0 },
+  { id: '02', lat: 1, lon: 0 },
+  { id: '03', lat: 5, lon: 0 }
+], '01', (a, b) => Math.abs(a.lat - b.lat)), { id: '02', distanceKm: 1 });
+assert.match(loaderSource, /GEOMETRIES DISAGREE/,
+  'State Space readout should make disagreement between measurement and Earth nearness explicit');
+assert.match(loaderSource, /phase-space-neighbor-mark/,
+  'existing State Space points should carry bounded relationship marks rather than a new panel');
+assert.match(loaderSource, /nearest in this displayed measurement space/,
+  'the relation must stay scoped to the current displayed variables');
+assert.match(loaderSource, /nearest fixed station on Earth/,
+  'the comparison must identify the stable geographic neighbour separately');
+assert.match(loaderSource, /museum:commons-snapshot/,
+  'nearest-neighbour relation should recompute from each shared snapshot');
+
 assert.match(appSource, /credentials:\s*'omit'/);
 assert.match(appSource, /referrerPolicy:\s*'no-referrer'/);
 assert.match(appSource, /cache:\s*'no-store'/);
@@ -133,4 +161,4 @@ assert.match(styles, /@media print/);
 assert.doesNotMatch(styles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
 
-console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, sampling-floor and co-occurrence causal boundaries, privacy boundary, accessibility hooks, and missing-value integrity verified.');
+console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, State Space nearest-neighbour disagreement, sampling-floor and co-occurrence causal boundaries, privacy boundary, accessibility hooks, and missing-value integrity verified.');
