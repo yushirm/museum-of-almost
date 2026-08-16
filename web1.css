@@ -969,3 +969,40 @@ h1 {
     display: none;
   }
 }
+
+/*
+ * GENERATION 180 // THE COMET CHOOSES A DOOR
+ * The homepage's oldest little traveler now responds to the destination a visitor
+ * is considering. Existing Earth and Space links pull the existing header comet
+ * in opposite directions. The browser's own hover/focus state is the whole
+ * mechanism: no navigation intent is stored, counted, personalized or reported.
+ */
+.homepage-header .comet {
+  transform-origin: center;
+  transition: transform 180ms steps(2, end);
+}
+
+.page-shell:has(a[href="commons-now.html"]:focus-visible) .homepage-header .comet {
+  transform: translateX(-18px) scaleX(-1);
+}
+
+.page-shell:has(a[href="deep-space.html"]:focus-visible) .homepage-header .comet {
+  transform: translateX(18px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .page-shell:has(a[href="commons-now.html"]:hover) .homepage-header .comet {
+    transform: translateX(-18px) scaleX(-1);
+  }
+
+  .page-shell:has(a[href="deep-space.html"]:hover) .homepage-header .comet {
+    transform: translateX(18px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homepage-header .comet {
+    transition: none;
+    transform: none;
+  }
+}
