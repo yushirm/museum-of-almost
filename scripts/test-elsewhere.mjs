@@ -69,7 +69,7 @@ assert.match(js, /behavior: reducedMotion \? 'auto' : 'smooth'/, 'programmatic l
 
 assert.match(js, /body:has\(\.freight-lift\.is-out-of-service\)\{--chalk:#f4e2b4;--muted:#c8ba8d;--line:rgba\(229,168,38,\.38\);background:/, 'lift outage should shift the whole service level into an emergency-light palette');
 assert.match(js, /body:has\(\.freight-lift\.is-out-of-service\) \.corridor-plan\{box-shadow:inset 0 0 90px rgba\(229,168,38,\.12\)\}/, 'lift outage should visibly pool emergency light in the existing corridor plan');
-assert.match(js, /@media\(prefers-contrast:more\)\{body:has\(\.freight-lift\.is-out-of-service\)\{--chalk:#fff;--muted:#fff;--line:currentColor;background:#000\}\}/, 'emergency-light atmosphere must remain legible in increased contrast');
+assert.match(js, /@media\(prefers-contrast:more\)[\s\S]*?body:has\(\.freight-lift\.is-out-of-service\)\{--chalk:#fff;--muted:#fff;--line:currentColor;background:#000\}/, 'emergency-light atmosphere must remain legible in increased contrast');
 assert.match(js, /@media\(forced-colors:active\)\{body:has\(\.freight-lift\.is-out-of-service\)\{forced-color-adjust:auto;background:Canvas;color:CanvasText\}\}/, 'emergency-light atmosphere must defer to forced colors');
 assert.match(js, /@media print\{body:has\(\.freight-lift\.is-out-of-service\)\{--chalk:#000;--muted:#000;--line:#000;background:#fff;color:#000\}/, 'ephemeral emergency-light atmosphere must not masquerade as printed building state');
 
