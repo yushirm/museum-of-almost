@@ -241,3 +241,148 @@
     load('./faultline.js', 'faultlineView');
   });
 })(typeof globalThis !== 'undefined' ? globalThis : this);
+
+(function attachCommonsNeighborRelation(root) {
+  'use strict';
+
+  function nearestInPlane(readings, selectedId) {
+    const available = (Array.isArray(readings) ? readings : [])
+      .filter((reading) => reading?.id && Number.isFinite(reading.x) && Number.isFinite(reading.y));
+    const selected = available.find((reading) => reading.id === selectedId);
+    if (!selected || available.length < 2) return null;
+
+    const xs = available.map((reading) => reading.x);
+    const ys = available.map((reading) => reading.y);
+    const xSpan = Math.max(...xs) - Math.min(...xs) || 1;
+    const ySpan = Math.max(...ys) - Math.min(...ys) || 1;
+
+    return available
+      .filter((reading) => reading.id !== selectedId)
+      .map((reading) => ({
+        id: reading.id,
+        distance: Math.hypot(
+          (reading.x - selected.x) / xSpan,
+          (reading.y - selected.y) / ySpan
+        )
+      }))
+      .sort((a, b) => a.distance - b.distance || String(a.id).localeCompare(String(b.id)))[0] || null;
+  }
+
+  function nearestOnEarth(stations, selectedId, distanceFn) {
+    const list = Array.isArray(stations) ? stations : [];
+    const selected = list.find((station) => station?.id === selectedId);
+    if (!selected || typeof distanceFn !== 'function') return null;
+
+    return list
+      .filter((station) => station?.id && station.id !== selectedId)
+      .map((station) => ({ id: station.id, distanceKm: distanceFn(selected, station) }))
+      .filter((entry) => Number.isFinite(entry.distanceKm))
+      .sort((a, b) => a.distanceKm - b.distanceKm || String(a.id).localeCompare(String(b.id)))[0] || null;
+  }
+
+  if (typeof module === 'object' && module.exports) {
+    module.exports.commonsNeighborRelation = Object.freeze({ nearestInPlane, nearestOnEarth });
+    return;
+  }
+
+  const document = root.document;
+  const core = root.MuseumCommonsCore;
+  if (!document || !core || !Array.isArray(core.STATIONS)) return;
+
+  const section = document.querySelector('.phase-space-section');
+  const readout = section?.querySelector('.phase-space-readout');
+  if (!section || !readout || section.dataset.neighborRelation === 'true') return;
+  section.dataset.neighborRelation = 'true';
+
+  const relation = document.createElement('p');
+  relation.className = 'phase-space-help phase-space-neighbor';
+  relation.setAttribute('data-phase-neighbor', 'true');
+  const existingHelp = readout.querySelector('.phase-space-help');
+  if (existingHelp) existingHelp.before(relation);
+  else readout.append(relation);
+
+  function pointId(button) {
+    const match = String(button?.textContent || '').trim().match(/^\d{2}/);
+    return match?.[0] || null;
+  }
+
+  function readingFromButton(button) {
+    const id = pointId(button);
+    const x = Number.parseFloat(button?.style?.getPropertyValue('--phase-x'));
+    const y = Number.parseFloat(button?.style?.getPropertyValue('--phase-y'));
+    return { id, x, y };
+  }
+
+  function render() {
+    const buttons = [...section.querySelectorAll('.phase-space-point')];
+    if (!buttons.length) return;
+
+    for (const button of buttons) {
+      button.querySelector('.phase-space-neighbor-mark')?.remove();
+      delete button.dataset.neighborRole;
+      if (!button.dataset.neighborBaseLabel) {
+        button.dataset.neighborBaseLabel = button.getAttribute('aria-label') || `Point ${pointId(button) || 'unknown'}`;
+      }
+      button.setAttribute('aria-label', button.dataset.neighborBaseLabel);
+    }
+
+    const selectedButton = buttons.find((button) => button.dataset.selected === 'true');
+    const selectedId = pointId(selectedButton);
+    if (!selectedId) {
+      relation.textContent = 'Choose a point to compare nearness in measurement space with nearness on Earth.';
+      return;
+    }
+
+    const plane = nearestInPlane(
+      buttons.filter((button) => button.dataset.available === 'true').map(readingFromButton),
+      selectedId
+    );
+    const earth = nearestOnEarth(core.STATIONS, selectedId, core.greatCircleDistanceKm);
+
+    const roles = new Map();
+    if (plane) roles.set(plane.id, 'state');
+    if (earth) roles.set(earth.id, roles.get(earth.id) === 'state' ? 'both' : 'earth');
+
+    for (const button of buttons) {
+      const id = pointId(button);
+      const role = roles.get(id);
+      if (!role) continue;
+      button.dataset.neighborRole = role;
+      const marker = document.createElement('span');
+      marker.className = 'phase-space-neighbor-mark';
+      marker.setAttribute('aria-hidden', 'true');
+      marker.textContent = role === 'both' ? '◎' : role === 'state' ? '≈' : '⌖';
+      button.append(marker);
+      const suffix = role === 'both'
+        ? '; nearest in this measurement space and nearest fixed station on Earth'
+        : role === 'state'
+          ? '; nearest in this measurement space'
+          : '; nearest fixed station on Earth';
+      button.setAttribute('aria-label', `${button.dataset.neighborBaseLabel}${suffix}`);
+    }
+
+    if (!earth) {
+      relation.textContent = 'A nearest-neighbour comparison is unavailable for the selected point.';
+      return;
+    }
+
+    const earthCopy = `⌖ POINT ${earth.id} is the nearest fixed station on Earth (${earth.distanceKm.toLocaleString('en')} km).`;
+    if (!plane) {
+      relation.textContent = `MEASUREMENT NEIGHBOUR UNAVAILABLE · ${earthCopy} One or both displayed variables are missing for this lens.`;
+      return;
+    }
+
+    if (plane.id === earth.id) {
+      relation.textContent = `GEOMETRIES AGREE · ◎ POINT ${plane.id} is nearest in this displayed measurement space and nearest on Earth (${earth.distanceKm.toLocaleString('en')} km).`;
+      return;
+    }
+
+    relation.textContent = `GEOMETRIES DISAGREE · ≈ POINT ${plane.id} is nearest in this displayed measurement space. ${earthCopy}`;
+  }
+
+  section.addEventListener('click', (event) => {
+    if (event.target?.closest?.('[data-phase-lens], .phase-space-point')) queueMicrotask(render);
+  });
+  document.addEventListener('museum:commons-snapshot', () => queueMicrotask(render));
+  queueMicrotask(render);
+})(typeof globalThis !== 'undefined' ? globalThis : this);
