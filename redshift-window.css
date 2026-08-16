@@ -149,6 +149,41 @@
   line-height: 1.6;
 }
 
+/*
+  The hero orbitarium is explicitly decorative, but it used to behave like one
+  synchronized emblem. Let its three existing lights breathe on independent
+  cadences instead. The page's opening atmosphere now quietly resists the idea
+  of one universal visual "now" without turning the diagram into data.
+*/
+.orbit-dot-a { animation: deep-space-signal-a 7.1s ease-in-out infinite; }
+.orbit-dot-b { animation: deep-space-signal-b 9.7s ease-in-out infinite; }
+.orbit-dot-c { animation: deep-space-signal-c 12.9s ease-in-out infinite; }
+.orbit-core { animation: deep-space-core-breathe 16.3s ease-in-out infinite; }
+
+@keyframes deep-space-signal-a {
+  0%, 18%, 100% { opacity: 0.18; transform: scale(0.72); }
+  27%, 46% { opacity: 1; transform: scale(1.2); }
+  58%, 76% { opacity: 0.42; transform: scale(0.88); }
+}
+
+@keyframes deep-space-signal-b {
+  0%, 31%, 100% { opacity: 0.28; transform: scale(0.8); }
+  40%, 63% { opacity: 1; transform: scale(1.14); }
+  76%, 90% { opacity: 0.48; transform: scale(0.92); }
+}
+
+@keyframes deep-space-signal-c {
+  0%, 9%, 100% { opacity: 0.22; transform: scale(0.76); }
+  19%, 35% { opacity: 0.95; transform: scale(1.28); }
+  49%, 81% { opacity: 0.36; transform: scale(0.86); }
+}
+
+@keyframes deep-space-core-breathe {
+  0%, 100% { filter: brightness(0.88); }
+  47% { filter: brightness(1.08); }
+  71% { filter: brightness(0.96); }
+}
+
 @media (max-width: 700px) {
   .redshift-spectrum { min-height: 18rem; }
   .redshift-window-readout { grid-template-columns: 1fr; }
@@ -161,6 +196,10 @@
 @media (prefers-reduced-motion: reduce) {
   .redshift-visible-window,
   .redshift-line { transition: none !important; }
+  .orbit-dot-a,
+  .orbit-dot-b,
+  .orbit-dot-c,
+  .orbit-core { animation: none !important; }
 }
 
 @media (prefers-contrast: more) {
@@ -169,6 +208,10 @@
   .redshift-window-controls button,
   .redshift-band-controls button,
   .redshift-window-readout > div { border: 2px solid currentColor; }
+  .orbit-dot-a,
+  .orbit-dot-b,
+  .orbit-dot-c,
+  .orbit-core { animation: none; filter: none; opacity: 1; }
 }
 
 @media print {
@@ -187,4 +230,8 @@
   .redshift-line::after,
   .redshift-window-readout span,
   .redshift-window-note { color: #000; }
+  .orbit-dot-a,
+  .orbit-dot-b,
+  .orbit-dot-c,
+  .orbit-core { animation: none !important; filter: none !important; opacity: 1; }
 }
