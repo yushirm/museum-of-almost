@@ -109,6 +109,47 @@
   box-shadow: 0 0 0 3px rgba(201, 71, 50, 0.15);
 }
 
+
+.patch-point[data-connection="a"],
+.patch-point[data-connection="b"] {
+  overflow: hidden;
+}
+
+.patch-point[data-connection="a"]::after,
+.patch-point[data-connection="b"]::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  bottom: 0;
+  width: 3px;
+  height: 20px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.patch-point[data-connection="a"]::after { background: var(--blue); }
+.patch-point[data-connection="b"]::after { background: var(--red); }
+
+.patch-point[data-connection="a"] span,
+.patch-point[data-connection="b"] span {
+  position: relative;
+  z-index: 1;
+}
+
+.patch-point[data-connection="a"] span::after,
+.patch-point[data-connection="b"] span::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.patch-point[data-connection="a"] span::after { color: var(--blue); }
+.patch-point[data-connection="b"] span::after { color: var(--red); }
+
 .patch-help {
   margin: 0;
   color: var(--muted);
@@ -266,6 +307,19 @@
   .patchbay,
   .difference-instrument { border-width: 2px; }
   .patch-point span { border-width: 3px; }
+  .patch-point[data-connection="a"] span::after,
+  .patch-point[data-connection="b"] span::after { border-width: 3px; }
+}
+
+@media (forced-colors: active) {
+  .patch-point[data-connection="a"]::after,
+  .patch-point[data-connection="b"]::after { background: CanvasText; }
+
+  .patch-point[data-connection="a"] span::after,
+  .patch-point[data-connection="b"] span::after {
+    color: Highlight;
+    border-color: Highlight;
+  }
 }
 
 @media print {
