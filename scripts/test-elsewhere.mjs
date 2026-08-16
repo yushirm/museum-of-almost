@@ -82,7 +82,7 @@ assert.match(js, /forced-colors:active/, 'supplemental crate material cues must 
 assert.match(js, /@media\(prefers-reduced-motion:reduce\)\{\.acclimation-stage \.acclimation-shell\{transition:none\}\}/, 'crate material transition must be removed for reduced motion');
 assert.match(js, /@media print\{\.acclimation-stage \.acclimation-shell/, 'crate material response must print as static content');
 
-assert.match(js, /data\.elsewhereReceivingHandover = 'true'/, 'receiving-handover relationship should install exactly once');
+assert.match(js, /dataset\.elsewhereReceivingHandover = 'true'/, 'receiving-handover relationship should install exactly once');
 assert.match(js, /staticCall\.replaceWith\(note\)/, 'enhanced Shift Handover should replace one stale hypothetical call rather than add another paragraph');
 assert.match(js, /RECEIVING HOLD · CARRY TO NEXT SHIFT/, 'buffering arrivals should become an actual next-shift duty');
 assert.match(js, /RECEIVING HANDOFF · VERIFY BEFORE OPENING/, 'near-matched arrival should hand forward verification rather than a fake timer');
