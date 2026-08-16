@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const core = require('../data-core.js');
+const differenceStyles = fs.readFileSync(new URL('../difference-engine.css', import.meta.url), 'utf8');
 
 assert.equal(core.BUILD_SEED, '6bc76dc33337414e7c9f9ccbd7539976d98ac371444860c605fb88003174ded2');
 assert.equal(core.STATIONS.length, 13);
@@ -135,6 +137,27 @@ assert.match(core.differenceSentence(comparison, 'precipitation'), /wetter right
 assert.match(core.differenceSentence(comparison, 'light'), /Point 01 is in night; point 08 is in day/);
 assert.match(core.differenceSentence(comparison, 'distance'), /km apart along Earth’s surface/);
 
+assert.match(
+  differenceStyles,
+  /\.patch-point\[data-connection="a"\]::after[\s\S]*background:\s*var\(--blue\)/,
+  'Difference Engine end A should visibly seat a blue cable tail in its connected socket'
+);
+assert.match(
+  differenceStyles,
+  /\.patch-point\[data-connection="b"\]::after[\s\S]*background:\s*var\(--red\)/,
+  'Difference Engine end B should visibly seat a red cable tail in its connected socket'
+);
+assert.match(
+  differenceStyles,
+  /\.patch-point\[data-connection="a"\] span::after[\s\S]*\.patch-point\[data-connection="b"\] span::after[\s\S]*border:\s*2px solid currentColor/,
+  'both connected sockets should gain a visible plug collar without new DOM'
+);
+assert.match(
+  differenceStyles,
+  /@media \(forced-colors: active\)[\s\S]*border-color:\s*Highlight/,
+  'connected plug hardware should remain explicit in forced-colors mode'
+);
+
 const sentence = core.snapshotSentence({
   earthquakes,
   solar: { available: true, speed: 487.4 },
@@ -146,7 +169,7 @@ assert.match(sentence, /487 km\/s/);
 assert.match(sentence, /13 fixed world points/);
 assert.match(sentence, /NASA EONET lists 3 open natural events/);
 
-console.log('Commons / Now data reduction, fixed sample, daylight geometry, Difference Engine, and Planetary Section verified.');
+console.log('Commons / Now data reduction, fixed sample, daylight geometry, tactile Difference Engine patch hardware, and Planetary Section verified.');
 
 const noonSolstice = core.solarGeometry('2026-06-21T12:00:00Z');
 assert.ok(noonSolstice);
