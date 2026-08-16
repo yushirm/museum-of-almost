@@ -1,16 +1,21 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import { createRequire } from 'node:module';
+import {
+  assertCssContract,
+  assertLocalRuntime,
+  assertOfflineAssets,
+  read,
+  requireCjs,
+  requirePatterns
+} from './test-support.mjs';
 
-const require = createRequire(import.meta.url);
-const commons = require('../data-core.js');
-const core = require('../rest-score-core.js');
-const view = fs.readFileSync(new URL('../rest-score.js', import.meta.url), 'utf8');
-const css = fs.readFileSync(new URL('../rest-score.css', import.meta.url), 'utf8');
-const record = fs.readFileSync(new URL('../REST_SCORE.md', import.meta.url), 'utf8');
-const loader = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.url), 'utf8');
-const worker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
-const archive = fs.readFileSync(new URL('../SUCCESS_ARCHIVE.md', import.meta.url), 'utf8');
+const commons = requireCjs('data-core.js');
+const core = requireCjs('rest-score-core.js');
+const view = read('rest-score.js');
+const css = read('rest-score.css');
+const record = read('REST_SCORE.md');
+const loader = read('cosmic-signal.js');
+const worker = read('service-worker.js');
+const archive = read('SUCCESS_ARCHIVE.md');
 
 const weatherPoints = commons.STATIONS.map((station, index) => ({
   ...station,
@@ -114,29 +119,24 @@ assert.equal(core.filterMeasures(score, 'not-applicable').length, 1);
 assert.equal(core.filterMeasures(score, 'sounded').length, 3);
 assert.equal(core.filterMeasures(score, 'nonsense').length, 19, 'unknown filter must fail open to the full score');
 
-assert.match(view, /Generation 162 retires the Rest Score from the visitor journey/);
-assert.match(view, /later Commons modules mount normally/);
+requirePatterns(view, [
+  /Generation 162 retires the Rest Score from the visitor journey/,
+  /later Commons modules mount normally/
+], 'retired Rest Score view');
 assert.doesNotMatch(view, /THE REST SCORE \/ NOTHING IS NOT MISSING/);
 assert.doesNotMatch(view, /data-rest-score-styles|aria-pressed|aria-live/);
-assert.doesNotMatch(view, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
-assert.doesNotMatch(view, /setInterval|setTimeout|requestAnimationFrame|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
-assert.doesNotMatch(view, /analytics|telemetry|https?:\/\//i);
+assertLocalRuntime(view, 'retired Rest Score runtime');
 
-for (const pattern of [
+assertCssContract(css, 'Rest Score historical styles', { touchTarget: true, focusVisible: true });
+requirePatterns(css, [
   /@media \(max-width: 760px\)/,
   /@media \(max-width: 620px\)/,
-  /prefers-reduced-motion/,
-  /prefers-contrast/,
-  /@media print/,
-  /min-height:\s*44px/,
-  /:focus-visible/
-]) assert.match(css, pattern);
-assert.match(css, /data-state="rest"/);
-assert.match(css, /data-state="missing"/);
-assert.match(css, /data-state="not-applicable"/);
-assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i);
+  /data-state="rest"/,
+  /data-state="missing"/,
+  /data-state="not-applicable"/
+], 'Rest Score historical styles');
 
-for (const pattern of [
+requirePatterns(record, [
   /Concept A/,
   /Concept B/,
   /Concept C/,
@@ -148,21 +148,24 @@ for (const pattern of [
   /zero runtime data-service requests/i,
   /not a completeness percentage/i,
   /cosmic-signal-core\.js/
-]) assert.match(record, pattern);
+], 'Rest Score record');
 
 assert.match(loader, /reverse-ledger\.js[\s\S]+rest-score-core\.js[\s\S]+rest-score\.js/,
   'retired Rest Score loader slots should remain so the local module chain continues after a successful no-op load');
-for (const asset of ['./rest-score-core.js', './rest-score.js', './rest-score.css', './REST_SCORE.md']) {
-  assert.ok(worker.includes(`'${asset}'`), `offline shell should retain historical Rest Score assets until a dedicated cache-version cleanup`);
-}
+assertOfflineAssets(worker, [
+  './rest-score-core.js',
+  './rest-score.js',
+  './rest-score.css',
+  './REST_SCORE.md'
+], 'Rest Score historical offline shell');
 
-for (const pattern of [
+requirePatterns(archive, [
   /COMMONS \/ NOW — The Rest Score/,
   /The Rest Score \/ Nothing Is Not Missing/,
   /d61d3602c0e1c5a8945ce7087d9bc05d5a4c7c9b/,
   /#60 — Add the Rest Score/,
   /run: `160`/,
   /conclusion: `success`/
-]) assert.match(archive, pattern, `Success Archive should preserve historical Rest Score evidence: ${pattern}`);
+], 'Rest Score Success Archive evidence');
 
 console.log('Rest Score core semantics remain verified while generation 162 retires the visitor-facing dashboard and preserves the loader/offline chain.');
