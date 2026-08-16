@@ -81,6 +81,17 @@ assert.match(css, /--event-b-top/);
 assert.match(css, /frame-causal-compass/);
 assert.match(css, /frame-causal-compass-map/);
 assert.match(viewSource, /style\.setProperty\('--event-b-top'/);
+assert.match(viewSource, /CAUSAL_STAGE_FIELDS/);
+assert.match(viewSource, /function renderCausalField\(kind\)/);
+assert.match(viewSource, /stage\.style\.backgroundImage = layers\.join\(', '\)/);
+assert.match(viewSource, /stage\.dataset\.causalField = kind/);
+assert.match(viewSource, /renderCausalField\(state\.causalClass\)/);
+for (const pattern of [
+  /radial-gradient\(circle at 25% 50%/,
+  /radial-gradient\(circle at 75% 50%/,
+  /linear-gradient\(135deg, transparent 46%/,
+  /linear-gradient\(90deg, transparent 42%/
+]) assert.match(viewSource, pattern, `causal stage field missing ${pattern}`);
 assert.match(viewSource, /CAUSAL COMPASS · INVARIANT CLASS/);
 assert.match(viewSource, /Changing frame moves the coordinates, not the causal region\./);
 assert.match(viewSource, /dataset\.causalRegion === kind/);
@@ -100,4 +111,4 @@ assert.doesNotMatch([coreSource, viewSource].join('\n'), /localStorage|sessionSt
 assert.doesNotMatch([coreSource, viewSource].join('\n'), /setInterval|setTimeout|requestAnimationFrame/i);
 assert.doesNotMatch(runtime, /\b(gtag|dataLayer|mixpanel|segment|plausible|amplitude|hotjar)\b|google-analytics|googletagmanager|doubleclick/i);
 
-console.log('Deep Space Frame Shifter relativity, invariance, causal-compass, accessibility, privacy, and no-network contract verified.');
+console.log('Deep Space Frame Shifter relativity, invariant causal field, causal-compass, accessibility, privacy, and no-network contract verified.');

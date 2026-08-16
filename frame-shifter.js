@@ -21,6 +21,27 @@
 
   if (!stage || !scenarioTitle || !eventA || !eventB) return;
 
+  const BASE_STAGE_GRID = [
+    'repeating-linear-gradient(to bottom, rgba(132,232,255,0.08) 0 1px, transparent 1px 44px)',
+    'linear-gradient(90deg, rgba(111,59,209,0.08), transparent 38% 62%, rgba(209,104,255,0.08))'
+  ];
+
+  const CAUSAL_STAGE_FIELDS = Object.freeze({
+    spacelike: [
+      'radial-gradient(circle at 25% 50%, rgba(132,232,255,0.16) 0 6%, transparent 22%)',
+      'radial-gradient(circle at 75% 50%, rgba(209,104,255,0.16) 0 6%, transparent 22%)',
+      ...BASE_STAGE_GRID
+    ],
+    lightlike: [
+      'linear-gradient(135deg, transparent 46%, rgba(132,232,255,0.06) 47%, rgba(132,232,255,0.24) 49.5% 50.5%, rgba(132,232,255,0.06) 53%, transparent 54%)',
+      ...BASE_STAGE_GRID
+    ],
+    timelike: [
+      'linear-gradient(90deg, transparent 42%, rgba(209,104,255,0.05) 42%, rgba(209,104,255,0.16) 48% 52%, rgba(209,104,255,0.05) 58%, transparent 58%)',
+      ...BASE_STAGE_GRID
+    ]
+  });
+
   let scenarioId = 'distant-flashes';
   let beta = 0;
 
@@ -102,6 +123,12 @@
     }
   }
 
+  function renderCausalField(kind) {
+    const layers = CAUSAL_STAGE_FIELDS[kind] || CAUSAL_STAGE_FIELDS.spacelike;
+    stage.style.backgroundImage = layers.join(', ');
+    stage.dataset.causalField = kind;
+  }
+
   function render() {
     const state = core.frameState(scenarioId, beta);
     if (!state) return;
@@ -120,6 +147,7 @@
 
     stage.dataset.causalClass = state.causalClass;
     stage.style.setProperty('--event-b-top', `${50 + state.visualOffsetPercent}%`);
+    renderCausalField(state.causalClass);
     renderCausalCompass(state.causalClass);
   }
 
@@ -140,6 +168,13 @@
       render();
     });
   }
+
+  window.addEventListener('beforeprint', () => {
+    stage.style.removeProperty('background-image');
+  });
+  window.addEventListener('afterprint', () => {
+    renderCausalField(stage.dataset.causalClass || 'spacelike');
+  });
 
   buildCausalCompass();
   render();
