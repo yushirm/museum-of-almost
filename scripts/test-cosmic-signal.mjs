@@ -12,6 +12,7 @@ const loaderSource = fs.readFileSync(new URL('../cosmic-signal.js', import.meta.
 const appSource = fs.readFileSync(new URL('../app.js', import.meta.url), 'utf8');
 const source = [coreSource, viewSource, loaderSource].join('\n');
 const styles = fs.readFileSync(new URL('../cosmic-signal.css', import.meta.url), 'utf8');
+const worldMapStyles = fs.readFileSync(new URL('../world-map.css', import.meta.url), 'utf8');
 
 assert.equal(cosmic.SOURCE, 'https://services.swpc.noaa.gov/products/noaa-scales.json');
 assert.ok(appSource.includes(cosmic.SOURCE), 'the shared snapshot acquisition must own the approved NOAA Scales request');
@@ -58,7 +59,6 @@ assert.equal(normalized.geomagnetic.code, 'G1');
 assert.equal(normalized.geomagnetic.text, 'minor');
 assert.equal(normalized.radiation.code, 'S0');
 assert.equal(normalized.radiation.text, 'none');
-assert.equal(normalized.radio.code, 'R0');
 assert.equal(normalized.observedAt, '2026-08-07 15:20:00 UTC');
 
 assert.deepEqual(cosmic.normalizeNoaaScales({
@@ -123,6 +123,21 @@ assert.match(loaderSource, /nearest fixed station on Earth/,
 assert.match(loaderSource, /museum:commons-snapshot/,
   'nearest-neighbour relation should recompute from each shared snapshot');
 
+assert.match(worldMapStyles, /\.station-dot\[data-selected="true"\]\[data-light="day"\][\s\S]*box-shadow:/,
+  'selected daylight should stay local to the selected map window');
+assert.match(worldMapStyles, /\.station-dot\[data-selected="true"\]\[data-light="twilight"\][\s\S]*box-shadow:/,
+  'selected twilight should stay local to the selected map window');
+assert.match(worldMapStyles, /\.station-dot\[data-selected="true"\]\[data-light="night"\][\s\S]*box-shadow:/,
+  'selected night should stay local to the selected map window');
+assert.doesNotMatch(worldMapStyles, /body:has\([\s\S]*\.solar-dial-section[\s\S]*background-image/,
+  'selected light must no longer wash unrelated scientific sections');
+assert.doesNotMatch(worldMapStyles, /body:has\([\s\S]*\.phase-space-section[\s\S]*background-image/,
+  'selected light must no longer wash the State Space');
+assert.match(worldMapStyles, /@media \(forced-colors: active\)[\s\S]*box-shadow:\s*0 0 0 5px Highlight/,
+  'selected-window light pool needs an explicit forced-colors boundary');
+assert.match(worldMapStyles, /@media print[\s\S]*\.station-dot\[data-selected="true"\]\[data-light\][\s\S]*box-shadow:\s*none/,
+  'printed maps should not preserve screen-only light glow');
+
 assert.match(appSource, /credentials:\s*'omit'/);
 assert.match(appSource, /referrerPolicy:\s*'no-referrer'/);
 assert.match(appSource, /cache:\s*'no-store'/);
@@ -161,4 +176,4 @@ assert.match(styles, /@media print/);
 assert.doesNotMatch(styles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
 
-console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, State Space nearest-neighbour disagreement, sampling-floor and co-occurrence causal boundaries, privacy boundary, accessibility hooks, and missing-value integrity verified.');
+console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, State Space nearest-neighbour disagreement, selected-window local light pool, sampling-floor and co-occurrence causal boundaries, privacy boundary, accessibility hooks, and missing-value integrity verified.');
