@@ -111,6 +111,26 @@
   color: #d8ffbf;
 }
 
+/* Generation 181: solved locks now assemble their recovered route in-place. */
+.dead-drop-progress-cell[data-state="open"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32rem;
+  text-align: center;
+}
+
+.dead-drop-progress-cell[data-state="open"]::after {
+  color: #ffe08a;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.dead-drop-progress-cell[data-state="open"]:nth-child(1)::after { content: "· 05"; }
+.dead-drop-progress-cell[data-state="open"]:nth-child(2)::after { content: "· LEVEL −1"; }
+.dead-drop-progress-cell[data-state="open"]:nth-child(3)::after { content: "· FREIGHT"; }
+.dead-drop-progress-cell[data-state="open"]:nth-child(4)::after { content: "· LIFT"; }
+
 .dead-drop-live {
   min-height: 1.5em;
   margin: 0 0 1rem;

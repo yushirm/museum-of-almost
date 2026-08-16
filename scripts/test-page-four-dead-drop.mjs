@@ -40,6 +40,16 @@ for (const fragment of ['05', 'LEVEL −1', 'FREIGHT', 'LIFT']) {
   assert.ok(js.includes(`fragment: '${fragment}'`), `Dead Drop missing route fragment ${fragment}`);
 }
 
+for (const [position, fragment] of [['1', '05'], ['2', 'LEVEL −1'], ['3', 'FREIGHT'], ['4', 'LIFT']]) {
+  assert.match(
+    css,
+    new RegExp(`dead-drop-progress-cell\\[data-state="open"\\]:nth-child\\(${position}\\)::after\\s*\\{\\s*content:\\s*"· ${fragment}";`),
+    `solved Dead Drop lock ${position} should reveal its existing route fragment in the progress strip`
+  );
+}
+assert.match(css, /dead-drop-progress-cell\[data-state="open"\]::after[\s\S]*?color:\s*#ffe08a/,
+  'recovered route fragments should read as part of the existing open-lock state');
+
 assert.match(js, /href = 'elsewhere\.html'/, 'Dead Drop final route must stay same-origin');
 assert.match(js, /solved\.size === puzzles\.length/, 'final route should require all four locks');
 assert.match(js, /new Set\(\)/, 'solved puzzle state should be memory-only');
@@ -129,4 +139,4 @@ for (const pattern of [
 assert.match(css, /@supports selector\(body:has\(#cryptids\.is-active\)\)/,
   'Evidence-board revision should be progressively enhanced behind :has support');
 
-console.log('Page Four Dead Drop four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, source-independence evidence limits, evidence-board revision states, accessibility, privacy, and v43 cache-lineage contracts verified.');
+console.log('Page Four Dead Drop visible route-fragment assembly, four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, source-independence evidence limits, evidence-board revision states, accessibility, privacy, and v43 cache-lineage contracts verified.');
