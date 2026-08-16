@@ -139,4 +139,17 @@ for (const pattern of [
 assert.match(css, /@supports selector\(body:has\(#cryptids\.is-active\)\)/,
   'Evidence-board revision should be progressively enhanced behind :has support');
 
-console.log('Page Four Dead Drop visible route-fragment assembly, four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, source-independence evidence limits, evidence-board revision states, accessibility, privacy, and v43 cache-lineage contracts verified.');
+for (const pattern of [
+  /body\.is-reclassified \.hero-photo \.long-figure\s*\{[\s\S]*?background:\s*transparent/,
+  /body\.is-reclassified \.hero-photo \.long-figure::before\s*\{[\s\S]*?background:\s*transparent/,
+  /body\.is-reclassified \.hero-photo::after\s*\{[\s\S]*?content:\s*"PUBLIC COPY \/ SUBJECT WITHHELD"/,
+  /body\.is-reclassified \.hero-photo \.long-figure[\s\S]*?outline:\s*2px dashed #f28e76/,
+  /@media \(forced-colors: active\)[\s\S]*?body\.is-reclassified \.hero-photo::after/,
+  /@media print[\s\S]*?body\.is-reclassified \.hero-photo::after/
+]) assert.match(css, pattern, `Public-copy reclassification evidence missing ${pattern}`);
+assert.match(loader, /classList\.toggle\('is-reclassified'/,
+  'existing reclassification control should remain the sole state authority for the public-copy mutation');
+assert.match(loader, /classificationToggle\.setAttribute\('aria-pressed'/,
+  'reclassification control must retain explicit pressed-state semantics');
+
+console.log('Page Four Dead Drop visible route-fragment assembly, four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, source-independence evidence limits, evidence-board revision states, public-copy reclassification evidence, accessibility, privacy, and v43 cache-lineage contracts verified.');
