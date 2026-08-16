@@ -33,13 +33,45 @@ jobs:
             node --check "$file"
           done < <(find . -type f \( -name '*.js' -o -name '*.mjs' \) -not -path './.git/*' -print0 | sort -z)
       - name: Run test suite
-        shell: bash
         run: |
-          set -euo pipefail
-          for test in scripts/test-*.mjs; do
-            echo "::group::$test"
-            node "$test"
-            echo "::endgroup::"
-          done
+          node scripts/test-data-core.mjs
+          node scripts/test-offcut-drawer.mjs
+          node scripts/test-border-office.mjs
+          node scripts/test-load-bearing-sample.mjs
+          node scripts/test-gauge-bench.mjs
+          node scripts/test-shuffle-table.mjs
+          node scripts/test-quorum-gate.mjs
+          node scripts/test-shutter-cabinet.mjs
+          node scripts/test-weather-score.mjs
+          node scripts/test-synoptic-alphabet.mjs
+          node scripts/test-temporal-sounding.mjs
+          node scripts/test-faultline-core.mjs
+          node scripts/test-witness-seal.mjs
+          node scripts/test-isolation-board.mjs
+          node scripts/test-exposure-plate.mjs
+          node scripts/test-reverse-ledger.mjs
+          node scripts/test-rest-score.mjs
+          node scripts/test-cosmic-signal.mjs
+          node scripts/test-cosmic-latency.mjs
+          node scripts/test-cosmic-escapement.mjs
+          node scripts/test-planetary-heliodon.mjs
+          node scripts/test-deep-space.mjs
+          node scripts/test-possibility-engine.mjs
+          node scripts/test-frame-shifter.mjs
+          node scripts/test-causal-signal.mjs
+          node scripts/test-gravitational-copy.mjs
+          node scripts/test-redshift-ruler.mjs
+          node scripts/test-origin-machine.mjs
+          node scripts/test-same-answer-machine.mjs
+          node scripts/test-unequal-minute.mjs
+          node scripts/test-parallax-survey.mjs
+          node scripts/test-web1.mjs
+          node scripts/test-page-four.mjs
+          node scripts/test-page-four-instrument-room.mjs
+          node scripts/test-page-four-dead-drop.mjs
+          node scripts/test-elsewhere.mjs
+          node scripts/test-404.mjs
+          node scripts/test-museum-docs.mjs
+          node scripts/test-service-worker.mjs
       - name: Check privacy and application contract
         run: node scripts/check.mjs
