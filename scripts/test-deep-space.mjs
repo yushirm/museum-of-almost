@@ -31,6 +31,17 @@ for (const pattern of [
 ]) assert.match(html, pattern);
 
 for (const pattern of [
+  /\.inventory-grid::before/,
+  /var\(--cyan\) 0 4\.9%/,
+  /var\(--nebula\) 4\.9% 31\.7%/,
+  /var\(--magenta\) 31\.7% 100%/,
+  /grid-template-columns:\s*minmax\(6\.4rem, 0\.18fr\) minmax\(9rem, 0\.24fr\) minmax\(0, 1fr\)/,
+  /\.inventory-card:last-child \{ border-bottom: 0; \}/
+]) assert.match(css, pattern, `Cosmic Inventory proportional field missing ${pattern}`);
+assert.doesNotMatch(css, /\.inventory-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,/s, 'retired three-card Cosmic Inventory grid returned');
+assert.doesNotMatch(css, /\.inventory-card\s*\{[^}]*min-height:\s*330px/s, 'retired tall Cosmic Inventory cards returned');
+
+for (const pattern of [
   /addPageFourSignalAnomaly/,
   /page-four-signal-link/,
   /\? Page Four \/ unfiled/,
@@ -105,4 +116,4 @@ assert.ok(Math.abs(core.lightTimeSeconds(core.AU_KM) - 499.0047838) < 0.001, '1 
 assert.ok(Math.abs(core.schwarzschildRadiusKm(1) - 2.9533) < 0.01, 'one solar mass Schwarzschild radius should be about 2.95 km');
 assert.ok(Math.abs(core.inventoryTotal() - 100) < 1e-9, 'rounded cosmic inventory should total 100%');
 
-console.log('Deep Space / Almost local science, anomaly conservation prune, cosmic stratigraphy, light-time handoff, accessibility, privacy, calculations, and no-network contract verified.');
+console.log('Deep Space / Almost local science, proportional Cosmic Inventory, anomaly conservation prune, cosmic stratigraphy, light-time handoff, accessibility, privacy, calculations, and no-network contract verified.');
