@@ -113,6 +113,7 @@ for (const pattern of [
 ]) assert.match(viewSource, pattern, `coordinate-order trace missing ${pattern}`);
 assert.match(viewSource, /orderLabel = 'A → B'/);
 assert.match(viewSource, /orderLabel = 'B → A'/);
+assert.equal((viewSource.match(/http:\/\/www\.w3\.org\/2000\/svg/g) || []).length, 3, 'coordinate-order trace should use only the standard SVG namespace URL');
 assert.match(record, /Concept A/);
 assert.match(record, /Concept B/);
 assert.match(record, /Concept C/);
@@ -120,7 +121,8 @@ assert.match(record, /Concept B was discarded/);
 assert.match(record, /Δt′ = gamma \(Δt - beta Δx\)/);
 assert.match(record, /never allow a spacelike order flip to masquerade as causation/i);
 
-assert.doesNotMatch(runtime, /https?:\/\//i, 'Frame Shifter runtime must remain local-only');
+const runtimeWithoutSvgNamespace = runtime.replaceAll('http://www.w3.org/2000/svg', '');
+assert.doesNotMatch(runtimeWithoutSvgNamespace, /https?:\/\//i, 'Frame Shifter runtime must remain local-only apart from the standard SVG namespace identifier');
 assert.doesNotMatch([coreSource, viewSource].join('\n'), /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
 assert.doesNotMatch([coreSource, viewSource].join('\n'), /localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i);
 assert.doesNotMatch([coreSource, viewSource].join('\n'), /setInterval|setTimeout|requestAnimationFrame/i);
