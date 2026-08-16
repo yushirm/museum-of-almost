@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import path from 'node:path';
-import { createRequire } from 'node:module';
-
-const root = path.resolve(new URL('..', import.meta.url).pathname);
-const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
-const require = createRequire(import.meta.url);
+import {
+  forbidPatterns,
+  read,
+  requireCjs,
+  requireFiles,
+  requirePatterns
+} from './test-support.mjs';
 
 const requiredFiles = [
   'index.html', 'landing.css', 'commons-now.html', 'styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'world-map.svg', 'difference-engine.css', 'field-sheet.css',
@@ -15,15 +15,15 @@ const requiredFiles = [
   'planetary-heliodon-core.js', 'planetary-heliodon.js', 'planetary-heliodon.css',
   'COSMIC_RECEIVE_DESK.md', 'CELESTIAL_ESCAPEMENT.md', 'PLANETARY_HELIODON.md', 'SAMPLE_AND_HOLD.md', 'SOUNDING_WELL.md',
   'data-core.js', 'temporal-sounding-core.js', 'temporal-sounding.js', 'app.js', 'manifest.webmanifest', 'service-worker.js',
-  'README.md', 'PRIVACY.md', 'SOURCES.md', 'REBUILD_LOG.md', 'RIGHTS.md', 'CONTRIBUTING.md',
+  'README.md', 'PRIVACY.md', 'SOURCES.md', 'REBUILD_LOG.md', 'RIGHTS.md', 'CONTRIBUTING.md', 'TESTING.md',
   'scripts/test-data-core.mjs', 'scripts/test-temporal-sounding.mjs', 'scripts/test-cosmic-signal.mjs', 'scripts/test-cosmic-latency.mjs',
   'scripts/test-cosmic-escapement.mjs', 'scripts/test-planetary-heliodon.mjs', 'scripts/test-service-worker.mjs',
-  'scripts/check.mjs', '.github/workflows/check.yml'
+  'scripts/test-support.mjs', 'scripts/run-tests.mjs', 'scripts/check.mjs', '.github/workflows/check.yml'
 ];
-for (const file of requiredFiles) assert.ok(fs.existsSync(path.join(root, file)), `missing ${file}`);
+requireFiles(requiredFiles, 'museum contract');
 
 const file = Object.fromEntries(requiredFiles.map((name) => [name, read(name)]));
-const core = require('../data-core.js');
+const core = requireCjs('data-core.js');
 const runtimeFiles = [
   'index.html', 'landing.css', 'commons-now.html', 'styles.css', 'sample-hold.css', 'sounding-well.css', 'world-map.css', 'difference-engine.css', 'field-sheet.css',
   'cosmic-signal.js', 'cosmic-signal-core.js', 'cosmic-signal-view.js', 'cosmic-signal.css',
@@ -37,13 +37,6 @@ const publicCurrent = [
   'index.html', 'commons-now.html', 'data-core.js', 'temporal-sounding-core.js', 'temporal-sounding.js', 'app.js',
   'README.md', 'PRIVACY.md', 'SOURCES.md', 'SAMPLE_AND_HOLD.md', 'SOUNDING_WELL.md', 'REBUILD_LOG.md', 'RIGHTS.md'
 ].map((name) => file[name]).join('\n');
-
-function requirePatterns(source, patterns, label) {
-  for (const pattern of patterns) assert.match(source, pattern, `${label}: missing ${pattern}`);
-}
-function forbidPatterns(source, patterns, label) {
-  for (const pattern of patterns) assert.doesNotMatch(source, pattern, `${label}: forbidden ${pattern}`);
-}
 
 const allowedRuntimeUrls = [
   'https://api.open-meteo.com/v1/forecast',
@@ -233,13 +226,34 @@ assert.equal(manifest.start_url, './');
 assert.equal(manifest.scope, './');
 assert.equal(manifest.display, 'standalone');
 assert.equal(manifest.name, 'The Museum of Almost');
+
 const workflow = file['.github/workflows/check.yml'];
 requirePatterns(workflow, [
   /jobs:\s*\n\s*check:/, /permissions:\s*\n\s*contents: read/, /persist-credentials: false/, /timeout-minutes: 5/,
   /actions\/checkout@[0-9a-f]{40}/, /actions\/setup-node@[0-9a-f]{40}/,
-  /node scripts\/test-data-core\.mjs/, /node scripts\/test-temporal-sounding\.mjs/,
-  /node scripts\/test-planetary-heliodon\.mjs/, /node scripts\/test-service-worker\.mjs/, /node scripts\/check\.mjs/
+  /Check JavaScript syntax/, /node scripts\/run-tests\.mjs/
 ], 'workflow');
+forbidPatterns(workflow, [
+  /node scripts\/test-[a-z0-9-]+\.mjs/,
+  /run:\s*node scripts\/check\.mjs/
+], 'workflow test orchestration');
+
+const testRunner = file['scripts/run-tests.mjs'];
+requirePatterns(testRunner, [
+  /readdirSync\(scriptsDir\)/, /availableParallelism/, /spawn\(process\.execPath/,
+  /--match=/, /--serial/, /check\.mjs/, /Suite wall time/, /Slowest/
+], 'test runner');
+const testSupport = file['scripts/test-support.mjs'];
+requirePatterns(testSupport, [
+  /export function requirePatterns/, /export function forbidPatterns/, /export function assertLocalRuntime/,
+  /export function assertCssContract/, /export function assertOfflineAssets/
+], 'test support');
+const testingPolicy = file['TESTING.md'];
+requirePatterns(testingPolicy, [
+  /Extend or refactor that test by default/, /Create a new test file only when/, /same setup or assertion appears in three places/i,
+  /Do not duplicate repository-wide privacy or secret scans/i, /node scripts\/run-tests\.mjs --match=/,
+  /If a feature is pruned, merged or replaced, prune or merge its tests in the same PR/i
+], 'test engineering policy');
 
 forbidPatterns(publicCurrent, [
   /\b[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/i,
@@ -249,4 +263,4 @@ forbidPatterns(publicCurrent, [
   /\/Users\/|\/home\/[A-Za-z0-9._-]+|C:\\Users\\/i
 ], 'public secret/privacy scan');
 
-console.log('Museum entrance, unchanged Commons / Now application, privacy, exact-network boundary, local galleries, accessibility, and coherent offline shell verified.');
+console.log('Museum entrance, Commons / Now application, privacy, exact-network boundary, local galleries, accessibility, offline shell, and reusable test architecture verified.');

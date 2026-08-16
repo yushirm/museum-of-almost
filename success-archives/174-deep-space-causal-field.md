@@ -1,6 +1,6 @@
 # 174 — DEEP SPACE / ALMOST — The Causal Class Enters the Stage
 
-- **Ancestor:** `960bf1b691126f65303eafdd99c906e8bb75fb6d`
+- **Ancestor:** `9af1beb89e98893643a0799751addad722286c24`
 - **Target room:** DEEP SPACE / ALMOST
 - **Room density:** CROWDED
 - **Generation mode:** DEEPEN

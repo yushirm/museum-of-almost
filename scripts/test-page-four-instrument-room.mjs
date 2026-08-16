@@ -1,13 +1,20 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
+import {
+  assertCssContract,
+  assertLocalRuntime,
+  assertOfflineAssets,
+  bundle,
+  read,
+  requirePatterns
+} from './test-support.mjs';
 
-const js = fs.readFileSync(new URL('../page-four-instrument-room.js', import.meta.url), 'utf8');
-const css = fs.readFileSync(new URL('../page-four-instrument-room.css', import.meta.url), 'utf8');
-const ledger = fs.readFileSync(new URL('../PAGE_FOUR_HESSDALEN.md', import.meta.url), 'utf8');
-const loader = fs.readFileSync(new URL('../page-four.js', import.meta.url), 'utf8');
-const serviceWorker = fs.readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
+const js = read('page-four-instrument-room.js');
+const css = read('page-four-instrument-room.css');
+const ledger = read('PAGE_FOUR_HESSDALEN.md');
+const loader = read('page-four.js');
+const serviceWorker = read('service-worker.js');
 
-for (const pattern of [
+requirePatterns(js, [
   /THE INSTRUMENT ROOM/,
   /11 \/ HESSDALEN, 1984 \/ FIELD CROSS-EXAMINATION/,
   /DOCUMENTED FIELD RECORD \/\/ PAGE FOUR HYPOTHESES QUARANTINED/,
@@ -16,14 +23,14 @@ for (const pattern of [
   /A failed instrument is part of provenance\./,
   /Controls may expose a failure mode without explaining this case\./,
   /STRANGE DESERVES INVESTIGATION\. INVESTIGATION DESERVES EVIDENCE\. EVIDENCE DOES NOT OWE US A STRANGE ANSWER\./
-]) assert.match(js, pattern, `Instrument Room missing ${pattern}`);
+], 'Instrument Room');
 
 const channelIds = ['visual', 'radar', 'radio', 'magnetic', 'laser', 'seismic', 'ir-radiation'];
 for (const id of channelIds) assert.match(js, new RegExp(`id: '${id}'`), `missing field channel ${id}`);
 assert.equal([...js.matchAll(/id: '(visual|radar|radio|magnetic|laser|seismic|ir-radiation)'/g)].length, 7,
   'Instrument Room should expose exactly seven historical field channels');
 
-for (const pattern of [
+requirePatterns(js, [
   /188 light reports/,
   /53 at F5 or higher/,
   /subjective judgment/,
@@ -35,55 +42,50 @@ for (const pattern of [
   /8 of 9 attempts/,
   /no local seismic activity/,
   /two uses of the infrared viewers showed no strong infrared signal/
-]) assert.match(js, pattern, `historical field record missing ${pattern}`);
+], 'historical field record');
 
 const hypothesisCodes = ['H0', 'H1', 'H2', 'H3'];
 for (const code of hypothesisCodes) assert.match(js, new RegExp(`code: '${code}'`), `missing hypothesis ${code}`);
 assert.equal([...js.matchAll(/code: 'H[0-3]'/g)].length, 4, 'Instrument Room should expose exactly four competing hypotheses');
-assert.match(js, /HYPOTHESIS CROSS-EXAMINATION/);
-assert.match(js, /WHAT WOULD CHANGE OUR MIND\?/);
-assert.match(js, /PAGE FOUR HYPOTHESIS: one structured external agent/);
-assert.match(js, /status: 'NOT ESTABLISHED'/);
-assert.match(js, /WEIGHS FOR/);
-assert.match(js, /WEIGHS AGAINST/);
-assert.match(js, /INCONCLUSIVE/);
-assert.match(js, /NEUTRAL/);
+requirePatterns(js, [
+  /HYPOTHESIS CROSS-EXAMINATION/,
+  /WHAT WOULD CHANGE OUR MIND\?/,
+  /PAGE FOUR HYPOTHESIS: one structured external agent/,
+  /status: 'NOT ESTABLISHED'/,
+  /WEIGHS FOR/,
+  /WEIGHS AGAINST/,
+  /INCONCLUSIVE/,
+  /NEUTRAL/
+], 'Instrument Room hypothesis controls');
 
 const controlCodes = ['CTRL-GF-2015', 'CTRL-PR-2013', 'CTRL-ETNA-2018'];
 for (const code of controlCodes) assert.match(js, new RegExp(code), `missing control file ${code}`);
 assert.equal([...js.matchAll(/code: 'CTRL-/g)].length, 3, 'Instrument Room should expose exactly three modern control files');
-assert.match(js, /CONTROLS TEACH FAILURE MODES\. THEY DO NOT RETROACTIVELY EXPLAIN HESSDALEN\./);
-assert.match(js, /GOFAST \/ MOTION PARALLAX/);
-assert.match(js, /PUERTO RICO \/ LOOK ANGLE/);
-assert.match(js, /MT\. ETNA \/ ATMOSPHERE \+ SENSOR/);
-assert.match(js, /Control file is methodological, not a Hessdalen explanation\./);
+requirePatterns(js, [
+  /CONTROLS TEACH FAILURE MODES\. THEY DO NOT RETROACTIVELY EXPLAIN HESSDALEN\./,
+  /GOFAST \/ MOTION PARALLAX/,
+  /PUERTO RICO \/ LOOK ANGLE/,
+  /MT\. ETNA \/ ATMOSPHERE \+ SENSOR/,
+  /Control file is methodological, not a Hessdalen explanation\./
+], 'Instrument Room control files');
 
-assert.match(js, /role', 'group'/, 'hypothesis and control selectors should expose grouped controls');
-assert.match(js, /aria-pressed/, 'selectors should expose selected state');
-assert.match(js, /role', 'status'/, 'dynamic analysis should expose status semantics');
-assert.match(js, /aria-live', 'polite'/, 'dynamic analysis feedback should be polite');
-assert.match(js, /PAGE_FOUR_HESSDALEN\.md/, 'Instrument Room should link to its local source ledger');
-assert.match(js, /instrument-room-link/);
-assert.match(js, /href = '#instrument-room'/);
+requirePatterns(js, [
+  /role', 'group'/,
+  /aria-pressed/,
+  /role', 'status'/,
+  /aria-live', 'polite'/,
+  /PAGE_FOUR_HESSDALEN\.md/,
+  /instrument-room-link/,
+  /href = '#instrument-room'/
+], 'Instrument Room accessibility and routing');
 
-for (const source of [js, css]) {
-  assert.doesNotMatch(source, /https?:\/\//i, 'Instrument Room visitor runtime must remain local-only');
-}
-assert.doesNotMatch(js, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i,
-  'Instrument Room must not add runtime network requests');
-assert.doesNotMatch(js, /localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation/i,
-  'Instrument Room must not persist or personalize visitor data');
-assert.doesNotMatch(js, /analytics|telemetry|tracking|gtag|dataLayer|mixpanel|segment|plausible|amplitude|hotjar/i,
-  'Instrument Room must remain tracking-free');
+assertLocalRuntime(bundle(js, css), 'Instrument Room', {
+  domStringInjection: true,
+  visitorInput: true
+});
 assert.doesNotMatch(js, /navigator\.share\b/, 'Instrument Room must not invoke external share targets');
-assert.doesNotMatch(js, /innerHTML|insertAdjacentHTML|document\.write/i,
-  'Instrument Room must mount through DOM nodes rather than HTML-string injection');
-assert.doesNotMatch(js, /setInterval|setTimeout|requestAnimationFrame/i,
-  'Instrument Room must not add polling, timers, or animation loops');
-assert.doesNotMatch(js, /createElement\(['"](?:input|textarea|select)['"]\)|contenteditable/i,
-  'Instrument Room must not collect visitor free text or numeric input');
 
-for (const pattern of [
+requirePatterns(ledger, [
   /Concept A — Hessdalen Field File/,
   /Concept B — The Sensor Stack/,
   /Concept C — The Observer-Dependent Intruder/,
@@ -99,7 +101,7 @@ for (const pattern of [
   /The existing 1984 record does not establish H3\./,
   /A modern control case can demonstrate a failure mode\. It does \*\*not\*\* retroactively explain Hessdalen\./,
   /Source review date: 2026-08-08\./
-]) assert.match(ledger, pattern, `Hessdalen source ledger missing ${pattern}`);
+], 'Hessdalen source ledger');
 
 assert.match(ledger, /The report explicitly says nothing unusual was seen on the spectrum analyser at the same time the lights were seen\./,
   'source ledger must preserve the non-coincident radio result');
@@ -110,15 +112,13 @@ assert.match(ledger, /only two attempts/,
 assert.match(ledger, /No third-party source is loaded|performs no source-page request at visitor runtime/,
   'source ledger must preserve the no-runtime-source boundary');
 
-assert.match(loader, /page-four-instrument-room\.css/, 'Page Four loader should mount Instrument Room styles');
-assert.match(loader, /page-four-instrument-room\.js/, 'Page Four loader should mount Instrument Room logic');
-assert.match(serviceWorker, /page-four-instrument-room\.css/, 'Instrument Room styles should be in the offline shell');
-assert.match(serviceWorker, /page-four-instrument-room\.js/, 'Instrument Room logic should be in the offline shell');
-assert.match(serviceWorker, /PAGE_FOUR_HESSDALEN\.md/, 'Instrument Room source ledger should be in the offline shell');
+requirePatterns(loader, [/page-four-instrument-room\.css/, /page-four-instrument-room\.js/], 'Page Four loader');
+assertOfflineAssets(serviceWorker, [
+  './page-four-instrument-room.css',
+  './page-four-instrument-room.js',
+  './PAGE_FOUR_HESSDALEN.md'
+], 'Instrument Room offline shell');
 
-for (const pattern of [/@media/, /prefers-reduced-motion/, /prefers-contrast/, /@media print/, /min-height:\s*44px/, /:focus-visible/]) {
-  assert.match(css, pattern, `Instrument Room styles missing ${pattern}`);
-}
-assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i, 'Instrument Room styles must use local/system resources only');
+assertCssContract(css, 'Instrument Room styles', { touchTarget: true, focusVisible: true });
 
 console.log('Page Four Hessdalen seven-channel field record, four-hypothesis cross-examination, modern control files, source boundaries, accessibility, privacy, and offline contracts verified.');
