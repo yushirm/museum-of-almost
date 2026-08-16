@@ -113,4 +113,20 @@ for (const pattern of [/@media/, /prefers-reduced-motion/, /prefers-contrast/, /
 }
 assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i, 'Dead Drop styles must use local/system resources only');
 
-console.log('Page Four Dead Drop four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, source-independence evidence limits, accessibility, privacy, and v43 cache-lineage contracts verified.');
+for (const pattern of [
+  /body:has\(#cryptids\.is-active\)/,
+  /body:has\(#broadcasts\.is-active\)/,
+  /body:has\(#maps\.is-active\)/,
+  /body:has\(#celestial\.is-active\)/,
+  /body:has\(#diagrams\.is-active\)/,
+  /content:\s*"SCALE UNKNOWN"/,
+  /content:\s*"SOURCE AUDIO ABSENT"/,
+  /content:\s*"REVISION GAP"/,
+  /content:\s*"REGISTRATION ONLY"/,
+  /content:\s*"MEDIUM UNKNOWN"/,
+  /@media \(forced-colors: active\)/
+]) assert.match(css, pattern, `Evidence-board revision state missing ${pattern}`);
+assert.match(css, /@supports selector\(body:has\(#cryptids\.is-active\)\)/,
+  'Evidence-board revision should be progressively enhanced behind :has support');
+
+console.log('Page Four Dead Drop four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, source-independence evidence limits, evidence-board revision states, accessibility, privacy, and v43 cache-lineage contracts verified.');
