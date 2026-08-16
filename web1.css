@@ -905,3 +905,67 @@ h1 {
 .side-box:has(> .updates) {
   display: none;
 }
+
+/*
+ * GENERATION 176 // THE COUNTER REFUSES THE STAMP
+ * The local guestbook stamp already leaves an ephemeral, authored mark. Once a
+ * visitor chooses one of those fixed phrases, the decorative counter visibly
+ * refuses to become attendance data. This relationship consumes only the
+ * existing aria-pressed state; it creates no counter, history, identity or store.
+ */
+.page-shell:has(#guestbook-stamp-pad button[aria-pressed="true"]) .counter-box .counter {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 3px;
+  text-decoration-color: var(--yellow);
+  text-decoration-skip-ink: none;
+}
+
+.page-shell:has(#guestbook-stamp-pad button[aria-pressed="true"]) .counter-box .counter::after {
+  content: " ≠ +1";
+  color: var(--yellow);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+}
+
+.guestbook-box:has(#guestbook-stamp-pad button[aria-pressed="true"]) .guestbook-local-stamp::after {
+  content: "COUNTER CHECK: 000003 DID NOT MOVE. THIS STAMP IS NOT A VISITOR RECORD.";
+  display: block;
+  margin-top: 0.5rem;
+  padding-top: 0.45rem;
+  border-top: 2px dotted currentColor;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+@media (prefers-contrast: more) {
+  .page-shell:has(#guestbook-stamp-pad button[aria-pressed="true"]) .counter-box .counter {
+    text-decoration-color: var(--white);
+  }
+
+  .page-shell:has(#guestbook-stamp-pad button[aria-pressed="true"]) .counter-box .counter::after {
+    color: var(--white);
+  }
+}
+
+@media (forced-colors: active) {
+  .page-shell:has(#guestbook-stamp-pad button[aria-pressed="true"]) .counter-box .counter {
+    text-decoration-color: CanvasText;
+  }
+
+  .page-shell:has(#guestbook-stamp-pad button[aria-pressed="true"]) .counter-box .counter::after {
+    color: CanvasText;
+  }
+}
+
+@media print {
+  .page-shell:has(#guestbook-stamp-pad button[aria-pressed="true"]) .counter-box .counter {
+    text-decoration: none;
+  }
+
+  .page-shell:has(#guestbook-stamp-pad button[aria-pressed="true"]) .counter-box .counter::after,
+  .guestbook-box:has(#guestbook-stamp-pad button[aria-pressed="true"]) .guestbook-local-stamp::after {
+    display: none;
+  }
+}
