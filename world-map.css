@@ -44,11 +44,16 @@
  * derive from the already-positioned fixed point, add no geography or state,
  * and disappear with the selection itself.
  */
+.station-dot[data-selected="true"] { z-index: 4; }
+
 .station-dot[data-selected="true"]::before,
 .station-dot[data-selected="true"]::after {
   content: "";
   position: absolute;
   z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
   opacity: 0.48;
 }
