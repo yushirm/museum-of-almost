@@ -59,6 +59,7 @@ assert.equal(normalized.geomagnetic.code, 'G1');
 assert.equal(normalized.geomagnetic.text, 'minor');
 assert.equal(normalized.radiation.code, 'S0');
 assert.equal(normalized.radiation.text, 'none');
+assert.equal(normalized.radio.code, 'R0');
 assert.equal(normalized.observedAt, '2026-08-07 15:20:00 UTC');
 
 assert.deepEqual(cosmic.normalizeNoaaScales({
