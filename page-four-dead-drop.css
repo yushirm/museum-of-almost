@@ -526,3 +526,68 @@
     display: none !important;
   }
 }
+
+/* PAGE FOUR generation 167: active files revise the board's sensational shorthand. */
+@supports selector(body:has(#cryptids.is-active)) {
+  body:has(#cryptids.is-active) .evidence-note[data-target="cryptids"],
+  body:has(#broadcasts.is-active) .evidence-note[data-target="broadcasts"],
+  body:has(#maps.is-active) .evidence-note[data-target="maps"],
+  body:has(#celestial.is-active) .evidence-note[data-target="celestial"],
+  body:has(#diagrams.is-active) .evidence-note[data-target="diagrams"] {
+    border-color: #b8ee75;
+    background: #10170c;
+    color: transparent;
+    text-shadow: none;
+    box-shadow: inset 0 0 0 1px rgba(184, 238, 117, 0.2);
+  }
+
+  body:has(#cryptids.is-active) .evidence-note[data-target="cryptids"] b,
+  body:has(#broadcasts.is-active) .evidence-note[data-target="broadcasts"] b,
+  body:has(#maps.is-active) .evidence-note[data-target="maps"] b,
+  body:has(#celestial.is-active) .evidence-note[data-target="celestial"] b,
+  body:has(#diagrams.is-active) .evidence-note[data-target="diagrams"] b {
+    color: #b8ee75;
+  }
+
+  body:has(#cryptids.is-active) .evidence-note[data-target="cryptids"]::after,
+  body:has(#broadcasts.is-active) .evidence-note[data-target="broadcasts"]::after,
+  body:has(#maps.is-active) .evidence-note[data-target="maps"]::after,
+  body:has(#celestial.is-active) .evidence-note[data-target="celestial"]::after,
+  body:has(#diagrams.is-active) .evidence-note[data-target="diagrams"]::after {
+    display: inline;
+    margin-left: 0.3em;
+    color: #dce8c8;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  body:has(#cryptids.is-active) .evidence-note[data-target="cryptids"]::after { content: "SCALE UNKNOWN"; }
+  body:has(#broadcasts.is-active) .evidence-note[data-target="broadcasts"]::after { content: "SOURCE AUDIO ABSENT"; }
+  body:has(#maps.is-active) .evidence-note[data-target="maps"]::after { content: "REVISION GAP"; }
+  body:has(#celestial.is-active) .evidence-note[data-target="celestial"]::after { content: "REGISTRATION ONLY"; }
+  body:has(#diagrams.is-active) .evidence-note[data-target="diagrams"]::after { content: "MEDIUM UNKNOWN"; }
+}
+
+@media (prefers-contrast: more) {
+  .evidence-note[data-target] {
+    border-color: currentColor;
+  }
+}
+
+@media (forced-colors: active) {
+  body:has(#cryptids.is-active) .evidence-note[data-target="cryptids"],
+  body:has(#broadcasts.is-active) .evidence-note[data-target="broadcasts"],
+  body:has(#maps.is-active) .evidence-note[data-target="maps"],
+  body:has(#celestial.is-active) .evidence-note[data-target="celestial"],
+  body:has(#diagrams.is-active) .evidence-note[data-target="diagrams"] {
+    forced-color-adjust: auto;
+    border-color: Highlight;
+    background: Canvas;
+  }
+}
+
+@media print {
+  .evidence-note[data-target]::after {
+    content: none !important;
+  }
+}
