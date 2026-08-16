@@ -63,6 +63,10 @@ assert.match(js, /reshelvedRecord\.removeAttribute\('data-reshelved'\)/, 'reshel
 assert.match(js, /record === reshelvedRecord/, 'handling a reshelved accession again should clear its completed-return mark');
 assert.match(js, /returned to shelf; \$\{cartCode\} now waits/, 'return-cart status should narrate the completed reshelving handoff without a ledger');
 assert.match(js, /record\.addEventListener\('toggle'/, 'native accession disclosure should drive handling consequence');
+assert.match(js, /dataset\.cartRetractInstalled = 'true'/, 'return-cart tray retraction should install exactly once');
+assert.match(js, /querySelector\('\.artifact\[data-return-cart="true"\]'\)/, 'tray retraction should reuse the existing one-slot return-cart marker');
+assert.match(js, /cartRecord && cartRecord !== record && cartRecord\.open\) cartRecord\.open = false/, 'moving an accession onto the return cart should retract its old compactus inspection tray');
+assert.match(js, /queueMicrotask\(\(\) => \{[\s\S]*?cartRecord/, 'tray retraction should happen after the established return-cart listener assigns the previous accession');
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
 assert.match(js, /prefers-reduced-motion: reduce/);
 assert.match(js, /behavior: reducedMotion \? 'auto' : 'smooth'/, 'programmatic lift-state scrolling must respect reduced motion');
@@ -154,4 +158,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, acclimatization-to-shift handover continuity, responsive acclimatization material cues, storage-route tracing, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart that retracts the previous compactus inspection tray, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, acclimatization-to-shift handover continuity, responsive acclimatization material cues, storage-route tracing, accessible routes, and offline shell coverage.');
