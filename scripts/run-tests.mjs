@@ -12,6 +12,7 @@ const concurrencyArg = args.find((arg) => arg.startsWith('--concurrency='));
 const listOnly = args.includes('--list');
 const serial = args.includes('--serial');
 const match = matchArg ? matchArg.slice('--match='.length).trim() : '';
+const supportFiles = new Set(['test-support.mjs']);
 
 function positiveInteger(value, fallback) {
   const parsed = Number.parseInt(value, 10);
@@ -23,7 +24,7 @@ const defaultConcurrency = Math.max(1, Math.min(4, available));
 const concurrency = serial ? 1 : positiveInteger(concurrencyArg?.slice('--concurrency='.length), defaultConcurrency);
 
 let tests = fs.readdirSync(scriptsDir)
-  .filter((name) => /^test-[a-z0-9-]+\.mjs$/.test(name))
+  .filter((name) => /^test-[a-z0-9-]+\.mjs$/.test(name) && !supportFiles.has(name))
   .sort();
 
 if (match) {

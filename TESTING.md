@@ -11,7 +11,7 @@ The suite has four responsibilities:
 3. **Cross-cutting contracts** — privacy, approved network boundaries, required files, global accessibility expectations, workflow integrity and repository-wide invariants belong in `scripts/check.mjs` or reusable assertions from `scripts/test-support.mjs`. Do not copy their regular expressions into each feature test.
 4. **Offline behavior** — service-worker behavior belongs in `scripts/test-service-worker.mjs`; a feature test may assert only that its own required assets are cached by using `assertOfflineAssets`.
 
-`node scripts/run-tests.mjs` discovers all `scripts/test-*.mjs` files, runs them in isolated Node processes with bounded parallelism, then runs `scripts/check.mjs`. This keeps test state isolated while avoiding a hand-maintained workflow command list.
+`node scripts/run-tests.mjs` discovers executable `scripts/test-*.mjs` targets, runs them in isolated Node processes with bounded parallelism, then runs `scripts/check.mjs`. The reserved helper module `scripts/test-support.mjs` is deliberately excluded from executable discovery. This keeps test state isolated while avoiding a hand-maintained workflow command list.
 
 ## Before adding a test
 
