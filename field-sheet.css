@@ -4,8 +4,24 @@
 }
 
 .field-sheet {
+  position: relative;
+  isolation: isolate;
   border: 1.5px solid var(--line);
   background: var(--panel);
+  transition: transform 150ms ease, box-shadow 150ms ease, outline-color 150ms ease;
+}
+
+/*
+ * Tear-off ritual.
+ * The existing print action now makes the live field sheet read as a physical
+ * local artifact before the browser takes over. No state is stored: this is a
+ * bounded focus relationship around the existing native print action.
+ */
+.planetary-section:has(#field-sheet-button:focus) .field-sheet {
+  transform: translateY(-0.18rem) rotate(-0.08deg);
+  outline: 2px dashed var(--blue);
+  outline-offset: 0.35rem;
+  box-shadow: 0.45rem 0.55rem 0 rgba(31, 35, 41, 0.12);
 }
 
 .field-sheet-header {
@@ -194,6 +210,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .planetary-section * { transition: none !important; animation: none !important; }
+  .planetary-section:has(#field-sheet-button:focus) .field-sheet {
+    transform: none;
+  }
 }
 
 @media (prefers-contrast: more) {
@@ -202,6 +221,18 @@
   .section-wind,
   .section-rain,
   .section-missing { stroke-width: 4; }
+
+  .planetary-section:has(#field-sheet-button:focus) .field-sheet {
+    outline-color: currentColor;
+    box-shadow: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .planetary-section:has(#field-sheet-button:focus) .field-sheet {
+    outline-color: CanvasText;
+    box-shadow: none;
+  }
 }
 
 @media print {
@@ -247,7 +278,28 @@
   .field-sheet-print-title strong { font-family: ui-serif, Georgia, serif; font-size: 1.3rem; font-weight: 500; }
   .field-sheet-print-title span { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; }
 
-  .field-sheet { border-width: 1px; }
+  .field-sheet {
+    border-width: 1px;
+    transform: none !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+  .field-sheet::after {
+    content: "LOCAL FIELD COPY · ONE LATCH";
+    position: absolute;
+    z-index: 3;
+    top: 0.32rem;
+    right: 0.45rem;
+    padding: 0.18rem 0.3rem;
+    border: 1px dashed currentColor;
+    background: white;
+    color: currentColor;
+    font-size: 0.48rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transform: rotate(1.2deg);
+  }
   .field-sheet-header { padding: 0.35rem 0.5rem; }
   .section-instrument { padding: 0.25rem; }
   .planetary-section-plot { min-height: 0; max-height: 25vh; }
