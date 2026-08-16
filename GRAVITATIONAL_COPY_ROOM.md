@@ -47,7 +47,13 @@ For `y != 0`, the two one-dimensional solutions are:
 
 The two roots have opposite image parity in this ideal model. The outer solution has positive parity and the inner solution has negative parity.
 
-For exact alignment, `y = 0`. The one-dimensional roots lie at `x = +/-1`, but circular symmetry means the physical idealization is a continuous Einstein ring of radius `theta_E`, not two discrete point images. The interface therefore switches from cards to a ring state instead of pretending the aligned case is simply another two-card layout.
+The same quadratic also gives a compact invariant:
+
+`x+ × x− = -1`
+
+So as the fixed source offset changes, one normalized image root moves farther from the lens while the magnitude of the other moves inward reciprocally. The interface exposes this as a **reciprocal lock** in the existing stage and ledger. This is not an additional observation or fit; it is an algebraic consequence of the same normalized ideal point-lens equation already driving the image positions.
+
+For exact alignment, `y = 0`. The one-dimensional roots lie at `x = +/-1` and still have product `-1`, but circular symmetry means the physical idealization is a continuous Einstein ring of radius `theta_E`, not two discrete point images. The interface therefore switches from cards to a ring state while labeling the root product as a one-dimensional alignment limit.
 
 ## Fixed cases
 
@@ -80,7 +86,7 @@ It does not estimate or imply:
 
 The visual stage is schematic. Exact normalized numerical solutions are authoritative.
 
-The feature does not use magnification bars or confidence-like scoring. It does not imply that repeated image cards are separate sources.
+The feature does not use magnification bars or confidence-like scoring. It does not imply that repeated image cards are separate sources. The reciprocal lock is a property of this normalized point-lens equation and must not be presented as a universal observational rule for real lenses.
 
 ## Runtime and privacy boundary
 
@@ -103,14 +109,15 @@ Case selection exists only in JavaScript memory and resets on reload.
 
 - case selection uses native buttons;
 - buttons expose `aria-pressed`;
-- the numerical ledger is a polite live region;
+- the numerical ledger is a polite live region and states the root product in text;
+- the reciprocal-lock badge is supplementary visual reinforcement and is hidden from assistive technology to avoid duplicate announcements;
 - every apparent image repeats the shared source identity in text;
 - parity is written in text and is not conveyed only by mirroring;
 - the Einstein-ring state is stated textually and does not depend on the circle graphic;
 - the schematic stage has an explicit non-measuring disclaimer;
 - controls retain 44px minimum targets;
 - reduced motion removes stage transitions;
-- increased contrast, mobile, and print layouts have explicit handling.
+- increased contrast, forced colors, mobile, and print layouts have explicit handling.
 
 ## Offline behavior
 
@@ -133,4 +140,4 @@ These URLs are documentation references only. They are never loaded by the visit
 
 ## Rebuild rule
 
-Keep the source identity fixed and generic. Keep the teaching model normalized to `theta_E = 1` unless the product contract is explicitly changed. Derive every displayed image position from the lens equation, special-case exact alignment as a ring, and never let schematic screen position become a second scientific calculation. Never add visitor-entered lens parameters or imply that this toy model can infer a real lens mass or sky configuration.
+Keep the source identity fixed and generic. Keep the teaching model normalized to `theta_E = 1` unless the product contract is explicitly changed. Derive every displayed image position from the lens equation, preserve the exact root-product invariant `x+ × x− = -1`, special-case exact alignment as a ring, and never let schematic screen position become a second scientific calculation. Never add visitor-entered lens parameters or imply that this toy model can infer a real lens mass or sky configuration.

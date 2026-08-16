@@ -63,6 +63,7 @@
     const aligned = Math.abs(y) < EPSILON;
     const roots = solveImagePositions(y);
     if (!roots) return null;
+    const rootProduct = roots.positive * roots.negative;
 
     if (aligned) {
       return Object.freeze({
@@ -72,6 +73,7 @@
         sourceOffset: y,
         aligned: true,
         ringRadius: 1,
+        rootProduct,
         note: item.note,
         images: Object.freeze([]),
         equation: 'y = x − 1/x'
@@ -104,6 +106,7 @@
       sourceOffset: y,
       aligned: false,
       ringRadius: null,
+      rootProduct,
       note: item.note,
       images: Object.freeze(images),
       separation: roots.positive - roots.negative,
