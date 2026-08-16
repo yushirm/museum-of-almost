@@ -67,6 +67,15 @@ assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)
 assert.match(js, /prefers-reduced-motion: reduce/);
 assert.match(js, /behavior: reducedMotion \? 'auto' : 'smooth'/, 'programmatic lift-state scrolling must respect reduced motion');
 
+assert.match(js, /installAcclimationMaterialResponse/, 'acclimatization bay should deepen its existing fixed states instead of adding another control surface');
+assert.match(js, /data-state="cold-dry"[\s\S]*FROSTED OUTER SHELL/, 'cold/dry arrival should visibly frost the authored outer shell');
+assert.match(js, /data-state="warm-humid"[\s\S]*CONDENSATION ON OUTER SHELL/, 'warm/humid arrival should visibly condense on the authored outer shell');
+assert.match(js, /data-state="matched"[\s\S]*OUTER SHELL CLEAR/, 'near-matched arrival should visibly settle the authored outer shell');
+assert.match(js, /data-elsewhere-acclimation-material/, 'acclimatization material response should install exactly once');
+assert.match(js, /forced-colors:active/, 'supplemental crate material cues must remain bounded in forced-colors mode');
+assert.match(js, /@media\(prefers-reduced-motion:reduce\)\{\.acclimation-stage \.acclimation-shell\{transition:none\}\}/, 'crate material transition must be removed for reduced motion');
+assert.match(js, /@media print\{\.acclimation-stage \.acclimation-shell/, 'crate material response must print as static content');
+
 assert.match(js, /COLLECTIONS TRANSFER \/ HANDLING DESK/);
 assert.match(js, /Every object gets a route\. No route resolves the object\./);
 assert.match(js, /MOVEMENT COPY · LOCAL ONLY/);
@@ -129,4 +138,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart, bounded reshelving aftermath, accession-linked handling, storage-route tracing, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart, bounded reshelving aftermath, accession-linked handling, responsive acclimatization material cues, storage-route tracing, accessible routes, and offline shell coverage.');

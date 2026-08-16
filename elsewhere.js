@@ -262,12 +262,41 @@
     sync();
   };
 
+  const installAcclimationMaterialResponse = () => {
+    const stage = document.querySelector('.acclimation-stage');
+    const shell = stage?.querySelector('.acclimation-shell');
+    if (!stage || !shell || document.querySelector('style[data-elsewhere-acclimation-material]')) return;
+    const style = document.createElement('style');
+    style.dataset.elsewhereAcclimationMaterial = 'true';
+    style.textContent = `
+      .acclimation-stage .acclimation-shell{position:relative;overflow:hidden;isolation:isolate;transition:background .28s ease,box-shadow .28s ease,color .28s ease}
+      .acclimation-stage .acclimation-shell::before,.acclimation-stage .acclimation-shell::after{position:absolute;pointer-events:none}
+      .acclimation-stage .acclimation-shell::before{content:'';inset:0;z-index:-1}
+      .acclimation-stage .acclimation-shell::after{right:.45rem;bottom:.38rem;padding:.2rem .32rem;border:1px solid currentColor;background:rgba(233,227,208,.88);color:#171912;font:800 .54rem/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase}
+      .acclimation-stage[data-state="cold-dry"] .acclimation-shell{background:linear-gradient(135deg,#dfe8e6 0 48%,#eef3ef 49% 64%,#cfdad8 65%);box-shadow:inset 0 0 0 3px rgba(255,255,255,.68),inset 0 0 26px rgba(177,208,214,.75);color:#1b2929}
+      .acclimation-stage[data-state="cold-dry"] .acclimation-shell::before{background:repeating-linear-gradient(115deg,transparent 0 8px,rgba(255,255,255,.5) 9px 10px,transparent 11px 18px),radial-gradient(circle at 16% 20%,rgba(255,255,255,.9) 0 2px,transparent 3px),radial-gradient(circle at 77% 32%,rgba(255,255,255,.8) 0 2px,transparent 3px)}
+      .acclimation-stage[data-state="cold-dry"] .acclimation-shell::after{content:'FROSTED OUTER SHELL'}
+      .acclimation-stage[data-state="warm-humid"] .acclimation-shell{background:linear-gradient(135deg,#c5ae8d,#d5c5a8 58%,#ab967d);box-shadow:inset 0 0 28px rgba(255,244,220,.35);color:#231d17}
+      .acclimation-stage[data-state="warm-humid"] .acclimation-shell::before{background:radial-gradient(circle at 15% 18%,rgba(255,255,255,.58) 0 3px,transparent 4px),radial-gradient(circle at 28% 64%,rgba(255,255,255,.48) 0 5px,transparent 6px),radial-gradient(circle at 62% 25%,rgba(255,255,255,.52) 0 4px,transparent 5px),radial-gradient(circle at 82% 72%,rgba(255,255,255,.44) 0 6px,transparent 7px),linear-gradient(180deg,rgba(255,255,255,.14),transparent 55%)}
+      .acclimation-stage[data-state="warm-humid"] .acclimation-shell::after{content:'CONDENSATION ON OUTER SHELL'}
+      .acclimation-stage[data-state="matched"] .acclimation-shell{background:linear-gradient(135deg,#d7d0bd,#e9e3d0 55%,#c8c0aa);box-shadow:inset 0 0 0 1px rgba(23,25,18,.28);color:#171912}
+      .acclimation-stage[data-state="matched"] .acclimation-shell::before{background:linear-gradient(90deg,transparent 49.5%,rgba(23,25,18,.08) 50%,transparent 50.5%),linear-gradient(transparent 49.5%,rgba(23,25,18,.08) 50%,transparent 50.5%);background-size:26px 26px}
+      .acclimation-stage[data-state="matched"] .acclimation-shell::after{content:'OUTER SHELL CLEAR'}
+      @media(prefers-reduced-motion:reduce){.acclimation-stage .acclimation-shell{transition:none}}
+      @media(prefers-contrast:more){.acclimation-stage .acclimation-shell{box-shadow:inset 0 0 0 3px currentColor}.acclimation-stage .acclimation-shell::after{border-width:2px;background:#e9e3d0}}
+      @media(forced-colors:active){.acclimation-stage .acclimation-shell{forced-color-adjust:auto;background:Canvas;color:CanvasText;box-shadow:none;outline:2px solid CanvasText}.acclimation-stage .acclimation-shell::before{display:none}.acclimation-stage .acclimation-shell::after{background:Canvas;color:CanvasText}}
+      @media print{.acclimation-stage .acclimation-shell{transition:none;background:transparent!important;box-shadow:none!important;color:inherit}.acclimation-stage .acclimation-shell::before,.acclimation-stage .acclimation-shell::after{display:none}}
+    `;
+    document.head.append(style);
+  };
+
   installEnvironmentBoard();
   installIpmStandingOrder();
   installTransferDesk();
   installReturnCart();
   installFreightLiftConsequence();
   installRoomZeroRegistration();
+  installAcclimationMaterialResponse();
 
   if (reducedMotion) document.documentElement.dataset.reducedMotion = 'true';
   if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}), { once: true });
