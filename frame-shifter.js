@@ -169,6 +169,13 @@
     });
   }
 
+  window.addEventListener('beforeprint', () => {
+    stage.style.removeProperty('background-image');
+  });
+  window.addEventListener('afterprint', () => {
+    renderCausalField(stage.dataset.causalClass || 'spacelike');
+  });
+
   buildCausalCompass();
   render();
 })();
