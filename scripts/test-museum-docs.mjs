@@ -17,6 +17,29 @@ const expectedGalleries = [
 const galleryHrefs = [...index.matchAll(/<a class="gallery-card[^"]*" href="([^"]+)"/g)].map((match) => match[1]);
 assert.deepEqual(galleryHrefs, expectedGalleries.map(([href]) => href), 'durable docs assume exactly the four public gallery cards shown by the entrance');
 
+const recentRoomSignal = index.match(/<body data-recent-room="([^"]+)">/);
+assert.ok(recentRoomSignal, 'entrance must retain one public recent-room signal');
+assert.ok(
+  ['commons', 'deep-space', 'almost-online', 'page-four', 'elsewhere', 'museum'].includes(recentRoomSignal[1]),
+  'recent-room signal must stay within the six canonical public values'
+);
+assert.match(index, /AFTER-HOURS LIGHT/, 'foyer should expose the current after-hours condition to assistive technology');
+assert.doesNotMatch(index, /REGISTRATION DRIFT/, 'retired registration-drift wording must not survive the after-hours-light epoch');
+assert.doesNotMatch(index, /inset-block-start:\s*-4px|inset-inline-start:\s*4px/, 'retired floor-plan displacement must not survive the after-hours-light epoch');
+for (const [key, card] of [
+  ['commons', 'gallery-commons'],
+  ['deep-space', 'gallery-space'],
+  ['almost-online', 'gallery-web'],
+  ['page-four', 'gallery-four']
+]) {
+  assert.ok(index.includes(`body[data-recent-room="${key}"] .${card} .gallery-visual`), `${key} recent-room signal should light its existing entrance preview`);
+  assert.ok(index.includes(`body[data-recent-room="museum"] .${card} .gallery-visual`), `museum epoch should light the existing ${key} entrance preview`);
+}
+assert.ok(index.includes('body[data-recent-room="elsewhere"] .maintenance-seam'), 'ELSEWHERE recent-room signal should light the existing service seam');
+assert.ok(index.includes('body[data-recent-room="museum"] .maintenance-seam'), 'museum epoch should include the existing service seam in the after-hours condition');
+assert.match(index, /@media \(forced-colors: active\)[\s\S]*outline:\s*2px solid Highlight/, 'after-hours condition needs a forced-colors fallback');
+assert.match(index, /@media print[\s\S]*body\[data-recent-room\] \.gallery-visual[\s\S]*filter:\s*none !important/, 'printed entrance must not carry the after-hours glow');
+
 for (const [href, name] of expectedGalleries) {
   assert.ok(readme.includes(`\`${href}\``), `README missing active route ${href}`);
   assert.ok(readme.includes(`**${name}**`), `README missing active space ${name}`);
@@ -74,4 +97,4 @@ for (const phrase of [
   'explicitly fictional'
 ]) assert.match(`${readme}\n${privacy}`, new RegExp(phrase, 'i'), `durable docs missing privacy/fiction boundary: ${phrase}`);
 
-console.log('Museum durable docs match the live entrance hierarchy, Unbuilt Room recovery boundary, active routes, layered Page Four evidence model, privacy boundary, and COMMONS-only live-data contract.');
+console.log('Museum durable docs match the live entrance hierarchy, after-hours public condition, Unbuilt Room recovery boundary, active routes, layered Page Four evidence model, privacy boundary, and COMMONS-only live-data contract.');

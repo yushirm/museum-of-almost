@@ -30,51 +30,70 @@
     body[data-recent-room="elsewhere"] [data-room-note="elsewhere"],
     body[data-recent-room="museum"] [data-room-note="museum"] { display: block; }
 
-    body[data-recent-room="commons"] .gallery-commons,
-    body[data-recent-room="deep-space"] .gallery-space,
-    body[data-recent-room="almost-online"] .gallery-web,
-    body[data-recent-room="page-four"] .gallery-four,
-    body[data-recent-room="elsewhere"] .maintenance-seam {
-      z-index: 1;
-      inset-block-start: -4px;
-      inset-inline-start: 4px;
-      outline: 1px dashed currentColor;
-      outline-offset: 6px;
-      box-shadow: -5px 5px 0 -3px currentColor;
+    /* Museum epoch: recent work now leaves an existing room light on instead of shifting the floor plan. */
+    body[data-recent-room="commons"] .gallery-commons .gallery-visual,
+    body[data-recent-room="museum"] .gallery-commons .gallery-visual {
+      filter: brightness(1.08) saturate(1.05);
+      box-shadow: 0 0 2rem rgba(35, 89, 196, 0.3);
     }
-    body[data-recent-room="museum"] .gallery-grid {
-      position: relative;
-      inset-block-start: -4px;
-      inset-inline-start: 4px;
-      outline: 1px dashed var(--muted);
-      outline-offset: 7px;
-      box-shadow: -6px 6px 0 -4px var(--muted);
+    body[data-recent-room="deep-space"] .gallery-space .gallery-visual,
+    body[data-recent-room="museum"] .gallery-space .gallery-visual {
+      filter: brightness(1.08) saturate(1.08);
+      box-shadow: 0 0 2.2rem rgba(132, 232, 255, 0.26);
+    }
+    body[data-recent-room="almost-online"] .gallery-web .gallery-visual,
+    body[data-recent-room="museum"] .gallery-web .gallery-visual {
+      filter: brightness(1.1) saturate(1.08);
+      box-shadow: 0 0 2rem rgba(0, 255, 255, 0.25);
+    }
+    body[data-recent-room="page-four"] .gallery-four .gallery-visual,
+    body[data-recent-room="museum"] .gallery-four .gallery-visual {
+      filter: brightness(1.1) saturate(1.04);
+      box-shadow: 0 0 2rem rgba(169, 210, 105, 0.24);
+    }
+    body[data-recent-room="elsewhere"] .maintenance-seam,
+    body[data-recent-room="museum"] .maintenance-seam {
+      box-shadow: inset 0 0 2rem rgba(229, 168, 38, 0.1), 0 0 1.6rem rgba(229, 168, 38, 0.2);
     }
 
     @media (prefers-contrast: more) {
-      body[data-recent-room="museum"] .gallery-grid,
-      body[data-recent-room="commons"] .gallery-commons,
-      body[data-recent-room="deep-space"] .gallery-space,
-      body[data-recent-room="almost-online"] .gallery-web,
-      body[data-recent-room="page-four"] .gallery-four,
-      body[data-recent-room="elsewhere"] .maintenance-seam {
-        outline-width: 2px;
-        box-shadow: -6px 6px 0 -2px currentColor;
+      body[data-recent-room="commons"] .gallery-commons .gallery-visual,
+      body[data-recent-room="deep-space"] .gallery-space .gallery-visual,
+      body[data-recent-room="almost-online"] .gallery-web .gallery-visual,
+      body[data-recent-room="page-four"] .gallery-four .gallery-visual,
+      body[data-recent-room="museum"] .gallery-visual,
+      body[data-recent-room="elsewhere"] .maintenance-seam,
+      body[data-recent-room="museum"] .maintenance-seam {
+        outline: 2px solid currentColor;
+        outline-offset: 3px;
+      }
+    }
+    @media (forced-colors: active) {
+      body[data-recent-room="commons"] .gallery-commons .gallery-visual,
+      body[data-recent-room="deep-space"] .gallery-space .gallery-visual,
+      body[data-recent-room="almost-online"] .gallery-web .gallery-visual,
+      body[data-recent-room="page-four"] .gallery-four .gallery-visual,
+      body[data-recent-room="museum"] .gallery-visual,
+      body[data-recent-room="elsewhere"] .maintenance-seam,
+      body[data-recent-room="museum"] .maintenance-seam {
+        filter: none;
+        box-shadow: none;
+        outline: 2px solid Highlight;
+        outline-offset: 3px;
       }
     }
     @media print {
       .museum-condition { display: none; }
-      .gallery-grid,
-      .gallery-card,
-      .maintenance-seam {
-        inset: auto !important;
-        outline: none !important;
+      body[data-recent-room] .gallery-visual,
+      body[data-recent-room] .maintenance-seam {
+        filter: none !important;
         box-shadow: none !important;
+        outline: none !important;
       }
     }
   </style>
 </head>
-<body data-recent-room="page-four">
+<body data-recent-room="museum">
   <a class="skip-link" href="#galleries">Skip to the galleries</a>
 
   <header class="museum-header">
@@ -92,14 +111,14 @@
       <p>One gallery holds a single shared moment on Earth. Another leaves the planet behind for light, gravity and unfinished physics. The third disappears into the hand-coded personal web. The fourth was not on the floor plan.</p>
     </section>
 
-    <aside class="museum-condition" aria-label="Current floor plan registration condition">
-      <span>REGISTRATION DRIFT</span>
-      <p class="museum-condition-note" data-room-note="commons">COMMONS / NOW is sitting just outside the dust line where the plan says it belongs.</p>
-      <p class="museum-condition-note" data-room-note="deep-space">DEEP SPACE / ALMOST no longer quite fits the rectangle pencilled around it.</p>
-      <p class="museum-condition-note" data-room-note="almost-online">ALMOST ONLINE! has shifted far enough to expose the old outline underneath.</p>
-      <p class="museum-condition-note" data-room-note="page-four">PAGE FOUR is not aligned with the mark left by PAGE FOUR.</p>
-      <p class="museum-condition-note" data-room-note="elsewhere">The service door is standing just proud of its old frame.</p>
-      <p class="museum-condition-note" data-room-note="museum">The building has moved a few millimetres away from the drawing that describes it.</p>
+    <aside class="museum-condition" aria-label="Current after-hours light condition">
+      <span>AFTER-HOURS LIGHT</span>
+      <p class="museum-condition-note" data-room-note="commons">COMMONS / NOW has left its instrument light on in the entrance.</p>
+      <p class="museum-condition-note" data-room-note="deep-space">DEEP SPACE / ALMOST is still throwing a little light through its doorway.</p>
+      <p class="museum-condition-note" data-room-note="almost-online">ALMOST ONLINE! has left a monitor glow in the entrance.</p>
+      <p class="museum-condition-note" data-room-note="page-four">PAGE FOUR has left its examination light on.</p>
+      <p class="museum-condition-note" data-room-note="elsewhere">The service door is leaking an amber maintenance light.</p>
+      <p class="museum-condition-note" data-room-note="museum">More than one room seems to have left a light on.</p>
     </aside>
 
     <nav class="gallery-grid" aria-label="Museum galleries">
