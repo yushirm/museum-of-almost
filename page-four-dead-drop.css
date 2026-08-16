@@ -611,3 +611,76 @@
     content: none !important;
   }
 }
+
+/* Generation 185: reclassification now changes the archive's public-copy evidence. */
+body.is-reclassified .hero-photo {
+  filter: grayscale(1) sepia(0.15) contrast(1.45);
+}
+
+body.is-reclassified .hero-photo .long-figure {
+  background: transparent;
+  filter: none;
+  box-shadow: none;
+  outline: 2px dashed #f28e76;
+  outline-offset: 3px;
+}
+
+body.is-reclassified .hero-photo .long-figure::before {
+  background: transparent;
+  outline: 2px dashed #f28e76;
+  outline-offset: 2px;
+}
+
+body.is-reclassified .hero-photo::after {
+  content: "PUBLIC COPY / SUBJECT WITHHELD";
+  position: absolute;
+  z-index: 5;
+  top: 0.7rem;
+  left: 0.7rem;
+  max-width: 12rem;
+  padding: 0.35rem 0.45rem;
+  border: 2px solid #f28e76;
+  background: rgba(6, 8, 6, 0.9);
+  color: #f28e76;
+  font: 900 0.58rem/1.25 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: 0.08em;
+  transform: rotate(-2deg);
+}
+
+@media (prefers-contrast: more) {
+  body.is-reclassified .hero-photo .long-figure,
+  body.is-reclassified .hero-photo .long-figure::before,
+  body.is-reclassified .hero-photo::after {
+    outline-color: currentColor;
+    border-color: currentColor;
+  }
+}
+
+@media (forced-colors: active) {
+  body.is-reclassified .hero-photo .long-figure,
+  body.is-reclassified .hero-photo .long-figure::before {
+    forced-color-adjust: auto;
+    background: Canvas;
+    outline-color: Highlight;
+  }
+
+  body.is-reclassified .hero-photo::after {
+    forced-color-adjust: auto;
+    border-color: Highlight;
+    background: Canvas;
+    color: CanvasText;
+  }
+}
+
+@media print {
+  body.is-reclassified .hero-photo {
+    filter: grayscale(1) contrast(1.35);
+  }
+
+  body.is-reclassified .hero-photo::after {
+    color: #000;
+    background: #fff;
+    border-color: #000;
+    transform: none;
+  }
+}
