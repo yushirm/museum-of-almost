@@ -281,7 +281,10 @@
   }
 
   if (typeof module === 'object' && module.exports) {
-    module.exports.commonsNeighborRelation = Object.freeze({ nearestInPlane, nearestOnEarth });
+    module.exports = Object.freeze({
+      ...module.exports,
+      commonsNeighborRelation: Object.freeze({ nearestInPlane, nearestOnEarth })
+    });
     return;
   }
 
