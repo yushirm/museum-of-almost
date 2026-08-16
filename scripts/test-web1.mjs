@@ -287,6 +287,27 @@ assert.match(
   'ephemeral counter-refusal aftermath should not masquerade as durable print state'
 );
 
+assert.match(
+  css,
+  /\.page-shell:has\(a\[href="commons-now\.html"\]:focus-visible\) \.homepage-header \.comet\s*\{\s*transform:\s*translateX\(-18px\) scaleX\(-1\);/,
+  'Earth-bound navigation should pull the existing header comet left and turn it toward that local doorway'
+);
+assert.match(
+  css,
+  /\.page-shell:has\(a\[href="deep-space\.html"\]:focus-visible\) \.homepage-header \.comet\s*\{\s*transform:\s*translateX\(18px\);/,
+  'Deep Space navigation should pull the existing header comet right'
+);
+assert.match(
+  css,
+  /@media \(hover: hover\) and \(pointer: fine\)[\s\S]*?commons-now\.html[\s\S]*?translateX\(-18px\) scaleX\(-1\)[\s\S]*?deep-space\.html[\s\S]*?translateX\(18px\)/,
+  'pointer hover may preview the same fixed local routes without adding state'
+);
+assert.match(
+  css,
+  /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.homepage-header \.comet\s*\{\s*transition:\s*none;\s*transform:\s*none;/,
+  'route-preview motion must collapse under reduced-motion preferences'
+);
+
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
 assert.match(js, /PAGE FOUR REFUSES TO STAY SECRET\./, 'Almost Online should visibly leak the new gallery');
 assert.match(js, /DEEP SPACE NOW REPORTS THE SAME ANOMALY\./, 'Almost Online should amplify the Deep Space sighting');
@@ -331,4 +352,4 @@ assert.match(notes, /No third-party runtime scripts, fonts, images, embeds, APIs
 assert.match(notes, /Do not publish personal information about real people/i);
 assert.match(notes, /Future posts should be added directly to the HTML in reverse chronological order/i);
 
-console.log('Almost Online! Web 1.0 gallery, fixed decorative counter refusal, local guestbook relationship, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
+console.log('Almost Online! Web 1.0 gallery, directional local comet wayfinding, fixed decorative counter refusal, local guestbook relationship, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
