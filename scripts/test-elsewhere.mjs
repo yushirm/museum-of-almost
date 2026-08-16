@@ -139,7 +139,7 @@ assert.match(index, /<body data-recent-room="(?:commons|deep-space|almost-online
 assert.doesNotMatch(index, /gallery-card[^>]+href="elsewhere\.html"/i, 'fifth space should not become an ordinary gallery card');
 
 for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', './elsewhere-teaser.css', './ELSEWHERE_CATALOGUE_ZERO.md']) {
-  assert.ok(worker.includes(`'${asset}'`) || worker.includes(`"${asset}"`), `offline shell missing ${asset}`);
+  assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
 }
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
