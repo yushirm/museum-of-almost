@@ -67,6 +67,12 @@ assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)
 assert.match(js, /prefers-reduced-motion: reduce/);
 assert.match(js, /behavior: reducedMotion \? 'auto' : 'smooth'/, 'programmatic lift-state scrolling must respect reduced motion');
 
+assert.match(js, /body:has\(\.freight-lift\.is-out-of-service\)\{--chalk:#f4e2b4;--muted:#c8ba8d;--line:rgba\(229,168,38,\.38\);background:/, 'lift outage should shift the whole service level into an emergency-light palette');
+assert.match(js, /body:has\(\.freight-lift\.is-out-of-service\) \.corridor-plan\{box-shadow:inset 0 0 90px rgba\(229,168,38,\.12\)\}/, 'lift outage should visibly pool emergency light in the existing corridor plan');
+assert.match(js, /@media\(prefers-contrast:more\)\{body:has\(\.freight-lift\.is-out-of-service\)\{--chalk:#fff;--muted:#fff;--line:currentColor;background:#000\}\}/, 'emergency-light atmosphere must remain legible in increased contrast');
+assert.match(js, /@media\(forced-colors:active\)\{body:has\(\.freight-lift\.is-out-of-service\)\{forced-color-adjust:auto;background:Canvas;color:CanvasText\}\}/, 'emergency-light atmosphere must defer to forced colors');
+assert.match(js, /@media print\{body:has\(\.freight-lift\.is-out-of-service\)\{--chalk:#000;--muted:#000;--line:#000;background:#fff;color:#000\}/, 'ephemeral emergency-light atmosphere must not masquerade as printed building state');
+
 assert.match(js, /installAcclimationMaterialResponse/, 'acclimatization bay should deepen its existing fixed states instead of adding another control surface');
 assert.match(js, /data-state="cold-dry"[\s\S]*FROSTED OUTER SHELL/, 'cold/dry arrival should visibly frost the authored outer shell');
 assert.match(js, /data-state="warm-humid"[\s\S]*CONDENSATION ON OUTER SHELL/, 'warm/humid arrival should visibly condense on the authored outer shell');
@@ -133,9 +139,9 @@ assert.match(index, /<body data-recent-room="(?:commons|deep-space|almost-online
 assert.doesNotMatch(index, /gallery-card[^>]+href="elsewhere\.html"/i, 'fifth space should not become an ordinary gallery card');
 
 for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', './elsewhere-teaser.css', './ELSEWHERE_CATALOGUE_ZERO.md']) {
-  assert.ok(worker.includes(`'${asset}'`), `offline shell missing ${asset}`);
+  assert.ok(worker.includes(`'${asset}'`) || worker.includes(`"${asset}"`), `offline shell missing ${asset}`);
 }
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart, bounded reshelving aftermath, accession-linked handling, responsive acclimatization material cues, storage-route tracing, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, responsive acclimatization material cues, storage-route tracing, accessible routes, and offline shell coverage.');
