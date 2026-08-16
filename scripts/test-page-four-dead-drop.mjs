@@ -149,7 +149,7 @@ for (const pattern of [
 ]) assert.match(css, pattern, `Public-copy reclassification evidence missing ${pattern}`);
 assert.match(loader, /classList\.toggle\('is-reclassified'/,
   'existing reclassification control should remain the sole state authority for the public-copy mutation');
-assert.match(loader, /classificationToggle\.setAttribute\('aria-pressed'/,
+assert.match(loader, /classificationButton\.setAttribute\('aria-pressed'/,
   'reclassification control must retain explicit pressed-state semantics');
 
 console.log('Page Four Dead Drop visible route-fragment assembly, four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, source-independence evidence limits, evidence-board revision states, public-copy reclassification evidence, accessibility, privacy, and v43 cache-lineage contracts verified.');
