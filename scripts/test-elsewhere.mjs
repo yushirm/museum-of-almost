@@ -82,6 +82,16 @@ assert.match(js, /forced-colors:active/, 'supplemental crate material cues must 
 assert.match(js, /@media\(prefers-reduced-motion:reduce\)\{\.acclimation-stage \.acclimation-shell\{transition:none\}\}/, 'crate material transition must be removed for reduced motion');
 assert.match(js, /@media print\{\.acclimation-stage \.acclimation-shell/, 'crate material response must print as static content');
 
+assert.match(js, /dataset\.elsewhereReceivingHandover = 'true'/, 'receiving-handover relationship should install exactly once');
+assert.match(js, /staticCall\.replaceWith\(note\)/, 'enhanced Shift Handover should replace one stale hypothetical call rather than add another paragraph');
+assert.match(js, /RECEIVING HOLD · CARRY TO NEXT SHIFT/, 'buffering arrivals should become an actual next-shift duty');
+assert.match(js, /RECEIVING HANDOFF · VERIFY BEFORE OPENING/, 'near-matched arrival should hand forward verification rather than a fake timer');
+assert.match(js, /states\[stage\.dataset\.state\]/, 'handover must derive from the existing acclimatization state rather than inventing another state store');
+assert.match(js, /button\.addEventListener\('click', \(\) => queueMicrotask\(sync\)\)/, 'existing acclimatization choices should update the downstream handover after their established renderer runs');
+assert.match(js, /note\.setAttribute\('aria-live', 'polite'\)/, 'receiving duty changes should remain available to assistive technology');
+assert.match(js, /@media\(forced-colors:active\)\{\.receiving-handover/, 'receiving handover must defer to forced colors');
+assert.match(js, /@media print\{\.receiving-handover/, 'receiving handover should remain legible as static print content');
+
 assert.match(js, /COLLECTIONS TRANSFER \/ HANDLING DESK/);
 assert.match(js, /Every object gets a route\. No route resolves the object\./);
 assert.match(js, /MOVEMENT COPY · LOCAL ONLY/);
@@ -144,4 +154,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, responsive acclimatization material cues, storage-route tracing, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, acclimatization-to-shift handover continuity, responsive acclimatization material cues, storage-route tracing, accessible routes, and offline shell coverage.');
