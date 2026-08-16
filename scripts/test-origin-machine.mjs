@@ -1,27 +1,29 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import path from 'node:path';
-import { createRequire } from 'node:module';
+import {
+  assertCssContract,
+  assertLocalRuntime,
+  bundle,
+  read,
+  requireCjs,
+  requireFiles,
+  requirePatterns
+} from './test-support.mjs';
 
-const root = path.resolve(new URL('..', import.meta.url).pathname);
-const read = (name) => fs.readFileSync(path.join(root, name), 'utf8');
-const require = createRequire(import.meta.url);
-
-for (const name of [
+requireFiles([
   'origin-machine-core.js',
   'origin-machine.js',
   'origin-machine.css',
   'ORIGIN_MACHINE.md',
   'deep-space.js'
-]) assert.ok(fs.existsSync(path.join(root, name)), `missing ${name}`);
+], 'Origin Machine');
 
 const coreSource = read('origin-machine-core.js');
 const viewSource = read('origin-machine.js');
 const css = read('origin-machine.css');
 const doc = read('ORIGIN_MACHINE.md');
 const bootstrap = read('deep-space.js');
-const runtime = [coreSource, viewSource, css].join('\n');
-const core = require('../origin-machine-core.js');
+const runtime = bundle(coreSource, viewSource, css);
+const core = requireCjs('origin-machine-core.js');
 
 assert.equal(core.MARKERS.length, 5);
 assert.deepEqual(core.MARKERS.map(({ chi }) => chi), [-4, -2, 0, 3, 5]);
@@ -77,7 +79,7 @@ const frozenBefore = JSON.stringify(core.MARKERS);
 core.snapshot('a', 2);
 assert.equal(JSON.stringify(core.MARKERS), frozenBefore, 'snapshots must not mutate fixed marker declarations');
 
-for (const pattern of [
+requirePatterns(viewSource, [
   /INSTRUMENT 10 · THE ORIGIN MACHINE/,
   /The page refuses to keep one permanent center\./,
   /Relative-coordinate ledger/,
@@ -89,32 +91,22 @@ for (const pattern of [
   /tabIndex = 0/,
   /--origin-position/,
   /replaceChildren/
-]) assert.match(viewSource, pattern);
+], 'Origin Machine view');
 
 assert.match(viewSource, /document\.createElement/);
 assert.match(viewSource, /textContent/);
-assert.doesNotMatch(viewSource, /innerHTML|insertAdjacentHTML|outerHTML|document\.write/);
-assert.doesNotMatch([coreSource, viewSource].join('\n'), /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource/i);
-assert.doesNotMatch([coreSource, viewSource].join('\n'), /localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.geolocation|history\.(?:pushState|replaceState)/i);
-assert.doesNotMatch([coreSource, viewSource].join('\n'), /setInterval|setTimeout|requestAnimationFrame/i);
-assert.doesNotMatch(runtime, /https?:\/\//i, 'feature runtime must contain no remote URL');
-assert.doesNotMatch(runtime, /\b(?:gtag|dataLayer|mixpanel|plausible|amplitude|hotjar)\b|google-analytics|googletagmanager|facebook\.com\/tr|doubleclick/i);
+assertLocalRuntime(runtime, 'Origin Machine', { domStringInjection: true });
 
-for (const pattern of [
-  /min-height:\s*44px/,
-  /:focus-visible/,
+assertCssContract(css, 'Origin Machine styles', { touchTarget: true, focusVisible: true });
+requirePatterns(css, [
   /overflow-x:\s*auto/,
   /data-marker-id="a"/,
   /data-marker-id="e"/,
   /data-origin="true"/,
-  /prefers-reduced-motion/,
-  /prefers-contrast/,
-  /max-width:\s*620px/,
-  /@media print/
-]) assert.match(css, pattern);
-assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i);
+  /max-width:\s*620px/
+], 'Origin Machine styles');
 
-for (const pattern of [
+requirePatterns(bootstrap, [
   /function loadOriginMachine/,
   /\.\/origin-machine\.css/,
   /\.\/origin-machine-core\.js/,
@@ -122,9 +114,9 @@ for (const pattern of [
   /function loadRedshiftRuler\(done = loadOriginMachine\)/,
   /function loadGravitationalCopyRoom\(done = loadRedshiftRuler\)/,
   /loadCausalSignalBox\(loadGravitationalCopyRoom\)/
-]) assert.match(bootstrap, pattern);
+], 'Deep Space loader');
 
-for (const pattern of [
+requirePatterns(doc, [
   /Concept A — The Expansion Bench/,
   /Concept B — The Darkroom Enlarger/,
   /Concept C — The Page Has No Permanent Center/,
@@ -138,6 +130,6 @@ for (const pattern of [
   /Vertical staggering is only label clearance/,
   /no `H0`/,
   /documentation sources only/i
-]) assert.match(doc, pattern);
+], 'Origin Machine record');
 
 console.log('Origin Machine fixed comoving geometry, scale-factor separation, recenter invariance, constant marker identity, label clearance, scientific boundary, accessibility, privacy, and progressive mount contract verified.');
