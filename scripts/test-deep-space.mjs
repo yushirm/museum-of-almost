@@ -7,15 +7,16 @@ const root = path.resolve(new URL('..', import.meta.url).pathname);
 const read = (name) => fs.readFileSync(path.join(root, name), 'utf8');
 const require = createRequire(import.meta.url);
 
-for (const name of ['deep-space.html', 'deep-space.css', 'deep-space-core.js', 'deep-space.js', 'DEEP_SPACE.md']) {
+for (const name of ['deep-space.html', 'deep-space.css', 'redshift-window.css', 'deep-space-core.js', 'deep-space.js', 'DEEP_SPACE.md']) {
   assert.ok(fs.existsSync(path.join(root, name)), `missing ${name}`);
 }
 
 const html = read('deep-space.html');
 const css = read('deep-space.css');
+const redshiftWindowCss = read('redshift-window.css');
 const coreSource = read('deep-space-core.js');
 const viewSource = read('deep-space.js');
-const runtime = [html, css, coreSource, viewSource].join('\n');
+const runtime = [html, css, redshiftWindowCss, coreSource, viewSource].join('\n');
 const core = require('../deep-space-core.js');
 
 for (const pattern of [
@@ -40,6 +41,18 @@ for (const pattern of [
 ]) assert.match(css, pattern, `Cosmic Inventory proportional field missing ${pattern}`);
 assert.doesNotMatch(css, /\.inventory-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,/s, 'retired three-card Cosmic Inventory grid returned');
 assert.doesNotMatch(css, /\.inventory-card\s*\{[^}]*min-height:\s*330px/s, 'retired tall Cosmic Inventory cards returned');
+
+for (const pattern of [
+  /LOG DISTANCE · MOON → ANDROMEDA/,
+  /repeating-linear-gradient\(90deg, rgba\(132, 232, 255, 0\.18\) 0 1px, transparent 1px 7\.25%\)/,
+  /data-scale-id="moon"\]\[data-active="true"\]\) \.light-beam \{ --beam-progress: 0% !important; \}/,
+  /data-scale-id="sun"\]\[data-active="true"\]\) \.light-beam \{ --beam-progress: 15\.027% !important; \}/,
+  /data-scale-id="proxima"\]\[data-active="true"\]\) \.light-beam \{ --beam-progress: 46\.525% !important; \}/,
+  /data-scale-id="milky-way"\]\[data-active="true"\]\) \.light-beam \{ --beam-progress: 71\.890% !important; \}/,
+  /data-scale-id="andromeda"\]\[data-active="true"\]\) \.light-beam \{ --beam-progress: 80% !important; \}/,
+  /prefers-contrast: more[\s\S]*forced-colors: active[\s\S]*\.light-track/,
+  /@media print[\s\S]*\.light-beam::before/
+]) assert.match(redshiftWindowCss, pattern, `Light Clock logarithmic distance field missing ${pattern}`);
 
 for (const pattern of [
   /addPageFourSignalAnomaly/,
@@ -116,4 +129,4 @@ assert.ok(Math.abs(core.lightTimeSeconds(core.AU_KM) - 499.0047838) < 0.001, '1 
 assert.ok(Math.abs(core.schwarzschildRadiusKm(1) - 2.9533) < 0.01, 'one solar mass Schwarzschild radius should be about 2.95 km');
 assert.ok(Math.abs(core.inventoryTotal() - 100) < 1e-9, 'rounded cosmic inventory should total 100%');
 
-console.log('Deep Space / Almost local science, proportional Cosmic Inventory, anomaly conservation prune, cosmic stratigraphy, light-time handoff, accessibility, privacy, calculations, and no-network contract verified.');
+console.log('Deep Space / Almost local science, logarithmic Light Clock distance field, proportional Cosmic Inventory, anomaly conservation prune, cosmic stratigraphy, light-time handoff, accessibility, privacy, calculations, and no-network contract verified.');
