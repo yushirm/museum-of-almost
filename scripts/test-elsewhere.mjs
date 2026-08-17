@@ -121,6 +121,9 @@ assert.match(js, /Trace \$\{code\} storage route to Zone \$\{route\.zoneId\}/, '
 assert.match(js, /min-height:44px/, 'route trace must provide a touch-sized target');
 assert.match(js, /\.transfer-trace:hover,\.transfer-trace:focus-visible/, 'route trace needs visible keyboard focus treatment');
 
+assert.match(js, /installIpmStandingOrder\(\)/, 'enhanced runtime should migrate IPM duty into the existing Environment Board');
+assert.match(js, /sweep\.remove\(\)/, 'enhanced runtime should retire the standalone IPM station after its duty migrates');
+
 for (const retired of [
   /COLLECTIONS RECONCILIATION \/ CYCLE COUNT/,
   /cycleCountSteps/,
@@ -160,6 +163,12 @@ assert.match(css, /@media \(max-width: 900px\)[\s\S]*?#shift-handover:has\(\.rec
 assert.match(css, /@media \(prefers-contrast: more\)[\s\S]*?#shift-handover:has\(\.receiving-handover\)/, 'live clipboard hierarchy must remain explicit in increased contrast');
 assert.match(css, /@media print[\s\S]*?#shift-handover:has\(\.receiving-handover\) \.lost-copy \{ display: block; \}/, 'printed Shift Handover should return to linear reference copy');
 
+assert.match(css, /@supports selector\(main:has\(> \.ipm-sweep\)\)/, 'enhanced workbench should react to the migrated IPM station without new script state');
+assert.match(css, /main:not\(:has\(> \.ipm-sweep\)\) \{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/, 'enhanced workbench should close the empty third desktop bay');
+assert.match(css, /main:not\(:has\(> \.ipm-sweep\)\) > \.acclimation-bay::after \{ display: none; \}/, 'two-station workbench should remove the connector to the retired third station');
+assert.match(css, /CARE SCALE 03 · BUILDING \/ MONITORING · MOVED TO EXCEPTION BOARD/, 'building-monitoring care scale should follow the migrated duty to the existing Environment Board');
+assert.match(css, /@media print[\s\S]*?main:has\(> \.environment-board \.environment-ipm-order\) > \.environment-board::before[\s\S]*?display:\s*none/, 'screen-only migrated care-scale marker must not masquerade as printed room state');
+
 assert.match(index, /href="elsewhere-teaser\.css"/);
 assert.match(index, /FACILITIES NOTICE 05 \/ FLOOR PLAN DISAGREEMENT/);
 assert.match(index, /href="elsewhere\.html"/);
@@ -173,4 +182,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with a tactile service-hatch entrance, twelve fixed records, a single-slot return cart that retracts the previous compactus inspection tray, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, a live-vs-reference Shift Handover clipboard, acclimatization continuity, responsive material cues, storage-route tracing, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with a tactile service-hatch entrance, twelve fixed records, a single-slot return cart that retracts the previous compactus inspection tray, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, a live-vs-reference Shift Handover clipboard, acclimatization continuity, an adaptive two-station workbench after IPM duty migration, responsive material cues, storage-route tracing, accessible routes, and offline shell coverage.');
