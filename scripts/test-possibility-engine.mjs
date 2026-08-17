@@ -53,15 +53,27 @@ assert.match(viewSource, /snapshot\.archive\.hinge/);
 assert.match(viewSource, /snapshot\.archive\.result/);
 assert.match(viewSource, /snapshot\.archive\.source/);
 assert.match(viewSource, /Evidence run complete/i);
+assert.match(viewSource, /Pattern and material state are categorical chamber states/);
+assert.match(viewSource, /Track length does not rank possibilities/);
+assert.match(viewSource, /possibilityMapNote\.style\.display = 'block'/, 'enhancement should reveal the corrected categorical note');
 
 assert.match(css, /min-height:\s*44px/);
 assert.match(css, /max-width:\s*620px/);
 assert.match(css, /success-archive-heading\[hidden\]/);
+assert.match(css, /\.possibility-map-note \{ display: none;/, 'no-JavaScript fallback must not expose the retired bar-width explanation');
 assert.match(css, /success-archive-grid\[data-earned-archive="true"\]/);
 assert.match(css, /prefers-reduced-motion/);
 assert.match(css, /prefers-contrast/);
+assert.match(css, /forced-colors: active/);
 assert.match(css, /@media print/);
 assert.doesNotMatch(css, /@import\s+url|font-face|https?:\/\//i);
+
+assert.match(css, /\.possibility-card\[data-status="pressured"\][\s\S]*?border-style:\s*dashed/, 'pressured possibilities should use a categorical dashed state rather than reduced length');
+assert.match(css, /\.possibility-card\[data-status="pressured"\] \.possibility-gauge-fill[\s\S]*?repeating-linear-gradient/, 'pressured possibilities should retain full-length hatched material state');
+assert.match(css, /\.possibility-card\[data-status="retired"\][\s\S]*?opacity:\s*1[\s\S]*?transform:\s*none[\s\S]*?border-style:\s*dashed/, 'retired possibilities should remain legible as full-size fossil traces');
+assert.match(css, /\.possibility-card\[data-status="retired"\]::after/, 'retired possibilities should retain a bounded hollow trace');
+assert.match(css, /@media \(forced-colors: active\)[\s\S]*?data-status="retired"/, 'categorical fossil state should remain explicit in forced colors');
+assert.doesNotMatch(css, /width:\s*(?:62|18)%/, 'categorical statuses must not masquerade as quantitative bar lengths');
 
 assert.equal(core.SUCCESS_CASES.length, 3);
 assert.equal(new Set(core.SUCCESS_CASES.map(({ id }) => id)).size, 3);
@@ -100,7 +112,9 @@ for (const pattern of [
   /https:\/\/www\.nobelprize\.org\/prizes\/physics\/2015\/press-release\//,
   /https:\/\/www\.nobelprize\.org\/prizes\/physics\/2011\/press-release\//,
   /https:\/\/www\.nobelprize\.org\/prizes\/physics\/2017\/press-release\//,
+  /constant length/,
+  /Track length does not rank possibilities/,
   /No new runtime request or remote asset/
 ]) assert.match(record, pattern);
 
-console.log('Deep Space Possibility Engine, earned Success Archive consequence, scientific-state semantics, accessibility, privacy, and local-only contract verified.');
+console.log('Deep Space Possibility Engine, categorical material-state evidence map, earned Success Archive consequence, scientific-state semantics, accessibility, privacy, and local-only contract verified.');

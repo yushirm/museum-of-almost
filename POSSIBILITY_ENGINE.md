@@ -29,7 +29,7 @@ The interface therefore uses only four categorical states:
 - **Retired by this evidence** — the specifically worded claim no longer survives the evidence represented by the case.
 - **Survived this evidence** — the possibility remains consistent with the evidence shown; this is not a probability or a declaration of final truth.
 
-The bar lengths are visual categories only. They are not confidence intervals, posterior probabilities, model weights, or significance values.
+The state tracks deliberately keep a constant length. Category is carried by material treatment instead: open remains continuous, pressured becomes hatched, retired becomes a hollow dashed trace, and survived remains solid. **Track length does not rank possibilities** and is not a confidence interval, posterior probability, model weight, significance value, or quantity.
 
 ## Archive records
 

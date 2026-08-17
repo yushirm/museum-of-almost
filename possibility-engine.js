@@ -12,6 +12,7 @@
   const evidenceTitle = document.querySelector('#success-evidence-title');
   const evidenceBody = document.querySelector('#success-evidence-body');
   const possibilityList = document.querySelector('#success-possibilities');
+  const possibilityMapNote = document.querySelector('.possibility-map-note');
   const applyButton = document.querySelector('#success-apply');
   const resetButton = document.querySelector('#success-reset');
   const archiveHeading = document.querySelector('.success-archive-heading');
@@ -24,6 +25,11 @@
   const archiveEyebrow = archiveHeading.querySelector('.eyebrow');
   const archiveTitle = archiveHeading.querySelector('h3');
   const archiveIntro = archiveHeading.querySelector(':scope > p');
+
+  if (possibilityMapNote) {
+    possibilityMapNote.textContent = 'Pattern and material state are categorical chamber states, not probabilities, confidence scores, or quantities. Track length does not rank possibilities.';
+    possibilityMapNote.style.display = 'block';
+  }
 
   let activeCaseId = caseButtons.find((button) => button.dataset.active === 'true')?.dataset.successCaseId
     || core.SUCCESS_CASES[0]?.id;
