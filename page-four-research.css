@@ -552,7 +552,10 @@
 }
 
 @media (prefers-contrast: more) {
-  body:has(#finding-aid .finding-aid-entry:is(:hover, :focus-within)) :is(#cryptids, #maps, #celestial, #broadcasts, #diagrams, #field-notes, #witnesses, #redactions, #evidence) {
+  body:has(#finding-aid .finding-aid-entry:nth-child(1):is(:hover, :focus-within)) :is(#cryptids, #maps, #diagrams),
+  body:has(#finding-aid .finding-aid-entry:nth-child(2):is(:hover, :focus-within)) :is(#maps, #broadcasts, #redactions),
+  body:has(#finding-aid .finding-aid-entry:nth-child(3):is(:hover, :focus-within)) :is(#cryptids, #field-notes, #witnesses),
+  body:has(#finding-aid .finding-aid-entry:nth-child(4):is(:hover, :focus-within)) :is(#celestial, #diagrams, #evidence) {
     box-shadow: none;
     outline: 3px solid currentColor;
   }
