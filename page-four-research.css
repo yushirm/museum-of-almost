@@ -568,3 +568,54 @@
     box-shadow: none !important;
   }
 }
+
+/* PAGE FOUR generation 199: one copier scar survives and worsens through the existing reproduction chain. */
+.copy-room .copy-axis::before {
+  content: "";
+  position: absolute;
+  left: 16%;
+  top: -3.8rem;
+  width: 0.68rem;
+  height: 1.65rem;
+  border-left: 0 solid currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  transform: rotate(-12deg);
+  transform-origin: center;
+}
+
+.copy-room .copy-2 .copy-axis::before {
+  border-left-width: 2px;
+  opacity: 0.42;
+}
+
+.copy-room .copy-3 .copy-axis::before {
+  border-left-width: 3px;
+  opacity: 0.68;
+  transform: translate(2px, 1px) rotate(-10deg);
+  box-shadow: 2px 0 rgba(40, 37, 29, 0.28);
+}
+
+.copy-room .copy-4 .copy-axis::before {
+  border-left-width: 4px;
+  opacity: 0.92;
+  transform: translate(4px, 2px) rotate(-8deg);
+  box-shadow:
+    3px 0 currentColor,
+    6px 1px rgba(40, 37, 29, 0.48);
+}
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  .copy-room .copy-2 .copy-axis::before,
+  .copy-room .copy-3 .copy-axis::before,
+  .copy-room .copy-4 .copy-axis::before {
+    opacity: 1;
+    box-shadow: none;
+  }
+}
+
+@media print {
+  .copy-room .copy-axis::before {
+    box-shadow: none;
+  }
+}
