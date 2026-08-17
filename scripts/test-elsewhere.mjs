@@ -152,6 +152,14 @@ assert.match(teaser, /@media print[\s\S]*?\.maintenance-seam \{ display: none; \
 assert.match(css, /\.service-header a \{[\s\S]*?min-height:\s*44px/, 'header return link needs an explicit touch target');
 assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.access-copy h1 \{[^}]*font-size:/, 'mobile heading must be explicitly constrained');
 
+assert.match(css, /@supports selector\(#shift-handover:has\(\.receiving-handover\)\)/, 'enhanced Shift Handover should separate live duties from static drill reference');
+assert.match(css, /CURRENT SHIFT COPY · LIVE DUTIES FIRST/, 'live duties should lead the enhanced Shift Handover clipboard');
+assert.match(css, /REFERENCE DRILL · STATIC/, 'remaining authored hypothetical calls should be visibly demoted to drill reference');
+assert.match(css, /#shift-handover:has\(\.receiving-handover\) :is\(\.lift-consequence, \.receiving-handover\)[\s\S]*?grid-column:\s*1 \/ -1/, 'live receiving and lift duties should retain full-width priority');
+assert.match(css, /@media \(max-width: 900px\)[\s\S]*?#shift-handover:has\(\.receiving-handover\) \.lost-copy[\s\S]*?grid-template-columns:\s*1fr/, 'live clipboard must collapse to one column on narrow screens');
+assert.match(css, /@media \(prefers-contrast: more\)[\s\S]*?#shift-handover:has\(\.receiving-handover\)/, 'live clipboard hierarchy must remain explicit in increased contrast');
+assert.match(css, /@media print[\s\S]*?#shift-handover:has\(\.receiving-handover\) \.lost-copy \{ display: block; \}/, 'printed Shift Handover should return to linear reference copy');
+
 assert.match(index, /href="elsewhere-teaser\.css"/);
 assert.match(index, /FACILITIES NOTICE 05 \/ FLOOR PLAN DISAGREEMENT/);
 assert.match(index, /href="elsewhere\.html"/);
@@ -165,4 +173,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with a tactile service-hatch entrance, twelve fixed records, a single-slot return cart that retracts the previous compactus inspection tray, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, acclimatization-to-shift handover continuity, responsive acclimatization material cues, storage-route tracing, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with a tactile service-hatch entrance, twelve fixed records, a single-slot return cart that retracts the previous compactus inspection tray, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, a live-vs-reference Shift Handover clipboard, acclimatization continuity, responsive material cues, storage-route tracing, accessible routes, and offline shell coverage.');
