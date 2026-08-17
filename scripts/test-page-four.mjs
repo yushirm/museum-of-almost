@@ -112,6 +112,17 @@ for (const pattern of [
   /@supports selector\(body:has/
 ]) assert.match(researchCss, pattern, `finding-aid projection missing ${pattern}`);
 
+for (const pattern of [
+  /\.copy-room \.copy-axis::before\s*\{[\s\S]*?opacity:\s*0/,
+  /\.copy-room \.copy-2 \.copy-axis::before\s*\{[\s\S]*?border-left-width:\s*2px[\s\S]*?opacity:\s*0\.42/,
+  /\.copy-room \.copy-3 \.copy-axis::before\s*\{[\s\S]*?border-left-width:\s*3px[\s\S]*?box-shadow:/,
+  /\.copy-room \.copy-4 \.copy-axis::before\s*\{[\s\S]*?border-left-width:\s*4px[\s\S]*?box-shadow:/,
+  /@media \(prefers-contrast: more\), \(forced-colors: active\)[\s\S]*?\.copy-room \.copy-2 \.copy-axis::before/,
+  /@media print[\s\S]*?\.copy-room \.copy-axis::before/
+]) assert.match(researchCss, pattern, `Copy Room inherited scar missing ${pattern}`);
+assert.doesNotMatch(researchCss, /\.copy-room \.copy-1 \.copy-axis::before\s*\{/,
+  'reference reconstruction must stay free of the copier scar');
+
 assert.match(js, /page-four-research\.css/, 'Page Four should mount the local research styles');
 assert.match(js, /page-four-research\.js/, 'Page Four should mount the local research logic');
 assert.match(js, /page-four-instrument-room\.css/, 'Page Four should mount the local Instrument Room styles');
