@@ -308,6 +308,20 @@ assert.match(
   'route-preview motion must collapse under reduced-motion preferences'
 );
 
+for (const [pattern, message] of [
+  [/body\.html-xray-active \.homepage-header\[data-html-xray-label\]\s*\{[\s\S]*?transform:\s*translate\(-6px,\s*-3px\);/, 'HTML X-ray should pull the existing header away from the page body'],
+  [/body\.html-xray-active #homepage-workbench\[data-html-xray-label\]\s*\{[\s\S]*?transform:\s*translate\(6px,\s*-2px\);/, 'HTML X-ray should separate the existing workbench'],
+  [/body\.html-xray-active \.posts\[data-html-xray-label\]\s*\{[\s\S]*?transform:\s*translate\(-6px,\s*3px\);/, 'HTML X-ray should pull the weblog away from the sidebar'],
+  [/body\.html-xray-active \.sidebar\[data-html-xray-label\]\s*\{[\s\S]*?transform:\s*translate\(6px,\s*5px\);/, 'HTML X-ray should pull the sidebar away from the weblog'],
+  [/@media \(max-width: 620px\)[\s\S]*?body\.html-xray-active \.homepage-header\[data-html-xray-label\][\s\S]*?transform:\s*translateX\(-3px\)/, 'exploded anatomy should stay bounded on narrow layouts'],
+  [/@media \(prefers-reduced-motion: reduce\)[\s\S]*?body\.html-xray-active \[data-html-xray-label\][\s\S]*?transform:\s*none !important/, 'reduced motion should keep X-ray labels while removing spatial disassembly'],
+  [/@media print[\s\S]*?body\.html-xray-active \[data-html-xray-label\][\s\S]*?transform:\s*none !important/, 'print should not preserve transient exploded anatomy']
+]) assert.match(css, pattern, message);
+assert.match(js, /body\.classList\.toggle\('html-xray-active'\)/,
+  'the exploded anatomy should consume the existing HTML X-ray state instead of creating a second control or store');
+assert.match(js, /element\.setAttribute\('data-html-xray-label', label\)/,
+  'the X-ray should continue using its fixed authored semantic labels as the anatomy targets');
+
 assert.match(js, /navigator\.serviceWorker\.register\('\.\/service-worker\.js'\)/);
 assert.match(js, /PAGE FOUR REFUSES TO STAY SECRET\./, 'Almost Online should visibly leak the new gallery');
 assert.match(js, /DEEP SPACE NOW REPORTS THE SAME ANOMALY\./, 'Almost Online should amplify the Deep Space sighting');
@@ -362,4 +376,4 @@ assert.match(notes, /No third-party runtime scripts, fonts, images, embeds, APIs
 assert.match(notes, /Do not publish personal information about real people/i);
 assert.match(notes, /Future posts should be added directly to the HTML in reverse chronological order/i);
 
-console.log('Almost Online! Web 1.0 gallery, reversible browser-tab semaphore migration, directional local comet wayfinding, fixed decorative counter refusal, local guestbook relationship, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
+console.log('Almost Online! Web 1.0 gallery, exploded HTML X-ray anatomy, reversible browser-tab semaphore migration, directional local comet wayfinding, fixed decorative counter refusal, local guestbook relationship, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
