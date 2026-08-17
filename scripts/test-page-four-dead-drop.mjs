@@ -152,4 +152,18 @@ assert.match(loader, /classList\.toggle\('is-reclassified'/,
 assert.match(loader, /classificationButton\.setAttribute\('aria-pressed'/,
   'reclassification control must retain explicit pressed-state semantics');
 
-console.log('Page Four Dead Drop visible route-fragment assembly, four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, source-independence evidence limits, evidence-board revision states, public-copy reclassification evidence, accessibility, privacy, and v43 cache-lineage contracts verified.');
+for (const pattern of [
+  /@supports selector\(#broadcasts:has\(details\[open\]\)\)/,
+  /#broadcasts:has\(details\[open\]\) \.tv-static\s*\{[\s\S]*?animation:\s*tape-04-13-dead-air 13s linear 1 both/,
+  /#broadcasts:has\(details\[open\]\) \.broadcast-figure\s*\{[\s\S]*?animation:\s*tape-04-13-figure 13s linear 1 both/,
+  /#broadcasts:has\(details\[open\]\) \.timecode::before\s*\{[\s\S]*?content:\s*"TAPE 04-13 \/\/ DEAD AIR \/\/ "/,
+  /@keyframes tape-04-13-dead-air/,
+  /@keyframes tape-04-13-last-line/,
+  /@media \(prefers-reduced-motion: reduce\)[\s\S]*?#broadcasts:has\(details\[open\]\) \.tv-static/,
+  /@media \(forced-colors: active\)[\s\S]*?#broadcasts:has\(details\[open\]\) \.tv-frame/,
+  /@media print[\s\S]*?#broadcasts:has\(details\[open\]\) \.tv-static/
+]) assert.match(css, pattern, `Tape 04-13 finite dead-air behavior missing ${pattern}`);
+assert.doesNotMatch(css, /tape-04-13-[a-z-]+[^\n{]*infinite/i,
+  'Tape 04-13 must be a finite authored event rather than another endless animation');
+
+console.log('Page Four Dead Drop visible route-fragment assembly, four-lock puzzle chain, deterministic post-Instrument loading, progressive no-penalty hints, same-origin final route, source-independence evidence limits, evidence-board revision states, public-copy reclassification evidence, finite Tape 04-13 dead-air performance, accessibility, privacy, and v43 cache-lineage contracts verified.');

@@ -684,3 +684,97 @@ body.is-reclassified .hero-photo::after {
     transform: none;
   }
 }
+
+/* Generation 194: opening Tape 04-13 lets the existing picture run out of signal once. */
+@supports selector(#broadcasts:has(details[open])) {
+  #broadcasts:has(details[open]) .tv-static {
+    opacity: 0.08;
+    background: #0a0c0a;
+    animation: tape-04-13-dead-air 13s linear 1 both;
+  }
+
+  #broadcasts:has(details[open]) .tv-static::before {
+    inset: 8% 7%;
+    opacity: 0;
+    border: 0;
+    background: linear-gradient(transparent 49%, rgba(184, 238, 117, 0.75) 49% 51%, transparent 51%);
+    animation: tape-04-13-last-line 13s linear 1 both;
+  }
+
+  #broadcasts:has(details[open]) .broadcast-figure {
+    opacity: 0;
+    filter: blur(8px);
+    animation: tape-04-13-figure 13s linear 1 both;
+  }
+
+  #broadcasts:has(details[open]) .timecode::before {
+    content: "TAPE 04-13 // DEAD AIR // ";
+    color: #b8ee75;
+  }
+}
+
+@keyframes tape-04-13-dead-air {
+  0% {
+    opacity: 0.7;
+    background: repeating-linear-gradient(0deg, #d4d6c9 0 1px, #292c29 2px 4px, #989b91 5px 6px);
+  }
+  28% { opacity: 0.46; }
+  58% { opacity: 0.27; }
+  82% { opacity: 0.15; }
+  100% { opacity: 0.08; background: #0a0c0a; }
+}
+
+@keyframes tape-04-13-last-line {
+  0%, 42% { opacity: 0.62; }
+  72% { opacity: 0.28; }
+  100% { opacity: 0; }
+}
+
+@keyframes tape-04-13-figure {
+  0% { opacity: 0.18; filter: blur(6px); }
+  45% { opacity: 0.1; filter: blur(7px); }
+  100% { opacity: 0; filter: blur(8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #broadcasts:has(details[open]) .tv-static,
+  #broadcasts:has(details[open]) .tv-static::before,
+  #broadcasts:has(details[open]) .broadcast-figure {
+    animation: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  #broadcasts:has(details[open]) .tv-frame,
+  #broadcasts:has(details[open]) .timecode {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+@media (forced-colors: active) {
+  #broadcasts:has(details[open]) .tv-frame,
+  #broadcasts:has(details[open]) .timecode {
+    forced-color-adjust: auto;
+    outline: 2px solid Highlight;
+    color: CanvasText;
+    background: Canvas;
+  }
+}
+
+@media print {
+  #broadcasts:has(details[open]) .tv-static,
+  #broadcasts:has(details[open]) .tv-static::before,
+  #broadcasts:has(details[open]) .broadcast-figure {
+    animation: none !important;
+  }
+
+  #broadcasts:has(details[open]) .tv-static {
+    opacity: 0.7;
+    background: repeating-linear-gradient(0deg, #d4d6c9 0 1px, #292c29 2px 4px, #989b91 5px 6px);
+  }
+
+  #broadcasts:has(details[open]) .tv-static::before { display: none; }
+  #broadcasts:has(details[open]) .broadcast-figure { opacity: 1; filter: blur(2px); }
+  #broadcasts:has(details[open]) .timecode::before { content: ""; }
+}
