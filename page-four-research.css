@@ -534,3 +534,34 @@
     display: none;
   }
 }
+
+/* PAGE FOUR generation: a finding-aid thread now visibly projects its editorial grouping onto the files it indexes. */
+@supports selector(body:has(#finding-aid .finding-aid-entry:focus-within)) {
+  body:has(#finding-aid .finding-aid-entry:nth-child(1):is(:hover, :focus-within)) :is(#cryptids, #maps, #diagrams),
+  body:has(#finding-aid .finding-aid-entry:nth-child(2):is(:hover, :focus-within)) :is(#maps, #broadcasts, #redactions),
+  body:has(#finding-aid .finding-aid-entry:nth-child(3):is(:hover, :focus-within)) :is(#cryptids, #field-notes, #witnesses),
+  body:has(#finding-aid .finding-aid-entry:nth-child(4):is(:hover, :focus-within)) :is(#celestial, #diagrams, #evidence) {
+    outline: 2px solid rgba(184, 238, 117, 0.72);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 5px rgba(143, 191, 85, 0.08), inset 0 0 0 1px rgba(184, 238, 117, 0.16);
+  }
+
+  #finding-aid .finding-aid-entry:is(:hover, :focus-within) {
+    background: rgba(143, 191, 85, 0.08);
+  }
+}
+
+@media (prefers-contrast: more) {
+  body:has(#finding-aid .finding-aid-entry:is(:hover, :focus-within)) :is(#cryptids, #maps, #celestial, #broadcasts, #diagrams, #field-notes, #witnesses, #redactions, #evidence) {
+    box-shadow: none;
+    outline: 3px solid currentColor;
+  }
+}
+
+@media print {
+  #finding-aid .finding-aid-entry,
+  body:has(#finding-aid .finding-aid-entry:is(:hover, :focus-within)) [data-case] {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
