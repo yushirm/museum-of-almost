@@ -89,3 +89,26 @@
 @media print {
   .maintenance-seam { display: none; }
 }
+
+/* Museum epoch: the room with fresh work stays awake while the other preview windows yield into house-light quiet. */
+body[data-recent-room="commons"] .gallery-card:not(.gallery-commons) .gallery-visual,
+body[data-recent-room="deep-space"] .gallery-card:not(.gallery-space) .gallery-visual,
+body[data-recent-room="almost-online"] .gallery-card:not(.gallery-web) .gallery-visual,
+body[data-recent-room="page-four"] .gallery-card:not(.gallery-four) .gallery-visual,
+body[data-recent-room="elsewhere"] .gallery-card .gallery-visual {
+  filter: brightness(0.72) saturate(0.78);
+}
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  body[data-recent-room="commons"] .gallery-card:not(.gallery-commons) .gallery-visual,
+  body[data-recent-room="deep-space"] .gallery-card:not(.gallery-space) .gallery-visual,
+  body[data-recent-room="almost-online"] .gallery-card:not(.gallery-web) .gallery-visual,
+  body[data-recent-room="page-four"] .gallery-card:not(.gallery-four) .gallery-visual,
+  body[data-recent-room="elsewhere"] .gallery-card .gallery-visual {
+    filter: none;
+  }
+}
+
+@media print {
+  body[data-recent-room] .gallery-card .gallery-visual { filter: none !important; }
+}

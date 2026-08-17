@@ -3,6 +3,7 @@ import fs from 'node:fs';
 
 const read = (name) => fs.readFileSync(new URL(`../${name}`, import.meta.url), 'utf8');
 const index = read('index.html');
+const foyerTeaser = read('elsewhere-teaser.css');
 const readme = read('README.md');
 const privacy = read('PRIVACY.md');
 const notFound = read('404.html');
@@ -34,9 +35,18 @@ for (const [key, card] of [
 ]) {
   assert.ok(index.includes(`body[data-recent-room="${key}"] .${card} .gallery-visual`), `${key} recent-room signal should light its existing entrance preview`);
   assert.ok(index.includes(`body[data-recent-room="museum"] .${card} .gallery-visual`), `museum epoch should light the existing ${key} entrance preview`);
+  assert.ok(
+    foyerTeaser.includes(`body[data-recent-room="${key}"] .gallery-card:not(.${card}) .gallery-visual`),
+    `${key} after-hours state should quiet the other existing preview windows`
+  );
 }
 assert.ok(index.includes('body[data-recent-room="elsewhere"] .maintenance-seam'), 'ELSEWHERE recent-room signal should light the existing service seam');
 assert.ok(index.includes('body[data-recent-room="museum"] .maintenance-seam'), 'museum epoch should include the existing service seam in the after-hours condition');
+assert.ok(foyerTeaser.includes('body[data-recent-room="elsewhere"] .gallery-card .gallery-visual'), 'ELSEWHERE after-hours state should quiet all four public gallery previews while the service seam stays awake');
+assert.match(foyerTeaser, /filter:\s*brightness\(0\.72\)\s+saturate\(0\.78\)/, 'house-light quiet should use one bounded visual treatment');
+assert.doesNotMatch(foyerTeaser, /body\[data-recent-room="museum"\][\s\S]{0,120}brightness\(0\.72\)/, 'Museum-wide epoch state should not falsely single out a quiet gallery');
+assert.match(foyerTeaser, /prefers-contrast:\s*more[\s\S]*forced-colors:\s*active[\s\S]*filter:\s*none/, 'house-light quiet should yield to contrast modes');
+assert.match(foyerTeaser, /@media print[\s\S]*body\[data-recent-room\] \.gallery-card \.gallery-visual[\s\S]*filter:\s*none !important/, 'printed entrance must not carry the house-light quiet treatment');
 assert.match(index, /@media \(forced-colors: active\)[\s\S]*outline:\s*2px solid Highlight/, 'after-hours condition needs a forced-colors fallback');
 assert.match(index, /@media print[\s\S]*body\[data-recent-room\] \.gallery-visual[\s\S]*filter:\s*none !important/, 'printed entrance must not carry the after-hours glow');
 
@@ -97,4 +107,4 @@ for (const phrase of [
   'explicitly fictional'
 ]) assert.match(`${readme}\n${privacy}`, new RegExp(phrase, 'i'), `durable docs missing privacy/fiction boundary: ${phrase}`);
 
-console.log('Museum durable docs match the live entrance hierarchy, after-hours public condition, Unbuilt Room recovery boundary, active routes, layered Page Four evidence model, privacy boundary, and COMMONS-only live-data contract.');
+console.log('Museum durable docs match the live entrance hierarchy, relational after-hours house-light condition, Unbuilt Room recovery boundary, active routes, layered Page Four evidence model, privacy boundary, and COMMONS-only live-data contract.');
