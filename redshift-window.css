@@ -235,3 +235,66 @@
   .orbit-dot-c,
   .orbit-core { animation: none !important; filter: none !important; opacity: 1; }
 }
+
+/*
+  Instrument 01 used to move its beam by equal button index, which made the Moon,
+  Sun, Proxima, Milky Way and Andromeda look deceptively evenly spaced. Keep the
+  same controls and exact numerical readout, but let the existing track admit the
+  true scale problem: distance is shown logarithmically from the Moon to Andromeda.
+  Browsers without :has() retain the earlier qualitative beam; the text readout
+  remains authoritative everywhere.
+*/
+.light-track {
+  background-image:
+    repeating-linear-gradient(90deg, rgba(132, 232, 255, 0.18) 0 1px, transparent 1px 7.25%),
+    radial-gradient(circle at 12% 50%, rgba(132,232,255,0.16), transparent 25%);
+  background-size: 80% 46%, auto;
+  background-position: 10% 50%, 0 0;
+  background-repeat: no-repeat;
+}
+
+.light-beam::before {
+  content: "LOG DISTANCE · MOON → ANDROMEDA";
+  position: absolute;
+  left: 0;
+  top: -4.5rem;
+  color: rgba(244, 239, 255, 0.76);
+  font-size: 0.64rem;
+  font-weight: 760;
+  letter-spacing: 0.11em;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-shadow: 0 0 14px rgba(132, 232, 255, 0.24);
+}
+
+.instrument:has([data-scale-id="moon"][data-active="true"]) .light-beam { --beam-progress: 0% !important; }
+.instrument:has([data-scale-id="sun"][data-active="true"]) .light-beam { --beam-progress: 15.027% !important; }
+.instrument:has([data-scale-id="proxima"][data-active="true"]) .light-beam { --beam-progress: 46.525% !important; }
+.instrument:has([data-scale-id="milky-way"][data-active="true"]) .light-beam { --beam-progress: 71.890% !important; }
+.instrument:has([data-scale-id="andromeda"][data-active="true"]) .light-beam { --beam-progress: 80% !important; }
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  .light-track {
+    background-image: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 7.25%);
+    background-size: 80% 46%;
+    background-position: 10% 50%;
+    background-repeat: no-repeat;
+  }
+  .light-beam::before {
+    color: currentColor;
+    text-shadow: none;
+  }
+}
+
+@media print {
+  .light-track {
+    background-image: repeating-linear-gradient(90deg, #777 0 1px, transparent 1px 7.25%);
+    background-size: 80% 46%;
+    background-position: 10% 50%;
+    background-repeat: no-repeat;
+  }
+  .light-beam::before {
+    color: #000;
+    text-shadow: none;
+  }
+}
