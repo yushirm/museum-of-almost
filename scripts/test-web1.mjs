@@ -376,4 +376,25 @@ assert.match(notes, /No third-party runtime scripts, fonts, images, embeds, APIs
 assert.match(notes, /Do not publish personal information about real people/i);
 assert.match(notes, /Future posts should be added directly to the HTML in reverse chronological order/i);
 
-console.log('Almost Online! Web 1.0 gallery, exploded HTML X-ray anatomy, reversible browser-tab semaphore migration, directional local comet wayfinding, fixed decorative counter refusal, local guestbook relationship, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
+assert.match(
+  css,
+  /GENERATION 203 \/\/ THE PAGE SCROLLS, THE SKY STAYS[\s\S]*?body\s*\{\s*background-attachment:\s*fixed;\s*\}/,
+  'the mature local wallpaper should stay viewport-attached while the document scrolls'
+);
+assert.match(
+  css,
+  /GENERATION 203[\s\S]*?@media \(prefers-reduced-motion: reduce\)[\s\S]*?background-attachment:\s*scroll/,
+  'reduced-motion mode should remove the page-versus-sky relative movement'
+);
+assert.match(
+  css,
+  /GENERATION 203[\s\S]*?@media \(prefers-contrast: more\), \(forced-colors: active\)[\s\S]*?background-attachment:\s*scroll/,
+  'contrast modes should not depend on viewport-fixed decorative atmosphere'
+);
+assert.match(
+  entrance,
+  /<body data-recent-room="almost-online">/,
+  'a visitor-facing Almost Online generation should move the shared foyer signal to almost-online'
+);
+
+console.log('Almost Online! Web 1.0 gallery, viewport-fixed wallpaper sky, exploded HTML X-ray anatomy, reversible browser-tab semaphore migration, directional local comet wayfinding, fixed decorative counter refusal, local guestbook relationship, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
