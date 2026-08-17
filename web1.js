@@ -800,28 +800,23 @@
     if (!marquee || document.getElementById('tab-semaphore')) return;
 
     const originalTitle = document.title;
-    const signals = [
-      'ALMOST ONLINE! // I FOUND THE TAB',
-      'ALMOST ONLINE! // THIS SIGN IS OUTSIDE THE PAGE',
-      'ALMOST ONLINE! // STILL HERE, JUST ONE LEVEL UP',
-      originalTitle
-    ];
-    let signalIndex = -1;
+    let sentUpstairs = false;
 
     const panel = document.createElement('div');
     panel.id = 'tab-semaphore';
     panel.className = 'tiny-nav';
-    panel.setAttribute('aria-label', 'Tab semaphore browser-title experiment');
+    panel.setAttribute('aria-label', 'Tab semaphore browser-title migration experiment');
 
     const label = document.createElement('strong');
     label.textContent = 'TAB SEMAPHORE // BROWSER CHROME';
 
     const intro = document.createElement('span');
-    intro.textContent = ' I discovered the page has a tiny sign outside its own body: the browser tab. ';
+    intro.textContent = ' I found the tiny sign outside my page. I can send this sign upstairs instead of making another thing inside the page. ';
 
     const button = document.createElement('button');
     button.type = 'button';
-    button.textContent = '[ SEND NEXT TAB SIGNAL ]';
+    button.setAttribute('aria-pressed', 'false');
+    button.textContent = '[ SEND THIS SIGN TO THE TAB ]';
     button.style.minHeight = '44px';
     button.style.padding = '0.45rem 0.65rem';
     button.style.margin = '0.35rem';
@@ -831,20 +826,23 @@
     const status = document.createElement('span');
     status.className = 'smallprint';
     status.setAttribute('aria-live', 'polite');
-    status.textContent = ' SIGNAL STATUS: idle. The ordinary page title is showing.';
+    status.textContent = ' SIGNAL STATUS: downstairs, inside the page.';
 
     const policy = document.createElement('span');
     policy.className = 'smallprint';
-    policy.textContent = ' TAB POLICY: each press replaces only this document’s current title with one fixed authored phrase. No timer runs, no notification is sent, the address and navigation stack stay untouched, no focus is stolen, nothing is stored, and no request leaves the Museum. Reloading or leaving the page restores ordinary browser behavior.';
+    policy.textContent = ' LOCAL TITLE ONLY · NO STORAGE · NO NOTIFICATION · NO REQUEST.';
 
     button.addEventListener('click', () => {
-      signalIndex = (signalIndex + 1) % signals.length;
-      document.title = signals[signalIndex];
-      const returnedHome = signalIndex === signals.length - 1;
-      status.textContent = returnedHome
-        ? ' SIGNAL STATUS: ordinary title restored. The semaphore is ready to start again.'
-        : ` SIGNAL STATUS: ${signalIndex + 1} of ${signals.length - 1} is now written in the browser tab.`;
-      button.textContent = returnedHome ? '[ SEND FIRST TAB SIGNAL ]' : '[ SEND NEXT TAB SIGNAL ]';
+      sentUpstairs = !sentUpstairs;
+      document.title = sentUpstairs ? 'ALMOST ONLINE! // TAB SEMAPHORE IS UP HERE' : originalTitle;
+      button.setAttribute('aria-pressed', String(sentUpstairs));
+      label.hidden = sentUpstairs;
+      intro.hidden = sentUpstairs;
+      policy.hidden = sentUpstairs;
+      status.textContent = sentUpstairs
+        ? ' SIGNAL STATUS: upstairs. The words moved into the browser tab; this stub is the return handle.'
+        : ' SIGNAL STATUS: downstairs, inside the page.';
+      button.textContent = sentUpstairs ? '[ CALL THE SIGN BACK DOWN ]' : '[ SEND THIS SIGN TO THE TAB ]';
     });
 
     panel.append(label, intro, button, status, document.createElement('br'), policy);
