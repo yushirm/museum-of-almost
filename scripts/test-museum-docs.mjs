@@ -59,6 +59,13 @@ for (const [href, name] of expectedGalleries) {
 const serviceDoor = index.match(/<aside class="maintenance-seam"[\s\S]*?<a href="([^"]+)"/);
 assert.ok(serviceDoor, 'entrance must expose the facilities seam');
 assert.equal(serviceDoor[1], 'elsewhere.html');
+assert.match(index, /<\/nav>\s*<aside class="maintenance-seam"/, 'facilities route must remain outside the public gallery navigation');
+assert.match(
+  foyerTeaser,
+  /@media \(min-width: 1101px\) \{[\s\S]*?\.maintenance-seam \{[\s\S]*?width:\s*min\(48rem,\s*58%\)[\s\S]*?grid-template-columns:\s*1fr[\s\S]*?margin:\s*0 auto[\s\S]*?border-top:\s*0/,
+  'wide foyer should recess facilities beneath the public gallery block instead of presenting a fifth full-width band'
+);
+assert.match(foyerTeaser, /@media \(max-width: 820px\)[\s\S]*?\.maintenance-seam \{ grid-template-columns: 1fr; \}/, 'service-level reframe must preserve the existing linear mobile hierarchy');
 assert.ok(readme.includes('`elsewhere.html`'), 'README missing Catalogue 0 route');
 assert.ok(readme.includes('**ELSEWHERE / CATALOGUE 0**'), 'README missing fifth-space identity');
 assert.ok(privacy.includes('**ELSEWHERE / CATALOGUE 0**'), 'PRIVACY missing fifth-space boundary');
@@ -107,4 +114,4 @@ for (const phrase of [
   'explicitly fictional'
 ]) assert.match(`${readme}\n${privacy}`, new RegExp(phrase, 'i'), `durable docs missing privacy/fiction boundary: ${phrase}`);
 
-console.log('Museum durable docs match the live entrance hierarchy, relational after-hours house-light condition, Unbuilt Room recovery boundary, active routes, layered Page Four evidence model, privacy boundary, and COMMONS-only live-data contract.');
+console.log('Museum durable docs match the live four-gallery / recessed-service-level entrance hierarchy, relational after-hours house-light condition, Unbuilt Room recovery boundary, active routes, layered Page Four evidence model, privacy boundary, and COMMONS-only live-data contract.');
