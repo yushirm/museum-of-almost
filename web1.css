@@ -1086,3 +1086,32 @@ body.html-xray-active .homepage-footer[data-html-xray-label] {
     box-shadow: none !important;
   }
 }
+
+/*
+ * GENERATION 203 // THE PAGE SCROLLS, THE SKY STAYS
+ * The body already paints one tiny local star tile behind the whole homepage.
+ * Keep that authored night attached to the viewport while the long document moves
+ * across it, so scrolling changes the relationship between page and atmosphere
+ * without measuring scroll, storing a position, or introducing another object.
+ */
+body {
+  background-attachment: fixed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    background-attachment: scroll;
+  }
+}
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  body {
+    background-attachment: scroll;
+  }
+}
+
+@media print {
+  body {
+    background-attachment: scroll;
+  }
+}
