@@ -1052,3 +1052,58 @@ body:has([data-pack-choice="optical"][aria-pressed="true"]) .environment-zone[da
     display: none;
   }
 }
+
+/* Generation 200: opening an accession gives its existing object one bounded conservation raking-light pass. */
+.artifact[open] .object::after {
+  content: "RAKING LIGHT · VISUAL INSPECTION ONLY";
+  position: absolute;
+  z-index: 5;
+  inset: -12% auto -12% -36%;
+  width: 32%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0.55rem 0.25rem;
+  color: #f4df9d;
+  background: linear-gradient(90deg, transparent, rgba(244,223,157,0.34) 42%, rgba(255,249,221,0.58) 50%, rgba(244,223,157,0.2) 58%, transparent);
+  font: 800 0.54rem/1.25 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-shadow: 0 1px 2px #111;
+  pointer-events: none;
+  animation: elsewhere-raking-light 2.4s ease-in-out 1 both;
+}
+
+@keyframes elsewhere-raking-light {
+  0% { opacity: 0; transform: translateX(0); }
+  12% { opacity: 1; }
+  82% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(430%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artifact[open] .object::after {
+    inset: auto 0.55rem 0.55rem auto;
+    width: auto;
+    max-width: calc(100% - 1.1rem);
+    padding: 0.3rem 0.4rem;
+    border: 1px dashed currentColor;
+    color: var(--ink);
+    background: rgba(233,227,208,0.9);
+    text-shadow: none;
+    animation: none;
+  }
+}
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  .artifact[open] .object::after {
+    color: CanvasText;
+    background: Canvas;
+    border: 2px solid currentColor;
+    text-shadow: none;
+  }
+}
+
+@media print {
+  .artifact[open] .object::after { display: none; }
+}

@@ -169,6 +169,12 @@ assert.match(css, /main:not\(:has\(> \.ipm-sweep\)\) > \.acclimation-bay::after 
 assert.match(css, /CARE SCALE 03 · BUILDING \/ MONITORING · MOVED TO EXCEPTION BOARD/, 'building-monitoring care scale should follow the migrated duty to the existing Environment Board');
 assert.match(css, /@media print[\s\S]*?main:has\(> \.environment-board \.environment-ipm-order\) > \.environment-board::before[\s\S]*?display:\s*none/, 'screen-only migrated care-scale marker must not masquerade as printed room state');
 
+assert.match(css, /\.artifact\[open\] \.object::after\s*\{[\s\S]*?RAKING LIGHT · VISUAL INSPECTION ONLY/, 'opening an accession should place the bounded raking-light pass on its existing object visual');
+assert.match(css, /@keyframes elsewhere-raking-light[\s\S]*?translateX\(430%\)/, 'raking-light pass should cross the object once rather than becoming perpetual ambient motion');
+assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.artifact\[open\] \.object::after[\s\S]*?animation:\s*none/, 'reduced motion should preserve the inspection label without the sweep');
+assert.match(css, /@media \(prefers-contrast: more\), \(forced-colors: active\)[\s\S]*?\.artifact\[open\] \.object::after/, 'inspection cue should remain explicit in contrast modes');
+assert.match(css, /@media print[\s\S]*?\.artifact\[open\] \.object::after \{ display: none; \}/, 'ephemeral inspection light must not masquerade as printed object condition');
+
 assert.match(index, /href="elsewhere-teaser\.css"/);
 assert.match(index, /FACILITIES NOTICE 05 \/ FLOOR PLAN DISAGREEMENT/);
 assert.match(index, /href="elsewhere\.html"/);
@@ -182,4 +188,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with a tactile service-hatch entrance, twelve fixed records, a single-slot return cart that retracts the previous compactus inspection tray, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, a live-vs-reference Shift Handover clipboard, acclimatization continuity, an adaptive two-station workbench after IPM duty migration, responsive material cues, storage-route tracing, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with a tactile service-hatch entrance, twelve fixed records, a bounded raking-light inspection pass, a single-slot return cart that retracts the previous compactus inspection tray, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, a live-vs-reference Shift Handover clipboard, acclimatization continuity, an adaptive two-station workbench after IPM duty migration, responsive material cues, storage-route tracing, accessible routes, and offline shell coverage.');
