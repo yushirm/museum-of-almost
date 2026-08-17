@@ -298,3 +298,123 @@
     text-shadow: none;
   }
 }
+
+/*
+  Generation 197: Instrument 04 has always separated observations from open
+  questions in prose. Give that distinction a spatial edge without pretending
+  the two columns are a quantitative measure of certainty. The same authored
+  content and fixed controls remain; the card now reads as a lit evidence side
+  ending at a frontier, with the unresolved side receding beyond it.
+*/
+.mystery-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(132, 232, 255, 0.08) 0 48%, rgba(7, 5, 17, 0.12) 48% 52%, rgba(111, 59, 209, 0.08) 52% 100%);
+}
+
+.mystery-columns {
+  position: relative;
+  gap: 1rem clamp(3.25rem, 7vw, 6rem);
+}
+
+.mystery-columns::before {
+  content: "EVIDENCE FRONTIER · NOT A SCALE";
+  position: absolute;
+  top: -1.9rem;
+  bottom: -1rem;
+  left: 50%;
+  width: 0;
+  border-left: 1px dashed rgba(244, 239, 255, 0.5);
+  color: rgba(244, 239, 255, 0.72);
+  font-size: 0.61rem;
+  font-weight: 760;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: translateX(-50%);
+}
+
+.mystery-columns article:first-child {
+  padding: 1rem 1rem 1rem 0;
+  background: linear-gradient(90deg, rgba(132, 232, 255, 0.045), transparent 78%);
+}
+
+.mystery-columns article:last-child {
+  padding: 1rem 0 1rem 1rem;
+  background: linear-gradient(90deg, transparent, rgba(111, 59, 209, 0.07));
+  box-shadow: inset 18px 0 26px -28px rgba(0, 0, 0, 0.9);
+}
+
+.mystery-columns article:first-child h4::after {
+  content: " · OBSERVED / INFERRED";
+  color: rgba(132, 232, 255, 0.72);
+}
+
+.mystery-columns article:last-child h4::after {
+  content: " · UNRESOLVED";
+  color: rgba(209, 104, 255, 0.78);
+}
+
+@media (max-width: 620px) {
+  .mystery-card {
+    background: linear-gradient(180deg, rgba(132, 232, 255, 0.07), rgba(7, 5, 17, 0.1) 49%, rgba(111, 59, 209, 0.07));
+  }
+
+  .mystery-columns {
+    gap: 3.4rem;
+  }
+
+  .mystery-columns::before {
+    content: "EVIDENCE FRONTIER · NOT A SCALE";
+    top: 50%;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 0;
+    border-left: 0;
+    border-top: 1px dashed rgba(244, 239, 255, 0.5);
+    writing-mode: horizontal-tb;
+    transform: translateY(-50%);
+    padding-top: 0.45rem;
+    text-align: center;
+  }
+
+  .mystery-columns article:first-child,
+  .mystery-columns article:last-child {
+    padding-inline: 0;
+    background: none;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  .mystery-card,
+  .mystery-columns article:first-child,
+  .mystery-columns article:last-child {
+    background: none;
+    box-shadow: none;
+  }
+
+  .mystery-columns::before {
+    border-color: currentColor;
+    color: currentColor;
+  }
+}
+
+@media print {
+  .mystery-card,
+  .mystery-columns article:first-child,
+  .mystery-columns article:last-child {
+    background: none !important;
+    box-shadow: none !important;
+  }
+
+  .mystery-columns::before {
+    content: "EVIDENCE FRONTIER · NOT A SCALE";
+    border-color: #555;
+    color: #000;
+  }
+}

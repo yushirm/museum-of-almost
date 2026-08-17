@@ -55,6 +55,19 @@ for (const pattern of [
 ]) assert.match(redshiftWindowCss, pattern, `Light Clock logarithmic distance field missing ${pattern}`);
 
 for (const pattern of [
+  /EVIDENCE FRONTIER · NOT A SCALE/,
+  /\.mystery-columns::before/,
+  /\.mystery-columns article:first-child h4::after/,
+  /OBSERVED \/ INFERRED/,
+  /\.mystery-columns article:last-child h4::after/,
+  /UNRESOLVED/,
+  /@media \(max-width: 620px\)[\s\S]*\.mystery-columns::before/,
+  /prefers-contrast: more[\s\S]*forced-colors: active[\s\S]*\.mystery-columns::before/,
+  /@media print[\s\S]*\.mystery-columns::before/
+]) assert.match(redshiftWindowCss, pattern, `Unsolved Room evidence frontier missing ${pattern}`);
+assert.doesNotMatch(redshiftWindowCss, /EVIDENCE FRONTIER · [0-9]+%/, 'evidence frontier must not imply a quantitative certainty score');
+
+for (const pattern of [
   /addPageFourSignalAnomaly/,
   /page-four-signal-link/,
   /\? Page Four \/ unfiled/,
@@ -129,4 +142,4 @@ assert.ok(Math.abs(core.lightTimeSeconds(core.AU_KM) - 499.0047838) < 0.001, '1 
 assert.ok(Math.abs(core.schwarzschildRadiusKm(1) - 2.9533) < 0.01, 'one solar mass Schwarzschild radius should be about 2.95 km');
 assert.ok(Math.abs(core.inventoryTotal() - 100) < 1e-9, 'rounded cosmic inventory should total 100%');
 
-console.log('Deep Space / Almost local science, logarithmic Light Clock distance field, proportional Cosmic Inventory, anomaly conservation prune, cosmic stratigraphy, light-time handoff, accessibility, privacy, calculations, and no-network contract verified.');
+console.log('Deep Space / Almost local science, logarithmic Light Clock distance field, proportional Cosmic Inventory, Unsolved Room evidence frontier, anomaly conservation prune, cosmic stratigraphy, light-time handoff, accessibility, privacy, calculations, and no-network contract verified.');
