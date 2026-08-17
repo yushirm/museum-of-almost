@@ -55,10 +55,12 @@ assert.match(viewSource, /snapshot\.archive\.source/);
 assert.match(viewSource, /Evidence run complete/i);
 assert.match(viewSource, /Pattern and material state are categorical chamber states/);
 assert.match(viewSource, /Track length does not rank possibilities/);
+assert.match(viewSource, /possibilityMapNote\.style\.display = 'block'/, 'enhancement should reveal the corrected categorical note');
 
 assert.match(css, /min-height:\s*44px/);
 assert.match(css, /max-width:\s*620px/);
 assert.match(css, /success-archive-heading\[hidden\]/);
+assert.match(css, /\.possibility-map-note \{ display: none;/, 'no-JavaScript fallback must not expose the retired bar-width explanation');
 assert.match(css, /success-archive-grid\[data-earned-archive="true"\]/);
 assert.match(css, /prefers-reduced-motion/);
 assert.match(css, /prefers-contrast/);

@@ -28,6 +28,7 @@
 
   if (possibilityMapNote) {
     possibilityMapNote.textContent = 'Pattern and material state are categorical chamber states, not probabilities, confidence scores, or quantities. Track length does not rank possibilities.';
+    possibilityMapNote.style.display = 'block';
   }
 
   let activeCaseId = caseButtons.find((button) => button.dataset.active === 'true')?.dataset.successCaseId

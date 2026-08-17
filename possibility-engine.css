@@ -81,7 +81,7 @@
 
 .possibility-map-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, 0.62fr); gap: 1rem 2rem; align-items: end; }
 .possibility-map h3 { margin: 0; font-size: clamp(1.8rem, 3vw, 3rem); }
-.possibility-map-note { margin: 0; color: var(--muted); font-size: 0.78rem; line-height: 1.55; }
+.possibility-map-note { display: none; margin: 0; color: var(--muted); font-size: 0.78rem; line-height: 1.55; }
 .possibility-list { display: grid; gap: 0.8rem; margin-top: 1.5rem; }
 .possibility-card {
   position: relative;
