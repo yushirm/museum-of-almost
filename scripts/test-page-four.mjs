@@ -103,6 +103,15 @@ assert.match(js, /@media\(prefers-contrast:more\)/, 'finding aid should support 
 assert.match(js, /@media print/, 'finding aid should have a printable fallback');
 assert.doesNotMatch(js, /setInterval|setTimeout|requestAnimationFrame/, 'finding aid should add no timers or animation loops');
 
+for (const pattern of [
+  /finding-aid-entry:nth-child\(1\).*#cryptids, #maps, #diagrams/s,
+  /finding-aid-entry:nth-child\(2\).*#maps, #broadcasts, #redactions/s,
+  /finding-aid-entry:nth-child\(3\).*#cryptids, #field-notes, #witnesses/s,
+  /finding-aid-entry:nth-child\(4\).*#celestial, #diagrams, #evidence/s,
+  /:focus-within/,
+  /@supports selector\(body:has/
+]) assert.match(researchCss, pattern, `finding-aid projection missing ${pattern}`);
+
 assert.match(js, /page-four-research\.css/, 'Page Four should mount the local research styles');
 assert.match(js, /page-four-research\.js/, 'Page Four should mount the local research logic');
 assert.match(js, /page-four-instrument-room\.css/, 'Page Four should mount the local Instrument Room styles');
