@@ -13,6 +13,7 @@ const appSource = fs.readFileSync(new URL('../app.js', import.meta.url), 'utf8')
 const source = [coreSource, viewSource, loaderSource].join('\n');
 const styles = fs.readFileSync(new URL('../cosmic-signal.css', import.meta.url), 'utf8');
 const worldMapStyles = fs.readFileSync(new URL('../world-map.css', import.meta.url), 'utf8');
+const sampleHoldStyles = fs.readFileSync(new URL('../sample-hold.css', import.meta.url), 'utf8');
 
 assert.equal(cosmic.SOURCE, 'https://services.swpc.noaa.gov/products/noaa-scales.json');
 assert.ok(appSource.includes(cosmic.SOURCE), 'the shared snapshot acquisition must own the approved NOAA Scales request');
@@ -22,6 +23,11 @@ assert.match(appSource, /if \(requestController !== activeController\) return;/,
   'an aborted older acquisition must never overwrite a newer latch');
 assert.match(appSource, /snapshot\.feeds\.solar \|\| snapshot\.feeds\.scales/,
   'NOAA must count as an answered public service when either of its two feeds answers');
+assert.match(appSource, /document\.body\.dataset\.sourceCount = String\(availableSources\)/,
+  'the opening integrity frame must consume the last committed four-service count');
+const acquireBody = appSource.match(/function renderSampleAcquire\(\) \{([\s\S]*?)\n  \}\n\n  function renderSampleHold/)?.[1] || '';
+assert.doesNotMatch(acquireBody, /sourceCount/,
+  'starting a refresh must not rewrite the held snapshot source count before commit');
 assert.match(appSource, /MuseumCommonsSnapshot/);
 assert.match(appSource, /museum:commons-snapshot/);
 assert.match(viewSource, /museum:commons-snapshot/);
@@ -139,6 +145,24 @@ assert.match(worldMapStyles, /@media \(forced-colors: active\)[\s\S]*box-shadow:
 assert.match(worldMapStyles, /@media print[\s\S]*\.station-dot\[data-selected="true"\]\[data-light\][\s\S]*box-shadow:\s*none/,
   'printed maps should not preserve screen-only light glow');
 
+for (const count of ['0', '1', '2', '3']) {
+  assert.match(
+    sampleHoldStyles,
+    new RegExp(`body\\[data-source-count="${count}"\\] \\.headline-grid`),
+    `a committed ${count}/4 public-service snapshot should leave the opening portrait frame visibly incomplete`
+  );
+}
+assert.match(sampleHoldStyles, /body\[data-source-count="4"\] \.headline-grid[\s\S]*border-style:\s*solid/,
+  'a committed 4/4 public-service snapshot should close the opening portrait frame');
+assert.match(sampleHoldStyles, /content:\s*"INCOMPLETE SNAPSHOT"/,
+  'an incomplete committed portrait should name its integrity state without adding DOM');
+assert.doesNotMatch(sampleHoldStyles, /data-sample-feed=.*\.headline-/,
+  'headline integrity must not be driven by transient per-feed acquisition lamps');
+assert.match(sampleHoldStyles, /@media \(forced-colors: active\)[\s\S]*border-color:\s*Highlight/,
+  'the incomplete portrait frame should remain explicit in forced-colors mode');
+assert.match(sampleHoldStyles, /@media print[\s\S]*INCOMPLETE|@media print[\s\S]*\.headline-grid::after/,
+  'printed snapshots should retain a legible incomplete-snapshot integrity cue');
+
 assert.match(appSource, /credentials:\s*'omit'/);
 assert.match(appSource, /referrerPolicy:\s*'no-referrer'/);
 assert.match(appSource, /cache:\s*'no-store'/);
@@ -177,4 +201,4 @@ assert.match(styles, /@media print/);
 assert.doesNotMatch(styles, /@import\s+url|font-face|https?:\/\//i);
 assert.doesNotMatch(styles, /min-width:\s*[4-9]\d\dpx/);
 
-console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, State Space nearest-neighbour disagreement, selected-window local light pool, sampling-floor and co-occurrence causal boundaries, privacy boundary, accessibility hooks, and missing-value integrity verified.');
+console.log('Cosmic Signal Chain normalization, shared five-feed latch ordering, State Space nearest-neighbour disagreement, selected-window local light pool, committed incomplete-snapshot frame, sampling-floor and co-occurrence causal boundaries, privacy boundary, accessibility hooks, and missing-value integrity verified.');

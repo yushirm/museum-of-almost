@@ -397,3 +397,77 @@ body[data-loading="false"] .weather-loom-band {
     animation: none !important;
   }
 }
+
+/*
+ * Incomplete-snapshot frame.
+ * `data-source-count` is the last committed public-service count. Unlike the
+ * acquisition feed lamps, it does not switch to an in-between state while a
+ * refresh is gathering the next latch. The opening portrait therefore keeps
+ * the previous snapshot's integrity boundary until a replacement snapshot
+ * actually commits.
+ */
+body[data-source-count="0"] .headline-grid,
+body[data-source-count="1"] .headline-grid,
+body[data-source-count="2"] .headline-grid,
+body[data-source-count="3"] .headline-grid {
+  position: relative;
+  border-style: dashed;
+}
+
+body[data-source-count="0"] .headline-grid::after,
+body[data-source-count="1"] .headline-grid::after,
+body[data-source-count="2"] .headline-grid::after,
+body[data-source-count="3"] .headline-grid::after {
+  content: "INCOMPLETE SNAPSHOT";
+  position: absolute;
+  right: 0.7rem;
+  bottom: -0.72rem;
+  padding: 0.12rem 0.38rem;
+  border: 1px solid currentColor;
+  background: var(--paper);
+  color: var(--red);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+body[data-source-count="4"] .headline-grid {
+  border-style: solid;
+}
+
+@media (prefers-contrast: more) {
+  body:not([data-source-count="4"]) .headline-grid {
+    border-width: 3px;
+  }
+}
+
+@media (forced-colors: active) {
+  body:not([data-source-count="4"]) .headline-grid {
+    border-color: Highlight;
+  }
+
+  body:not([data-source-count="4"]) .headline-grid::after {
+    border-color: Highlight;
+    background: Canvas;
+    color: Highlight;
+  }
+}
+
+@media (max-width: 620px) {
+  body:not([data-source-count="4"]) .headline-grid::after {
+    right: 0.45rem;
+    font-size: 0.52rem;
+  }
+}
+
+@media print {
+  body:not([data-source-count="4"]) .headline-grid::after {
+    position: static;
+    grid-column: 1 / -1;
+    margin: 0.4rem;
+    justify-self: end;
+  }
+}
