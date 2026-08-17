@@ -142,6 +142,13 @@ assert.doesNotMatch(css, /@import|@font-face|https?:\/\//i);
 assert.match(teaser, /min-height:\s*44px/);
 assert.match(teaser, /prefers-reduced-motion/);
 assert.match(teaser, /prefers-contrast/);
+assert.match(teaser, /@supports selector\(\.maintenance-seam:has\(a:focus-visible\)\)/, 'service seam release should remain progressive enhancement');
+assert.match(teaser, /\.maintenance-seam::before,[\s\S]*?\.maintenance-seam::after[\s\S]*?width:\s*7px/, 'service seam should expose paired latch rails without new markup');
+assert.match(teaser, /\.maintenance-seam:has\(a:is\(:hover, :focus-visible, :active\)\)::before\s*\{\s*transform:\s*translateX\(-100%\)/, 'left service latch should retract when the existing door is engaged');
+assert.match(teaser, /\.maintenance-seam:has\(a:is\(:hover, :focus-visible, :active\)\)::after\s*\{\s*transform:\s*translateX\(100%\)/, 'right service latch should retract when the existing door is engaged');
+assert.match(teaser, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?transition:\s*none !important/, 'service hatch release must remove motion while preserving the state change');
+assert.match(teaser, /@media \(prefers-contrast: more\)[\s\S]*?\.maintenance-seam::after \{ background: currentColor; \}/, 'service hatch rails must remain explicit in increased contrast');
+assert.match(teaser, /@media print[\s\S]*?\.maintenance-seam \{ display: none; \}/, 'service hatch interaction must not masquerade as printed state');
 assert.match(css, /\.service-header a \{[\s\S]*?min-height:\s*44px/, 'header return link needs an explicit touch target');
 assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.access-copy h1 \{[^}]*font-size:/, 'mobile heading must be explicitly constrained');
 
@@ -158,4 +165,4 @@ for (const asset of ['./elsewhere.html', './elsewhere.css', './elsewhere.js', '.
 assert.match(worker, /museum-of-almost-v39-catalogue-zero/);
 assert.doesNotMatch(worker, /https?:\/\//);
 
-console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with twelve fixed records, a single-slot return cart that retracts the previous compactus inspection tray, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, acclimatization-to-shift handover continuity, responsive acclimatization material cues, storage-route tracing, accessible routes, and offline shell coverage.');
+console.log('ELSEWHERE / CATALOGUE 0 is present as a fictional, local-only fifth space with a tactile service-hatch entrance, twelve fixed records, a single-slot return cart that retracts the previous compactus inspection tray, bounded reshelving aftermath, accession-linked handling, freight-lift emergency-light atmosphere, acclimatization-to-shift handover continuity, responsive acclimatization material cues, storage-route tracing, accessible routes, and offline shell coverage.');
