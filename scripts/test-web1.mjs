@@ -321,6 +321,16 @@ assert.match(
   /buttons\.forEach\(\(candidate\) => candidate\.setAttribute\('aria-pressed', String\(candidate === button\)\)\)/,
   'the counter-refusal relationship should consume the existing local stamp selection state rather than inventing a second state store'
 );
+for (const [pattern, message] of [
+  [/TAB SEMAPHORE \/\/ BROWSER CHROME/, 'the old browser-tab phenotype should remain recognizable'],
+  [/SEND THIS SIGN TO THE TAB/, 'the semaphore should offer one reversible migration rather than a phrase cycler'],
+  [/ALMOST ONLINE! \/\/ TAB SEMAPHORE IS UP HERE/, 'sending the sign should write one fixed authored title into browser chrome'],
+  [/label\.hidden = sentUpstairs;[\s\S]*intro\.hidden = sentUpstairs;[\s\S]*policy\.hidden = sentUpstairs;/, 'the body-side sign should visibly collapse while its words are upstairs'],
+  [/CALL THE SIGN BACK DOWN/, 'the migration should remain reversible in the same page load'],
+  [/document\.title = sentUpstairs \? 'ALMOST ONLINE! \/\/ TAB SEMAPHORE IS UP HERE' : originalTitle;/, 'calling the sign back should restore the exact original title']
+]) assert.match(js, pattern, message);
+assert.doesNotMatch(js, /SEND NEXT TAB SIGNAL|const signals = \[/,
+  'the retired three-phrase tab cycler should not return');
 assert.doesNotMatch(js, /\bhistory\b|getComputedStyle|:visited/i,
   'homepage script must not inspect browser history or visited-link state');
 assert.doesNotMatch(js, /\binnerWidth\b|\bouterWidth\b|\bscreen\.(?:width|height)\b|\bmatchMedia\s*\(/i,
@@ -352,4 +362,4 @@ assert.match(notes, /No third-party runtime scripts, fonts, images, embeds, APIs
 assert.match(notes, /Do not publish personal information about real people/i);
 assert.match(notes, /Future posts should be added directly to the HTML in reverse chronological order/i);
 
-console.log('Almost Online! Web 1.0 gallery, directional local comet wayfinding, fixed decorative counter refusal, local guestbook relationship, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
+console.log('Almost Online! Web 1.0 gallery, reversible browser-tab semaphore migration, directional local comet wayfinding, fixed decorative counter refusal, local guestbook relationship, GIF staff meeting, wallpaper-sky post, true-width post, self-award post, amplified Page Four rumor relay, local GIFs, privacy, accessibility, no-network boundary, and future-post contract verified.');
