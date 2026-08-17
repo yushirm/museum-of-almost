@@ -399,59 +399,57 @@ body[data-loading="false"] .weather-loom-band {
 }
 
 /*
- * Missing-feed open circuits.
- * The Sample-and-Hold feed state already knows which current feeds failed.
- * Let that same authoritative state reach the matching opening headline card
- * instead of leaving failure legible only as an em dash and a later status row.
- * The generated label is supplemental; the existing card values and live
- * status remain the accessible source of truth.
+ * Incomplete-snapshot frame.
+ * `data-source-count` is the last committed public-service count. Unlike the
+ * acquisition feed lamps, it does not switch to an in-between state while a
+ * refresh is gathering the next latch. The opening portrait therefore keeps
+ * the previous snapshot's integrity boundary until a replacement snapshot
+ * actually commits.
  */
-@supports selector(body:has(*)) {
-  body:has(.sample-feed-list [data-sample-feed="earthquakes"][data-state="unavailable"]) .headline-earth,
-  body:has(.sample-feed-list [data-sample-feed="solar"][data-state="unavailable"]) .headline-sky,
-  body:has(.sample-feed-list [data-sample-feed="events"][data-state="unavailable"]) .headline-events,
-  body:has(.sample-feed-list [data-sample-feed="weather"][data-state="unavailable"]) .headline-weather {
-    position: relative;
-    outline: 2px dashed var(--red);
-    outline-offset: -6px;
-    box-shadow: inset 0 0 0 1px rgba(133, 48, 42, 0.24);
-  }
+body[data-source-count="0"] .headline-grid,
+body[data-source-count="1"] .headline-grid,
+body[data-source-count="2"] .headline-grid,
+body[data-source-count="3"] .headline-grid {
+  position: relative;
+  border-style: dashed;
+}
 
-  body:has(.sample-feed-list [data-sample-feed="earthquakes"][data-state="unavailable"]) .headline-earth::after,
-  body:has(.sample-feed-list [data-sample-feed="solar"][data-state="unavailable"]) .headline-sky::after,
-  body:has(.sample-feed-list [data-sample-feed="events"][data-state="unavailable"]) .headline-events::after,
-  body:has(.sample-feed-list [data-sample-feed="weather"][data-state="unavailable"]) .headline-weather::after {
-    content: "SOURCE OPEN";
-    position: absolute;
-    right: 0.55rem;
-    bottom: 0.5rem;
-    padding: 0.12rem 0.32rem;
-    border: 1px solid currentColor;
-    background: var(--paper);
-    color: var(--red);
-    font-size: 0.56rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    line-height: 1.2;
-    text-transform: uppercase;
-    pointer-events: none;
-  }
+body[data-source-count="0"] .headline-grid::after,
+body[data-source-count="1"] .headline-grid::after,
+body[data-source-count="2"] .headline-grid::after,
+body[data-source-count="3"] .headline-grid::after {
+  content: "INCOMPLETE SNAPSHOT";
+  position: absolute;
+  right: 0.7rem;
+  bottom: -0.72rem;
+  padding: 0.12rem 0.38rem;
+  border: 1px solid currentColor;
+  background: var(--paper);
+  color: var(--red);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+body[data-source-count="4"] .headline-grid {
+  border-style: solid;
 }
 
 @media (prefers-contrast: more) {
-  body:has(.sample-feed-list [data-state="unavailable"]) .headline-card {
-    outline-width: 3px;
-    box-shadow: none;
+  body:not([data-source-count="4"]) .headline-grid {
+    border-width: 3px;
   }
 }
 
 @media (forced-colors: active) {
-  body:has(.sample-feed-list [data-state="unavailable"]) .headline-card {
-    outline: 3px dashed Highlight;
-    box-shadow: none;
+  body:not([data-source-count="4"]) .headline-grid {
+    border-color: Highlight;
   }
 
-  body:has(.sample-feed-list [data-state="unavailable"]) .headline-card::after {
+  body:not([data-source-count="4"]) .headline-grid::after {
     border-color: Highlight;
     background: Canvas;
     color: Highlight;
@@ -459,9 +457,17 @@ body[data-loading="false"] .weather-loom-band {
 }
 
 @media (max-width: 620px) {
-  body:has(.sample-feed-list [data-state="unavailable"]) .headline-card::after {
-    right: 0.4rem;
-    bottom: 0.35rem;
+  body:not([data-source-count="4"]) .headline-grid::after {
+    right: 0.45rem;
     font-size: 0.52rem;
+  }
+}
+
+@media print {
+  body:not([data-source-count="4"]) .headline-grid::after {
+    position: static;
+    grid-column: 1 / -1;
+    margin: 0.4rem;
+    justify-self: end;
   }
 }
