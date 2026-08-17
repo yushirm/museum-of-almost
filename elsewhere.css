@@ -1014,3 +1014,41 @@ body:has([data-pack-choice="optical"][aria-pressed="true"]) .environment-zone[da
     font-size: inherit;
   }
 }
+
+/* Generation 196: when enhanced IPM moves onto the Environment Board, the desktop closes the empty third workstation. */
+@media (min-width: 1120px) {
+  @supports selector(main:has(> .ipm-sweep)) {
+    main:not(:has(> .ipm-sweep)) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    main:not(:has(> .ipm-sweep)) > .packing-bench { grid-column: 1; }
+    main:not(:has(> .ipm-sweep)) > .acclimation-bay { grid-column: 2; }
+    main:not(:has(> .ipm-sweep)) > .acclimation-bay::after { display: none; }
+
+    main:has(> .environment-board .environment-ipm-order) > .environment-board::before {
+      content: "CARE SCALE 03 · BUILDING / MONITORING · MOVED TO EXCEPTION BOARD";
+      display: block;
+      margin: 0 0 1rem;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px dashed currentColor;
+      color: var(--muted);
+      background: rgba(0,0,0,0.2);
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+    }
+  }
+}
+
+@media (prefers-contrast: more) and (min-width: 1120px) {
+  main:has(> .environment-board .environment-ipm-order) > .environment-board::before {
+    border-bottom-color: currentColor;
+  }
+}
+
+@media print {
+  main:has(> .environment-board .environment-ipm-order) > .environment-board::before {
+    display: none;
+  }
+}
