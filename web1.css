@@ -1006,3 +1006,83 @@ h1 {
     transform: none;
   }
 }
+
+/*
+ * GENERATION 198 // THE X-RAY PULLS THE PAGE APART
+ * The mature HTML X-ray already labels the page's authored semantic landmarks.
+ * While that existing local state is active, those same landmarks now separate
+ * into a bounded exploded anatomy: the page remains readable, but its regions no
+ * longer pretend to be one seamless object. No layout measurement or state is
+ * added; the existing body class and fixed data labels are the whole mechanism.
+ */
+[data-html-xray-label] {
+  transition:
+    transform 180ms steps(2, end),
+    box-shadow 180ms steps(2, end);
+}
+
+body.html-xray-active .homepage-header[data-html-xray-label] {
+  transform: translate(-6px, -3px);
+  box-shadow: 6px 5px 0 rgba(0, 255, 255, 0.16);
+}
+
+body.html-xray-active #homepage-workbench[data-html-xray-label] {
+  transform: translate(6px, -2px);
+  box-shadow: -6px 5px 0 rgba(255, 0, 255, 0.14);
+}
+
+body.html-xray-active #homepage-tuning-fork[data-html-xray-label] {
+  transform: translate(-5px, 2px);
+  box-shadow: 6px 5px 0 rgba(255, 255, 0, 0.13);
+}
+
+body.html-xray-active .posts[data-html-xray-label] {
+  transform: translate(-6px, 3px);
+  box-shadow: 6px 6px 0 rgba(0, 255, 255, 0.13);
+}
+
+body.html-xray-active .sidebar[data-html-xray-label] {
+  transform: translate(6px, 5px);
+  box-shadow: -6px 6px 0 rgba(0, 255, 102, 0.13);
+}
+
+body.html-xray-active .homepage-footer[data-html-xray-label] {
+  transform: translate(4px, 2px);
+  box-shadow: -5px 5px 0 rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 620px) {
+  body.html-xray-active .homepage-header[data-html-xray-label],
+  body.html-xray-active #homepage-tuning-fork[data-html-xray-label],
+  body.html-xray-active .posts[data-html-xray-label] {
+    transform: translateX(-3px);
+  }
+
+  body.html-xray-active #homepage-workbench[data-html-xray-label],
+  body.html-xray-active .sidebar[data-html-xray-label],
+  body.html-xray-active .homepage-footer[data-html-xray-label] {
+    transform: translateX(3px);
+  }
+}
+
+@media (prefers-contrast: more), (forced-colors: active) {
+  body.html-xray-active [data-html-xray-label] {
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-html-xray-label],
+  body.html-xray-active [data-html-xray-label] {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
+@media print {
+  body.html-xray-active [data-html-xray-label] {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
