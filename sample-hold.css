@@ -397,3 +397,71 @@ body[data-loading="false"] .weather-loom-band {
     animation: none !important;
   }
 }
+
+/*
+ * Missing-feed open circuits.
+ * The Sample-and-Hold feed state already knows which current feeds failed.
+ * Let that same authoritative state reach the matching opening headline card
+ * instead of leaving failure legible only as an em dash and a later status row.
+ * The generated label is supplemental; the existing card values and live
+ * status remain the accessible source of truth.
+ */
+@supports selector(body:has(*)) {
+  body:has(.sample-feed-list [data-sample-feed="earthquakes"][data-state="unavailable"]) .headline-earth,
+  body:has(.sample-feed-list [data-sample-feed="solar"][data-state="unavailable"]) .headline-sky,
+  body:has(.sample-feed-list [data-sample-feed="events"][data-state="unavailable"]) .headline-events,
+  body:has(.sample-feed-list [data-sample-feed="weather"][data-state="unavailable"]) .headline-weather {
+    position: relative;
+    outline: 2px dashed var(--red);
+    outline-offset: -6px;
+    box-shadow: inset 0 0 0 1px rgba(133, 48, 42, 0.24);
+  }
+
+  body:has(.sample-feed-list [data-sample-feed="earthquakes"][data-state="unavailable"]) .headline-earth::after,
+  body:has(.sample-feed-list [data-sample-feed="solar"][data-state="unavailable"]) .headline-sky::after,
+  body:has(.sample-feed-list [data-sample-feed="events"][data-state="unavailable"]) .headline-events::after,
+  body:has(.sample-feed-list [data-sample-feed="weather"][data-state="unavailable"]) .headline-weather::after {
+    content: "SOURCE OPEN";
+    position: absolute;
+    right: 0.55rem;
+    bottom: 0.5rem;
+    padding: 0.12rem 0.32rem;
+    border: 1px solid currentColor;
+    background: var(--paper);
+    color: var(--red);
+    font-size: 0.56rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  body:has(.sample-feed-list [data-state="unavailable"]) .headline-card {
+    outline-width: 3px;
+    box-shadow: none;
+  }
+}
+
+@media (forced-colors: active) {
+  body:has(.sample-feed-list [data-state="unavailable"]) .headline-card {
+    outline: 3px dashed Highlight;
+    box-shadow: none;
+  }
+
+  body:has(.sample-feed-list [data-state="unavailable"]) .headline-card::after {
+    border-color: Highlight;
+    background: Canvas;
+    color: Highlight;
+  }
+}
+
+@media (max-width: 620px) {
+  body:has(.sample-feed-list [data-state="unavailable"]) .headline-card::after {
+    right: 0.4rem;
+    bottom: 0.35rem;
+    font-size: 0.52rem;
+  }
+}
